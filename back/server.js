@@ -1,10 +1,10 @@
-let express = require('express')();
-let app = express;
+let express = require('express');
+let app = express();
 let MongoClient = require('mongodb').MongoClient;
 
 var glob;
 
-MongoClient.connect('mongodb://localhost:27017/matcha', { useNewUrlParser: true }, function(err, db) {
+MongoClient.connect('mongodb://mongo:27017/matcha', { useNewUrlParser: true }, function(err, db) {
   if (err) {
       console.log(err);
     }
