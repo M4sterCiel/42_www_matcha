@@ -15,7 +15,7 @@ MongoClient.connect('mongodb://mongo:27017/matcha', { useNewUrlParser: true }, f
         if (err) {
             throw err;
           }
-          glob = result;
+          glob = 'lcordeno';
           console.log(result);
     });
   }
@@ -24,4 +24,4 @@ app.get('/', (req, resp) => {
     resp.send(glob);
 });
 
-app.listen(8080, () => {console.log("Listening on port 8080")});
+app.listen(3000, () => {console.log("Listening on port 3000")});
