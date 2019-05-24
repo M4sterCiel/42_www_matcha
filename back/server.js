@@ -1,27 +1,16 @@
 let express = require('express');
 let app = express();
-let MongoClient = require('mongodb').MongoClient;
+var conn = require('./config/database');
 
+const PORT = 8080;
 var glob;
 
-MongoClient.connect('mongodb://mongo:27017/matcha', { useNewUrlParser: true }, function(err, db) {
-  if (err) {
-      console.log(err);
-    }
-    else {
-    console.log('Connected to db Matcha');
-    var matcha = db.db("matcha");
-    matcha.collection('users').find().toArray(function(err, result) {
-        if (err) {
-            throw err;
-          }
-          glob = 'lcordeno';
-          console.log(result);
-    });
-  }
-});
 app.get('/', (req, resp) => {
-    resp.send(glob);
+    resp.send("It's working for now...");
+});
+app.get('/plop', (req, resp) => {
+    resp.send("Welcome to plop");
 });
 
-app.listen(3000, () => {console.log("Listening on port 3000")});
+
+app.listen(PORT, () => {console.log("Listening on port: ", PORT)});
