@@ -7,7 +7,7 @@ var connection = mysql.createConnection({
   port     : '3390'
 });
 
-connection.connect( (err) => {
+connection.connect((err) => {
     if (err)
         console.log(err);
     else
