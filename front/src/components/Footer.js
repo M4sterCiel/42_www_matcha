@@ -25,7 +25,7 @@ class Footer extends Component {
           </div>
           <div className="footer-copyright">
             <div className="container">
-            © 2014 Copyright Text
+            © 2019 Copyright Matcha
             <a className="grey-text text-lighten-4 right" href="#!">More Links</a>
             </div>
           </div>

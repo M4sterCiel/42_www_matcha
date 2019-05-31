@@ -17,8 +17,19 @@ app.get('/', (req, resp) => {
     resp.send({ express: "It's working for now..." });
 });
 app.get('/plop', (req, resp) => {
-    resp.send("Welcome to plop");
+    resp.send({ express: "React and express are working together..." });
+    console.log("Welcome to plop");
 });
+
+app.get('/hello', (req, resp) => {
+    resp.send({ express: "Hello from express my friend!" });
+    console.log("Running hello page");
+});
+
+app.post('/login', (req, resp) => {
+    console.log(req.body);
+    console.log(req.body.username);
+})
 
 
 app.listen(PORT, () => {console.log("Listening on port: ", PORT)});
