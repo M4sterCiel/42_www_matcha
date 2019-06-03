@@ -2,21 +2,20 @@
   "name": "matcha",
   "version": "1.0.0",
   "description": "Creating a dating site using React, Node JS and MongoDB",
-  "main": "server.js",
+  "main": "./routes/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "server": "nodemon server.js",
+    "start": "node ./routes/server.js",
+    "server": "nodemon ./routes/server.js",
     "front": "cd ../front && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run front\""
+    "dev": "concurrently --kill-others \"npm run server\" \"npm run front\""
   },
   "author": "ralleman, lcordeno",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.19.0",
     "concurrently": "^4.1.0",
     "express": "^4.17.0",
-    "materialize-css": "^1.0.0-rc.2",
+    "express-router": "0.0.1",
     "mysql": "^2.17.1",
     "nodemon": "^1.19.0"
   }
