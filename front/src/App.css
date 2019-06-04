@@ -1,16 +1,16 @@
 .nav-wrapper {
-    background-color: lightgrey;
-    margin-bottom: 20%;
+  background-color: lightgrey;
+  margin-bottom: 20%;
 }
 
 body {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-  }
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
 
 main {
-flex: 1 0 auto;
+  flex: 1 0 auto;
 }
 
 #login-box {
@@ -22,16 +22,21 @@ flex: 1 0 auto;
 }
 
 .msg {
-  width:100%;
+  width: 100%;
   border: 1px solid;
-  padding:10px;
+  padding: 10px;
   color: grey;
 }
 
-.msg-info{
+.msg-info {
   border-color: #0288d1;
   background-color: #29b6f6;
   color: white;
+}
+
+.pwd-error,
+.login-error {
+  color: red;
 }
 
 /* MEDIA QUERIES FOR RESPONSIVE */
