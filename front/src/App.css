@@ -21,6 +21,19 @@ flex: 1 0 auto;
   padding: 50px 0px 20px 0px;
 }
 
+.msg {
+  width:100%;
+  border: 1px solid;
+  padding:10px;
+  color: grey;
+}
+
+.msg-info{
+  border-color: #0288d1;
+  background-color: #29b6f6;
+  color: white;
+}
+
 /* MEDIA QUERIES FOR RESPONSIVE */
 
 @media screen and (max-width: 640px) {

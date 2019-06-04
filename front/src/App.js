@@ -6,7 +6,7 @@ import 'materialize-css/dist/css/materialize.min.css';
 
 class App extends Component {
 
-  state = { message: '' };
+  /* state = { message: '' };
 
   componentDidMount() {
     
@@ -22,14 +22,14 @@ class App extends Component {
     if (response.status !== 200)
       throw Error(body.message);
       return body;
-  };
+  }; */
 
     render() {
       return (
         <div className="App">
           <NavBar />
           <div>
-            <p>{this.state.response}</p>
+            <p>Home page</p>
           </div>
         </div>
       );

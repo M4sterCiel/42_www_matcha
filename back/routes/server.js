@@ -2,25 +2,21 @@ let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
 let conn = require('../config/database');
-//let userRoute = require('./users');
+let userRoute = require('./userRoute');
 const PORT = 8080;
 
 /* Middlewares */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use('/users', require('./userRoute'));
-/* Gestion d'erreurs */
-app.use(function(err, req, res, next) {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-  });
+app.use('/users', userRoute);
+
 
 /* app.post('/users/login', (req, res) => {
     console.log(req.body);
     if (req.body.login == 'ralleman')
-        res.send({ id: "1234567890", status: "success"});
+        res.json({ id: "1234567890", status: "success"});
     else
-        res.send({ id: "", status: "error"});
+        res.json({ id: "", status: "error"});
 }); */
 
 /* app.get('/setup', (req, resp) => {
