@@ -1,12 +1,11 @@
-var router = require('express').Router();
+var express = require('express');
 var userController = require('../controllers/userController');
 
-router.use((req, res, next) => {
-    console.log('Time:', Date.now());
-    next();
-})
-router.post('/login', userController.getUser);
-router.post('/register', userController.createUser);
+exports.router = (() => {
+    var userRouter = express.Router();
 
+    userRouter.route('/login').post(userController.getUser);
+    userRouter.route('/register').post(userController.createUser);
 
-module.exports = router;
+    return userRouter;
+})();

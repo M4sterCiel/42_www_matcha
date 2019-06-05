@@ -12,6 +12,7 @@ class Register extends Component {
       message: '',
       lastname: '',
       firstname: '',
+      username: '',
       mail: '',
       pwd1: '',
       pwd2: '',
@@ -40,11 +41,12 @@ class Register extends Component {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', },
       body: JSON.stringify({ 
-        lastname: this.state.lastname,
-        firstname: this.state.firstname,
-        mail: this.state.mail,
-        pwd1: this.state.pwd1,
-        pwd2: this.state.pwd2
+        lastname:    this.state.lastname,
+        firstname:   this.state.firstname,
+        username:    this.state.username,
+        mail:        this.state.mail,
+        pwd1:        this.state.pwd1,
+        pwd2:        this.state.pwd2
       }), 
     });
       const body = await response.text();
@@ -70,6 +72,10 @@ class Register extends Component {
                     <div className="input-field col s6">
                       <input type="text" name="firstname" id="firstname-register" value={this.state.firstname} onChange={e => this.setState({ firstname: e.target.value })} required></input>
                       <label htmlFor="firstname-register">Prénom</label>
+                    </div>
+                    <div className="input-field col s12">
+                      <input type="text" name="username" id="username-register" value={this.state.username} onChange={e => this.setState({ username: e.target.value })} required></input>
+                      <label htmlFor="username-register">Pseudo</label>
                     </div>
                     <div className="input-field col s12">
                       <input type="email" name="email" id="email-register" value={this.state.mail} onChange={e => this.setState({ mail: e.target.value })} required></input>
