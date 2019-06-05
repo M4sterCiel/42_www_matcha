@@ -1,15 +1,14 @@
-let express = require('express');
+let express = require("express");
 let app = express();
-let bodyParser = require('body-parser');
-let conn = require('../config/database');
-let userRoute = require('./userRoute');
-const PORT = 8080;
+let bodyParser = require("body-parser");
+let conn = require("../config/database");
+let userRoute = require("./userRoute");
+const PORT = 8081;
 
 /* Middlewares */
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use('/users', userRoute);
-
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/users", userRoute);
 
 /* app.post('/users/login', (req, res) => {
     console.log(req.body);
@@ -43,5 +42,6 @@ app.post('/register', (req, resp) => {
     resp.send({state: "success", obj: "lastname"});
 }); */
 
-
-app.listen(PORT, () => {console.log("Listening on port: ", PORT)});
+app.listen(PORT, () => {
+  console.log("Listening on port: ", PORT);
+});

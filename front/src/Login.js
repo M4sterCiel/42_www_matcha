@@ -25,7 +25,7 @@ class Login extends Component {
       !this.state.login.match(regexName) &&
       !this.state.login.match(regexEmail)
     ) {
-      loginError = "Invalid login";
+      loginError = "Please enter a valid Username/Email";
     }
 
     if (loginError) {
@@ -40,8 +40,8 @@ class Login extends Component {
   validatePwd = () => {
     let pwdError = "";
 
-    if (this.state.pwd.includes("2")) {
-      pwdError = "Invalid password";
+    if (this.state.pwd.length < 8) {
+      pwdError = "Please enter a valid password";
     }
 
     if (pwdError) {
@@ -59,20 +59,10 @@ class Login extends Component {
 
     if (isLogin) {
       this.setState({ login: e.target.value });
-      const isValidLogin = this.validateName();
-
-      if (isValidLogin) {
-        console.log(this.state);
-      }
     }
 
     if (isPwd) {
       this.setState({ pwd: e.target.value });
-      const isValidPwd = this.validatePwd();
-
-      if (isValidPwd) {
-        console.log(this.state);
-      }
     }
   };
 
@@ -123,6 +113,7 @@ class Login extends Component {
                       id="user-login"
                       value={this.state.login}
                       onChange={this.handleChange}
+                      onKeyUp={this.validateName}
                       required
                     />
                     <div className="login-error">{this.state.loginError}</div>
@@ -135,6 +126,7 @@ class Login extends Component {
                       id="pwd-login"
                       value={this.state.pwd}
                       onChange={this.handleChange}
+                      onKeyUp={this.validatePwd}
                       required
                     />
                     <div className="pwd-error">{this.state.pwdError}</div>
@@ -145,6 +137,7 @@ class Login extends Component {
                     name="submit"
                     value="Se connecter"
                     className="btn"
+                    disabled={this.btnDisabled}
                   />
                 </form>
               </div>
