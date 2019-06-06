@@ -1,7 +1,6 @@
 let express     = require('express');
 let app         = express();
 let bodyParser  = require('body-parser');
-let conn        = require('../config/database');
 let userRoute   = require('./userRoute');
 const PORT      = 8080;
 

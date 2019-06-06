@@ -19,7 +19,7 @@ class Register extends Component {
       responseToPost: '' };
   }
 
-  componentDidMount() {
+  /* componentDidMount() {
     
     this.callApi()
     .then(res => this.setState({response: res.express}))
@@ -34,7 +34,7 @@ class Register extends Component {
       throw Error(body.message);
     return body;
   };
-
+ */
   handleSubmit = async e => {
     e.preventDefault();
     const response = await fetch('/users/register', {

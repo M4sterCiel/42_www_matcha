@@ -1,10 +1,10 @@
 var mysql = require('mysql');
 
 var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "logitech",
-  port: '3390'
+  host     : 'localhost',
+  user     : 'root',
+  password : 'logitech',
+  port     : '3390'
 });
 
 con.connect(function(err) {
@@ -12,6 +12,10 @@ con.connect(function(err) {
   console.log("Connected!");
   con.query("CREATE DATABASE IF NOT EXISTS matcha", function (err, result) {
     if (err) throw err;
-    console.log("Database created");
   });
+  var userTable = "CREATE TABLE IF NOT EXISTS users (id INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY, lastname VARCHAR(255) NOT NULL,  firstname VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, mail VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, city VARCHAR(255) NOT NULL)";
+  require('./database').query(userTable, function (err, result) {
+    if (err) throw err;
+  });
+  console.log("Database created");
 });
