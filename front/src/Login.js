@@ -12,47 +12,59 @@ class Login extends Component {
       pwd: "",
       loginError: "",
       pwdError: "",
+      loginValid: false,
+      pwdValid: false,
       responseToPost: ""
     };
   }
 
+  // Checking username or email format is valid
   validateName = () => {
     let loginError = "";
     let regexName = /^[a-zA-Z0-9_.-]*$/;
     let regexEmail = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/;
 
     if (
-      !this.state.login.match(regexName) &&
-      !this.state.login.match(regexEmail)
+      (!this.state.login.match(regexName) &&
+        !this.state.login.match(regexEmail)) ||
+      this.state.login === ""
     ) {
       loginError = "Please enter a valid Username/Email";
     }
 
     if (loginError) {
       this.setState({ loginError });
+      this.setState({ loginValid: false });
       return false;
+    } else if (this.state.login !== "") {
+      this.setState({ loginValid: true });
     }
 
     this.setState({ loginError });
     return true;
   };
 
+  // Checking password format is valid
   validatePwd = () => {
     let pwdError = "";
 
-    if (this.state.pwd.length < 8) {
+    if (this.state.pwd.length < 8 || this.state.pwd.includes(" ")) {
       pwdError = "Please enter a valid password";
     }
 
     if (pwdError) {
       this.setState({ pwdError });
+      this.setState({ pwdValid: false });
       return false;
+    } else if (this.state.pwd) {
+      this.setState({ pwdValid: true });
     }
 
     this.setState({ pwdError });
     return true;
   };
 
+  // On user input change, execute this
   handleChange = e => {
     const isLogin = e.target.name === "name";
     const isPwd = e.target.name === "pwd";
@@ -66,6 +78,7 @@ class Login extends Component {
     }
   };
 
+  // On user button submit, execute this
   handleSubmit = async e => {
     e.preventDefault();
     const response = await fetch("/users/login", {
@@ -137,7 +150,7 @@ class Login extends Component {
                     name="submit"
                     value="Se connecter"
                     className="btn"
-                    disabled={this.btnDisabled}
+                    disabled={!this.state.loginValid || !this.state.pwdValid}
                   />
                 </form>
               </div>
