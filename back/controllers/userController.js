@@ -41,11 +41,21 @@ module.exports = {
         if (!mailPattern.test(mail))
             return res.status(400).json({ error: "incorrect mail" });
 
-        //Check if user already exists
+        //Check if user already exists or if username is already token
         var result = await userModel.findOne("mail", mail);
+        console.log(result);
+        if (result != '')
+            return res.status(409).json({ error: "user already exists" });
+        result = await userModel.findOne("username", username);
+        if (result != '')
+            return res.status(409).json({ error: "username already exists" });
+
+        //Create new user
+        var created = await userModel.createOne([lastname, firstname, username, mail, pwd1]);
+        if (created)
+            return res.status(200).json({ status: "User created with success"});
 
         
-        return res.json({ status: "success"});
     }
 }
 

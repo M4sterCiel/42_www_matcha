@@ -1,18 +1,35 @@
-var mysql   = require('mysql');
-var pool     = require('../config/database');
+var pool            = require('../config/database');
+var passwordHash    = require('password-hash');
 
 module.exports = {
     findOne: async (field, data) => {
-        var plop;
-        var sql = "SELECT * FROM ?? WHERE ?? = ?";
-        var inserts = ['users', field, data];
-        sql = mysql.format(sql, inserts);
-        pool.query(sql, [field, data], (error, results, fields) => {
-            if (error)
-                throw error;
-            console.log(results);
-            plop = results;
+        try {
+            var result = await pool.query({
+                sql: "SELECT * FROM ?? WHERE ?? = ?",
+                values: ['users', field, data]
+            });
+            if (result) return (result);
+            else return;
+        } catch(err) {
+            throw new Error(err)
+        };
+    },
+
+    createOne: async (data) => {
+        data[4] = passwordHash.generate(data[4], {
+            algorithm: "sha512",
+            saltLength: 10,
+            iterations: 5
         });
-        return plop;
+        try {
+            var result = await pool.query({
+                sql: "INSERT INTO users (lastname, firstname, username, mail, password) VALUES (?)",
+                values: [data]
+            });
+            return result.affectedRows;
+        } catch(err) {
+            throw new Error(err);
+            return (0);
+        };
     }
-}
+};
