@@ -11,62 +11,25 @@ class Register extends Component {
       message: "",
       lastname: "",
       firstname: "",
-      mail: "",
+      username: "",
+      email: "",
       pwd1: "",
       pwd2: "",
       lastnameError: "",
       firstnameError: "",
-      mailError: "",
-      pwd1Error: "",
-      pwd2Error: "",
+      usernameError: "",
+      emailError: "",
+      pw1Error: "",
+      pw2Error: "",
+      lastnameValid: false,
+      firstnameValid: false,
+      usernameValid: false,
+      emailValid: false,
+      pw1Valid: false,
+      pw2Valid: false,
       responseToPost: ""
     };
   }
-
-  componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ response: res.express }))
-      .catch(err => console.log(err));
-  }
-
-  callApi = async () => {
-    const response = await fetch("/register");
-    const body = await response.json();
-
-    if (response.status !== 200) throw Error(body.message);
-    return body;
-  };
-
-  validateFirstName = () => {
-    let firstnameError = "";
-    let firstnameRegex = /^[a-zA-Z0-9_.-]*$/;
-
-    if (!this.state.firstname.match(firstnameRegex)) {
-      firstnameError = "Please enter a valid Username/Email";
-      return false;
-    }
-
-    this.setState({ firstnameError });
-    return true;
-  };
-
-  handleSubmit = async e => {
-    e.preventDefault();
-    const response = await fetch("/users/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        lastname: this.state.lastname,
-        firstname: this.state.firstname,
-        mail: this.state.mail,
-        pwd1: this.state.pwd1,
-        pwd2: this.state.pwd2
-      })
-    });
-    const body = await response.text();
-    this.setState({ responseToPost: body });
-    console.log(body);
-  };
 
   render() {
     return (
@@ -83,31 +46,50 @@ class Register extends Component {
               <i className="medium material-icons">person_add</i>
               <div className="card-panel">
                 <form onSubmit={this.handleSubmit}>
-                  <div className="input-field col s6">
+                  <div className="input-field col s6 name-size">
                     <input
                       type="text"
                       name="lastname"
                       id="lastname-register"
                       value={this.state.lastname}
-                      onChange={e =>
-                        this.setState({ lastname: e.target.value })
-                      }
+                      onChange={this.handleChange}
+                      onKeyUp={this.validateLastName}
                       required
                     />
-                    <label htmlFor="lastname-register">Nom</label>
+                    <div className="register-error">
+                      {this.state.lastnameError}
+                    </div>
+                    <label htmlFor="lastname-register">Last name</label>
                   </div>
-                  <div className="input-field col s6">
+                  <div className="input-field col s6 name-size">
                     <input
                       type="text"
                       name="firstname"
                       id="firstname-register"
                       value={this.state.firstname}
-                      onChange={e =>
-                        this.setState({ firstname: e.target.value })
-                      }
+                      onChange={this.handleChange}
+                      onKeyUp={this.validateFirstName}
                       required
                     />
-                    <label htmlFor="firstname-register">Prénom</label>
+                    <div className="register-error">
+                      {this.state.firstnameError}
+                    </div>
+                    <label htmlFor="firstname-register">First name</label>
+                  </div>
+                  <div className="input-field col s12">
+                    <input
+                      type="text"
+                      name="username"
+                      id="username-register"
+                      value={this.state.username}
+                      onChange={this.handleChange}
+                      onKeyUp={this.validateUsername}
+                      required
+                    />
+                    <div className="register-error">
+                      {this.state.usernameError}
+                    </div>
+                    <label htmlFor="username-register">Username</label>
                   </div>
                   <div className="input-field col s12">
                     <input
@@ -115,9 +97,13 @@ class Register extends Component {
                       name="email"
                       id="email-register"
                       value={this.state.mail}
-                      onChange={e => this.setState({ mail: e.target.value })}
+                      onChange={this.handleChange}
+                      onKeyUp={this.validateEmail}
                       required
                     />
+                    <div className="register-error">
+                      {this.state.emailError}
+                    </div>
                     <label htmlFor="email-register">Email</label>
                   </div>
                   <div className="input-field col s12">
@@ -129,7 +115,7 @@ class Register extends Component {
                       onChange={e => this.setState({ pwd1: e.target.value })}
                       required
                     />
-                    <label htmlFor="pwd-login">Mot de passe</label>
+                    <label htmlFor="pwd-login">Password</label>
                   </div>
                   <div className="input-field col s12">
                     <input
@@ -140,14 +126,12 @@ class Register extends Component {
                       onChange={e => this.setState({ pwd2: e.target.value })}
                       required
                     />
-                    <label htmlFor="rep-pwd-login">
-                      Confirmer le mot de passe
-                    </label>
+                    <label htmlFor="rep-pwd-login">Repeat password</label>
                   </div>
                   <input
                     type="submit"
                     name="submit"
-                    value="Enregistrer"
+                    value="Register"
                     className="btn"
                   />
                 </form>
@@ -158,6 +142,122 @@ class Register extends Component {
       </div>
     );
   }
+
+  // Checking first name format is valid
+  validateFirstName = () => {
+    let firstnameError = "";
+    let firstnameRegex = /^[a-zA-Z]*-?[a-zA-Z]*$/;
+
+    if (/\s/.test(this.state.firstname)) {
+      firstnameError = "First name cannot contain spacing";
+    } else if (!this.state.firstname.match(firstnameRegex)) {
+      firstnameError = "First name is invalid";
+    }
+
+    this.setState({ firstnameError });
+  };
+
+  // Checking last name format is valid
+  validateLastName = () => {
+    let lastnameError = "";
+    let lastnameRegex = /^[a-zA-Z]*-?[a-zA-Z]*$/;
+
+    if (/\s/.test(this.state.lastname)) {
+      lastnameError = "Last name cannot contain spacing";
+    } else if (!this.state.lastname.match(lastnameRegex)) {
+      lastnameError = "Last name is invalid";
+    }
+
+    this.setState({ lastnameError });
+  };
+
+  // Checking username format is valid
+  validateUsername = () => {
+    let usernameError = "";
+    let usernameRegex = /^[a-zA-Z]*-?[a-zA-Z]*$/;
+
+    if (/\s/.test(this.state.username)) {
+      usernameError = "Username cannot contain spacing";
+    } else if (!this.state.username.match(usernameRegex)) {
+      usernameError = "Username is invalid (use letters and numbers)";
+    }
+
+    this.setState({ usernameError });
+  };
+
+  // Checking email format is valid
+  validateEmail = () => {
+    let emailError = "";
+    let emailRegex = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/;
+
+    if (/\s/.test(this.state.email)) {
+      emailError = "Email cannot contain spacing";
+    } else if (!this.state.email.match(emailRegex)) {
+      emailError = "Email is invalid (example@email.com)";
+    }
+
+    this.setState({ emailError });
+  };
+
+  /* componentDidMount() {
+    
+    this.callApi()
+    .then(res => this.setState({response: res.express}))
+    .catch(err => console.log(err));
+  }
+
+  callApi = async () => {
+    const response = await fetch('/register');
+    const body = await response.json();
+
+    if (response.status !== 200)
+      throw Error(body.message);
+    return body;
+  };
+ */
+
+  // On user input change, update states
+  handleChange = e => {
+    const isFirstName = e.target.name === "firstname";
+    const isLastName = e.target.name === "lastname";
+    const isUsername = e.target.name === "username";
+    const isEmail = e.target.name === "email";
+
+    if (isFirstName) {
+      this.setState({ firstname: e.target.value });
+    }
+
+    if (isLastName) {
+      this.setState({ lastname: e.target.value });
+    }
+
+    if (isUsername) {
+      this.setState({ username: e.target.value });
+    }
+
+    if (isEmail) {
+      this.setState({ email: e.target.value });
+    }
+  };
+
+  handleSubmit = async e => {
+    e.preventDefault();
+    const response = await fetch("/users/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        lastname: this.state.lastname,
+        firstname: this.state.firstname,
+        username: this.state.username,
+        email: this.state.email,
+        pwd1: this.state.pwd1,
+        pwd2: this.state.pwd2
+      })
+    });
+    const body = await response.text();
+    this.setState({ responseToPost: body });
+    console.log(body);
+  };
 }
 
 export default Register;

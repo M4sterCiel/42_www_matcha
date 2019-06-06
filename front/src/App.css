@@ -34,11 +34,15 @@ main {
   color: white;
 }
 
-.pwd-error,
-.login-error {
+.login-error,
+.register-error {
   color: red;
   text-align: left;
   font-size: 12px;
+}
+
+.name-size {
+  height: 50px;
 }
 
 /* MEDIA QUERIES FOR RESPONSIVE */
@@ -46,5 +50,9 @@ main {
 @media screen and (max-width: 640px) {
   #login-box {
     width: 90%;
+  }
+
+  .row .col.s6 {
+    width: 100%;
   }
 }
