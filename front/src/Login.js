@@ -73,7 +73,7 @@ class Login extends Component {
   // Checking username or email format is valid
   validateName = () => {
     let loginError = "";
-    let regexName = /^[a-zA-Z0-9_.-]*$/;
+    let regexName = /^[a-zA-Z]*-?[a-zA-Z]*$/;
     let regexEmail = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/;
 
     if (

@@ -26,6 +26,11 @@ class Register extends Component {
       usernameValid: false,
       emailValid: false,
       pw1Valid: false,
+      pw1VerifyBox: "box-disabled",
+      pw1HasLetter: false,
+      pw1HasCapital: false,
+      pw1HasNumber: false,
+      pw1HasMinChar: false,
       pw2Valid: false,
       responseToPost: ""
     };
@@ -52,7 +57,9 @@ class Register extends Component {
                       name="lastname"
                       id="lastname-register"
                       value={this.state.lastname}
-                      onChange={this.handleChange}
+                      onChange={e =>
+                        this.setState({ lastname: e.target.value })
+                      }
                       onKeyUp={this.validateLastName}
                       required
                     />
@@ -67,7 +74,9 @@ class Register extends Component {
                       name="firstname"
                       id="firstname-register"
                       value={this.state.firstname}
-                      onChange={this.handleChange}
+                      onChange={e =>
+                        this.setState({ firstname: e.target.value })
+                      }
                       onKeyUp={this.validateFirstName}
                       required
                     />
@@ -82,7 +91,9 @@ class Register extends Component {
                       name="username"
                       id="username-register"
                       value={this.state.username}
-                      onChange={this.handleChange}
+                      onChange={e =>
+                        this.setState({ username: e.target.value })
+                      }
                       onKeyUp={this.validateUsername}
                       required
                     />
@@ -97,7 +108,7 @@ class Register extends Component {
                       name="email"
                       id="email-register"
                       value={this.state.mail}
-                      onChange={this.handleChange}
+                      onChange={e => this.setState({ email: e.target.value })}
                       onKeyUp={this.validateEmail}
                       required
                     />
@@ -113,8 +124,34 @@ class Register extends Component {
                       id="pwd-login"
                       value={this.state.pwd1}
                       onChange={e => this.setState({ pwd1: e.target.value })}
+                      onFocus={e =>
+                        this.setState({ pw1VerifyBox: "box-enabled" })
+                      }
+                      onBlur={e =>
+                        this.setState({ pw1VerifyBox: "box-disabled" })
+                      }
                       required
                     />
+                    <div
+                      id="password-message"
+                      className={this.state.pw1VerifyBox}
+                    >
+                      <h3 id="pw1-verify-title">
+                        Password must contain the following:
+                      </h3>
+                      <p id="letter" className="invalid">
+                        A <b>lowercase</b> letter
+                      </p>
+                      <p id="capital" className="invalid">
+                        A <b>capital (uppercase)</b> letter
+                      </p>
+                      <p id="number" className="invalid">
+                        A <b>number</b>
+                      </p>
+                      <p id="length" className="invalid">
+                        Minimum <b>8 characters</b>
+                      </p>
+                    </div>
                     <label htmlFor="pwd-login">Password</label>
                   </div>
                   <div className="input-field col s12">
@@ -149,7 +186,7 @@ class Register extends Component {
     let firstnameRegex = /^[a-zA-Z]*-?[a-zA-Z]*$/;
 
     if (/\s/.test(this.state.firstname)) {
-      firstnameError = "First name cannot contain spacing";
+      firstnameError = "First name cannot contain spaces";
     } else if (!this.state.firstname.match(firstnameRegex)) {
       firstnameError = "First name is invalid";
     }
@@ -163,7 +200,7 @@ class Register extends Component {
     let lastnameRegex = /^[a-zA-Z]*-?[a-zA-Z]*$/;
 
     if (/\s/.test(this.state.lastname)) {
-      lastnameError = "Last name cannot contain spacing";
+      lastnameError = "Last name cannot contain spaces";
     } else if (!this.state.lastname.match(lastnameRegex)) {
       lastnameError = "Last name is invalid";
     }
@@ -177,7 +214,7 @@ class Register extends Component {
     let usernameRegex = /^[a-zA-Z]*-?[a-zA-Z]*$/;
 
     if (/\s/.test(this.state.username)) {
-      usernameError = "Username cannot contain spacing";
+      usernameError = "Username cannot contain spaces";
     } else if (!this.state.username.match(usernameRegex)) {
       usernameError = "Username is invalid (use letters and numbers)";
     }
@@ -191,13 +228,15 @@ class Register extends Component {
     let emailRegex = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/;
 
     if (/\s/.test(this.state.email)) {
-      emailError = "Email cannot contain spacing";
+      emailError = "Email cannot contain spaces";
     } else if (!this.state.email.match(emailRegex)) {
       emailError = "Email is invalid (example@email.com)";
     }
 
     this.setState({ emailError });
   };
+
+  validatePw1 = () => {};
 
   /* componentDidMount() {
     
@@ -215,30 +254,6 @@ class Register extends Component {
     return body;
   };
  */
-
-  // On user input change, update states
-  handleChange = e => {
-    const isFirstName = e.target.name === "firstname";
-    const isLastName = e.target.name === "lastname";
-    const isUsername = e.target.name === "username";
-    const isEmail = e.target.name === "email";
-
-    if (isFirstName) {
-      this.setState({ firstname: e.target.value });
-    }
-
-    if (isLastName) {
-      this.setState({ lastname: e.target.value });
-    }
-
-    if (isUsername) {
-      this.setState({ username: e.target.value });
-    }
-
-    if (isEmail) {
-      this.setState({ email: e.target.value });
-    }
-  };
 
   handleSubmit = async e => {
     e.preventDefault();
