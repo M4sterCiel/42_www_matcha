@@ -9,7 +9,6 @@ module.exports = {
                 values: ['users', field, data]
             });
             if (result) return (result);
-            else return;
         } catch(err) {
             throw new Error(err)
         };
@@ -23,7 +22,20 @@ module.exports = {
         });
         try {
             var result = await pool.query({
-                sql: "INSERT INTO users (lastname, firstname, username, mail, password) VALUES (?)",
+                sql: "INSERT INTO users (lastname, firstname, username, mail, password, `key`) VALUES (?)",
+                values: [data]
+            });
+            return result.affectedRows;
+        } catch(err) {
+            throw new Error(err);
+            return (0);
+        };
+    },
+
+    updateRegister: async (data) => {
+        try {
+            var result = await pool.query({
+                sql: "UPDATE users SET `key` = NULL, status = 1 WHERE `key` = ?",
                 values: [data]
             });
             return result.affectedRows;

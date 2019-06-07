@@ -1,5 +1,7 @@
 var UserService = require('../services/userService');
 var userModel   = require('../models/userModel');
+var sendmail    = require('../services/mail');
+var input       = require('../services/inputService');
 
 module.exports = {
     getUser: async (req, res, next) => {
@@ -10,6 +12,19 @@ module.exports = {
         } catch (e) {
             return res.status(400).json({ status: 400, message: e.message });
         }
+    },
+    
+    checkValidity: async (req, res, next) => {
+        //console.log(req.params.key);
+        var result = await userModel.findOne("key", req.params.key);
+        if (result != '')
+        {
+            var updated = await userModel.updateRegister(req.params.key);
+            if (updated)
+                return res.status(200).json({ message: "Successfully activated"});
+            else return res.status(500).json({ error: "couldn't update status" });
+        }
+        else return res.status(500).json({ error: "couldn't update status" });
     },
 
     createUser: async (req, res, next) => {
@@ -23,37 +38,59 @@ module.exports = {
         var pwd1        = req.body.pwd1;
         var pwd2        = req.body.pwd2;
 
-        //Pattern control
-        if (/\s/.test(firstname) || /\s/.test(lastname) || /\s/.test(mail) || /\s/.test(pwd1) || /\s/.test(pwd2))
-            return res.status(400).json({ error: "spaces are forbidden" });
-        if (lastname == null || firstname == null || mail == null || pwd1 == null || pwd2 == null)
-            return res.status(400).json({ error: "missing parameters" });
-        if (lastname.length < 2 || firstname.length < 2 || username.length < 3)
-            return res.status(400).json({ error: "parameters are too short" });
+        var err;
+        if (err = input.lastname(lastname).error)
+            return res.status(400).json({ error: "lastname " + err })
+        if (err = input.firstname(firstname).error)
+            return res.status(400).json({ error: "firstname " + err });
+        if (err = input.password(pwd1).error)
+            return res.status(400).json({ error: "password " + err });
+        if (err = input.password(pwd2).error)
+            return res.status(400).json({ error: "password " + err });
 
-        var pwdPattern = /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/;
-        if (!pwdPattern.test(pwd1) || !pwdPattern.test(pwd2))
-            return res.status(400).json({ error: "wrong password pattern" });
+        
+       // console.log(err.error);
+        err = await input.username(username)
+        if (err.error)
+            return res.status(400).json({ error: "username "+ err.error });
+        err = await input.mail(mail);
+        if (err.error)
+            return res.status(400).json({ error: "mail " + err.error });
+        /* var plop = await input.mail(mail);
+        console.log(plop);
         if (pwd1 != pwd2)
             return res.status(400).json({ error: "passwords have to be identicals" });
-
-        var mailPattern = /^([a-zA-Z0-9]+(?:[\.\-\_]?[a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[\.\-\_]?[a-zA-Z0-9]+)*)\.([a-zA-Z]{2,})+$/;
-        if (!mailPattern.test(mail))
-            return res.status(400).json({ error: "incorrect mail" });
-
-        //Check if user already exists or if username is already token
-        var result = await userModel.findOne("mail", mail);
-        console.log(result);
-        if (result != '')
-            return res.status(409).json({ error: "user already exists" });
-        result = await userModel.findOne("username", username);
-        if (result != '')
-            return res.status(409).json({ error: "username already exists" });
+        if (!input.password(pwd1))
+            return res.status(400).json({ error: "invalid password" });
+        if (!input.password(pwd2))
+            return res.status(400).json({ error: "invalid password" });
+        if (input.lastname(lastname) == 0)
+            return res.status(400).json({ error: "invalid lastname" });
+        if (!input.firstname(firstname))
+            return res.status(400).json({ error: "invalid firstname" });
+        if (input.username(username) == 0)
+            return res.status(400).json({ error: "invalid username" });
+        if (input.mail(mail) == 0)
+            return res.status(400).json({ error: "invalid mail" }); */
+        /* input.username(username).then((value) => {
+            if (value == 0)
+                return res.status(400).json({ error: "invalid username" });
+        });
+        input.mail(mail).then((value) => {
+            if (value == 0)
+                return res.status(400).json({ error: "invalid mail" });
+        }); */
+    
 
         //Create new user
-        var created = await userModel.createOne([lastname, firstname, username, mail, pwd1]);
+        var uniqid = (new Date().getTime() + Math.floor((Math.random()*10000)+1)).toString(16);
+        var created = await userModel.createOne([lastname, firstname, username, mail, pwd1, uniqid]);
         if (created)
+        {
+            var link = "http://localhost:3000/users/register/"+ uniqid;
+            await sendmail.registerMail(mail, username, link);
             return res.status(200).json({ status: "User created with success"});
+        }
 
         
     }
