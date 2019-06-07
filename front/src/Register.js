@@ -19,19 +19,18 @@ class Register extends Component {
       firstnameError: "",
       usernameError: "",
       emailError: "",
-      pw1Error: "",
-      pw2Error: "",
+      pwd2Error: "",
       lastnameValid: false,
       firstnameValid: false,
       usernameValid: false,
       emailValid: false,
-      pw1Valid: false,
-      pw1VerifyBox: "box-disabled",
-      pw1HasLetter: false,
-      pw1HasCapital: false,
-      pw1HasNumber: false,
-      pw1HasMinChar: false,
-      pw2Valid: false,
+      pwd1Valid: false,
+      pwd1VerifyBox: "box-disabled",
+      pwdHasLowercase: false,
+      pwdHasUppercase: false,
+      pwdHasNumber: false,
+      pwdHasMinLen: false,
+      pwd2Valid: false,
       responseToPost: ""
     };
   }
@@ -124,31 +123,52 @@ class Register extends Component {
                       id="pwd-login"
                       value={this.state.pwd1}
                       onChange={e => this.setState({ pwd1: e.target.value })}
+                      onKeyUp={this.validatePw}
                       onFocus={e =>
-                        this.setState({ pw1VerifyBox: "box-enabled" })
+                        this.setState({ pwd1VerifyBox: "box-enabled" })
                       }
                       onBlur={e =>
-                        this.setState({ pw1VerifyBox: "box-disabled" })
+                        this.setState({ pwd1VerifyBox: "box-disabled" })
                       }
                       required
                     />
                     <div
                       id="password-message"
-                      className={this.state.pw1VerifyBox}
+                      className={this.state.pwd1VerifyBox}
                     >
-                      <h3 id="pw1-verify-title">
+                      <h3 id="pwd1-verify-title">
                         Password must contain the following:
                       </h3>
-                      <p id="letter" className="invalid">
+                      <p
+                        id="letter"
+                        className={
+                          this.state.pwdHasLowercase ? "valid" : "invalid"
+                        }
+                      >
                         A <b>lowercase</b> letter
                       </p>
-                      <p id="capital" className="invalid">
+                      <p
+                        id="capital"
+                        className={
+                          this.state.pwdHasUppercase ? "valid" : "invalid"
+                        }
+                      >
                         A <b>capital (uppercase)</b> letter
                       </p>
-                      <p id="number" className="invalid">
+                      <p
+                        id="number"
+                        className={
+                          this.state.pwdHasNumber ? "valid" : "invalid"
+                        }
+                      >
                         A <b>number</b>
                       </p>
-                      <p id="length" className="invalid">
+                      <p
+                        id="length"
+                        className={
+                          this.state.pwdHasMinLen ? "valid" : "invalid"
+                        }
+                      >
                         Minimum <b>8 characters</b>
                       </p>
                     </div>
@@ -161,8 +181,10 @@ class Register extends Component {
                       id="rep-pwd-login"
                       value={this.state.pwd2}
                       onChange={e => this.setState({ pwd2: e.target.value })}
+                      onKeyUp={this.validateRepeatPwd}
                       required
                     />
+                    <div className="register-error">{this.state.pwd2Error}</div>
                     <label htmlFor="rep-pwd-login">Repeat password</label>
                   </div>
                   <input
@@ -170,6 +192,14 @@ class Register extends Component {
                     name="submit"
                     value="Register"
                     className="btn"
+                    disabled={
+                      !this.state.lastnameValid ||
+                      !this.state.firstnameValid ||
+                      !this.state.usernameValid ||
+                      !this.state.emailValid ||
+                      !this.state.pwd1Valid ||
+                      !this.state.pwd2Valid
+                    }
                   />
                 </form>
               </div>
@@ -187,11 +217,14 @@ class Register extends Component {
 
     if (/\s/.test(this.state.firstname)) {
       firstnameError = "First name cannot contain spaces";
+      this.setState({ firstnameValid: false });
     } else if (!this.state.firstname.match(firstnameRegex)) {
       firstnameError = "First name is invalid";
+      this.setState({ firstnameValid: false });
     }
 
     this.setState({ firstnameError });
+    this.setState({ firstnameValid: true });
   };
 
   // Checking last name format is valid
@@ -201,8 +234,12 @@ class Register extends Component {
 
     if (/\s/.test(this.state.lastname)) {
       lastnameError = "Last name cannot contain spaces";
+      this.setState({ lastnameValid: false });
     } else if (!this.state.lastname.match(lastnameRegex)) {
       lastnameError = "Last name is invalid";
+      this.setState({ lastnameValid: false });
+    } else {
+      this.setState({ lastnameValid: true });
     }
 
     this.setState({ lastnameError });
@@ -215,8 +252,12 @@ class Register extends Component {
 
     if (/\s/.test(this.state.username)) {
       usernameError = "Username cannot contain spaces";
+      this.setState({ usernameValid: false });
     } else if (!this.state.username.match(usernameRegex)) {
       usernameError = "Username is invalid (use letters and numbers)";
+      this.setState({ usernameValid: false });
+    } else {
+      this.setState({ usernameValid: true });
     }
 
     this.setState({ usernameError });
@@ -229,14 +270,65 @@ class Register extends Component {
 
     if (/\s/.test(this.state.email)) {
       emailError = "Email cannot contain spaces";
+      this.setState({ emailValid: false });
     } else if (!this.state.email.match(emailRegex)) {
       emailError = "Email is invalid (example@email.com)";
+      this.setState({ emailValid: false });
+    } else {
+      this.setState({ emailValid: true });
     }
 
     this.setState({ emailError });
   };
 
-  validatePw1 = () => {};
+  // Checking password format is valid
+  validatePw = () => {
+    if (/[a-z]/.test(this.state.pwd1)) {
+      this.setState({ pwdHasLowercase: true });
+    } else {
+      this.setState({ pwdHasLowercase: false });
+    }
+
+    if (/[A-Z]/g.test(this.state.pwd1)) {
+      this.setState({ pwdHasUppercase: true });
+    } else {
+      this.setState({ pwdHasUppercase: false });
+    }
+    if (/[0-9]/g.test(this.state.pwd1)) {
+      this.setState({ pwdHasNumber: true });
+    } else {
+      this.setState({ pwdHasNumber: false });
+    }
+
+    if (this.state.pwd1.length > 8) {
+      this.setState({ pwdHasMinLen: true });
+    } else {
+      this.setState({ pwdHasMinLen: false });
+    }
+
+    if (
+      this.state.pwdHasLowercase &&
+      this.state.pwdHasUppercase &&
+      this.state.pwdHasNumber &&
+      this.state.pwdHasMinLen
+    ) {
+      this.setState({ pwd1Valid: true });
+    } else {
+      this.setState({ pwd1Valid: false });
+    }
+  };
+
+  // Checking passwords match
+  validateRepeatPwd = () => {
+    if (this.state.pwd1 === this.state.pwd2) {
+      this.setState({ pwd2Error: "" });
+      this.setState({ pwd2Valid: true });
+    } else {
+      this.setState({ pwd2Error: "Passwords don't match" });
+      this.setState({ pwd2Valid: false });
+    }
+    console.log(this.state);
+  };
 
   /* componentDidMount() {
     
