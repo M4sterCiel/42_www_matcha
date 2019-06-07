@@ -28,7 +28,6 @@ module.exports = {
             return result.affectedRows;
         } catch(err) {
             throw new Error(err);
-            return (0);
         };
     },
 
@@ -41,7 +40,6 @@ module.exports = {
             return result.affectedRows;
         } catch(err) {
             throw new Error(err);
-            return (0);
         };
     }
 };
