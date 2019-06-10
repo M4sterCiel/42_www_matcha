@@ -30,7 +30,6 @@ class Register extends Component {
       pwdHasUppercase: false,
       pwdHasNumber: false,
       pwdHasMinLen: false,
-      pwd2Valid: false,
       responseToPost: ""
     };
   }
@@ -123,7 +122,7 @@ class Register extends Component {
                       id="pwd-login"
                       value={this.state.pwd1}
                       onChange={e => this.setState({ pwd1: e.target.value })}
-                      onKeyUp={this.validatePw}
+                      onKeyUp={this.handlePwdKeyUp}
                       onFocus={e =>
                         this.setState({ pwd1VerifyBox: "box-enabled" })
                       }
@@ -181,7 +180,7 @@ class Register extends Component {
                       id="rep-pwd-login"
                       value={this.state.pwd2}
                       onChange={e => this.setState({ pwd2: e.target.value })}
-                      onKeyUp={this.validateRepeatPwd}
+                      onKeyUp={this.handlePwdKeyUp}
                       required
                     />
                     <div className="register-error">{this.state.pwd2Error}</div>
@@ -198,7 +197,7 @@ class Register extends Component {
                       !this.state.usernameValid ||
                       !this.state.emailValid ||
                       !this.state.pwd1Valid ||
-                      !this.state.pwd2Valid
+                      this.state.pwd2 !== this.state.pwd1
                     }
                   />
                 </form>
@@ -282,7 +281,7 @@ class Register extends Component {
   };
 
   // Checking password format is valid
-  validatePw = () => {
+  validatePwd = () => {
     if (/[a-z]/.test(this.state.pwd1)) {
       this.setState({ pwdHasLowercase: true });
     } else {
@@ -322,12 +321,9 @@ class Register extends Component {
   validateRepeatPwd = () => {
     if (this.state.pwd1 === this.state.pwd2) {
       this.setState({ pwd2Error: "" });
-      this.setState({ pwd2Valid: true });
-    } else {
+    } else if (this.state.pwd2 !== "") {
       this.setState({ pwd2Error: "Passwords don't match" });
-      this.setState({ pwd2Valid: false });
     }
-    console.log(this.state);
   };
 
   /* componentDidMount() {
@@ -346,6 +342,12 @@ class Register extends Component {
     return body;
   };
  */
+
+  // Checking over both passwords on change
+  handlePwdKeyUp = async e => {
+    await this.validatePwd();
+    await this.validateRepeatPwd();
+  };
 
   handleSubmit = async e => {
     e.preventDefault();
