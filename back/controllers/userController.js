@@ -2,8 +2,7 @@ var UserService     = require('../services/userService');
 var userModel       = require('../models/userModel');
 var sendmail        = require('../services/mailService');
 var input           = require('../services/inputService');
-var passwordHash    = require('password-hash');
-var jwtCreate       = require('../services/jwtService');
+var jwtUtils        = require('../services/jwtService');
 
 module.exports = {
     login: async (req, res, next) => {
@@ -16,7 +15,7 @@ module.exports = {
         {
             var id = user.userData[0]['id'];
             var username = user.userData[0]['username'];
-            return res.status(200).json({ message: "Succesfully User Retrieved", token: jwtCreate.tokenGenerator([id, username]) });
+            return res.status(200).json({ message: "Succesfully User Retrieved", token: jwtUtils.tokenGenerator([id, username]) });
         }
 
         
@@ -75,6 +74,16 @@ module.exports = {
         }
 
         
+    },
+
+    getUserProfile: (req, res, next) => {
+        var headerAuth = req.headers['authorization'];
+        var userId = jwtUtils.getUserId(headerAuth);
+
+        console.log(req.cookie);
+        if (userId == -1)
+            return res.status(400).json({ error: "Session expired" });
+        return res.status(200).json({ message: "Authentication granted" });
     }
 }
 

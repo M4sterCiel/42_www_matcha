@@ -5,14 +5,15 @@ const PRIVATE_KEY = "a5f0f80f2a0012236be249d8351d5fd913ff7e666f70d5704940f0a02a3
 
 module.exports = {
     tokenGenerator: (userData) => {
-        console.log(userData);
-        return jwt.sign({
+        //console.log(userData);
+        var jwt_token = jwt.sign({
             id: userData[0],
             username: userData[1]
         }, PRIVATE_KEY,
         {
             expiresIn: '1h'
         });
+        return jwt_token;
     },
 
     parseAuthorization: (authorization) => {

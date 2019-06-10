@@ -24,9 +24,10 @@ class Login extends Component {
         pwd: this.state.pwd
       }), 
     });
-    const body = await response.text();
+    const body = await response.json();
     this.setState({ responseToPost: body.status});
     console.log(body);
+    localStorage.setItem('token', body.token);
   }
   /* componentDidMount() {
     

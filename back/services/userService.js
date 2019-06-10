@@ -14,6 +14,8 @@ module.exports = {
             if (result != '')
             {
                 var hashed = result[0]['password'];
+                if (result[0]['status'] == 0)
+                    return ({ error: "Inactive account" });
                 if (passwordHash.verify(pwd, hashed))
                     return ({ message: "Succesfully User Retrieved", userData: result });
                 else
@@ -28,6 +30,8 @@ module.exports = {
             if (result != '')
             {
                 var hashed = result[0]['password'];
+                if (result[0]['status'] == 0)
+                    return ({ error: "Inactive account" });
                 if (passwordHash.verify(pwd, hashed))
                     return ({ message: "Succesfully User Retrieved", userData: result });
                 else
@@ -39,14 +43,3 @@ module.exports = {
     }
 }
 
-/* exports.getUser = () => {
-
-    try {
-        //var user = await User.find(query)
-        var user = 'ralleman';
-        return user;
-    } catch (e) {
-        throw Error('Error while Paginating Users');
-    }
-}
- */
