@@ -127,8 +127,6 @@ class Login extends Component {
     if (isPwd) {
       this.setState({ pwd: e.target.value });
     }
-
-    console.log(this.state);
   };
 
   // On user button submit, execute this

@@ -15,6 +15,15 @@ main {
 
 /* UI design */
 
+nav ul a {
+  font-size: 16px;
+}
+
+.header-logo {
+  width: 35px;
+  margin: 10px;
+}
+
 .card-panel {
   border-radius: 15px;
 }

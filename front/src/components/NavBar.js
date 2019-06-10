@@ -9,7 +9,10 @@ class NavBar extends Component {
         <nav>
           <div className="nav-wrapper">
             <a href="#!" className="brand-logo">
-              Logo
+              <img
+                className="header-logo"
+                src="https://clipart.info/images/ccovers/1484708626emoji-double-heart-png.png"
+              />
             </a>
             <a href="#" data-target="mobile-demo" className="sidenav-trigger">
               <i className="material-icons">menu</i>
