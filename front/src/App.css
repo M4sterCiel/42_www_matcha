@@ -13,6 +13,51 @@ main {
   flex: 1 0 auto;
 }
 
+/* UI design */
+
+.card-panel {
+  border-radius: 15px;
+}
+
+.nav-wrapper {
+  background-color: #ffb6d3;
+}
+
+.btn {
+  color: white !important;
+  border-radius: 5px;
+  background-color: #ffb6d3 !important;
+}
+
+.btn:hover {
+  background-color: #ffe9f2 !important;
+}
+
+.btn:disabled {
+  color: white !important;
+  opacity: 0.4;
+  background-color: #ffb6d3 !important;
+}
+
+input[type="text"]:not(.browser-default):focus:not([readonly]) {
+  border-bottom-color: #ffb6d3;
+  box-shadow: 0 1px 0 0 #ffb6d3;
+}
+
+input[type="password"]:not(.browser-default):focus:not([readonly]) {
+  border-bottom-color: #ffb6d3;
+  box-shadow: 0 1px 0 0 #ffb6d3;
+}
+
+input[type="email"]:not(.browser-default):focus:not([readonly]) {
+  border-bottom-color: #ffb6d3;
+  box-shadow: 0 1px 0 0 #ffb6d3;
+}
+
+.medium {
+  color: #ffb6d3;
+}
+
 /* Login & Register components */
 
 #login-box {
