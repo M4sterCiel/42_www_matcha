@@ -1,5 +1,6 @@
 var userModel       = require('../models/userModel');
 var passwordHash    = require('password-hash');
+var sendmail        = require('../services/mailService');
 
 
 module.exports = {
@@ -40,6 +41,30 @@ module.exports = {
             else
                 return ({ error: "Incorrect login/password" });
         }
+    },
+
+    getUserData: async (id) => {
+        try {
+            var result = await userModel.findOne('id', id);
+            return result[0];
+        } catch(err) {
+            console.log(err);
+            return ({ error: err });
+        }
+    },
+
+    createUser: async (data) => {
+        
+        var uniqid = (new Date().getTime() + Math.floor((Math.random()*10000)+1)).toString(16);
+        data.push(uniqid);
+        var created = await userModel.createOne(data);
+        if (created)
+        {
+            var link = "http://localhost:3000/users/register/"+ uniqid;
+            await sendmail.registerMail(data[3], data[2], link);
+            return ({ status: "User created with success"});
+        }
+        return ({ status: "An error has occurred"});
     }
 }
 

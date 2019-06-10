@@ -1,6 +1,5 @@
 var UserService     = require('../services/userService');
 var userModel       = require('../models/userModel');
-var sendmail        = require('../services/mailService');
 var input           = require('../services/inputService');
 var jwtUtils        = require('../services/jwtService');
 
@@ -45,6 +44,8 @@ module.exports = {
         var pwd1        = req.body.pwd1;
         var pwd2        = req.body.pwd2;
 
+
+        //Check inputs
         var err;
         if (err = input.lastname(lastname).error)
             return res.status(400).json({ error: "lastname " + err })
@@ -64,26 +65,25 @@ module.exports = {
             return res.status(400).json({ error: "mail " + err.error });
         
         //Create new user
-        var uniqid = (new Date().getTime() + Math.floor((Math.random()*10000)+1)).toString(16);
-        var created = await userModel.createOne([lastname, firstname, username, mail, pwd1, uniqid]);
-        if (created)
-        {
-            var link = "http://localhost:3000/users/register/"+ uniqid;
-            await sendmail.registerMail(mail, username, link);
-            return res.status(200).json({ status: "User created with success"});
-        }
-
-        
+        var ret = await UserService.createUser([lastname, firstname, username, mail, pwd1]);
+        if (ret.status == 'User created with success')
+            return res.status(200).send(ret.status);
+        else
+            return res.status(400).send(ret.status);
     },
 
-    getUserProfile: (req, res, next) => {
+    getUserProfile: async (req, res, next) => {
+        //Check if session is expired
         var headerAuth = req.headers['authorization'];
         var userId = jwtUtils.getUserId(headerAuth);
 
-        console.log(req.cookie);
         if (userId == -1)
             return res.status(400).json({ error: "Session expired" });
-        return res.status(200).json({ message: "Authentication granted" });
+        
+        //Get data from db
+        var userData = await UserService.getUserData(userId);
+        
+        return res.status(200).json({ message: "Authentication granted", data: userData });
     }
 }
 

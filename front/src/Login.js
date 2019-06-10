@@ -27,7 +27,7 @@ class Login extends Component {
     const body = await response.json();
     this.setState({ responseToPost: body.status});
     console.log(body);
-    localStorage.setItem('token', body.token);
+    localStorage.setItem('Token', body.token);
   }
   /* componentDidMount() {
     
