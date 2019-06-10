@@ -9,15 +9,13 @@ module.exports = {
         var user = await UserService.getUser({ login: req.body.login, pwd: req.body.pwd });
 
         if (user.error)
-            return res.status(400).json({ message: user.error });
+            return res.status(401).json({ message: user.error });
         else
         {
             var id = user.userData[0]['id'];
             var username = user.userData[0]['username'];
             return res.status(200).json({ message: "Succesfully User Retrieved", token: jwtUtils.tokenGenerator([id, username]) });
         }
-
-        
     },
     
     checkValidity: async (req, res, next) => {
@@ -28,9 +26,9 @@ module.exports = {
             var updated = await userModel.updateRegister(req.params.key);
             if (updated)
                 return res.status(200).json({ message: "Successfully activated"});
-            else return res.status(500).json({ error: "couldn't update status" });
+            else return res.status(500).json({ message: "couldn't update status" });
         }
-        else return res.status(500).json({ error: "couldn't update status" });
+        else return res.status(500).json({ message: "couldn't update status" });
     },
 
     createUser: async (req, res, next) => {
@@ -67,7 +65,7 @@ module.exports = {
         //Create new user
         var ret = await UserService.createUser([lastname, firstname, username, mail, pwd1]);
         if (ret.status == 'User created with success')
-            return res.status(200).send(ret.status);
+            return res.status(201).send(ret.status);
         else
             return res.status(400).send(ret.status);
     },
@@ -78,12 +76,12 @@ module.exports = {
         var userId = jwtUtils.getUserId(headerAuth);
 
         if (userId == -1)
-            return res.status(400).json({ error: "Session expired" });
+            return res.status(401).json({ error: "Session expired" });
         
         //Get data from db
         var userData = await UserService.getUserData(userId);
         
-        return res.status(200).json({ message: "Authentication granted", data: userData });
+        return res.status(200).json({ data: userData });
     }
 }
 
