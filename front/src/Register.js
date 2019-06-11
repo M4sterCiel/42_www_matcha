@@ -212,7 +212,7 @@ class Register extends Component {
   // Checking first name format is valid
   validateFirstName = () => {
     let firstnameError = "";
-    let firstnameRegex = /^[a-zA-Z]*-?[a-zA-Z]*$/;
+    let firstnameRegex = /^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*-?[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*$/;
 
     if (/\s/.test(this.state.firstname)) {
       firstnameError = "First name cannot contain spaces";
@@ -229,7 +229,7 @@ class Register extends Component {
   // Checking last name format is valid
   validateLastName = () => {
     let lastnameError = "";
-    let lastnameRegex = /^[a-zA-Z]*-?[a-zA-Z]*$/;
+    let lastnameRegex = /^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*-?[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*$/;
 
     if (/\s/.test(this.state.lastname)) {
       lastnameError = "Last name cannot contain spaces";
