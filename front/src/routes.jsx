@@ -13,7 +13,7 @@ export default function MainRouter () {
                 <Route exact path="/" component={App}/>
                 <Route path="/users/login" component={Login}/>
                 <Route exact path="/users/register" component={Register}/>
-                <Route path="/users/register/:link" component={ConfirmAddr}/>
+                <Route path="/users/register/:key" component={ConfirmAddr}/>
             </div>
         </Router>
     )

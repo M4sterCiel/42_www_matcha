@@ -55,7 +55,7 @@ module.exports = {
             return res.status(400).json({ error: "password " + err });
 
         
-        err = await input.username(username)
+        err = await input.username(username);
         if (err.error)
             return res.status(400).json({ error: "username "+ err.error });
         err = await input.mail(mail);

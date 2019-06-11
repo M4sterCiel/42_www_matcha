@@ -19,9 +19,9 @@ class ConfirmAddr extends Component {
   }
 
   callApi = async () => {
-    var link = document.location.href;
-    link = link.split('/');
-    const response = await fetch('/users/register/'+link[link.length - 1]);
+    var key = document.location.href;
+    key = key.split('/');
+    const response = await fetch('/users/register/'+key[key.length - 1]);
     const body = await response.json();
 
     if (response.status !== 200)
