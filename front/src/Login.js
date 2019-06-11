@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import "./App.css";
 import NavBar from "./components/NavBar";
 //import Footer from './components/Footer';
+import FacebookLogin from 'react-facebook-login';
+import GoogleLogin from 'react-google-login';
 import "materialize-css/dist/css/materialize.min.css";
 
 class Login extends Component {
@@ -19,6 +21,13 @@ class Login extends Component {
   }
 
   render() {
+    const responseFacebook = (response) => {
+      console.log(response);
+    }
+
+    const responseGoogle = (response) => {
+      console.log(response);
+    }
     return (
       <div className="App">
         <NavBar />
@@ -63,6 +72,11 @@ class Login extends Component {
                   />
                 </form>
               </div>
+              <FacebookLogin
+                appId="2410412929189525" 
+                fields="name,email,picture"
+                callback={responseFacebook}
+              />
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ exports.router = (() => {
     var userRouter = express.Router();
 
     userRouter.route('/register/:key').get(userController.checkValidity);
+    userRouter.route('/register/facebook_auth').get(userController.fbCreateUser);
     userRouter.route('/my_profile').get(userController.getUserProfile);
     userRouter.route('/login').post(userController.login);
     userRouter.route('/register').post(userController.createUser);

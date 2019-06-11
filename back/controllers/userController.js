@@ -38,7 +38,7 @@ module.exports = {
         var lastname    = req.body.lastname;
         var firstname   = req.body.firstname;
         var username    = req.body.username;
-        var mail        = req.body.mail;
+        var mail        = req.body.email;
         var pwd1        = req.body.pwd1;
         var pwd2        = req.body.pwd2;
 
@@ -68,6 +68,10 @@ module.exports = {
             return res.status(201).send(ret.status);
         else
             return res.status(400).send(ret.status);
+    },
+
+    fbCreateUser: async (req, res, next) => {
+
     },
 
     getUserProfile: async (req, res, next) => {
