@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+/* import { Redirect } from "react-router-dom"; */
 import "./App.css";
 import NavBar from "./components/NavBar";
 //import Footer from './components/Footer';
@@ -335,11 +335,12 @@ class Register extends Component {
     await this.validateRepeatPwd();
   };
 
-  // Clean data before submit
+  // Cleaning data before submit
   capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
+  // Submitting user data to backend
   handleSubmit = async e => {
     e.preventDefault();
     const response = await fetch("/users/register", {
@@ -360,7 +361,7 @@ class Register extends Component {
     const body = await response.text();
     if (response.ok) {
       this.setState({ responseToPost: body });
-      return <Redirect to="/users/login" />;
+      this.props.history.push("/users/login");
     } else {
       let message = body.substr(10, body.length - 12);
       Materialize.toast({

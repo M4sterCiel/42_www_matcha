@@ -3,6 +3,7 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
+import Materialize from "materialize-css";
 
 class Login extends Component {
   constructor(props) {
@@ -140,10 +141,21 @@ class Login extends Component {
         pwd: this.state.pwd
       })
     });
+
     const body = await response.json();
-    this.setState({ responseToPost: body.status });
-    console.log(body);
-    localStorage.setItem("Token", body.token);
+    if (response.ok) {
+      this.setState({ responseToPost: body.status });
+      localStorage.setItem("Token", body.token);
+      this.props.history.push("/");
+    } else {
+      console.log(body);
+      let message = body.message;
+      Materialize.toast({
+        html: message,
+        displayLength: 1000,
+        classes: "rounded error-toast"
+      });
+    }
   };
 }
 
