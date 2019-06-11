@@ -140,18 +140,11 @@ class Login extends Component {
         pwd: this.state.pwd
       })
     });
-<<<<<<< HEAD
     const body = await response.json();
     this.setState({ responseToPost: body.status});
     console.log(body);
     localStorage.setItem('Token', body.token);
   }
-=======
-    const body = await response.text();
-    this.setState({ responseToPost: body.status });
-    console.log(body);
-  };
->>>>>>> Lucas
   /* componentDidMount() {
     
     this.callApi()
