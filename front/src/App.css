@@ -1,17 +1,73 @@
 .nav-wrapper {
-    background-color: lightgrey;
-    margin-bottom: 20%;
+  background-color: lightgrey;
+  margin-bottom: 20%;
 }
 
 body {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-  }
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
 
 main {
-flex: 1 0 auto;
+  flex: 1 0 auto;
 }
+
+/* UI design */
+
+nav ul a {
+  font-size: 16px;
+}
+
+.header-logo {
+  width: 35px;
+  margin: 10px;
+}
+
+.card-panel {
+  border-radius: 15px;
+}
+
+.nav-wrapper {
+  background-color: #ffb6d3;
+}
+
+.btn {
+  color: white !important;
+  border-radius: 5px;
+  background-color: #ffb6d3 !important;
+}
+
+.btn:hover {
+  background-color: #ffe9f2 !important;
+}
+
+.btn:disabled {
+  color: white !important;
+  opacity: 0.4;
+  background-color: #ffb6d3 !important;
+}
+
+input[type="text"]:not(.browser-default):focus:not([readonly]) {
+  border-bottom-color: #ffb6d3;
+  box-shadow: 0 1px 0 0 #ffb6d3;
+}
+
+input[type="password"]:not(.browser-default):focus:not([readonly]) {
+  border-bottom-color: #ffb6d3;
+  box-shadow: 0 1px 0 0 #ffb6d3;
+}
+
+input[type="email"]:not(.browser-default):focus:not([readonly]) {
+  border-bottom-color: #ffb6d3;
+  box-shadow: 0 1px 0 0 #ffb6d3;
+}
+
+.medium {
+  color: #ffb6d3;
+}
+
+/* Login & Register components */
 
 #login-box {
   display: block;
@@ -22,16 +78,72 @@ flex: 1 0 auto;
 }
 
 .msg {
-  width:100%;
+  width: 100%;
   border: 1px solid;
-  padding:10px;
+  padding: 10px;
   color: grey;
 }
 
-.msg-info{
+.msg-info {
   border-color: #0288d1;
   background-color: #29b6f6;
   color: white;
+}
+
+.login-error,
+.register-error {
+  color: red;
+  text-align: left;
+  font-size: 12px;
+}
+
+.name-size {
+  height: 50px;
+}
+
+#password-message {
+  background-color: #f1f1f1;
+  color: #000;
+  position: relative;
+  padding: 5px 20px;
+  font-size: 12px;
+  text-align: left;
+  border-radius: 5px;
+}
+
+.box-disabled {
+  display: none;
+}
+
+.box-enabled {
+  display: block;
+}
+
+#pwd1-verify-title {
+  font-size: 15px;
+  margin: 15px 0px;
+}
+
+.valid {
+  color: green;
+  margin-left: 20px;
+}
+
+.valid:before {
+  content: "✔";
+  position: relative;
+  left: -10px;
+}
+
+.invalid {
+  color: red;
+  margin-left: 20px;
+}
+
+.invalid:before {
+  content: "✖";
+  position: relative;
+  left: -10px;
 }
 
 /* MEDIA QUERIES FOR RESPONSIVE */
@@ -39,5 +151,13 @@ flex: 1 0 auto;
 @media screen and (max-width: 640px) {
   #login-box {
     width: 90%;
+  }
+
+  .row .col.s6 {
+    width: 100%;
+  }
+
+  #password-message {
+    text-align: center;
   }
 }
