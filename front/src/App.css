@@ -67,6 +67,12 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   color: #ffb6d3;
 }
 
+/* Toasts messages */
+
+.error-toast {
+  background-color: #ff6666;
+}
+
 /* Login & Register components */
 
 #login-box {
@@ -92,7 +98,7 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 
 .login-error,
 .register-error {
-  color: red;
+  color: #ff6666;
   text-align: left;
   font-size: 12px;
 }
@@ -136,7 +142,7 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 }
 
 .invalid {
-  color: red;
+  color: #ff6666;
   margin-left: 20px;
 }
 

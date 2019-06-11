@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import "./App.css";
 import NavBar from "./components/NavBar";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
+import Materialize from "materialize-css";
 
 class Register extends Component {
   constructor(props) {
@@ -186,6 +188,7 @@ class Register extends Component {
                     <div className="register-error">{this.state.pwd2Error}</div>
                     <label htmlFor="rep-pwd-login">Repeat password</label>
                   </div>
+                  <div id="error-back" />
                   <input
                     type="submit"
                     name="submit"
@@ -299,7 +302,7 @@ class Register extends Component {
       this.setState({ pwdHasNumber: false });
     }
 
-    if (this.state.pwd1.length > 8) {
+    if (this.state.pwd1.length >= 8) {
       this.setState({ pwdHasMinLen: true });
     } else {
       this.setState({ pwdHasMinLen: false });
@@ -326,27 +329,15 @@ class Register extends Component {
     }
   };
 
-  /* componentDidMount() {
-    
-    this.callApi()
-    .then(res => this.setState({response: res.express}))
-    .catch(err => console.log(err));
-  }
-
-  callApi = async () => {
-    const response = await fetch('/register');
-    const body = await response.json();
-
-    if (response.status !== 200)
-      throw Error(body.message);
-    return body;
-  };
- */
-
   // Checking over both passwords on change
   handlePwdKeyUp = async e => {
     await this.validatePwd();
     await this.validateRepeatPwd();
+  };
+
+  // Clean data before submit
+  capitalizeFirstLetter = string => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
   handleSubmit = async e => {
@@ -355,17 +346,29 @@ class Register extends Component {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        lastname: this.state.lastname,
-        firstname: this.state.firstname,
-        username: this.state.username,
-        email: this.state.email,
+        lastname: this.capitalizeFirstLetter(this.state.lastname.toLowerCase()),
+        firstname: this.capitalizeFirstLetter(
+          this.state.firstname.toLowerCase()
+        ),
+        username: this.state.username.toLowerCase(),
+        email: this.state.email.toLowerCase(),
         pwd1: this.state.pwd1,
         pwd2: this.state.pwd2
       })
     });
+
     const body = await response.text();
-    this.setState({ responseToPost: body });
-    console.log(body);
+    if (response.ok) {
+      this.setState({ responseToPost: body });
+      return <Redirect to="/users/login" />;
+    } else {
+      let message = body.substr(10, body.length - 12);
+      Materialize.toast({
+        html: message,
+        displayLength: 1000,
+        classes: "rounded error-toast"
+      });
+    }
   };
 }
 

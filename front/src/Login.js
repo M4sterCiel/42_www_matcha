@@ -136,30 +136,15 @@ class Login extends Component {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        login: this.state.login,
+        login: this.state.login.toLowerCase(),
         pwd: this.state.pwd
       })
     });
     const body = await response.json();
-    this.setState({ responseToPost: body.status});
+    this.setState({ responseToPost: body.status });
     console.log(body);
-    localStorage.setItem('Token', body.token);
-  }
-  /* componentDidMount() {
-    
-    this.callApi()
-    .then(res => this.setState({response: res.express}))
-    .catch(err => console.log(err));
-  }
-
-  callApi = async () => {
-    const response = await fetch('/login');
-    const body = await response.json();
-
-    if (response.status !== 200)
-      throw Error(body.message);
-      return body;
-  }; */
+    localStorage.setItem("Token", body.token);
+  };
 }
 
 export default Login;
