@@ -3,7 +3,6 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 //import Footer from './components/Footer';
 import FacebookLogin from 'react-facebook-login';
-import GoogleLogin from 'react-google-login';
 import "materialize-css/dist/css/materialize.min.css";
 
 class Login extends Component {
@@ -25,9 +24,6 @@ class Login extends Component {
       console.log(response);
     }
 
-    const responseGoogle = (response) => {
-      console.log(response);
-    }
     return (
       <div className="App">
         <NavBar />
@@ -42,6 +38,7 @@ class Login extends Component {
                       type="text"
                       name="name"
                       id="user-login"
+                      autoComplete="username"
                       value={this.state.login}
                       onChange={this.handleChange}
                       onKeyUp={this.validateName}
@@ -55,6 +52,7 @@ class Login extends Component {
                       type="password"
                       name="pwd"
                       id="pwd-login"
+                      autoComplete="current-password"
                       value={this.state.pwd}
                       onChange={this.handleChange}
                       onKeyUp={this.validatePwd}

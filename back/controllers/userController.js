@@ -80,7 +80,7 @@ module.exports = {
         var userId = jwtUtils.getUserId(headerAuth);
 
         if (userId == -1)
-            return res.status(401).json({ error: "Session expired" });
+            return res.status(401).json({ error: "Invalid token" });
         
         //Get data from db
         var userData = await UserService.getUserData(userId);

@@ -60,7 +60,7 @@ module.exports = {
         var created = await userModel.createOne(data);
         if (created)
         {
-            var link = "http://localhost:3000/users/register/"+ uniqid;
+            var link = "https://localhost:3000/users/register/"+ uniqid;
             await sendmail.registerMail(data[3], data[2], link);
             return ({ status: "User created with success"});
         }

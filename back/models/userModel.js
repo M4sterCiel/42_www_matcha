@@ -34,7 +34,7 @@ module.exports = {
     updateRegister: async (data) => {
         try {
             var result = await pool.query({
-                sql: "UPDATE users SET `key` = NULL, status = 1 WHERE `key` = ?",
+                sql: "UPDATE users SET `key` = NULL, status = TRUE WHERE `key` = ?",
                 values: [data]
             });
             return result.affectedRows;
