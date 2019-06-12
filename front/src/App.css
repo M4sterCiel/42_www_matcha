@@ -19,6 +19,32 @@ nav ul a {
   font-size: 16px;
 }
 
+.nav-buttons {
+  all: initial;
+  all: unset;
+  border: none;
+  transition: background-color 0.3s;
+  font-size: 16px !important;
+  color: #fff;
+  display: block;
+  padding: 0 15px !important;
+  cursor: pointer;
+}
+
+.nav-buttons:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.nav-buttons:visited {
+  all: initial;
+  all: unset;
+}
+
+.nav-buttons:focus {
+  all: initial;
+  all: unset;
+}
+
 .header-logo {
   width: 35px;
   margin: 10px;

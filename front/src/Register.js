@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-/* import { Redirect } from "react-router-dom"; */
 import "./App.css";
 import NavBar from "./components/NavBar";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
 import Materialize from "materialize-css";
+import AuthService from "./components/AuthService";
 
 class Register extends Component {
   constructor(props) {
@@ -34,6 +34,7 @@ class Register extends Component {
       pwdHasMinLen: false,
       responseToPost: ""
     };
+    this.Auth = new AuthService();
   }
 
   render() {
@@ -210,6 +211,19 @@ class Register extends Component {
         </div>
       </div>
     );
+  }
+
+  // Redirect user if already logged in
+  componentWillMount() {
+    if (this.Auth.loggedIn()) {
+      let message = "you are already logged in";
+      Materialize.toast({
+        html: message,
+        displayLength: 1000,
+        classes: "rounded error-toast"
+      });
+      this.props.history.replace("/");
+    }
   }
 
   // Checking first name format is valid
