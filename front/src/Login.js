@@ -3,6 +3,7 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 //import Footer from './components/Footer';
 import FacebookLogin from 'react-facebook-login';
+//import socketIOClient from "socket.io-client";
 import "materialize-css/dist/css/materialize.min.css";
 
 class Login extends Component {
@@ -159,9 +160,9 @@ class Login extends Component {
   }
   /* componentDidMount() {
     
-    this.callApi()
-    .then(res => this.setState({response: res.express}))
-    .catch(err => console.log(err));
+    const { endpoint } = this.state;
+    const socket = socketIOClient(endpoint);
+    socket.on("FromAPI", data => this.setState({ response: data }));
   }
 
   callApi = async () => {
