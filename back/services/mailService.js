@@ -53,7 +53,7 @@ module.exports = {
     });
     transporter.sendMail(
       {
-        from: "registration@matcha.com",
+        from: "noreply@matcha.com",
         to: mail,
         subject: "Matcha - Reset password",
         text: message,

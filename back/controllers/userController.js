@@ -28,13 +28,30 @@ module.exports = {
 
     if (user.error) return res.status(401).json({ message: user.error });
     else {
-      var id = user.userData[0]["id"];
-      var username = user.userData[0]["username"];
+      UserService.resetUserPassword(user.userData);
       return res.status(200).json({
         message: "User does exist"
-        // token: jwtUtils.tokenGenerator([id, username])
       });
     }
+  },
+
+  checkPasswordResetKey: async (req, res, next) => {
+    //console.log(req.params.key);
+    var result = await userModel.findOne("password_key", req.params.key);
+    if (result != "") {
+      var updated = await userModel.updateResetPasswordKey(req.params.key);
+      if (updated) {
+        return res
+          .status(200)
+          .json({ message: "Successfully reached password reset" });
+      } else
+        return res
+          .status(500)
+          .json({ message: "password reset key isn't valid" });
+    } else
+      return res
+        .status(500)
+        .json({ message: "password reset key isn't valid" });
   },
 
   checkValidity: async (req, res, next) => {

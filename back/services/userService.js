@@ -58,11 +58,14 @@ module.exports = {
     var uniqid = (
       new Date().getTime() + Math.floor(Math.random() * 10000 + 1)
     ).toString(16);
-    data.push(uniqid);
-    var created = await userModel.createOne(data);
+    var created = await userModel.setPasswordResetKey(data[0]["id"], uniqid);
     if (created) {
-      var link = "http://localhost:3000/users/register/" + uniqid;
-      await sendmail.registerMail(data[3], data[2], link);
+      var link = "http://localhost:3000/users/new-password/" + uniqid;
+      await sendmail.forgotPasswordMail(
+        data[0]["mail"],
+        data[0]["username"],
+        link
+      );
       return { status: "User created with success" };
     }
     return { status: "An error has occurred" };

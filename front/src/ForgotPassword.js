@@ -119,11 +119,9 @@ class ForgotPassword extends Component {
       })
     });
 
-    console.log(response);
     const body = await response.json();
     if (response.ok) {
       this.setState({ responseToPost: body.status });
-      localStorage.setItem("Token", body.token);
       this.props.history.push("/");
     } else {
       console.log(body);
