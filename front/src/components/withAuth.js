@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import AuthService from "../services/AuthService";
 
+// HOC to wrap component and verify authentication
 export default function withAuth(AuthComponent) {
   const Auth = new AuthService();
 
