@@ -1,19 +1,23 @@
 import decode from "jwt-decode";
 
 export default class AuthService {
-  getToken() {
-    return localStorage.getItem("Token");
-  }
-
+  // Setting token in local storage
   setToken(idToken) {
     localStorage.setItem("Token", idToken);
   }
 
+  // Getting token from local storage
+  getToken() {
+    return localStorage.getItem("Token");
+  }
+
+  // Checking if token exists and is still valid
   loggedIn() {
     const token = this.getToken();
     return !!token && !this.isTokenExpired(token);
   }
 
+  // Checking if token is still valid
   isTokenExpired(token) {
     try {
       const decoded = decode(token);
@@ -25,11 +29,15 @@ export default class AuthService {
     }
   }
 
+  // Removing token from local storage
   logout() {
     localStorage.removeItem("Token");
   }
 
-  getProfile() {
-    return decode(this.getToken());
-  }
+  // Getting the data saved in the token
+  getConfirm = () => {
+    let answer = decode(this.getToken());
+    console.log("Received answer!");
+    return answer;
+  };
 }
