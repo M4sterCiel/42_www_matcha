@@ -4,6 +4,7 @@ import App from "./App";
 import Login from "./Login";
 import Register from "./Register";
 import ConfirmAddr from "./components/ConfirmAddr";
+import ForgotPassword from "./ForgotPassword";
 
 export default function MainRouter() {
   return (
@@ -13,6 +14,7 @@ export default function MainRouter() {
         <Route path="/users/login" component={Login} />
         <Route exact path="/users/register" component={Register} />
         <Route path="/users/register/:key" component={ConfirmAddr} />
+        <Route path="/users/forgot-password" component={ForgotPassword} />
       </div>
     </Router>
   );

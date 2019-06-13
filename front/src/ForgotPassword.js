@@ -7,16 +7,13 @@ import Materialize from "materialize-css";
 import AuthService from "./services/AuthService";
 import { NavLink } from "react-router-dom";
 
-class Login extends Component {
+class ForgotPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
       login: "",
-      pwd: "",
       loginError: "",
-      pwdError: "",
       loginValid: false,
-      pwdValid: false,
       responseToPost: ""
     };
     this.Auth = new AuthService();
@@ -29,7 +26,7 @@ class Login extends Component {
         <div className="row">
           <div className="col a12 m6" id="login-box">
             <div className="card-panel center">
-              <i className="medium material-icons">account_box</i>
+              <i className="medium material-icons">lock</i>
               <div className="card-panel">
                 <form onSubmit={this.handleSubmit}>
                   <div className="input-field">
@@ -45,31 +42,18 @@ class Login extends Component {
                     <div className="login-error">{this.state.loginError}</div>
                     <label htmlFor="user-login">Username or email</label>
                   </div>
-                  <div className="input-field">
-                    <input
-                      type="password"
-                      name="pwd"
-                      id="pwd-login"
-                      value={this.state.pwd}
-                      onChange={this.handleChange}
-                      onKeyUp={this.validatePwd}
-                      required
-                    />
-                    <div className="login-error">{this.state.pwdError}</div>
-                    <label htmlFor="pwd-login">Password</label>
-                  </div>
                   <input
                     type="submit"
                     name="submit"
-                    value="Login"
+                    value="reset password"
                     className="btn"
-                    disabled={!this.state.loginValid || !this.state.pwdValid}
+                    disabled={!this.state.loginValid}
                   />
                 </form>
                 <p id="register-login-link">
-                  Forgot password?{" "}
-                  <NavLink className="pink-link" to="/users/forgot-password">
-                    Click here
+                  Go back to{" "}
+                  <NavLink className="pink-link" to="/users/login">
+                    Login
                   </NavLink>
                 </p>
               </div>
@@ -119,51 +103,23 @@ class Login extends Component {
     this.setState({ loginError });
   };
 
-  // Checking password format is valid
-  validatePwd = () => {
-    let pwdError = "";
-
-    if (this.state.pwd.length < 8 || this.state.pwd.includes(" ")) {
-      pwdError = "Please enter a valid password";
-    } else if (this.state.pwd.length > 30) {
-      pwdError = "Password must be less or equal to 30 chars";
-    }
-
-    if (pwdError) {
-      this.setState({ pwdValid: false });
-    } else if (this.state.pwd) {
-      this.setState({ pwdValid: true });
-    }
-
-    this.setState({ pwdError });
-  };
-
   // On user input change, update states
   handleChange = e => {
-    const isLogin = e.target.name === "name";
-    const isPwd = e.target.name === "pwd";
-
-    if (isLogin) {
-      this.setState({ login: e.target.value });
-    }
-
-    if (isPwd) {
-      this.setState({ pwd: e.target.value });
-    }
+    this.setState({ login: e.target.value });
   };
 
   // On user button submit, execute this
   handleSubmit = async e => {
     e.preventDefault();
-    const response = await fetch("/users/login", {
+    const response = await fetch("/users/forgot-password", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        login: this.state.login.toLowerCase(),
-        pwd: this.state.pwd
+        login: this.state.login.toLowerCase()
       })
     });
 
+    console.log(response);
     const body = await response.json();
     if (response.ok) {
       this.setState({ responseToPost: body.status });
@@ -181,4 +137,4 @@ class Login extends Component {
   };
 }
 
-export default Login;
+export default ForgotPassword;

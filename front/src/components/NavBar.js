@@ -10,7 +10,7 @@ class NavBar extends Component {
   constructor(props) {
     super(props);
     this.Auth = new AuthService();
-    this.handleLogout = this._handleLogout.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   render() {
@@ -19,7 +19,7 @@ class NavBar extends Component {
     const loggedInLinks = (
       <ul className="right hide-on-med-and-down">
         <li>
-          <button className="nav-buttons" onClick={this._handleLogout}>
+          <button className="nav-buttons" onClick={this.handleLogout}>
             Log out
           </button>
         </li>
@@ -71,7 +71,7 @@ class NavBar extends Component {
     );
   }
 
-  _handleLogout() {
+  handleLogout() {
     Auth.logout();
     this.props.history.replace("/users/login");
   }

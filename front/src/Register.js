@@ -5,6 +5,7 @@ import NavBar from "./components/NavBar";
 import "materialize-css/dist/css/materialize.min.css";
 import Materialize from "materialize-css";
 import AuthService from "./services/AuthService";
+import { NavLink } from "react-router-dom";
 
 class Register extends Component {
   constructor(props) {
@@ -205,6 +206,12 @@ class Register extends Component {
                     }
                   />
                 </form>
+                <p id="register-login-link">
+                  Already have an account?{" "}
+                  <NavLink className="pink-link" to="/users/login">
+                    Log in
+                  </NavLink>
+                </p>
               </div>
             </div>
           </div>
@@ -264,7 +271,7 @@ class Register extends Component {
   // Checking username format is valid
   validateUsername = () => {
     let usernameError = "";
-    let usernameRegex = /^[a-zA-Z]*-?[a-zA-Z]*$/;
+    let usernameRegex = /^[a-zA-Z0-9]*-?[a-zA-Z0-9]*$/;
 
     if (/\s/.test(this.state.username)) {
       usernameError = "Username cannot contain spaces";
