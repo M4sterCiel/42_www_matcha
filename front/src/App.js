@@ -3,7 +3,7 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
-import withAuth from "./components/withAuth";
+import WithAuth from "./components/WithAuth";
 
 class App extends Component {
   render() {
@@ -18,4 +18,4 @@ class App extends Component {
   }
 }
 
-export default withAuth(App);
+export default WithAuth(App);

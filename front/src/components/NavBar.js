@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "materialize-css/dist/css/materialize.min.css";
 import "materialize-css";
-import AuthService from "./AuthService";
+import AuthService from "../services/AuthService";
 import { withRouter } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 const Auth = new AuthService();

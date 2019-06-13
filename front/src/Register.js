@@ -4,7 +4,7 @@ import NavBar from "./components/NavBar";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
 import Materialize from "materialize-css";
-import AuthService from "./components/AuthService";
+import AuthService from "./services/AuthService";
 
 class Register extends Component {
   constructor(props) {
