@@ -28,6 +28,22 @@ module.exports = {
     }
   },
 
+  doesUserLoginExist: async data => {
+    var user = data.login;
+
+    if (user.match(/@/)) {
+      var result = await userModel.findOne("mail", user);
+      if (result != "") {
+        return { message: "User does exist", userData: result };
+      } else return { error: "Incorrect login" };
+    } else {
+      var result = await userModel.findOne("username", user);
+      if (result != "") {
+        return { message: "User does exist", userData: result };
+      } else return { error: "Incorrect login" };
+    }
+  },
+
   getUserData: async id => {
     try {
       var result = await userModel.findOne("id", id);
@@ -36,6 +52,20 @@ module.exports = {
       console.log(err);
       return { error: err };
     }
+  },
+
+  resetUserPassword: async data => {
+    var uniqid = (
+      new Date().getTime() + Math.floor(Math.random() * 10000 + 1)
+    ).toString(16);
+    data.push(uniqid);
+    var created = await userModel.createOne(data);
+    if (created) {
+      var link = "http://localhost:3000/users/register/" + uniqid;
+      await sendmail.registerMail(data[3], data[2], link);
+      return { status: "User created with success" };
+    }
+    return { status: "An error has occurred" };
   },
 
   createUser: async data => {

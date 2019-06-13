@@ -21,6 +21,22 @@ module.exports = {
     }
   },
 
+  forgotPassword: async (req, res, next) => {
+    var user = await UserService.doesUserLoginExist({
+      login: req.body.login
+    });
+
+    if (user.error) return res.status(401).json({ message: user.error });
+    else {
+      var id = user.userData[0]["id"];
+      var username = user.userData[0]["username"];
+      return res.status(200).json({
+        message: "User does exist"
+        // token: jwtUtils.tokenGenerator([id, username])
+      });
+    }
+  },
+
   checkValidity: async (req, res, next) => {
     //console.log(req.params.key);
     var result = await userModel.findOne("key", req.params.key);
