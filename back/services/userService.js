@@ -1,4 +1,5 @@
 var userModel       = require('../models/userModel');
+var pictureModel    = require('../models/pictureModel');
 var passwordHash    = require('password-hash');
 var sendmail        = require('../services/mailService');
 
@@ -46,6 +47,16 @@ module.exports = {
     getUserData: async (id) => {
         try {
             var result = await userModel.findOne('id', id);
+            return result[0];
+        } catch(err) {
+            console.log(err);
+            return ({ error: err });
+        }
+    },
+
+    getAllPictures: async (id) => {
+        try {
+            var result = await pictureModel.findOne('user_id', id);
             return result[0];
         } catch(err) {
             console.log(err);

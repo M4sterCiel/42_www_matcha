@@ -84,8 +84,9 @@ module.exports = {
         
         //Get data from db
         var userData = await UserService.getUserData(userId);
-        
-        return res.status(200).json({ data: userData });
+        var userPictures = await UserService.getAllPictures(userId);
+
+        return res.status(200).json({ data: userData, pictures: userPictures });
     }
 }
 

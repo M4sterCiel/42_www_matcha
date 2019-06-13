@@ -1,8 +1,10 @@
-let express = require("express");
-let app = express();
-let bodyParser = require("body-parser");
-let userRoute = require("./userRoute");
-const PORT = 8080;
+let express       = require("express");
+let app           = express();
+let bodyParser    = require("body-parser");
+let userRoute     = require("./userRoute");
+var http          = require('http').createServer(app);
+let io            = require("socket.io")(http);
+const PORT        = 8080;
 
 /* Middlewares */
 app.use(bodyParser.json());
