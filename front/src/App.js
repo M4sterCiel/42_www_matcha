@@ -2,19 +2,20 @@ import React, { Component } from 'react';
 import './App.css';
 import NavBar from './components/NavBar';
 //import Footer from './components/Footer';
+import io from "socket.io-client";
 import 'materialize-css/dist/css/materialize.min.css';
 
 class App extends Component {
 
   /* state = { message: '' };
+*/
 
   componentDidMount() {
-    
-    this.callApi()
-    .then(res => this.setState({response: res.express}))
-    .catch(err => console.log(err));
+    var socket = io();
+    console.log(socket);
   }
 
+/*
   callApi = async () => {
     const response = await fetch('/hello');
     const body = await response.json();
@@ -30,6 +31,7 @@ class App extends Component {
           <NavBar />
           <div>
             <p>Home page</p>
+            <script src="/socket.io/socket.io.js"></script>
           </div>
         </div>
       );

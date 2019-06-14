@@ -1,5 +1,5 @@
-var express = require('express');
-var userController = require('../controllers/userController');
+var express              = require('express');
+var userController       = require('../controllers/userController');
 
 exports.router = (() => {
     var userRouter = express.Router();

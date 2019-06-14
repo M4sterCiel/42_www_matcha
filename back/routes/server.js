@@ -3,9 +3,14 @@ let app           = express();
 let bodyParser    = require("body-parser");
 let userRoute     = require("./userRoute");
 var http          = require('http').createServer(app);
-let io            = require("socket.io")(http);
+let io            = require("socket.io").listen(http);
 const PORT        = 8080;
 
+http.listen(PORT, () => {
+  console.log("Listening on port: ", PORT);
+});
+
+var connections = [];
 /* Middlewares */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,6 +21,15 @@ app.get("/setup", (req, resp) => {
   resp.send({ message: "Database Matcha created succefully" });
 });
 
-app.listen(PORT, () => {
-  console.log("Listening on port: ", PORT);
+io.on('connection', (socket) => {
+  connections.push(socket);
+  console.log("%s user(s) connected", connections.length);
+  console.log(socket.id);
+
+  socket.on('disconnect', () => {
+    connections.splice(-1, 1);
+    console.log("disconnected");
+    console.log("%s user(s) connected", connections.length);
+  });
 });
+

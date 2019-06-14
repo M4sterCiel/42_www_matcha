@@ -3,7 +3,6 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 //import Footer from './components/Footer';
 import FacebookLogin from 'react-facebook-login';
-//import socketIOClient from "socket.io-client";
 import "materialize-css/dist/css/materialize.min.css";
 
 class Login extends Component {
