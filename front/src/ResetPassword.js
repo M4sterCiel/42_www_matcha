@@ -12,6 +12,7 @@ class ResetPassword extends Component {
     super(props);
     this.state = {
       status: "",
+      password_key: "",
       message: "",
       pwd1: "",
       pwd2: "",
@@ -146,7 +147,12 @@ class ResetPassword extends Component {
       this.props.history.replace("/");
     } else {
       this.callApi()
-        .then(res => this.setState({ status: res.message }))
+        .then(res => {
+          var key = document.location.href;
+          key = key.split('/');
+          this.setState({ status: res.message });
+          this.setState({ password_key: key[key.length - 1] });
+        })
         .catch(err => {
           console.log(err);
           this.props.history.replace("/users/login");
@@ -226,12 +232,13 @@ class ResetPassword extends Component {
   // Submitting user data to backend
   handleSubmit = async e => {
     e.preventDefault();
-    const response = await fetch("/users/reset-password", {
+    const response = await fetch("/users/reset-password/:key", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         pwd1: this.state.pwd1,
-        pwd2: this.state.pwd2
+        pwd2: this.state.pwd2,
+        password_key: this.state.password_key
       })
     });
 

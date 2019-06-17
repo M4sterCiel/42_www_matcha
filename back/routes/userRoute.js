@@ -11,6 +11,9 @@ exports.router = (() => {
   userRouter
     .route("/reset-password/:key")
     .get(userController.checkPasswordResetKey);
+  userRouter
+    .route("/reset-password/:key")
+    .post(userController.updatePassword);
   userRouter.route("/register").post(userController.createUser);
 
   return userRouter;

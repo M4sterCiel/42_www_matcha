@@ -36,7 +36,6 @@ module.exports = {
   },
 
   checkPasswordResetKey: async (req, res, next) => {
-    //console.log(req.params.key);
     var result = await userModel.findOne("password_key", req.params.key);
     if (result != "") {
       return res
@@ -47,6 +46,28 @@ module.exports = {
         .status(500)
         .json({ message: "password reset key isn't valid" });
   },
+
+  updatePassword: async (req, res, next) => {
+    //Params
+    var pwd1 = req.body.pwd1;
+    var pwd2 = req.body.pwd2;
+    var key = req.body.password_key;
+
+    //Check inputs
+    var err;
+    if ((err = input.password(pwd1).error))
+      return res.status(400).json({ error: "password " + err });
+    if ((err = input.password(pwd2).error))
+      return res.status(400).json({ error: "password " + err });
+    if (pwd1 !== pwd2)
+      return res.status(400).json({ error: "passwords don't match"});
+      
+    var ret = await UserService.updatePasswordWithKey(pwd1, key);
+    if (ret.status == "Password updated with success")
+      return res.status(201).send(ret.status);
+    else 
+      return res.status(400).send(ret.status);
+},
 
   checkValidity: async (req, res, next) => {
     //console.log(req.params.key);

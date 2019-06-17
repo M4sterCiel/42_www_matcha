@@ -56,6 +56,15 @@ module.exports = {
     }
   },
 
+  updatePasswordWithKey: async (pwd, key) => {
+    var updated = await userModel.updatePasswordWithKey(pwd, key)
+    if (updated) {
+      return { status: "Password updated with success" };
+    } else {
+      return ({ status: "An error has occurred"});
+    }
+  },
+
   getAllPictures: async (id) => {
       try {
           var result = await pictureModel.findOne('user_id', id);
