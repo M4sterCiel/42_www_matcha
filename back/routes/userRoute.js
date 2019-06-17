@@ -10,7 +10,7 @@ exports.router = (() => {
   userRouter.route("/forgot-password").post(userController.forgotPassword);
   userRouter
     .route("/reset-password/:key")
-    .post(userController.checkPasswordResetKey);
+    .get(userController.checkPasswordResetKey);
   userRouter.route("/register").post(userController.createUser);
 
   return userRouter;

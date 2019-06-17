@@ -125,7 +125,7 @@ class ForgotPassword extends Component {
       let message = "An email to reset your password has been sent";
       Materialize.toast({
         html: message,
-        displayLength: 1000,
+        displayLength: 1400,
         classes: "rounded info-toast"
       });
       this.props.history.push("/");

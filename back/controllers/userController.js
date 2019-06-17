@@ -39,15 +39,9 @@ module.exports = {
     //console.log(req.params.key);
     var result = await userModel.findOne("password_key", req.params.key);
     if (result != "") {
-      var updated = await userModel.updateResetPasswordKey(req.params.key);
-      if (updated) {
-        return res
-          .status(200)
-          .json({ message: "Successfully reached password reset" });
-      } else
-        return res
-          .status(500)
-          .json({ message: "password reset key isn't valid" });
+      return res
+        .status(200)
+        .json({ message: "Successfully reached password reset" });
     } else
       return res
         .status(500)

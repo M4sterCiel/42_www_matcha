@@ -86,27 +86,13 @@ module.exports = {
     ).toString(16);
     var created = await userModel.setPasswordResetKey(data[0]["id"], uniqid);
     if (created) {
-      var link = "http://localhost:3000/users/new-password/" + uniqid;
+      var link = "http://localhost:3000/users/reset-password/" + uniqid;
       await sendmail.forgotPasswordMail(
         data[0]["mail"],
         data[0]["username"],
         link
       );
-      return { status: "User created with success" };
+      return { status: "Reset password email sent with success" };
     }
   },
-
-  createUser: async data => {
-    var uniqid = (
-      new Date().getTime() + Math.floor(Math.random() * 10000 + 1)
-    ).toString(16);
-    data.push(uniqid);
-    var created = await userModel.createOne(data);
-    if (created) {
-      var link = "http://localhost:3000/users/register/" + uniqid;
-      await sendmail.registerMail(data[3], data[2], link);
-      return { status: "User created with success" };
-    }
-    return { status: "An error has occurred" };
-  }
 };

@@ -11,6 +11,7 @@ class ResetPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      status: "",
       message: "",
       pwd1: "",
       pwd2: "",
@@ -143,8 +144,32 @@ class ResetPassword extends Component {
         classes: "rounded error-toast"
       });
       this.props.history.replace("/");
+    } else {
+      this.callApi()
+        .then(res => this.setState({ status: res.message }))
+        .catch(err => {
+          console.log(err);
+          this.props.history.replace("/users/login");
+          let message = "password reset key is invalid";
+          Materialize.toast({
+            html: message,
+            displayLength: 1000,
+            classes: "rounded error-toast"
+          });
+        });
     }
-  }
+  };
+
+  callApi = async () => {
+    var key = document.location.href;
+    key = key.split('/');
+    const response = await fetch('/users/reset-password/' + key[key.length - 1]);
+    const body = await response.json();
+
+    if (response.status !== 200)
+      throw Error(body.message);
+    return body;
+  };
 
   // Checking password format is valid
   validatePwd = () => {
