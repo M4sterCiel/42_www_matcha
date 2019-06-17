@@ -175,20 +175,6 @@ class Login extends Component {
         pwd: this.state.pwd
       })
     });
-<<<<<<< HEAD
-    const body = await response.json();
-    this.setState({ responseToPost: body.status});
-    console.log(body);
-    localStorage.setItem('Token', body.token);
-  }
-  /* componentDidMount() {
-    
-    const { endpoint } = this.state;
-    const socket = socketIOClient(endpoint);
-    socket.on("FromAPI", data => this.setState({ response: data }));
-  }
-=======
->>>>>>> Lucas
 
     const body = await response.json();
     if (response.ok) {

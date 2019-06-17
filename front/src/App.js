@@ -31,14 +31,13 @@ class App extends Component {
       return body;
   }; */
 
-    render() {
-      return (
-        <div className="App">
-          <NavBar />
-          <div>
-            <p>Home page</p>
-            <script src="/socket.io/socket.io.js"></script>
-          </div>
+  render() {
+    return (
+      <div className="App">
+        <NavBar />
+        <div>
+          <p>Home page</p>
+          <script src="/socket.io/socket.io.js"></script>
         </div>
       </div>
     );
