@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
 import WithAuth from "./components/WithAuth";
+import io from 'socket.io-client';
 
 class App extends Component {
 
@@ -39,7 +40,7 @@ class App extends Component {
           <p>Home page</p>
           <script src="/socket.io/socket.io.js"></script>
         </div>
-      </div>
+        </div>
     );
   }
 }
