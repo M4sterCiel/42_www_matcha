@@ -111,7 +111,7 @@ class ResetPassword extends Component {
                   <input
                     type="submit"
                     name="submit"
-                    value="Register"
+                    value="Save"
                     className="btn"
                     disabled={
                       !this.state.pwd1Valid ||
@@ -134,7 +134,7 @@ class ResetPassword extends Component {
   }
 
   // Redirect user if already logged in
-  componentWillMount() {
+  componentDidMount() {
     if (this.Auth.loggedIn()) {
       let message = "you are already logged in";
       Materialize.toast({

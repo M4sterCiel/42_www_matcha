@@ -122,6 +122,12 @@ class ForgotPassword extends Component {
     const body = await response.json();
     if (response.ok) {
       this.setState({ responseToPost: body.status });
+      let message = "An email to reset your password has been sent";
+      Materialize.toast({
+        html: message,
+        displayLength: 1000,
+        classes: "rounded info-toast"
+      });
       this.props.history.push("/");
     } else {
       console.log(body);

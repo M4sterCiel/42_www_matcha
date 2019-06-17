@@ -5,6 +5,7 @@ import Login from "./Login";
 import Register from "./Register";
 import ConfirmAddr from "./components/ConfirmAddr";
 import ForgotPassword from "./ForgotPassword";
+import ResetPassword from "./ResetPassword";
 
 export default function MainRouter() {
   return (
@@ -15,6 +16,7 @@ export default function MainRouter() {
         <Route exact path="/users/register" component={Register} />
         <Route path="/users/register/:key" component={ConfirmAddr} />
         <Route path="/users/forgot-password" component={ForgotPassword} />
+        <Route path="/users/reset-password" component={ResetPassword} />
       </div>
     </Router>
   );

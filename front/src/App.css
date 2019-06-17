@@ -99,6 +99,10 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 
 /* Toasts messages */
 
+.info-toast {
+  background-color: #ffb6d3;
+}
+
 .error-toast {
   background-color: #ff6666;
 }
