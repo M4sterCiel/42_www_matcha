@@ -44,18 +44,6 @@ module.exports = {
     }
   },
 
-<<<<<<< HEAD
-    updateRegister: async (data) => {
-        try {
-            var result = await pool.query({
-                sql: "UPDATE users SET `key` = NULL, status = TRUE WHERE `key` = ?",
-                values: [data]
-            });
-            return result.affectedRows;
-        } catch(err) {
-            throw new Error(err);
-        };
-=======
   setPasswordResetKey: async (id, key) => {
     try {
       var result = await pool.query({
@@ -65,7 +53,6 @@ module.exports = {
       return result.affectedRows;
     } catch (err) {
       throw new Error(err);
->>>>>>> Lucas
     }
   }
 };
