@@ -3,6 +3,9 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
+import Materialize from "materialize-css";
+import AuthService from "./services/AuthService";
+import { NavLink } from "react-router-dom";
 
 class Register extends Component {
   constructor(props) {
@@ -32,6 +35,7 @@ class Register extends Component {
       pwdHasMinLen: false,
       responseToPost: ""
     };
+    this.Auth = new AuthService();
   }
 
   render() {
@@ -186,6 +190,7 @@ class Register extends Component {
                     <div className="register-error">{this.state.pwd2Error}</div>
                     <label htmlFor="rep-pwd-login">Repeat password</label>
                   </div>
+                  <div id="error-back" />
                   <input
                     type="submit"
                     name="submit"
@@ -201,6 +206,12 @@ class Register extends Component {
                     }
                   />
                 </form>
+                <p id="register-login-link">
+                  Already have an account?{" "}
+                  <NavLink className="pink-link" to="/users/login">
+                    Log in
+                  </NavLink>
+                </p>
               </div>
             </div>
           </div>
@@ -209,10 +220,23 @@ class Register extends Component {
     );
   }
 
+  // Redirect user if already logged in
+  componentWillMount() {
+    if (this.Auth.loggedIn()) {
+      let message = "you are already logged in";
+      Materialize.toast({
+        html: message,
+        displayLength: 1000,
+        classes: "rounded error-toast"
+      });
+      this.props.history.replace("/");
+    }
+  }
+
   // Checking first name format is valid
   validateFirstName = () => {
     let firstnameError = "";
-    let firstnameRegex = /^[a-zA-Z]*-?[a-zA-Z]*$/;
+    let firstnameRegex = /^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*-?[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*$/;
 
     if (/\s/.test(this.state.firstname)) {
       firstnameError = "First name cannot contain spaces";
@@ -229,7 +253,7 @@ class Register extends Component {
   // Checking last name format is valid
   validateLastName = () => {
     let lastnameError = "";
-    let lastnameRegex = /^[a-zA-Z]*-?[a-zA-Z]*$/;
+    let lastnameRegex = /^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*-?[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*$/;
 
     if (/\s/.test(this.state.lastname)) {
       lastnameError = "Last name cannot contain spaces";
@@ -247,7 +271,7 @@ class Register extends Component {
   // Checking username format is valid
   validateUsername = () => {
     let usernameError = "";
-    let usernameRegex = /^[a-zA-Z]*-?[a-zA-Z]*$/;
+    let usernameRegex = /^[a-zA-Z0-9]*-?[a-zA-Z0-9]*$/;
 
     if (/\s/.test(this.state.username)) {
       usernameError = "Username cannot contain spaces";
@@ -299,7 +323,7 @@ class Register extends Component {
       this.setState({ pwdHasNumber: false });
     }
 
-    if (this.state.pwd1.length > 8) {
+    if (this.state.pwd1.length >= 8) {
       this.setState({ pwdHasMinLen: true });
     } else {
       this.setState({ pwdHasMinLen: false });
@@ -326,46 +350,47 @@ class Register extends Component {
     }
   };
 
-  /* componentDidMount() {
-    
-    this.callApi()
-    .then(res => this.setState({response: res.express}))
-    .catch(err => console.log(err));
-  }
-
-  callApi = async () => {
-    const response = await fetch('/register');
-    const body = await response.json();
-
-    if (response.status !== 200)
-      throw Error(body.message);
-    return body;
-  };
- */
-
   // Checking over both passwords on change
   handlePwdKeyUp = async e => {
     await this.validatePwd();
     await this.validateRepeatPwd();
   };
 
+  // Cleaning data before submit
+  capitalizeFirstLetter = string => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+  // Submitting user data to backend
   handleSubmit = async e => {
     e.preventDefault();
     const response = await fetch("/users/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        lastname: this.state.lastname,
-        firstname: this.state.firstname,
-        username: this.state.username,
-        email: this.state.email,
+        lastname: this.capitalizeFirstLetter(this.state.lastname.toLowerCase()),
+        firstname: this.capitalizeFirstLetter(
+          this.state.firstname.toLowerCase()
+        ),
+        username: this.state.username.toLowerCase(),
+        email: this.state.email.toLowerCase(),
         pwd1: this.state.pwd1,
         pwd2: this.state.pwd2
       })
     });
+
     const body = await response.text();
-    this.setState({ responseToPost: body });
-    console.log(body);
+    if (response.ok) {
+      this.setState({ responseToPost: body });
+      this.props.history.push("/users/login");
+    } else {
+      let message = body.substr(10, body.length - 12);
+      Materialize.toast({
+        html: message,
+        displayLength: 1000,
+        classes: "rounded error-toast"
+      });
+    }
   };
 }
 

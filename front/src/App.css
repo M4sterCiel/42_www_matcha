@@ -19,6 +19,32 @@ nav ul a {
   font-size: 16px;
 }
 
+.nav-buttons {
+  all: initial;
+  all: unset;
+  border: none;
+  transition: background-color 0.3s;
+  font-size: 16px !important;
+  color: #fff;
+  display: block;
+  padding: 0 15px !important;
+  cursor: pointer;
+}
+
+.nav-buttons:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.nav-buttons:visited {
+  all: initial;
+  all: unset;
+}
+
+.nav-buttons:focus {
+  all: initial;
+  all: unset;
+}
+
 .header-logo {
   width: 35px;
   margin: 10px;
@@ -67,6 +93,20 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   color: #ffb6d3;
 }
 
+.pink-link {
+  color: #ffb6d3;
+}
+
+/* Toasts messages */
+
+.info-toast {
+  background-color: #ffb6d3;
+}
+
+.error-toast {
+  background-color: #ff6666;
+}
+
 /* Login & Register components */
 
 #login-box {
@@ -92,7 +132,7 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 
 .login-error,
 .register-error {
-  color: red;
+  color: #ff6666;
   text-align: left;
   font-size: 12px;
 }
@@ -136,7 +176,7 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 }
 
 .invalid {
-  color: red;
+  color: #ff6666;
   margin-left: 20px;
 }
 
@@ -144,6 +184,12 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   content: "✖";
   position: relative;
   left: -10px;
+}
+
+#register-login-link {
+  margin-top: 20px;
+  margin-bottom: 5px;
+  font-size: 12px;
 }
 
 /* MEDIA QUERIES FOR RESPONSIVE */

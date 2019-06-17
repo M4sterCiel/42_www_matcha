@@ -1,20 +1,26 @@
-var mysql = require('mysql');
+var mysql = require("mysql");
 
 var con = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'logitech',
-  port     : '3390'
+  host: "localhost",
+  user: "root",
+  password: "azerty123",
+  port: "3390"
 });
 
 con.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
-  con.query("CREATE DATABASE IF NOT EXISTS matcha", function (err, result) {
+  con.query("CREATE DATABASE IF NOT EXISTS matcha", function(err, result) {
     if (err) throw err;
   });
+<<<<<<< HEAD
   var userTable = "CREATE TABLE IF NOT EXISTS users (id INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY, lastname VARCHAR(255) NOT NULL,  firstname VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, mail VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, gender ENUM('male', 'female'), orientation ENUM('hetero', 'homo', 'bi') NOT NULL DEFAULT 'bi', city VARCHAR(255), longitude INT(11), lattitude INT(11), `key` VARCHAR(255), status BOOLEAN NOT NULL DEFAULT FALSE, connexion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)";
   require('./database').query(userTable, function (err, result) {
+=======
+  var userTable =
+    "CREATE TABLE IF NOT EXISTS users (id INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY, lastname VARCHAR(255) NOT NULL,  firstname VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, mail VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, city VARCHAR(255), `key` VARCHAR(255), status TINYINT(1) NOT NULL DEFAULT 0)";
+  require("./database").query(userTable, function(err, result) {
+>>>>>>> Lucas
     if (err) throw err;
   });
   var pictureTable = "CREATE TABLE IF NOT EXISTS pictures (id INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255) NOT NULL,  user_id int(11) NOT NULL, base64 LONGTEXT NOT NULL, profile_picture BOOLEAN NOT NULL DEFAULT FALSE)";
