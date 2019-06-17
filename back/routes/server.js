@@ -3,7 +3,7 @@ let app           = express();
 let bodyParser    = require("body-parser");
 let userRoute     = require("./userRoute");
 var http          = require('http').createServer(app);
-let io            = require("socket.io").listen(http);
+var io            = require("socket.io").listen(http);
 const PORT        = 8080;
 
 http.listen(PORT, () => {
@@ -26,10 +26,15 @@ io.on('connection', (socket) => {
   console.log("%s user(s) connected", connections.length);
   console.log(socket.id);
 
+  socket.join('myroom');
+  socket.emit('plop', "a new user joined the room");
+  io.to('myroom').emit('hello', 'world');
   socket.on('disconnect', () => {
     connections.splice(-1, 1);
     console.log("disconnected");
     console.log("%s user(s) connected", connections.length);
   });
 });
+
+io.in('myroom').emit('hello', 'world');
 

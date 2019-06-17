@@ -6,12 +6,39 @@ import "materialize-css/dist/css/materialize.min.css";
 import WithAuth from "./components/WithAuth";
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <NavBar />
-        <div>
-          <p>Home page</p>
+
+  /* state = { message: '' };
+*/
+
+  componentDidMount() {
+    var socket = io();
+    console.log(socket);
+    socket.on('plop', (data) => {
+      console.log(data);
+    });
+    socket.on('hello', (data) => {
+      console.log(data);
+    });
+  }
+
+/*
+  callApi = async () => {
+    const response = await fetch('/hello');
+    const body = await response.json();
+
+    if (response.status !== 200)
+      throw Error(body.message);
+      return body;
+  }; */
+
+    render() {
+      return (
+        <div className="App">
+          <NavBar />
+          <div>
+            <p>Home page</p>
+            <script src="/socket.io/socket.io.js"></script>
+          </div>
         </div>
       </div>
     );
