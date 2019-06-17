@@ -13,6 +13,12 @@ class App extends Component {
   componentDidMount() {
     var socket = io();
     console.log(socket);
+    socket.on('plop', (data) => {
+      console.log(data);
+    });
+    socket.on('hello', (data) => {
+      console.log(data);
+    });
   }
 
 /*
