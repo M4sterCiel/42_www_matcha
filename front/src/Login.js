@@ -175,7 +175,6 @@ class Login extends Component {
         pwd: this.state.pwd
       })
     });
-<<<<<<< Updated upstream
 
     const body = await response.json();
     if (response.ok) {
@@ -192,13 +191,6 @@ class Login extends Component {
       });
     }
   };
-=======
-    const body = await response.json();
-    this.setState({ responseToPost: body.status});
-    console.log(body);
-    localStorage.setItem('Token', body.token);
-  }
->>>>>>> Stashed changes
 }
 
 export default Login;

@@ -3,7 +3,7 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
-import WithAuth from "./components/WithAuth";
+import WithAuth from "./components/withAuth";
 import io from 'socket.io-client';
 
 class App extends Component {
