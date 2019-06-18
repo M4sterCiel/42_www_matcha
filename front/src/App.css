@@ -7,6 +7,7 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  font-family: 'Noto Sans HK', sans-serif;
 }
 
 main {
@@ -46,7 +47,7 @@ nav ul a {
 }
 
 .header-logo {
-  width: 35px;
+  height: 45px;
   margin: 10px;
 }
 

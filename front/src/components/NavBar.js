@@ -4,6 +4,7 @@ import "materialize-css";
 import AuthService from "../services/AuthService";
 import { withRouter } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import logo from '../assets/logo-with-name.png'
 const Auth = new AuthService();
 
 class NavBar extends Component {
@@ -49,7 +50,7 @@ class NavBar extends Component {
             <a href="#!" className="brand-logo">
               <img
                 className="header-logo"
-                src="https://clipart.info/images/ccovers/1484708626emoji-double-heart-png.png"
+                src={logo}
               />
             </a>
             <a href="#" data-target="mobile-demo" className="sidenav-trigger">
