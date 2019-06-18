@@ -35,9 +35,11 @@ class Login extends Component {
           <div className="col a12 m6" id="login-box">
             <div className="card-panel center">
               <i className="medium material-icons">account_box</i>
+              <span className="title-page">Log in</span>
               <div className="card-panel">
                 <form onSubmit={this.handleSubmit}>
                   <div className="input-field">
+                  <i className="material-icons prefix input-icons">person_outline</i>
                     <input
                       type="text"
                       name="name"
@@ -52,6 +54,7 @@ class Login extends Component {
                     <label htmlFor="user-login">Username or email</label>
                   </div>
                   <div className="input-field">
+                  <i className="material-icons prefix input-icons">lock_outline</i>
                     <input
                       type="password"
                       name="pwd"

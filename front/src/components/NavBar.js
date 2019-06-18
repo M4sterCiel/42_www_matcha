@@ -20,6 +20,9 @@ class NavBar extends Component {
     const loggedInLinks = (
       <ul className="right hide-on-med-and-down">
         <li>
+          <NavLink to="/users/my-profile"> My profile </NavLink>
+        </li>
+        <li>
           <button className="nav-buttons" onClick={this.handleLogout}>
             Log out
           </button>
@@ -30,10 +33,10 @@ class NavBar extends Component {
     const loggedOutLinks = (
       <ul className="right hide-on-med-and-down">
         <li>
-          <NavLink to="/users/register"> Register </NavLink>
+          <NavLink to="/users/register">Register</NavLink>
         </li>
         <li>
-          <NavLink to="/users/login"> Login</NavLink>
+          <NavLink to="/users/login">Log in</NavLink>
         </li>
       </ul>
     );
