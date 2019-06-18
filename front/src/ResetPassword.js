@@ -248,8 +248,8 @@ class ResetPassword extends Component {
       let message = "password has been changed";
       Materialize.toast({
         html: message,
-        displayLength: 1000,
-        classes: "rounded error-toast"
+        displayLength: 1200,
+        classes: "rounded info-toast"
       });
       this.props.history.push("/users/login");
     } else {
