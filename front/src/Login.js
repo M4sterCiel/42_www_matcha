@@ -76,10 +76,16 @@ class Login extends Component {
                     disabled={!this.state.loginValid || !this.state.pwdValid}
                   />
                 </form>
-                <p id="register-login-link">
+                <p className="register-login-link link-left">
                   Forgot password?{" "}
                   <NavLink className="pink-link" to="/users/forgot-password">
                     Click here
+                  </NavLink>
+                </p>
+                <p className="register-login-link link-right">
+                  Don't have an account yet?{" "}
+                  <NavLink className="pink-link" to="/users/register">
+                    Register
                   </NavLink>
                 </p>
               </div>

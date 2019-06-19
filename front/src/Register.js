@@ -213,7 +213,7 @@ class Register extends Component {
                     }
                   />
                 </form>
-                <p id="register-login-link">
+                <p className="register-login-link">
                   Already have an account?{" "}
                   <NavLink className="pink-link" to="/users/login">
                     Log in

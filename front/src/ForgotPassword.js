@@ -50,7 +50,7 @@ class ForgotPassword extends Component {
                     disabled={!this.state.loginValid}
                   />
                 </form>
-                <p id="register-login-link">
+                <p className="register-login-link">
                   Go back to{" "}
                   <NavLink className="pink-link" to="/users/login">
                     Login

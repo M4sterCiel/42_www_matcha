@@ -121,7 +121,7 @@ class ResetPassword extends Component {
                     }
                   />
                 </form>
-                <p id="register-login-link">
+                <p className="register-login-link">
                   Changed your mind?{" "}
                   <NavLink className="pink-link" to="/users/login">
                     Log in
