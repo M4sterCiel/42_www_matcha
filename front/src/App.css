@@ -7,7 +7,7 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
-  font-family: 'Noto Sans HK', sans-serif;
+  font-family: "Noto Sans HK", sans-serif;
 }
 
 main {
@@ -209,6 +209,49 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   font-size: 12px;
 }
 
+/* Profile page */
+
+.card {
+  overflow: visible;
+}
+.profile-pic {
+  margin-top: -6em;
+  z-index: 1;
+  position: relative;
+}
+
+.profile-pic > img {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.controls {
+  cursor: pointer;
+}
+
+.row-menu {
+  position: relative;
+}
+
+.menu {
+  display: none;
+  right: 1em;
+  top: 1.8em;
+  position: absolute;
+  background-color: #fff;
+  padding-left: 0.8em;
+  padding-right: 0.8em;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.menu-list > li {
+  margin-bottom: 1em;
+  cursor: pointer;
+}
+
+.menu-list > li:last-child {
+  margin-bottom: -1em;
+}
+
 /* MEDIA QUERIES FOR RESPONSIVE */
 
 @media screen and (max-width: 640px) {
@@ -226,7 +269,8 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
     display: none;
   }
 
-  .login-error, .register-error {
+  .login-error,
+  .register-error {
     margin-left: 0px;
   }
 

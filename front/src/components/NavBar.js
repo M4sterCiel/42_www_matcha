@@ -4,7 +4,7 @@ import "materialize-css";
 import AuthService from "../services/AuthService";
 import { withRouter } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import logo from '../assets/logo-with-name.png'
+import logo from "../assets/logo-with-name.png";
 const Auth = new AuthService();
 
 class NavBar extends Component {
@@ -20,7 +20,7 @@ class NavBar extends Component {
     const loggedInLinks = (
       <ul className="right hide-on-med-and-down">
         <li>
-          <NavLink to="/users/my-profile"> My profile </NavLink>
+          <NavLink to="/users/profile/toto"> My profile </NavLink>
         </li>
         <li>
           <button className="nav-buttons" onClick={this.handleLogout}>
@@ -51,10 +51,7 @@ class NavBar extends Component {
         <nav>
           <div className="nav-wrapper">
             <a href="#!" className="brand-logo">
-              <img
-                className="header-logo"
-                src={logo}
-              />
+              <img className="header-logo" src={logo} />
             </a>
             <a href="#" data-target="mobile-demo" className="sidenav-trigger">
               <i className="material-icons">menu</i>
