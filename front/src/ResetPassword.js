@@ -39,6 +39,7 @@ class ResetPassword extends Component {
               <div className="card-panel">
                 <form onSubmit={this.handleSubmit}>
                   <div className="input-field col s12">
+                  <i className="material-icons prefix input-icons">lock_outline</i>
                     <input
                       type="password"
                       name="pwd"
@@ -97,6 +98,7 @@ class ResetPassword extends Component {
                     <label htmlFor="pwd-login">Password</label>
                   </div>
                   <div className="input-field col s12">
+                  <i className="material-icons prefix input-icons">lock_outline</i>
                     <input
                       type="password"
                       name="rep-pwd"

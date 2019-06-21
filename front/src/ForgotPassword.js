@@ -30,6 +30,7 @@ class ForgotPassword extends Component {
               <div className="card-panel">
                 <form onSubmit={this.handleSubmit}>
                   <div className="input-field">
+                  <i className="material-icons prefix input-icons">person_outline</i>
                     <input
                       type="text"
                       name="name"

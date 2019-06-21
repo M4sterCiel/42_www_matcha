@@ -22,6 +22,7 @@ class UserProfile extends Component {
                 <div className="card">
                   <div className="card-image">
                     <img
+                      className="profile-background-image"
                       src="http://www.img.lirent.net/2014/10/Android-Lollipop-wallpapers-Download.jpg"
                       alt=""
                     />
@@ -36,20 +37,8 @@ class UserProfile extends Component {
                         />
                       </div>
                       <div className="col right controls ">
-                        <i className="material-icons" onClick={this.showMenu}>
-                          more_vert
-                        </i>
-                      </div>
-                      <div className="row-menu">
-                        <div className="menu">
-                          <div className="row">
-                            <ul className="menu-list">
-                              <li>Make a call</li>
-                              <li>Text a message</li>
-                              <li>Block </li>
-                            </ul>
-                          </div>
-                        </div>
+                        <i className="material-icons">settings</i>
+                        <i className="material-icons">more_vert</i>
                       </div>
                     </div>
                     <span className="card-title black-text">
@@ -61,6 +50,7 @@ class UserProfile extends Component {
             </div>
           </div>
         </div>
+        ß
       </div>
     );
   }
@@ -75,16 +65,6 @@ class UserProfile extends Component {
         classes: "rounded error-toast"
       });
       this.props.history.replace("/users/login");
-    }
-  }
-
-  showMenu() {
-    if (document.getElementsByClassName("menu")[0].style.display !== "none") {
-      document.getElementsByClassName("menu")[0].style.display = "none";
-    } else {
-      document.getElementsByClassName("menu")[0].style.display = "block";
-      document.getElementsByClassName("menu")[0].className +=
-        " animated bounceIn";
     }
   }
 }

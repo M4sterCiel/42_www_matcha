@@ -12,40 +12,48 @@ class NavBar extends Component {
     super(props);
     this.Auth = new AuthService();
     this.handleLogout = this.handleLogout.bind(this);
+    this.Auth.getConfirm = this.Auth.getConfirm.bind(this);
+    this.Auth.loggedIn = this.Auth.loggedIn.bind(this);
   }
 
   render() {
-    let links;
-
-    const loggedInLinks = (
-      <ul className="right hide-on-med-and-down">
-        <li>
-          <NavLink to="/users/profile/toto"> My profile </NavLink>
-        </li>
-        <li>
-          <button className="nav-buttons" onClick={this.handleLogout}>
-            Log out
-          </button>
-        </li>
-      </ul>
-    );
-
-    const loggedOutLinks = (
-      <ul className="right hide-on-med-and-down">
-        <li>
-          <NavLink to="/users/register">Register</NavLink>
-        </li>
-        <li>
-          <NavLink to="/users/login">Log in</NavLink>
-        </li>
-      </ul>
-    );
-
-    if (this.Auth.loggedIn()) {
-      links = loggedInLinks;
-    } else {
-      links = loggedOutLinks;
+    const logout = this.handleLogout;
+    function LoggedInLinks() {
+      return (
+        <ul className="right hide-on-med-and-down">
+          <li>
+            <NavLink to={"/users/profile/" + Auth.getConfirm().username}>
+              {" "}
+              My profile{" "}
+            </NavLink>
+          </li>
+          <li>
+            <button className="nav-buttons" onClick={logout}>
+              Log out
+            </button>
+          </li>
+        </ul>
+      );
     }
+
+    function LoggedOutLinks() {
+      return (
+        <ul className="right hide-on-med-and-down">
+          <li>
+            <NavLink to="/users/register">Register</NavLink>
+          </li>
+          <li>
+            <NavLink to="/users/login">Log in</NavLink>
+          </li>
+        </ul>
+      );
+    }
+
+    function NavLinks() {
+      if (Auth.loggedIn()) return <LoggedInLinks />;
+      else return <LoggedOutLinks />;
+    }
+
     return (
       <div>
         <nav>
@@ -56,7 +64,7 @@ class NavBar extends Component {
             <a href="#" data-target="mobile-demo" className="sidenav-trigger">
               <i className="material-icons">menu</i>
             </a>
-            {links}
+            <NavLinks />
           </div>
         </nav>
 
