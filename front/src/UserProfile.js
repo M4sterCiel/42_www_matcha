@@ -9,6 +9,9 @@ class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.Auth = new AuthService();
+    this.state = {
+      user: ""
+    };
   }
 
   render() {
@@ -42,7 +45,7 @@ class UserProfile extends Component {
                       </div>
                     </div>
                     <span className="card-title black-text">
-                      Bruce Banner Wayne
+                      {this.state.user.firstname} {this.state.user.lastname}
                     </span>
                   </div>
                 </div>
@@ -50,12 +53,11 @@ class UserProfile extends Component {
             </div>
           </div>
         </div>
-        ß
       </div>
     );
   }
 
-  // Redirect user if already logged in
+  // Redirect user if not logged in or if profile doesn't exist
   componentDidMount() {
     if (!this.Auth.loggedIn()) {
       let message = "you must log in to access this page";
@@ -65,8 +67,35 @@ class UserProfile extends Component {
         classes: "rounded error-toast"
       });
       this.props.history.replace("/users/login");
+    } else {
+      this.callApi()
+        .then(res => {
+          this.setState({ user: res.data });
+        })
+        .catch(err => {
+          let message = "couldn't find this user";
+          Materialize.toast({
+            html: message,
+            displayLength: 1200,
+            classes: "rounded error-toast"
+          });
+          this.props.history.replace("/");
+          console.log(err);
+        });
     }
   }
+
+  callApi = async () => {
+    var username = document.location.href;
+    username = username.split("/");
+    const response = await fetch(
+      "/users/profile/" + username[username.length - 1]
+    );
+    const body = await response.json();
+
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  };
 }
 
 export default UserProfile;

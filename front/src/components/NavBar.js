@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import "materialize-css/dist/css/materialize.min.css";
 import "materialize-css";
 import AuthService from "../services/AuthService";
-import { withRouter } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+import { withRouter, NavLink } from "react-router-dom";
 import logo from "../assets/logo-with-name.png";
 const Auth = new AuthService();
 
@@ -22,10 +21,10 @@ class NavBar extends Component {
       return (
         <ul className="right hide-on-med-and-down">
           <li>
-            <NavLink to={"/users/profile/" + Auth.getConfirm().username}>
+            <a href={"/users/profile/" + Auth.getConfirm().username}>
               {" "}
               My profile{" "}
-            </NavLink>
+            </a>
           </li>
           <li>
             <button className="nav-buttons" onClick={logout}>
@@ -36,6 +35,7 @@ class NavBar extends Component {
       );
     }
 
+    // Generates the links in the navbar for a logged out user
     function LoggedOutLinks() {
       return (
         <ul className="right hide-on-med-and-down">
@@ -49,6 +49,7 @@ class NavBar extends Component {
       );
     }
 
+    // Generates the links in the navbar for a logged in user
     function NavLinks() {
       if (Auth.loggedIn()) return <LoggedInLinks />;
       else return <LoggedOutLinks />;
@@ -58,9 +59,9 @@ class NavBar extends Component {
       <div>
         <nav>
           <div className="nav-wrapper">
-            <a href="#!" className="brand-logo">
+            <NavLink to="/" className="brand-logo">
               <img className="header-logo" src={logo} />
-            </a>
+            </NavLink>
             <a href="#" data-target="mobile-demo" className="sidenav-trigger">
               <i className="material-icons">menu</i>
             </a>
@@ -80,6 +81,7 @@ class NavBar extends Component {
     );
   }
 
+  // Log out the user clearing his Auth token
   handleLogout() {
     Auth.logout();
     this.props.history.replace("/users/login");

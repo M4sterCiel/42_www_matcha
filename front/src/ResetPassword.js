@@ -39,7 +39,9 @@ class ResetPassword extends Component {
               <div className="card-panel">
                 <form onSubmit={this.handleSubmit}>
                   <div className="input-field col s12">
-                  <i className="material-icons prefix input-icons">lock_outline</i>
+                    <i className="material-icons prefix input-icons">
+                      lock_outline
+                    </i>
                     <input
                       type="password"
                       name="pwd"
@@ -98,7 +100,9 @@ class ResetPassword extends Component {
                     <label htmlFor="pwd-login">Password</label>
                   </div>
                   <div className="input-field col s12">
-                  <i className="material-icons prefix input-icons">lock_outline</i>
+                    <i className="material-icons prefix input-icons">
+                      lock_outline
+                    </i>
                     <input
                       type="password"
                       name="rep-pwd"
@@ -151,7 +155,7 @@ class ResetPassword extends Component {
       this.callApi()
         .then(res => {
           var key = document.location.href;
-          key = key.split('/');
+          key = key.split("/");
           this.setState({ status: res.message });
           this.setState({ password_key: key[key.length - 1] });
         })
@@ -166,16 +170,17 @@ class ResetPassword extends Component {
           });
         });
     }
-  };
+  }
 
   callApi = async () => {
     var key = document.location.href;
-    key = key.split('/');
-    const response = await fetch('/users/reset-password/' + key[key.length - 1]);
+    key = key.split("/");
+    const response = await fetch(
+      "/users/reset-password/" + key[key.length - 1]
+    );
     const body = await response.json();
 
-    if (response.status !== 200)
-      throw Error(body.message);
+    if (response.status !== 200) throw Error(body.message);
     return body;
   };
 
