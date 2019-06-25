@@ -11,6 +11,14 @@ main {
 
 /* UI design */
 
+.home-background {
+  background-image: url("../src/assets/home-background.jpg");
+  height: 100%;
+  background-position-x: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 nav ul a {
   font-size: 16px;
 }
@@ -268,6 +276,10 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 @media screen and (max-width: 1000px) {
   .nav-wrapper {
     width: 100%;
+  }
+
+  .home-background {
+    background-image: url("../src/assets/home-background-mobile.jpg");
   }
 }
 

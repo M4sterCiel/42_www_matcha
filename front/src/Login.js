@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import "./App.css";
 import NavBar from "./components/NavBar";
 //import Footer from './components/Footer';
-import FacebookLogin from 'react-facebook-login';
+import FacebookLogin from "react-facebook-login";
 import "materialize-css/dist/css/materialize.min.css";
 import Materialize from "materialize-css";
 import AuthService from "./services/AuthService";
 import { NavLink } from "react-router-dom";
+import { BackgroundAdd } from "./components/Background";
 
 class Login extends Component {
   constructor(props) {
@@ -24,9 +25,9 @@ class Login extends Component {
   }
 
   render() {
-    const responseFacebook = (response) => {
+    const responseFacebook = response => {
       console.log(response);
-    }
+    };
 
     return (
       <div className="App">
@@ -39,7 +40,9 @@ class Login extends Component {
               <div className="card-panel">
                 <form onSubmit={this.handleSubmit}>
                   <div className="input-field">
-                  <i className="material-icons prefix input-icons">person_outline</i>
+                    <i className="material-icons prefix input-icons">
+                      person_outline
+                    </i>
                     <input
                       type="text"
                       name="name"
@@ -54,7 +57,9 @@ class Login extends Component {
                     <label htmlFor="user-login">Username or email</label>
                   </div>
                   <div className="input-field">
-                  <i className="material-icons prefix input-icons">lock_outline</i>
+                    <i className="material-icons prefix input-icons">
+                      lock_outline
+                    </i>
                     <input
                       type="password"
                       name="pwd"
@@ -90,7 +95,7 @@ class Login extends Component {
                 </p>
               </div>
               <FacebookLogin
-                appId="2410412929189525" 
+                appId="2410412929189525"
                 fields="name,email,picture"
                 callback={responseFacebook}
               />
@@ -103,6 +108,7 @@ class Login extends Component {
 
   // Redirect user if already logged in
   componentDidMount() {
+    BackgroundAdd();
     if (this.Auth.loggedIn()) {
       let message = "you are already logged in";
       Materialize.toast({

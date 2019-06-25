@@ -6,6 +6,7 @@ import "materialize-css/dist/css/materialize.min.css";
 import Materialize from "materialize-css";
 import AuthService from "./services/AuthService";
 import { NavLink } from "react-router-dom";
+import { BackgroundAdd } from "./components/Background";
 
 class Register extends Component {
   constructor(props) {
@@ -55,7 +56,9 @@ class Register extends Component {
               <div className="card-panel">
                 <form onSubmit={this.handleSubmit}>
                   <div className="input-field col s6 name-size">
-                    <i className="material-icons prefix input-icons">person_outline</i>
+                    <i className="material-icons prefix input-icons">
+                      person_outline
+                    </i>
                     <input
                       type="text"
                       name="lastname"
@@ -73,7 +76,9 @@ class Register extends Component {
                     <label htmlFor="lastname-register">Last name</label>
                   </div>
                   <div className="input-field col s6 name-size">
-                    <i className="material-icons prefix input-icons">person_outline</i>
+                    <i className="material-icons prefix input-icons">
+                      person_outline
+                    </i>
                     <input
                       type="text"
                       name="firstname"
@@ -91,7 +96,9 @@ class Register extends Component {
                     <label htmlFor="firstname-register">First name</label>
                   </div>
                   <div className="input-field col s12">
-                    <i className="material-icons prefix input-icons">person_outline</i>
+                    <i className="material-icons prefix input-icons">
+                      person_outline
+                    </i>
                     <input
                       type="text"
                       name="username"
@@ -109,7 +116,9 @@ class Register extends Component {
                     <label htmlFor="username-register">Username</label>
                   </div>
                   <div className="input-field col s12">
-                    <i className="material-icons prefix input-icons">mail_outline</i>
+                    <i className="material-icons prefix input-icons">
+                      mail_outline
+                    </i>
                     <input
                       type="email"
                       name="email"
@@ -125,7 +134,9 @@ class Register extends Component {
                     <label htmlFor="email-register">Email</label>
                   </div>
                   <div className="input-field col s12">
-                    <i className="material-icons prefix input-icons">lock_outline</i>
+                    <i className="material-icons prefix input-icons">
+                      lock_outline
+                    </i>
                     <input
                       type="password"
                       name="pwd"
@@ -184,7 +195,9 @@ class Register extends Component {
                     <label htmlFor="pwd-login">Password</label>
                   </div>
                   <div className="input-field col s12">
-                    <i className="material-icons prefix input-icons">lock_outline</i>
+                    <i className="material-icons prefix input-icons">
+                      lock_outline
+                    </i>
                     <input
                       type="password"
                       name="rep-pwd"
@@ -229,6 +242,7 @@ class Register extends Component {
 
   // Redirect user if already logged in
   componentWillMount() {
+    BackgroundAdd();
     if (this.Auth.loggedIn()) {
       let message = "you are already logged in";
       Materialize.toast({
