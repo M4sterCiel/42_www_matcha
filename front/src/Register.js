@@ -51,9 +51,11 @@ class Register extends Component {
           <div className="col a12 m6" id="login-box">
             <div className="card-panel center">
               <i className="medium material-icons">person_add</i>
+              <span className="title-page">Register</span>
               <div className="card-panel">
                 <form onSubmit={this.handleSubmit}>
                   <div className="input-field col s6 name-size">
+                    <i className="material-icons prefix input-icons">person_outline</i>
                     <input
                       type="text"
                       name="lastname"
@@ -71,6 +73,7 @@ class Register extends Component {
                     <label htmlFor="lastname-register">Last name</label>
                   </div>
                   <div className="input-field col s6 name-size">
+                    <i className="material-icons prefix input-icons">person_outline</i>
                     <input
                       type="text"
                       name="firstname"
@@ -88,6 +91,7 @@ class Register extends Component {
                     <label htmlFor="firstname-register">First name</label>
                   </div>
                   <div className="input-field col s12">
+                    <i className="material-icons prefix input-icons">person_outline</i>
                     <input
                       type="text"
                       name="username"
@@ -105,6 +109,7 @@ class Register extends Component {
                     <label htmlFor="username-register">Username</label>
                   </div>
                   <div className="input-field col s12">
+                    <i className="material-icons prefix input-icons">mail_outline</i>
                     <input
                       type="email"
                       name="email"
@@ -120,6 +125,7 @@ class Register extends Component {
                     <label htmlFor="email-register">Email</label>
                   </div>
                   <div className="input-field col s12">
+                    <i className="material-icons prefix input-icons">lock_outline</i>
                     <input
                       type="password"
                       name="pwd"
@@ -178,6 +184,7 @@ class Register extends Component {
                     <label htmlFor="pwd-login">Password</label>
                   </div>
                   <div className="input-field col s12">
+                    <i className="material-icons prefix input-icons">lock_outline</i>
                     <input
                       type="password"
                       name="rep-pwd"
@@ -206,7 +213,7 @@ class Register extends Component {
                     }
                   />
                 </form>
-                <p id="register-login-link">
+                <p className="register-login-link">
                   Already have an account?{" "}
                   <NavLink className="pink-link" to="/users/login">
                     Log in

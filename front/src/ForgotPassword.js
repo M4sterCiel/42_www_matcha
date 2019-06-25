@@ -30,6 +30,7 @@ class ForgotPassword extends Component {
               <div className="card-panel">
                 <form onSubmit={this.handleSubmit}>
                   <div className="input-field">
+                  <i className="material-icons prefix input-icons">person_outline</i>
                     <input
                       type="text"
                       name="name"
@@ -50,7 +51,7 @@ class ForgotPassword extends Component {
                     disabled={!this.state.loginValid}
                   />
                 </form>
-                <p id="register-login-link">
+                <p className="register-login-link">
                   Go back to{" "}
                   <NavLink className="pink-link" to="/users/login">
                     Login
@@ -125,7 +126,7 @@ class ForgotPassword extends Component {
       let message = "An email to reset your password has been sent";
       Materialize.toast({
         html: message,
-        displayLength: 1000,
+        displayLength: 1400,
         classes: "rounded info-toast"
       });
       this.props.history.push("/");
