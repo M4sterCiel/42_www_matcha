@@ -54,5 +54,42 @@ module.exports = {
     } catch (err) {
       throw new Error(err);
     }
+  },
+
+  updatePasswordWithKey: async (pwd, key) => {
+    pwd = passwordHash.generate(pwd, {
+      algorithm: "sha512",
+      saltLength: 10,
+      iterations: 5
+    });
+    try {
+      var result = await pool.query({
+        sql: "UPDATE users SET `password` = ? WHERE `password_key` = ?",
+        values: [pwd, key, key]
+      });
+      try {
+        var result2 = await pool.query({
+          sql: "UPDATE users SET `password_key`= NULL WHERE `password_key`= ?",
+          values: key
+        });
+        return result.affectedRows + result2.affectedRows;
+      } catch (err) {
+        throw new Error(err);
+      }
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
+  resetPasswordResetKey: async (key) => {
+    try {
+      var result = await pool.query({
+        sql: "UPDATE users SET `password_key`= NULL WHERE `password_key`= ?",
+        values: key
+      });
+      return result.affectedRows;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 };

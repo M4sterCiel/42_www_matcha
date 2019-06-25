@@ -37,7 +37,6 @@ export default class AuthService {
   // Getting the data saved in the token
   getConfirm = () => {
     let answer = decode(this.getToken());
-    console.log("Received answer!");
     return answer;
   };
 }

@@ -11,6 +11,8 @@ class ResetPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      status: "",
+      password_key: "",
       message: "",
       pwd1: "",
       pwd2: "",
@@ -37,6 +39,9 @@ class ResetPassword extends Component {
               <div className="card-panel">
                 <form onSubmit={this.handleSubmit}>
                   <div className="input-field col s12">
+                    <i className="material-icons prefix input-icons">
+                      lock_outline
+                    </i>
                     <input
                       type="password"
                       name="pwd"
@@ -95,6 +100,9 @@ class ResetPassword extends Component {
                     <label htmlFor="pwd-login">Password</label>
                   </div>
                   <div className="input-field col s12">
+                    <i className="material-icons prefix input-icons">
+                      lock_outline
+                    </i>
                     <input
                       type="password"
                       name="rep-pwd"
@@ -119,7 +127,7 @@ class ResetPassword extends Component {
                     }
                   />
                 </form>
-                <p id="register-login-link">
+                <p className="register-login-link">
                   Changed your mind?{" "}
                   <NavLink className="pink-link" to="/users/login">
                     Log in
@@ -143,8 +151,38 @@ class ResetPassword extends Component {
         classes: "rounded error-toast"
       });
       this.props.history.replace("/");
+    } else {
+      this.callApi()
+        .then(res => {
+          var key = document.location.href;
+          key = key.split("/");
+          this.setState({ status: res.message });
+          this.setState({ password_key: key[key.length - 1] });
+        })
+        .catch(err => {
+          console.log(err);
+          this.props.history.replace("/users/login");
+          let message = "password reset key is invalid";
+          Materialize.toast({
+            html: message,
+            displayLength: 1000,
+            classes: "rounded error-toast"
+          });
+        });
     }
   }
+
+  callApi = async () => {
+    var key = document.location.href;
+    key = key.split("/");
+    const response = await fetch(
+      "/users/reset-password/" + key[key.length - 1]
+    );
+    const body = await response.json();
+
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  };
 
   // Checking password format is valid
   validatePwd = () => {
@@ -201,12 +239,13 @@ class ResetPassword extends Component {
   // Submitting user data to backend
   handleSubmit = async e => {
     e.preventDefault();
-    const response = await fetch("/users/reset-password", {
+    const response = await fetch("/users/reset-password/:key", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         pwd1: this.state.pwd1,
-        pwd2: this.state.pwd2
+        pwd2: this.state.pwd2,
+        password_key: this.state.password_key
       })
     });
 
@@ -216,8 +255,8 @@ class ResetPassword extends Component {
       let message = "password has been changed";
       Materialize.toast({
         html: message,
-        displayLength: 1000,
-        classes: "rounded error-toast"
+        displayLength: 1200,
+        classes: "rounded info-toast"
       });
       this.props.history.push("/users/login");
     } else {

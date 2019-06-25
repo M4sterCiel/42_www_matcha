@@ -1,8 +1,7 @@
-var userModel       = require('../models/userModel');
-var pictureModel    = require('../models/pictureModel');
-var passwordHash    = require('password-hash');
-var sendmail        = require('../services/mailService');
-
+var userModel = require("../models/userModel");
+var pictureModel = require("../models/pictureModel");
+var passwordHash = require("password-hash");
+var sendmail = require("../services/mailService");
 
 module.exports = {
   getUser: async data => {
@@ -46,6 +45,16 @@ module.exports = {
     }
   },
 
+  getUserIdFromUsername: async username => {
+    try {
+      var result = await userModel.findOne("username", username);
+      return result[0].id;
+    } catch (err) {
+      console.log(err);
+      return { error: err };
+    }
+  },
+
   getUserData: async id => {
     try {
       var result = await userModel.findOne("id", id);
@@ -56,43 +65,22 @@ module.exports = {
     }
   },
 
-  getAllPictures: async (id) => {
-      try {
-          var result = await pictureModel.findOne('user_id', id);
-          return result[0];
-      } catch(err) {
-          console.log(err);
-          return ({ error: err });
-      }
+  updatePasswordWithKey: async (pwd, key) => {
+    var updated = await userModel.updatePasswordWithKey(pwd, key);
+    if (updated) {
+      return { status: "Password updated with success" };
+    } else {
+      return { status: "An error has occurred" };
+    }
   },
 
-  createUser: async (data) => {
-      
-      var uniqid = (new Date().getTime() + Math.floor((Math.random()*10000)+1)).toString(16);
-      data.push(uniqid);
-      var created = await userModel.createOne(data);
-      if (created)
-      {
-          var link = "https://localhost:3000/users/register/"+ uniqid;
-          await sendmail.registerMail(data[3], data[2], link);
-          return ({ status: "User created with success"});
-      }
-      return ({ status: "An error has occurred"});
-  },
-
-  resetUserPassword: async data => {
-    var uniqid = (
-      new Date().getTime() + Math.floor(Math.random() * 10000 + 1)
-    ).toString(16);
-    var created = await userModel.setPasswordResetKey(data[0]["id"], uniqid);
-    if (created) {
-      var link = "https://localhost:3000/users/new-password/" + uniqid;
-      await sendmail.forgotPasswordMail(
-        data[0]["mail"],
-        data[0]["username"],
-        link
-      );
-      return { status: "User created with success" };
+  getAllPictures: async id => {
+    try {
+      var result = await pictureModel.findOne("user_id", id);
+      return result[0];
+    } catch (err) {
+      console.log(err);
+      return { error: err };
     }
   },
 
@@ -103,10 +91,26 @@ module.exports = {
     data.push(uniqid);
     var created = await userModel.createOne(data);
     if (created) {
-      var link = "http://localhost:3000/users/register/" + uniqid;
+      var link = "https://localhost:3000/users/register/" + uniqid;
       await sendmail.registerMail(data[3], data[2], link);
       return { status: "User created with success" };
     }
     return { status: "An error has occurred" };
+  },
+
+  resetUserPassword: async data => {
+    var uniqid = (
+      new Date().getTime() + Math.floor(Math.random() * 10000 + 1)
+    ).toString(16);
+    var created = await userModel.setPasswordResetKey(data[0]["id"], uniqid);
+    if (created) {
+      var link = "http://localhost:3000/users/reset-password/" + uniqid;
+      await sendmail.forgotPasswordMail(
+        data[0]["mail"],
+        data[0]["username"],
+        link
+      );
+      return { status: "Reset password email sent with success" };
+    }
   }
 };
