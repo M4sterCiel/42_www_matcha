@@ -1,7 +1,7 @@
-var UserService = require("../services/userService");
-var userModel = require("../models/userModel");
-var input = require("../services/inputService");
-var jwtUtils = require("../services/jwtService");
+var UserService   = require("../services/userService");
+var userModel     = require("../models/userModel");
+var input         = require("../services/inputService");
+var jwtUtils      = require("../services/jwtService");
 
 module.exports = {
   login: async (req, res, next) => {
@@ -67,12 +67,12 @@ module.exports = {
 
   createUser: async (req, res, next) => {
     //Params
-    var lastname = req.body.lastname;
+    var lastname  = req.body.lastname;
     var firstname = req.body.firstname;
-    var username = req.body.username;
-    var mail = req.body.email;
-    var pwd1 = req.body.pwd1;
-    var pwd2 = req.body.pwd2;
+    var username  = req.body.username;
+    var mail      = req.body.email;
+    var pwd1      = req.body.pwd1;
+    var pwd2      = req.body.pwd2;
 
     //Check inputs
     var err;

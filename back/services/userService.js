@@ -86,7 +86,7 @@ module.exports = {
     ).toString(16);
     var created = await userModel.setPasswordResetKey(data[0]["id"], uniqid);
     if (created) {
-      var link = "http://localhost:3000/users/new-password/" + uniqid;
+      var link = "https://localhost:3000/users/new-password/" + uniqid;
       await sendmail.forgotPasswordMail(
         data[0]["mail"],
         data[0]["username"],
