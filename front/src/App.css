@@ -224,7 +224,7 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   font-size: 12px;
 }
 
-/* Profile page */
+/* Profile */
 
 .card {
   overflow: visible;
@@ -269,6 +269,35 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 
 .menu-list > li:last-child {
   margin-bottom: -1em;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+}
+
+.select-wrapper input.select-dropdown {
+  border-bottom: solid 1px #ffb6d3 !important;
+}
+
+.dropdown-content li > span {
+  color: black;
 }
 
 /* MEDIA QUERIES FOR RESPONSIVE */

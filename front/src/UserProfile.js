@@ -4,6 +4,8 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 import AuthService from "./services/AuthService";
 import Materialize from "materialize-css";
+import { ProfileSettingsButton } from "./components/Buttons";
+import { SelectGender } from "./components/EditProfileInfo";
 
 class UserProfile extends Component {
   constructor(props) {
@@ -40,8 +42,8 @@ class UserProfile extends Component {
                         />
                       </div>
                       <div className="col right controls ">
-                        <i className="material-icons">settings</i>
-                        <i className="material-icons">more_vert</i>
+                        <ProfileSettingsButton />
+                        {/*                         <i className="material-icons">more_vert</i> */}
                       </div>
                     </div>
                     <span className="card-title black-text">
