@@ -6,17 +6,26 @@ import AuthService from "./services/AuthService";
 import Materialize from "materialize-css";
 import { ProfileSettingsButton } from "./components/Buttons";
 import { SelectGender } from "./components/EditProfileInfo";
+import { SelectSexOrientation } from "./components/EditProfileInfo";
+import { InputName } from "./components/EditProfileInfo";
+import { InputTwoFields } from "./components/EditProfileInfo";
 
 class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.Auth = new AuthService();
+    this.handleData = this.handleData.bind(this);
+    this.handleGenderData = this.handleGenderData.bind(this);
+    this.handleSexOrientationData = this.handleSexOrientationData.bind(this);
     this.state = {
-      user: ""
+      firstname: ""
     };
   }
 
   render() {
+    if (!this.state.firstname) {
+      return null;
+    }
     return (
       <div className="App">
         <NavBar />
@@ -43,12 +52,31 @@ class UserProfile extends Component {
                       </div>
                       <div className="col right controls ">
                         <ProfileSettingsButton />
+                        <InputName
+                          nameToParent={this.handleData}
+                          defaultname={this.state.firstname}
+                        />
+                        <InputTwoFields
+                          defaultdata={{
+                            firstname: this.state.firstname,
+                            lastname: this.state.lastname
+                          }}
+                        />
                         {/*                         <i className="material-icons">more_vert</i> */}
                       </div>
                     </div>
                     <span className="card-title black-text">
-                      {this.state.user.firstname} {this.state.user.lastname}
+                      {this.state.firstname} {this.state.lastname}
                     </span>
+                    <SelectGender
+                      genderToParent={this.handleGenderData}
+                      gender={this.state.gender}
+                    />
+                    <SelectSexOrientation
+                      sexOrientationToParent={this.handleSexOrientationData}
+                      sexOrientation={this.state.sexOrientation}
+                    />
+                    <p>{this.state.gender}</p>
                   </div>
                 </div>
               </div>
@@ -57,6 +85,24 @@ class UserProfile extends Component {
         </div>
       </div>
     );
+  }
+
+  handleData(data) {
+    this.setState({
+      firstname: data
+    });
+  }
+
+  handleGenderData(data) {
+    this.setState({
+      gender: data
+    });
+  }
+
+  handleSexOrientationData(data) {
+    this.setState({
+      sexOrientation: data
+    });
   }
 
   // Redirect user if not logged in or if profile doesn't exist
@@ -72,7 +118,10 @@ class UserProfile extends Component {
     } else {
       this.callApi()
         .then(res => {
-          this.setState({ user: res.data });
+          this.setState({
+            firstname: res.data.firstname,
+            lastname: res.data.lastname
+          });
         })
         .catch(err => {
           let message = "couldn't find this user";

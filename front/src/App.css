@@ -279,7 +279,6 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
-
   /* Position the tooltip */
   position: absolute;
   z-index: 1;
@@ -298,6 +297,51 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 
 .dropdown-content li > span {
   color: black;
+}
+
+.switch-field {
+  display: flex;
+  margin-bottom: 36px;
+  overflow: hidden;
+}
+
+.switch-field input {
+  position: absolute !important;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  width: 1px;
+  border: 0;
+  overflow: hidden;
+}
+
+.switch-field label {
+  background-color: white;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+  line-height: 1;
+  text-align: center;
+  padding: 8px 16px;
+  margin-right: -1px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.1s ease-in-out;
+}
+
+.switch-field label:hover {
+  cursor: pointer;
+}
+
+.switch-field input:checked + label {
+  background-color: #ffb6d3;
+  box-shadow: none;
+}
+
+.switch-field label:first-of-type {
+  border-radius: 20px 0 0 20px;
+}
+
+.switch-field label:last-of-type {
+  border-radius: 0 20px 20px 0;
 }
 
 /* MEDIA QUERIES FOR RESPONSIVE */
