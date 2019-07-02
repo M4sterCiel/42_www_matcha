@@ -99,6 +99,7 @@ class Register extends Component {
                     <input
                       type="text"
                       name="username"
+                      autoComplete="username"
                       id="username-register"
                       value={this.state.username}
                       onChange={e =>
@@ -134,6 +135,7 @@ class Register extends Component {
                       type="password"
                       name="pwd"
                       id="pwd-login"
+                      autoComplete="new-password"
                       value={this.state.pwd1}
                       onChange={e => this.setState({ pwd1: e.target.value })}
                       onKeyUp={this.handlePwdKeyUp}
@@ -193,6 +195,7 @@ class Register extends Component {
                       type="password"
                       name="rep-pwd"
                       id="rep-pwd-login"
+                      autoComplete="new-password"
                       value={this.state.pwd2}
                       onChange={e => this.setState({ pwd2: e.target.value })}
                       onKeyUp={this.handlePwdKeyUp}
@@ -251,7 +254,7 @@ class Register extends Component {
       enableHighAccuracy: true,
       desiredAccuracy: 30,
       timeout: 5000,
-      maximumWait: 10000,
+      maximumWait: 5000,
       maximumAge: 0,
       fallbackToIP: true,
       addressLookup: true
