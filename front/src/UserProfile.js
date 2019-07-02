@@ -9,6 +9,7 @@ import { SelectGender } from "./components/EditProfileInfo";
 import { SelectSexOrientation } from "./components/EditProfileInfo";
 import { InputName } from "./components/EditProfileInfo";
 import { InputTwoFields } from "./components/EditProfileInfo";
+import { ModalUserCompleteProfile } from "./components/Modals";
 
 class UserProfile extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class UserProfile extends Component {
     this.handleGenderData = this.handleGenderData.bind(this);
     this.handleSexOrientationData = this.handleSexOrientationData.bind(this);
     this.state = {
+      user: [],
       firstname: ""
     };
   }
@@ -76,6 +78,7 @@ class UserProfile extends Component {
                       sexOrientationToParent={this.handleSexOrientationData}
                       sexOrientation={this.state.sexOrientation}
                     />
+                    <ModalUserCompleteProfile userData={this.state.user} />
                     <p>{this.state.gender}</p>
                   </div>
                 </div>
@@ -119,6 +122,7 @@ class UserProfile extends Component {
       this.callApi()
         .then(res => {
           this.setState({
+            user: res.data,
             firstname: res.data.firstname,
             lastname: res.data.lastname
           });
