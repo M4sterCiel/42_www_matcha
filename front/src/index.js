@@ -1,11 +1,16 @@
 import React from "react";
-//import ReactDOM from 'react-dom';
-//import App from './App';
 import "materialize-css";
 import "materialize-css/dist/css/materialize.min.css";
 import { render } from "react-dom";
 import MainRouter from "./routes";
+import { Provider } from "react-redux";
+import configureStore from "./store";
 
-render(<MainRouter />, document.getElementById("root"));
+const store = configureStore();
 
-//ReactDOM.render(<App />, document.getElementById('root'));
+render(
+  <Provider store={store}>
+    <MainRouter />
+  </Provider>,
+  document.getElementById("root")
+);

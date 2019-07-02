@@ -1,15 +1,17 @@
 import "materialize-css/dist/css/materialize.min.css";
 import React, { Component } from "react";
-import "./App.css";
-import NavBar from "./components/NavBar";
-import AuthService from "./services/AuthService";
+import "../styles/App.css";
+import NavBar from "../components/NavBar";
+import AuthService from "../services/AuthService";
 import Materialize from "materialize-css";
-import { ProfileSettingsButton } from "./components/Buttons";
-import { SelectGender } from "./components/EditProfileInfo";
-import { SelectSexOrientation } from "./components/EditProfileInfo";
-import { InputName } from "./components/EditProfileInfo";
-import { InputTwoFields } from "./components/EditProfileInfo";
-import { ModalUserCompleteProfile } from "./components/Modals";
+import { ProfileSettingsButton } from "../components/Buttons";
+import { SelectGender } from "../components/EditProfileInfo";
+import { SelectSexOrientation } from "../components/EditProfileInfo";
+import { InputName } from "../components/EditProfileInfo";
+import { InputTwoFields } from "../components/EditProfileInfo";
+import { ModalUserCompleteProfile } from "../components/Modals";
+import configureStore from "../store";
+import { getUser } from "../actions/user-actions";
 
 class UserProfile extends Component {
   constructor(props) {
@@ -126,6 +128,13 @@ class UserProfile extends Component {
             firstname: res.data.firstname,
             lastname: res.data.lastname
           });
+          const store = configureStore();
+          const getUserAction = {
+            type: "GET_USER",
+            payload: res.data
+          };
+          store.dispatch(getUserAction);
+          console.log(store.getState());
         })
         .catch(err => {
           let message = "couldn't find this user";

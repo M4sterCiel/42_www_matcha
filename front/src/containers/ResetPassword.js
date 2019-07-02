@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import "./App.css";
-import NavBar from "./components/NavBar";
+import "../styles/App.css";
+import NavBar from "../components/NavBar";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
 import Materialize from "materialize-css";
-import AuthService from "./services/AuthService";
+import AuthService from "../services/AuthService";
 import { NavLink } from "react-router-dom";
 
 class ResetPassword extends Component {

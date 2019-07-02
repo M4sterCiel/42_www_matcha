@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import "./App.css";
-import NavBar from "./components/NavBar";
+import "../styles/App.css";
+import NavBar from "../components/NavBar";
 //import Footer from './components/Footer';
 import FacebookLogin from "react-facebook-login";
 import "materialize-css/dist/css/materialize.min.css";
 import Materialize from "materialize-css";
-import AuthService from "./services/AuthService";
+import AuthService from "../services/AuthService";
 import { NavLink } from "react-router-dom";
-import { BackgroundAdd } from "./components/Background";
+import { BackgroundAdd } from "../components/Background";
 
 class Login extends Component {
   constructor(props) {

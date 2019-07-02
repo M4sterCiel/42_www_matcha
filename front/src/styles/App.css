@@ -9,10 +9,14 @@ main {
   flex: 1 0 auto;
 }
 
+.div-centered {
+  padding: 20px;
+}
+
 /* UI design */
 
 .home-background {
-  background-image: url("../src/assets/home-background.jpg");
+  background-image: url("../assets/home-background.jpg");
   height: 100%;
   background-position-x: center;
   background-repeat: no-repeat;
@@ -352,7 +356,7 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   }
 
   .home-background {
-    background-image: url("../src/assets/home-background-mobile.jpg");
+    background-image: url("../assets/home-background-mobile.jpg");
   }
 }
 

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import "./App.css";
-import NavBar from "./components/NavBar";
+import "../styles/App.css";
+import NavBar from "../components/NavBar";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
 import Materialize from "materialize-css";
-import AuthService from "./services/AuthService";
+import AuthService from "../services/AuthService";
 import { NavLink } from "react-router-dom";
 
 class ForgotPassword extends Component {
@@ -30,7 +30,9 @@ class ForgotPassword extends Component {
               <div className="card-panel">
                 <form onSubmit={this.handleSubmit}>
                   <div className="input-field">
-                  <i className="material-icons prefix input-icons">person_outline</i>
+                    <i className="material-icons prefix input-icons">
+                      person_outline
+                    </i>
                     <input
                       type="text"
                       name="name"

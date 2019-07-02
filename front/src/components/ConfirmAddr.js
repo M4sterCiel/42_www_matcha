@@ -1,42 +1,39 @@
-import React, { Component } from 'react';
-import '../App';
+import React, { Component } from "react";
+import "../containers/App";
 //import Footer from './components/Footer';
-import 'materialize-css/dist/css/materialize.min.css';
+import "materialize-css/dist/css/materialize.min.css";
 
 class ConfirmAddr extends Component {
-
   constructor(props) {
     super(props);
-    this.state = { 
-      status: '' };
+    this.state = {
+      status: ""
+    };
   }
 
   componentDidMount() {
-    
     this.callApi()
-    .then(res => this.setState({status: res.message}))
-    .catch(err => console.log(err));
+      .then(res => this.setState({ status: res.message }))
+      .catch(err => console.log(err));
   }
 
   callApi = async () => {
     var key = document.location.href;
-    key = key.split('/');
-    const response = await fetch('/users/register/'+key[key.length - 1]);
+    key = key.split("/");
+    const response = await fetch("/users/register/" + key[key.length - 1]);
     const body = await response.json();
 
-    if (response.status !== 200)
-      throw Error(body.message);
-      return body;
+    if (response.status !== 200) throw Error(body.message);
+    return body;
   };
 
-    render() {
-      return (
-        <div className="App">
-          <p>Page de validation du lien a construire</p>
-        </div>
-      );
-    }
-
+  render() {
+    return (
+      <div className="App">
+        <p>Page de validation du lien a construire</p>
+      </div>
+    );
+  }
 }
 
 export default ConfirmAddr;

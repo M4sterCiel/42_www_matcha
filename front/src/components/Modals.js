@@ -2,6 +2,13 @@ import React, { Component } from "react";
 import { SelectGender } from "./EditProfileInfo";
 import { Modal, Button } from "react-materialize";
 
+/* const getUserAction = {
+  type: "GET_USER",
+  payload: { user: "John" }
+};
+
+store.dispatch(getUserAction); */
+
 class ModalUserCompleteProfile extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +21,6 @@ class ModalUserCompleteProfile extends Component {
     this.setState({
       userData: this.props.userData
     });
-    console.log(this.state.userData.firstname);
   }
   render() {
     return (
