@@ -123,6 +123,10 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   background-color: #ff6666;
 }
 
+.confirm-toast {
+  background-color: #19aa3d;
+}
+
 /* Login & Register components */
 
 .title-page {

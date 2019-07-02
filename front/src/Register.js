@@ -30,6 +30,7 @@ class Register extends Component {
       usernameValid: false,
       emailValid: false,
       pwd1Valid: false,
+      locationValid: false,
       pwd1VerifyBox: "box-disabled",
       pwdHasLowercase: false,
       pwdHasUppercase: false,
@@ -212,6 +213,7 @@ class Register extends Component {
                       !this.state.usernameValid ||
                       !this.state.emailValid ||
                       !this.state.pwd1Valid ||
+                      !this.state.locationValid ||
                       this.state.pwd2 !== this.state.pwd1
                     }
                   />
@@ -242,19 +244,7 @@ class Register extends Component {
       this.props.history.replace("/");
     }
     this.getLocation();
-    //this.findLocation();
     }
-
-  // Test iplocation
-  /* findLocation = () => {
-    iplocation("93.26.165.91")
-    .then((res) => {
-      console.log(res);
-    })
-    .catch(err => {
-      console.log(err);
-    }); 
-  } */
 
   showPosition = (pos) => {
     var options = {
@@ -269,6 +259,7 @@ class Register extends Component {
     GeoPosition.locate(options, (err, location) => {
       console.log(err || location);
       this.setState({ userLocation: location});
+      this.setState({ locationValid: true });
     });
   };
 
@@ -286,6 +277,7 @@ class Register extends Component {
     GeoPosition.locateByMobile(options, (err, location) => {
         console.log(err || location);
         this.setState({ userLocation: location});
+        this.setState({ locationValid: true });
     });
   };
 
@@ -450,12 +442,17 @@ class Register extends Component {
     const body = await response.text();
     if (response.ok) {
       this.setState({ responseToPost: body });
+      Materialize.toast({
+        html: "An email has been sent",
+        displayLength: 5000,
+        classes: "rounded confirm-toast"
+      });
       this.props.history.push("/users/login");
     } else {
       let message = body.substr(10, body.length - 12);
       Materialize.toast({
         html: message,
-        displayLength: 1000,
+        displayLength: 5000,
         classes: "rounded error-toast"
       });
     }
