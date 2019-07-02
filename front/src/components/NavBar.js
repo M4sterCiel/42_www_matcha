@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "materialize-css/dist/css/materialize.min.css";
-import "materialize-css";
+import M from "materialize-css";
 import AuthService from "../services/AuthService";
 import { withRouter, NavLink } from "react-router-dom";
 import logo from "../assets/logo-with-name.png";
@@ -55,12 +55,17 @@ class NavBar extends Component {
       else return <LoggedOutLinks />;
     }
 
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('.sidenav');
+      var instances = M.Sidenav.init(elems);
+    });
+
     return (
       <div>
         <nav>
           <div className="nav-wrapper">
             <NavLink to="/" className="brand-logo">
-              <img className="header-logo" src={logo} />
+              <img className="header-logo" src={logo} alt="" />
             </NavLink>
             <a href="#" data-target="mobile-demo" className="sidenav-trigger">
               <i className="material-icons">menu</i>

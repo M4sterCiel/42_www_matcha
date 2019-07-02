@@ -7,6 +7,7 @@ import Materialize from "materialize-css";
 import AuthService from "./services/AuthService";
 import { NavLink } from "react-router-dom";
 import GeoPosition from "geolocator";
+import Axios from "axios";
 //import iplocation from "iplocation";
 
 class Register extends Component {
@@ -295,6 +296,7 @@ class Register extends Component {
 
   navigator.geolocation.getCurrentPosition(this.showPosition, this.errorPosition);
 };
+
   // Checking first name format is valid
   validateFirstName = () => {
     let firstnameError = "";
@@ -426,11 +428,8 @@ class Register extends Component {
   // Submitting user data to backend
   handleSubmit = async e => {
     e.preventDefault();
-    const response = await fetch("/users/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        lastname: this.capitalizeFirstLetter(this.state.lastname.toLowerCase()),
+    await Axios.post('/users/register', {
+      lastname: this.capitalizeFirstLetter(this.state.lastname.toLowerCase()),
         firstname: this.capitalizeFirstLetter(
           this.state.firstname.toLowerCase()
         ),
@@ -439,26 +438,25 @@ class Register extends Component {
         pwd1: this.state.pwd1,
         pwd2: this.state.pwd2,
         location: this.state.userLocation
-      })
-    });
-
-    const body = await response.text();
-    if (response.ok) {
-      this.setState({ responseToPost: body });
-      Materialize.toast({
+    })
+      .then(res => {
+        this.setState({ responseToPost: res.data });
+        Materialize.toast({
         html: "An email has been sent",
         displayLength: 5000,
         classes: "rounded confirm-toast"
-      });
-      this.props.history.push("/users/login");
-    } else {
-      let message = body.substr(10, body.length - 12);
-      Materialize.toast({
+        });
+        this.props.history.push("/users/login");
+      })
+      .catch(err => {
+        let message = err.response.data['error'];
+        Materialize.toast({
         html: message,
         displayLength: 5000,
         classes: "rounded error-toast"
-      });
-    }
+        });
+       // console.log(err.response.data['error']);
+      })
   };
 }
 
