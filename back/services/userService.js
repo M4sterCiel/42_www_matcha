@@ -1,7 +1,7 @@
-var userModel = require("../models/userModel");
-var pictureModel = require("../models/pictureModel");
-var passwordHash = require("password-hash");
-var sendmail = require("../services/mailService");
+var userModel     = require("../models/userModel");
+var pictureModel  = require("../models/pictureModel");
+var passwordHash  = require("password-hash");
+var sendmail      = require("../services/mailService");
 
 module.exports = {
   getUser: async data => {
@@ -84,6 +84,22 @@ module.exports = {
     }
   },
 
+  getProfilePicture: async id => {
+    try {
+      var result = await pictureModel.findProfile("user_id", id);
+      if (result[0] === undefined)
+      {
+        result = "default";
+        return result;
+      }
+      else
+        return result[0]['base64'];
+    } catch (err) {
+      console.log(err);
+      return { error: err };
+    }
+  },
+
   createUser: async data => {
     var uniqid = (
       new Date().getTime() + Math.floor(Math.random() * 10000 + 1)
@@ -104,7 +120,7 @@ module.exports = {
     ).toString(16);
     var created = await userModel.setPasswordResetKey(data[0]["id"], uniqid);
     if (created) {
-      var link = "http://localhost:3000/users/reset-password/" + uniqid;
+      var link = "https://localhost:3000/users/reset-password/" + uniqid;
       await sendmail.forgotPasswordMail(
         data[0]["mail"],
         data[0]["username"],

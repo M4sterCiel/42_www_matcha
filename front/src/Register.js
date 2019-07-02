@@ -6,6 +6,8 @@ import "materialize-css/dist/css/materialize.min.css";
 import Materialize from "materialize-css";
 import AuthService from "./services/AuthService";
 import { NavLink } from "react-router-dom";
+import GeoPosition from "geolocator";
+//import iplocation from "iplocation";
 
 class Register extends Component {
   constructor(props) {
@@ -33,6 +35,7 @@ class Register extends Component {
       pwdHasUppercase: false,
       pwdHasNumber: false,
       pwdHasMinLen: false,
+      userLocation: "",
       responseToPost: ""
     };
     this.Auth = new AuthService();
@@ -238,8 +241,65 @@ class Register extends Component {
       });
       this.props.history.replace("/");
     }
-  }
+    this.getLocation();
+    //this.findLocation();
+    }
 
+  // Test iplocation
+  /* findLocation = () => {
+    iplocation("93.26.165.91")
+    .then((res) => {
+      console.log(res);
+    })
+    .catch(err => {
+      console.log(err);
+    }); 
+  } */
+
+  showPosition = (pos) => {
+    var options = {
+      enableHighAccuracy: true,
+      desiredAccuracy: 30,
+      timeout: 5000,
+      maximumWait: 10000,
+      maximumAge: 0,
+      fallbackToIP: true,
+      addressLookup: true
+  };
+    GeoPosition.locate(options, (err, location) => {
+      console.log(err || location);
+      this.setState({ userLocation: location});
+    });
+  };
+
+  errorPosition = (error) => {
+    console.log(error);
+    var options = {
+      homeMobileCountryCode: 208,
+      homeMobileNetworkCode: 208,
+      carrier: 'Orange',
+      radioType: GeoPosition.RadioType.GSM,
+      fallbackToIP: true,
+      addressLookup: true,
+      timezone: false
+  }; 
+    GeoPosition.locateByMobile(options, (err, location) => {
+        console.log(err || location);
+        this.setState({ userLocation: location});
+    });
+  };
+
+  getLocation = () => {
+    GeoPosition.config({
+      language: "en",
+      google: {
+          version: "3",
+          key: "AIzaSyCrQGnPtopWTSK9joyPAxlEGcl535KlQQQ"
+      }
+  });
+
+  navigator.geolocation.getCurrentPosition(this.showPosition, this.errorPosition);
+};
   // Checking first name format is valid
   validateFirstName = () => {
     let firstnameError = "";
@@ -382,7 +442,8 @@ class Register extends Component {
         username: this.state.username.toLowerCase(),
         email: this.state.email.toLowerCase(),
         pwd1: this.state.pwd1,
-        pwd2: this.state.pwd2
+        pwd2: this.state.pwd2,
+        location: this.state.userLocation
       })
     });
 

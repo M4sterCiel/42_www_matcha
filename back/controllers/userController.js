@@ -87,6 +87,9 @@ module.exports = {
     var mail      = req.body.email;
     var pwd1      = req.body.pwd1;
     var pwd2      = req.body.pwd2;
+    var city      = req.body.location['address']['city'];
+    var latitude  = req.body.location['coords']['latitude'];
+    var longitude = req.body.location['coords']['longitude'];
 
     //Check inputs
     var err;
@@ -111,7 +114,10 @@ module.exports = {
       firstname,
       username,
       mail,
-      pwd1
+      pwd1,
+      city,
+      latitude,
+      longitude
     ]);
     if (ret.status == "User created with success")
       return res.status(201).send(ret.status);
@@ -142,6 +148,11 @@ module.exports = {
     if (userData.error)
       return res.status(401).json({ message: userData.error });
 
-    return res.status(200).json({ data: userData });
+    var userPicture = await UserService.getProfilePicture(userId);
+    
+    if (userData.error)
+      return res.status(401).json({ message: userData.error });
+
+    return res.status(200).json({ data: userData, picture: userPicture });
   }
 };

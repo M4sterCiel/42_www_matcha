@@ -4,6 +4,7 @@ let bodyParser    = require("body-parser");
 let userRoute     = require("./userRoute");
 var http          = require('http').createServer(app);
 var io            = require("socket.io").listen(http);
+
 const PORT        = 8080;
 
 http.listen(PORT, () => {

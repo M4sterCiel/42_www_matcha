@@ -4,13 +4,15 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 import AuthService from "./services/AuthService";
 import Materialize from "materialize-css";
+import DefaultPicture from "./assets/default-profile.png"
 
 class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.Auth = new AuthService();
     this.state = {
-      user: ""
+      user: "",
+      picture: ""
     };
   }
 
@@ -27,7 +29,7 @@ class UserProfile extends Component {
                     <img
                       className="profile-background-image"
                       src="http://www.img.lirent.net/2014/10/Android-Lollipop-wallpapers-Download.jpg"
-                      alt=""
+                      alt="Background profile"
                     />
                   </div>
                   <div className="card-content">
@@ -35,8 +37,8 @@ class UserProfile extends Component {
                       <div className="col s4 profile-pic">
                         <img
                           className="circle responsive-img"
-                          src="https://lh3.googleusercontent.com/-W2XryVdi-lA/U6tSAh3SsbI/AAAAAAAAFGY/ZHJiUEcR_Zs/w480-h480/avatar%2Bmaterial%2Bdesign.png"
-                          alt=""
+                          src={this.state.picture}
+                          alt="Profile"
                         />
                       </div>
                       <div className="col right controls ">
@@ -71,6 +73,10 @@ class UserProfile extends Component {
       this.callApi()
         .then(res => {
           this.setState({ user: res.data });
+          if (res.picture === "default")
+            this.setState({ picture: DefaultPicture });
+          else
+            this.setState({ picture: res.picture });
         })
         .catch(err => {
           let message = "couldn't find this user";

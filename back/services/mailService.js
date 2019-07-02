@@ -60,7 +60,7 @@ module.exports = {
         contentType: "text/html"
       },
       (err, info) => {
-        //console.log(info.envelope);
+        console.log(info.envelope);
       }
     );
   }

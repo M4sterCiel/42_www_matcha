@@ -15,6 +15,7 @@ module.exports = {
   },
 
   createOne: async data => {
+    console.log(data);
     data[4] = passwordHash.generate(data[4], {
       algorithm: "sha512",
       saltLength: 10,
@@ -23,7 +24,7 @@ module.exports = {
     try {
       var result = await pool.query({
         sql:
-          "INSERT INTO users (lastname, firstname, username, mail, password, `key`) VALUES (?)",
+          "INSERT INTO users (lastname, firstname, username, mail, password, city, latitude, longitude, `key`) VALUES (?)",
         values: [data]
       });
       return result.affectedRows;
