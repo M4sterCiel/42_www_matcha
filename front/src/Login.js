@@ -7,6 +7,7 @@ import "materialize-css/dist/css/materialize.min.css";
 import Materialize from "materialize-css";
 import AuthService from "./services/AuthService";
 import { NavLink } from "react-router-dom";
+import Axios from "axios";
 
 class Login extends Component {
   constructor(props) {
@@ -176,29 +177,24 @@ class Login extends Component {
   // On user button submit, execute this
   handleSubmit = async e => {
     e.preventDefault();
-    const response = await fetch("/users/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        login: this.state.login.toLowerCase(),
-        pwd: this.state.pwd
-      })
-    });
-
-    const body = await response.json();
-    if (response.ok) {
-      this.setState({ responseToPost: body.status });
-      localStorage.setItem("Token", body.token);
+    Axios.post('/users/login', {
+      login: this.state.login.toLowerCase(),
+      pwd: this.state.pwd
+    })
+    .then(res => {
+      //console.log(res.data);
+      this.setState({ responseToPost: res.status });
+      localStorage.setItem("Token", res.data['token']);
       this.props.history.push("/");
-    } else {
-      console.log(body);
-      let message = body.message;
+    })
+    .catch(err => {
+      let message = 'Invalid login/password';
       Materialize.toast({
         html: message,
-        displayLength: 1000,
+        displayLength: 5000,
         classes: "rounded error-toast"
       });
-    }
+    });
   };
 }
 

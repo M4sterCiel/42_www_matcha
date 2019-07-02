@@ -276,7 +276,7 @@ class Register extends Component {
     console.log(error);
     var options = {
       homeMobileCountryCode: 208,
-      homeMobileNetworkCode: 208,
+      homeMobileNetworkCode: 1,
       carrier: 'Orange',
       radioType: GeoPosition.RadioType.GSM,
       fallbackToIP: true,

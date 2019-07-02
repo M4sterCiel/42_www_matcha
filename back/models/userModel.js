@@ -15,7 +15,7 @@ module.exports = {
   },
 
   createOne: async data => {
-    console.log(data);
+    //console.log(data);
     data[4] = passwordHash.generate(data[4], {
       algorithm: "sha512",
       saltLength: 10,
