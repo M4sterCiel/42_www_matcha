@@ -6,6 +6,7 @@ import "materialize-css/dist/css/materialize.min.css";
 import WithAuth from "./components/withAuth";
 //import io from 'socket.io-client';
 import AddInfo from "./AddInfo";
+import DelUser from "./components/DeleteUser";
 
 
 class App extends Component {
@@ -41,6 +42,7 @@ class App extends Component {
         <AddInfo />
         <div>
           <p>Home page</p>
+          <DelUser />
           <script src="/socket.io/socket.io.js"></script>
           <script type="text/javascript" src="geolocator.min.js"></script>
         </div>

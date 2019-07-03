@@ -139,5 +139,18 @@ module.exports = {
       return res.status(401).json({ message: userData.error });
 
     return res.status(200).json({ data: userData, picture: userPicture });
+  },
+
+  deleteUser: async (req, res, next) => {
+
+    var authorization = req.headers['authorization'];
+    var userId = jwtUtils.getUserId(authorization);
+
+    if (userId != -1)
+    {
+      var ret = await userModel.deleteUser(userId);
+      //console.log(ret);
+    }
+    return res.status(200).json({ msg: "Bravoooo!" });
   }
 };

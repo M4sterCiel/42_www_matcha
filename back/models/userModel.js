@@ -92,5 +92,18 @@ module.exports = {
     } catch (err) {
       throw new Error(err);
     }
+  },
+
+  deleteUser: async (userId) => {
+    try {
+      var result = await pool.query({
+        sql: "DELETE FROM users WHERE `id` = ?",
+        values: userId
+      });
+      return result.affectedRows;
+    }
+    catch (err) {
+      throw new Error(err);
+    }
   }
 };
