@@ -5,8 +5,11 @@ import { render } from "react-dom";
 import MainRouter from "./routes";
 import { Provider } from "react-redux";
 import configureStore from "./store";
+import { getUserData } from "./actions/user-actions";
 
 const store = configureStore();
+
+store.dispatch(getUserData("lucas"));
 
 render(
   <Provider store={store}>

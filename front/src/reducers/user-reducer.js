@@ -1,9 +1,30 @@
-import { GET_USER } from "../actions/user-actions";
+import { GET_USER, USER_RECEIVED, ERROR } from "../actions/user-actions";
 
-function userReducer(state = [], { type, payload }) {
+const initalState = {
+  sendingRequest: false,
+  requestReceived: false,
+  status: "",
+  statusClass: ""
+};
+
+function userReducer(state = initalState, { type, payload }) {
   switch (type) {
     case GET_USER:
+      return {
+        ...state,
+        sendingRequest: true,
+        status: "Pending...",
+        statusClass: "pending"
+      };
+    case USER_RECEIVED:
       return payload;
+    case ERROR:
+      return {
+        ...state,
+        sendingRequest: false,
+        status: `${payload.message}`,
+        statusClass: "error"
+      };
     default:
       return state;
   }
