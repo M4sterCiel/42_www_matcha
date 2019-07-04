@@ -46,15 +46,19 @@ class ModalUserEditProfileInfo extends Component {
   }
   render() {
     return (
-      <Modal id="modal1" header="Modal Header" fixedFooter trigger={false}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
+      <Modal
+        id="modal1"
+        header="Edit your profile info"
+        fixedFooter
+        trigger={false}
+      >
+        You can edit and save the information that will be visibile on your
+        profile
         <SelectGender
           genderToParent={this.handleGenderData}
           gender={this.state.gender}
         />
+        <p>{this.state.userData.username}</p>
       </Modal>
     );
   }

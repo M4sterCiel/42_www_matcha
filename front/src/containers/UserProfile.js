@@ -8,7 +8,7 @@ import {
   ProfileActionsButton
 } from "../components/Buttons";
 import { ModalUserEditProfileInfo } from "../components/Modals";
-import axios from "axios";
+import ApiCall from "../services/ApiCall";
 
 class UserProfile extends Component {
   constructor(props) {
@@ -60,7 +60,7 @@ class UserProfile extends Component {
                     <span className="card-title black-text">
                       {this.state.user.firstname} {this.state.user.lastname}
                     </span>
-                    <ModalUserEditProfileInfo />
+                    <ModalUserEditProfileInfo userData={this.state.user} />
                   </div>
                 </div>
               </div>
@@ -92,6 +92,34 @@ class UserProfile extends Component {
     });
   }
 
+  componentDidUpdate() {
+    let url = document.location.href;
+    let username = url.split("/");
+    username = username[username.length - 1];
+    if (
+      username !== this.state.user.username &&
+      this.state.user.username !== undefined
+    ) {
+      ApiCall.user
+        .getUserFromUsername(username)
+        .then(res =>
+          this.setState({
+            user: res
+          })
+        )
+        .catch(err => {
+          let message = "couldn't find this user";
+          Materialize.toast({
+            html: message,
+            displayLength: 1200,
+            classes: "rounded error-toast"
+          });
+          this.props.history.replace("/");
+          console.log(err);
+        });
+    }
+  }
+
   componentDidMount() {
     if (!this.Auth.loggedIn()) {
       let message = "you must log in to access this page";
@@ -105,11 +133,11 @@ class UserProfile extends Component {
     let url = document.location.href;
     let username = url.split("/");
     username = username[username.length - 1];
-    axios
-      .get(`/users/profile/${username}`)
+    ApiCall.user
+      .getUserFromUsername(username)
       .then(res =>
         this.setState({
-          user: res.data.data
+          user: res
         })
       )
       .catch(err => {
