@@ -34,4 +34,31 @@ class ProfileSettingsButton extends Component {
   }
 }
 
-export { ProfileSettingsButton };
+class ProfileActionsButton extends Component {
+  render() {
+    return (
+      <Button
+        floating
+        fab={{ direction: "left", hoverEnabled: false }}
+        icon="more_vert"
+        className="red"
+        large
+      >
+        <Button
+          floating
+          tooltip="report this user"
+          icon="report"
+          className="red"
+        />
+        <Button
+          floating
+          tooltip="block this user"
+          icon="block"
+          className="red"
+        />
+      </Button>
+    );
+  }
+}
+
+export { ProfileSettingsButton, ProfileActionsButton };

@@ -11,11 +11,9 @@ export const getUserData = username => {
     axios
       .get(`${apiUrl}/profile/${username}`)
       .then(response => {
-        console.log(response.data);
         dispatch({ type: "USER_RECEIVED", payload: response.data });
       })
       .catch(error => {
-        console.log(error);
         dispatch({ type: "ERROR", payload: error });
       });
     dispatch({ type: "AFTER_ASYNC" });
