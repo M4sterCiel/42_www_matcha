@@ -1,13 +1,6 @@
 import React, { Component } from "react";
 import { SelectGender } from "./EditProfileInfo";
-import { Modal, Button } from "react-materialize";
-
-/* const getUserAction = {
-  type: "GET_USER",
-  payload: { user: "John" }
-};
-
-store.dispatch(getUserAction); */
+import { Modal } from "react-materialize";
 
 class ModalUserCompleteProfile extends Component {
   constructor(props) {
@@ -24,7 +17,7 @@ class ModalUserCompleteProfile extends Component {
   }
   render() {
     return (
-      <Modal header="Modal Header" fixedFooter trigger={<Button />}>
+      <Modal header="Modal Header" fixedFooter>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
         veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
@@ -38,4 +31,33 @@ class ModalUserCompleteProfile extends Component {
   }
 }
 
-export { ModalUserCompleteProfile };
+class ModalUserEditProfileInfo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userData: []
+    };
+  }
+
+  componentDidMount() {
+    this.setState({
+      userData: this.props.userData
+    });
+  }
+  render() {
+    return (
+      <Modal id="modal1" header="Modal Header" fixedFooter trigger={false}>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat.
+        <SelectGender
+          genderToParent={this.handleGenderData}
+          gender={this.state.gender}
+        />
+      </Modal>
+    );
+  }
+}
+
+export { ModalUserCompleteProfile, ModalUserEditProfileInfo };

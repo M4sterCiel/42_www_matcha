@@ -7,13 +7,7 @@ import {
   ProfileSettingsButton,
   ProfileActionsButton
 } from "../components/Buttons";
-import {
-  SelectGender,
-  SelectSexOrientation,
-  InputName,
-  InputTwoFields
-} from "../components/EditProfileInfo";
-import { ModalUserCompleteProfile } from "../components/Modals";
+import { ModalUserEditProfileInfo } from "../components/Modals";
 import axios from "axios";
 
 class UserProfile extends Component {
@@ -61,32 +55,12 @@ class UserProfile extends Component {
                         ) : (
                           <ProfileActionsButton />
                         )}
-
-                        <InputName
-                          nameToParent={this.handleData}
-                          defaultname={this.state.user.firstname}
-                        />
-                        <InputTwoFields
-                          defaultdata={{
-                            firstname: this.state.user.firstname,
-                            lastname: this.state.user.lastname
-                          }}
-                        />
                       </div>
                     </div>
                     <span className="card-title black-text">
                       {this.state.user.firstname} {this.state.user.lastname}
                     </span>
-                    <SelectGender
-                      genderToParent={this.handleGenderData}
-                      gender={this.state.gender}
-                    />
-                    <SelectSexOrientation
-                      sexOrientationToParent={this.handleSexOrientationData}
-                      sexOrientation={this.state.sexOrientation}
-                    />
-                    <ModalUserCompleteProfile userData={this.state} />
-                    <p>{this.state.gender}</p>
+                    <ModalUserEditProfileInfo />
                   </div>
                 </div>
               </div>

@@ -8,20 +8,21 @@ class ProfileSettingsButton extends Component {
         floating
         fab={{ direction: "left", hoverEnabled: false }}
         icon="settings"
-        className="red"
+        className="blue"
         large
       >
         <Button
           floating
           tooltip="edit profile info"
           icon="edit"
-          className="red"
+          className="blue modal-trigger"
+          href="#modal1"
         />
         <Button
           floating
           tooltip="add a photo"
           icon="add_a_photo"
-          className="green"
+          className="blue"
         />
         <Button
           floating

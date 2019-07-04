@@ -348,6 +348,11 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   border-radius: 0 20px 20px 0;
 }
 
+.fixed-action-btn {
+  right: 53px;
+  bottom: 53px;
+}
+
 /* MEDIA QUERIES FOR RESPONSIVE */
 
 @media screen and (max-width: 1000px) {
@@ -371,6 +376,11 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 
   .profile-background-image {
     max-height: 180px;
+  }
+
+  .fixed-action-btn {
+    right: 23px;
+    bottom: 23px;
   }
 }
 
