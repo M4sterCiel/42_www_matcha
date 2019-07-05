@@ -268,7 +268,6 @@ class Register extends Component {
   };
 
   errorPosition = (error) => {
-    console.log(error);
     var options = {
       homeMobileCountryCode: 208,
       homeMobileNetworkCode: 1,

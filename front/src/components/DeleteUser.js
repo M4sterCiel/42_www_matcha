@@ -16,17 +16,17 @@ class DeletUser extends Component {
         return (
             <div className="App">
                 <button
-                className="delete-btn"
+                className="waves-effect waves-light btn"
                 onClick={this.eraseUserData}
                 >
-                    Delete user account
+                    Delete my account
                 </button>
             </div>
         )
     }
 
     eraseUserData = async () => {
-        if (window.confirm("Are you sure you want delete your account ?"))
+        if (window.confirm("Are you sure you want to definitively delete your account ?"))
         {
             Axios.delete(`/users/delete-account`, { headers: { Authorization: `Bearer ${this.state.userToken}` }})
                 .then(res => {
