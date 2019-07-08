@@ -3,10 +3,10 @@ import "../styles/App.css";
 import NavBar from "../components/NavBar";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
-import Materialize from "materialize-css";
 import AuthService from "../services/AuthService";
 import { NavLink } from "react-router-dom";
 import { BackgroundAdd } from "../components/Background";
+import ErrorToast from "../services/ErrorToastService";
 
 class Register extends Component {
   constructor(props) {
@@ -244,12 +244,7 @@ class Register extends Component {
   componentWillMount() {
     BackgroundAdd();
     if (this.Auth.loggedIn()) {
-      let message = "you are already logged in";
-      Materialize.toast({
-        html: message,
-        displayLength: 1000,
-        classes: "rounded error-toast"
-      });
+      ErrorToast.auth.userAlreadyLogged();
       this.props.history.replace("/");
     }
   }
@@ -406,11 +401,7 @@ class Register extends Component {
       this.props.history.push("/users/login");
     } else {
       let message = body.substr(10, body.length - 12);
-      Materialize.toast({
-        html: message,
-        displayLength: 1000,
-        classes: "rounded error-toast"
-      });
+      ErrorToast.default.error(message);
     }
   };
 }

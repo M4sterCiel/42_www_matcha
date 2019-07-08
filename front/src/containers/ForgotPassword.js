@@ -3,9 +3,10 @@ import "../styles/App.css";
 import NavBar from "../components/NavBar";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
-import Materialize from "materialize-css";
 import AuthService from "../services/AuthService";
 import { NavLink } from "react-router-dom";
+import ErrorToast from "../services/ErrorToastService";
+import InfoToast from "../services/InfoToastService";
 
 class ForgotPassword extends Component {
   constructor(props) {
@@ -70,12 +71,7 @@ class ForgotPassword extends Component {
   // Redirect user if already logged in
   componentDidMount() {
     if (this.Auth.loggedIn()) {
-      let message = "you are already logged in";
-      Materialize.toast({
-        html: message,
-        displayLength: 1000,
-        classes: "rounded error-toast"
-      });
+      ErrorToast.auth.userAlreadyLogged();
       this.props.history.replace("/");
     }
   }
@@ -125,21 +121,10 @@ class ForgotPassword extends Component {
     const body = await response.json();
     if (response.ok) {
       this.setState({ responseToPost: body.status });
-      let message = "An email to reset your password has been sent";
-      Materialize.toast({
-        html: message,
-        displayLength: 1400,
-        classes: "rounded info-toast"
-      });
+      InfoToast.mail.resetPassword();
       this.props.history.push("/");
     } else {
-      console.log(body);
-      let message = body.message;
-      Materialize.toast({
-        html: message,
-        displayLength: 1000,
-        classes: "rounded error-toast"
-      });
+      ErrorToast.default.error(body.message);
     }
   };
 }

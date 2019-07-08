@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Select } from "react-materialize";
 import { TextInput } from "react-materialize";
 
 class SelectGender extends Component {
@@ -23,7 +22,7 @@ class SelectGender extends Component {
 
   render() {
     return (
-      <div className="switch-field">
+      <div className="switch-field two-fields-switch">
         <input
           type="radio"
           id="radio-one"

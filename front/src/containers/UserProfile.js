@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import AuthService from "../services/AuthService";
-import Materialize from "materialize-css";
 import NavBar from "../components/NavBar";
 import {
   ProfileSettingsButton,
@@ -9,6 +8,7 @@ import {
 } from "../components/Buttons";
 import { ModalUserEditProfileInfo } from "../components/Modals";
 import ApiCall from "../services/ApiCall";
+import ErrorToast from "../services/ErrorToastService";
 
 class UserProfile extends Component {
   constructor(props) {
@@ -23,7 +23,8 @@ class UserProfile extends Component {
   }
 
   render() {
-    if (!this.state.user.firstname) return null;
+    if (!this.state.user.id) return null;
+    console.log(this.props);
     return (
       <div className="App">
         <NavBar />
@@ -96,6 +97,7 @@ class UserProfile extends Component {
     let url = document.location.href;
     let username = url.split("/");
     username = username[username.length - 1];
+
     if (
       username !== this.state.user.username &&
       this.state.user.username !== undefined
@@ -108,12 +110,7 @@ class UserProfile extends Component {
           })
         )
         .catch(err => {
-          let message = "couldn't find this user";
-          Materialize.toast({
-            html: message,
-            displayLength: 1200,
-            classes: "rounded error-toast"
-          });
+          ErrorToast.user.userNotFound();
           this.props.history.replace("/");
           console.log(err);
         });
@@ -121,13 +118,9 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
+    console.log(this.Auth.loggedIn());
     if (!this.Auth.loggedIn()) {
-      let message = "you must log in to access this page";
-      Materialize.toast({
-        html: message,
-        displayLength: 1200,
-        classes: "rounded error-toast"
-      });
+      ErrorToast.auth.pageRequiresLogin();
       this.props.history.replace("/users/login");
     }
     let url = document.location.href;
@@ -141,12 +134,7 @@ class UserProfile extends Component {
         })
       )
       .catch(err => {
-        let message = "couldn't find this user";
-        Materialize.toast({
-          html: message,
-          displayLength: 1200,
-          classes: "rounded error-toast"
-        });
+        ErrorToast.user.userNotFound();
         this.props.history.replace("/");
         console.log(err);
       });
@@ -154,9 +142,10 @@ class UserProfile extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state);
   return {
     userConnectedData: state.user.data,
-    userConnectedError: state.user.status
+    userConnectedStatus: state.user.status
   };
 };
 

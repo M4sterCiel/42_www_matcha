@@ -16,7 +16,7 @@ class ProfileSettingsButton extends Component {
           tooltip="edit profile info"
           icon="edit"
           className="blue modal-trigger"
-          href="#modal1"
+          href="#edit-profile-modal"
         />
         <Button
           floating

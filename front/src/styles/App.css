@@ -125,6 +125,14 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   color: #ffb6d3;
 }
 
+.switch-field {
+  margin: 10px auto;
+}
+
+.two-fields-switch {
+  width: 145px;
+}
+
 /* Toasts messages */
 
 .info-toast {
@@ -351,6 +359,27 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 .fixed-action-btn {
   right: 53px;
   bottom: 53px;
+}
+
+.profile-fields-labels {
+  display: block;
+  padding: 10px 0px;
+  font-weight: 900;
+}
+
+/* Modals */
+
+.modals {
+  border-radius: 30px;
+  text-align: center;
+}
+
+.modal-footer {
+  background-color: #ffb6d3 !important;
+}
+
+.modal-close {
+  color: white;
 }
 
 /* MEDIA QUERIES FOR RESPONSIVE */

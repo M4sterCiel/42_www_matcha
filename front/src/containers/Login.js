@@ -4,10 +4,10 @@ import NavBar from "../components/NavBar";
 //import Footer from './components/Footer';
 import FacebookLogin from "react-facebook-login";
 import "materialize-css/dist/css/materialize.min.css";
-import Materialize from "materialize-css";
 import AuthService from "../services/AuthService";
 import { NavLink } from "react-router-dom";
 import { BackgroundAdd } from "../components/Background";
+import ErrorToast from "../services/ErrorToastService";
 
 class Login extends Component {
   constructor(props) {
@@ -110,12 +110,7 @@ class Login extends Component {
   componentDidMount() {
     BackgroundAdd();
     if (this.Auth.loggedIn()) {
-      let message = "you are already logged in";
-      Materialize.toast({
-        html: message,
-        displayLength: 1000,
-        classes: "rounded error-toast"
-      });
+      ErrorToast.auth.userAlreadyLogged();
       this.props.history.replace("/");
     }
   }
@@ -197,13 +192,7 @@ class Login extends Component {
       localStorage.setItem("Token", body.token);
       this.props.history.push("/");
     } else {
-      console.log(body);
-      let message = body.message;
-      Materialize.toast({
-        html: message,
-        displayLength: 1000,
-        classes: "rounded error-toast"
-      });
+      ErrorToast.auth.userAlreadyLogged();
     }
   };
 }

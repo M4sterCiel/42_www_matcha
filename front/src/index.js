@@ -11,7 +11,11 @@ import AuthService from "./services/AuthService";
 const Auth = new AuthService();
 const store = configureStore();
 
+console.log("=>>>>> test");
+console.log(Auth.loggedIn());
+
 if (Auth.loggedIn()) {
+  console.log("store dispatch");
   store.dispatch(getUserData(Auth.getConfirm().username));
 }
 

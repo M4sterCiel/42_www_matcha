@@ -17,7 +17,7 @@ class ModalUserCompleteProfile extends Component {
   }
   render() {
     return (
-      <Modal header="Modal Header" fixedFooter>
+      <Modal header="Modal Header" className="modal" fixedFooter>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
         veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
@@ -37,6 +37,7 @@ class ModalUserEditProfileInfo extends Component {
     this.state = {
       userData: []
     };
+    this.handleGenderData = this.handleGenderData.bind(this);
   }
 
   componentDidMount() {
@@ -44,16 +45,26 @@ class ModalUserEditProfileInfo extends Component {
       userData: this.props.userData
     });
   }
+
+  handleGenderData(data) {
+    this.setState({
+      gender: data
+    });
+    console.log(this.state.gender);
+  }
+
   render() {
     return (
       <Modal
-        id="modal1"
+        id="edit-profile-modal"
+        className="modals"
         header="Edit your profile info"
         fixedFooter
         trigger={false}
       >
         You can edit and save the information that will be visibile on your
         profile
+        <span className="profile-fields-labels">Select a gender:</span>
         <SelectGender
           genderToParent={this.handleGenderData}
           gender={this.state.gender}
