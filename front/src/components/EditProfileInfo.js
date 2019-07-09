@@ -100,41 +100,6 @@ class SelectSexOrientation extends Component {
   }
 }
 
-class InputName extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: ""
-    };
-  }
-
-  componentDidMount() {
-    this.setState({
-      name: this.props.defaultname
-    });
-  }
-
-  handleKeyup = e => {
-    e.preventDefault();
-    this.props.nameToParent(this.state.name);
-  };
-
-  handleChange = e => {
-    this.setState({ name: e.target.value });
-  };
-
-  render() {
-    return (
-      <TextInput
-        label="name"
-        value={this.state.name}
-        onChange={this.handleChange}
-        onKeyUp={this.handleKeyup}
-      />
-    );
-  }
-}
-
 class InputTwoNames extends Component {
   constructor(props) {
     super(props);
@@ -193,6 +158,7 @@ class InputBio extends Component {
   }
 
   handleChange = e => {
+    console.log(e.target);
     this.setState({
       bio: e.target.value
     });
@@ -221,23 +187,30 @@ class BirthdatePicker extends Component {
 
   componentDidMount() {
     this.setState({
-      birthdate: this.props.bio
+      birthdate: this.props.birthdate
     });
   }
 
   handleChange = e => {
-    console.log(e.target.value);
     this.setState({
-      birthdate: e.target.value
+      birthdate: document.querySelector(".birthdate-picker-modal").value
     });
-    this.props.birthdateToParent(e.target.value);
+    this.props.birthdateToParent(
+      document.querySelector(".birthdate-picker-modal").value
+    );
   };
 
   render() {
     return (
       <DatePicker
-        onChange={this.handleChange}
-        options={{ defaultDate: this.state.birthdate, container: "div" }}
+        options={{
+          defaultDate: this.state.birthdate,
+          setDefaultDate: true,
+          format: "yyyy-mm-dd",
+          container: "#root",
+          onClose: this.handleChange
+        }}
+        className="birthdate-picker-modal"
       />
     );
   }
@@ -246,7 +219,6 @@ class BirthdatePicker extends Component {
 export {
   SelectGender,
   SelectSexOrientation,
-  InputName,
   InputTwoNames,
   InputBio,
   BirthdatePicker

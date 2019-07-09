@@ -46,7 +46,7 @@ class ModalUserEditProfileInfo extends Component {
       firstname: "",
       lastname: "",
       bio: "",
-      birthdate: null,
+      birthdate: "",
       username: ""
     };
     this.handleGenderData = this.handleGenderData.bind(this);
@@ -64,9 +64,10 @@ class ModalUserEditProfileInfo extends Component {
       firstname: this.props.userData.firstname,
       lastname: this.props.userData.lastname,
       bio: this.props.userData.bio,
-      birthdate: this.props.userData.birthdate,
+      birthdate: this.props.userData.birthdate.substring(0, 10),
       username: this.props.userData.username
     });
+    console.log(this.props.userData.birthdate.substring(0, 10));
   }
 
   handleGenderData(data) {
@@ -142,10 +143,13 @@ class ModalUserEditProfileInfo extends Component {
           )}
           <InputBio bioToParent={this.handleBioData} bio={this.state.bio} />
           <span>{this.state.bio}</span>
-          <BirthdatePicker
-            birthdateToParent={this.handleBirthdateData}
-            birthdate={this.state.birthdate}
-          />
+          {this.state.birthdate !== "" && (
+            <BirthdatePicker
+              birthdateToParent={this.handleBirthdateData}
+              birthdate={this.state.birthdate}
+            />
+          )}
+          <span>{this.state.birthdate}</span>
         </Modal>
       </div>
     );
