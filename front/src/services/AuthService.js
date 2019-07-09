@@ -11,6 +11,14 @@ export default class AuthService {
     return localStorage.getItem("Token");
   }
 
+  getIdViaToken (token) {
+    return decode(token)['id'];
+  }
+  
+  getUsernameViaToken (token) {
+    return decode(token)['username'];
+  }
+
   // Checking if token exists and is still valid
   loggedIn() {
     const token = this.getToken();

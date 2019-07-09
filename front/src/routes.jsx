@@ -7,6 +7,7 @@ import ConfirmAddr from "./components/ConfirmAddr";
 import ForgotPassword from "./ForgotPassword";
 import ResetPassword from "./ResetPassword";
 import UserProfile from "./UserProfile";
+import ChatPage from "./ChatPage";
 
 export default function MainRouter() {
   return (
@@ -19,7 +20,8 @@ export default function MainRouter() {
         <Route path="/users/forgot-password" component={ForgotPassword} />
         <Route path="/users/reset-password/:key" component={ResetPassword} />
         <Route path="/users/profile/:username" component={UserProfile} />
-      </div>
+        <Route path="/chat/:room_id" component={ChatPage} />
+        </div>
     </Router>
   );
 }
