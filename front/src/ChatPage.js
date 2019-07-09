@@ -3,10 +3,10 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
-import WithAuth from "./components/withAuth";
 import io from 'socket.io-client';
 import AuthService from "./services/AuthService";
 import Axios from "axios";
+import withAuth from "./components/withAuth";
 
 
 class Chat extends Component {
@@ -17,10 +17,13 @@ class Chat extends Component {
         this.state = {
             msg: '',
             toSend: '',
+            listMessages: [],
+            listItems: '',
             socket: '',
             userID: '',
             userName: '',
-            userToken: this.Auth.getToken()
+            userToken: this.Auth.getToken(),
+            fakeID: 12345
         }
     }
 
@@ -32,7 +35,7 @@ class Chat extends Component {
                     <h1>Chat Session</h1>
                     <br></br>
                     <div id="message">
-                        <span>{this.state.msg}</span>
+                        <this.msgList msg={this.state.listMessages} />
                     </div>
                 </div>
                 <form onSubmit={ this.handleSubmit }>
@@ -61,30 +64,49 @@ class Chat extends Component {
         );
     }
 
-    /* componentDidUpdate() {
-        if (!this.state.msg === undefined)
-        {
-            console.log(this.state.msg);
-        }
-    } */
-
     async componentDidMount() {
+        Axios.get('/chat/room/' + this.state.fakeID)
+            .then(res => {
+                const tab = [];
+                for (var i=0; i<res.data.result.length; i++)
+                    tab.push(res.data.result[i]['content']);
+                this.setState({ listMessages: tab });
+                //console.log(this.state.listMessages);
+            })
+            .catch(err => {
+                console.log(err);
+            })
         await this.setState({
             userID: this.Auth.getIdViaToken(this.state.userToken),
             userName: this.Auth.getUsernameViaToken(this.state.userToken)
           });
 
-        await this.setState({ socket: io({
+        await this.setState({ socket: io('/chat', {
             query: {
                 token: this.state.userToken,
                 userID: this.state.userID,
-                userName: this.state.userName
+                userName: this.state.userName,
+                room_id: this.state.fakeID
               }
         }) });
-        this.state.socket.on('myroom', (data) => {
-            this.setState({ msg: data });
+        this.state.socket.on(this.state.fakeID, (data) => {
+            /* this.setState({ msg: data }); */
+            var tab = this.state.listMessages;
+            tab.push(data);
+            this.setState({ listMessages: tab });
         });
     };
+
+    msgList(props) {
+        console.log(props.msg);
+        const msg = props.msg;
+        const listItems = msg.map((number) =>
+          <li>{number}</li>
+        );
+        return (
+          <ul>{listItems}</ul>
+        );
+      }
 
     handleChange = e => {
         this.setState({ toSend: e.target.value });
@@ -92,9 +114,13 @@ class Chat extends Component {
 
     handleSubmit = async e => {
         e.preventDefault();
-        this.state.socket.emit('myroom', this.state.toSend);
+        var tab = this.state.listMessages;
+        tab.push(this.state.toSend);
+        this.setState({ listMessages: tab });
+        this.state.socket.emit(this.state.fakeID, this.state.toSend);
+        this.setState({ toSend: '' });
     }
-    
+    /* Trouver un moyen de passer l'id de la room correspondante soit par les props ou redux ou peu importe mais il faut */
 }
 
-export default Chat;
+export default withAuth(Chat);

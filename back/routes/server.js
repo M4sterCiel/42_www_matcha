@@ -4,6 +4,7 @@ let bodyParser    = require("body-parser");
 let userRoute     = require("./userRoute");
 var http          = require('http').createServer(app);
 var io            = require("socket.io").listen(http);
+var chatRoute     = require('./chatRoute');
 var chatController        = require('../controllers/chatController');
 
 const PORT        = 8080;
@@ -19,19 +20,37 @@ var clients = [];
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/users/", userRoute.router);
-//app.use("/chat/", chatRoute.router);
+app.use("/chat/", chatRoute.router);
 
 app.get("/setup", (req, resp) => {
   require("../config/setup");
   resp.send({ message: "Database Matcha created succefully" });
 });
 
-io.on('connection', (socket) => {
+var nsp = io
+.of('/chat');
+
+nsp.on('connection', (socket) => {
+
+  // Get variables
+  var userID      = socket.handshake.query['userID'];
+  var userToken   = socket.handshake.query['token'];
+  var userName    = socket.handshake.query['userName'];
+  var room_id     = socket.handshake.query['room_id'];
+
   var clientInfo = new Object();
   clientInfo.userID = socket.handshake.query['userID'];
   clientInfo.socketID = socket.id;
   clients.push(clientInfo);
   connections.push(socket);
+
+  socket.join(room_id);
+
+  socket.on(room_id, data => {
+   // console.log(data);
+    chatController.saveMessage([data, userID, room_id]);
+    socket.broadcast.emit(room_id, data);
+  })
 
   chatController.respond(socket);
 

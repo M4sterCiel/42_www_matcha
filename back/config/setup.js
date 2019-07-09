@@ -30,7 +30,7 @@ con.connect(function(err) {
   require('./database').query(likesTable, function (err, result) {
     if (err) throw err;
   });
-  var messageTable = "CREATE TABLE IF NOT EXISTS messages (id INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY, content MEDIUMTEXT NOT NULL, user_from int(11) NOT NULL, user_to int(11) NOT NULL, date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)";
+  var messageTable = "CREATE TABLE IF NOT EXISTS messages (id INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY, content MEDIUMTEXT NOT NULL, user_id int(11) NOT NULL, room_id int(11) NOT NULL, date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)";
   require('./database').query(messageTable, function (err, result) {
     if (err) throw err;
   });
