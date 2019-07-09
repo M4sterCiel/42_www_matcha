@@ -126,11 +126,25 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 }
 
 .switch-field {
-  margin: 10px auto;
+  margin: 10px auto !important;
 }
 
 .two-fields-switch {
   width: 145px;
+}
+
+.three-fields-switch {
+  width: 200px;
+}
+
+.modal-name-input {
+  margin: 10px auto;
+  width: 250px;
+}
+
+.modal-name-input input {
+  border-bottom-color: #ffb6d3;
+  box-shadow: 0 1px 0 0 #ffb6d3;
 }
 
 /* Toasts messages */

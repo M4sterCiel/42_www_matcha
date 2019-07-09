@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TextInput } from "react-materialize";
+import { TextInput, Textarea, DatePicker } from "react-materialize";
 
 class SelectGender extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class SelectGender extends Component {
 
   handleChange = e => {
     this.setState({ gender: e.target.value });
-    this.props.genderToParent(this.state.gender);
+    this.props.genderToParent(e.target.value);
   };
 
   render() {
@@ -62,12 +62,12 @@ class SelectSexOrientation extends Component {
 
   handleChange = e => {
     this.setState({ sexOrientation: e.target.value });
-    this.props.sexOrientationToParent(this.state.sexOrientation);
+    this.props.sexOrientationToParent(e.target.value);
   };
 
   render() {
     return (
-      <div className="switch-field">
+      <div className="switch-field three-fields-switch">
         <input
           type="radio"
           id="radio-three"
@@ -135,7 +135,7 @@ class InputName extends Component {
   }
 }
 
-class InputTwoFields extends Component {
+class InputTwoNames extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -145,45 +145,109 @@ class InputTwoFields extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.defaultdata);
     this.setState({
-      firstname: this.props.defaultdata.firstname,
-      lastname: this.props.defaultdata.lastname
+      firstname: this.props.firstname,
+      lastname: this.props.lastname
     });
   }
 
-  handleFirstNameKeyup = e => {
-    e.preventDefault();
-    this.props.nameToParent(this.state.firstname);
-  };
-
-  handleLastNameKeyup = e => {
-    e.preventDefault();
-    this.props.nameToParent(this.state.lastname);
-  };
-
   handleChange = e => {
-    this.setState({ name: e.target.value });
+    const name = e.target.name;
+    this.setState({ [name]: e.target.value });
+    if (name === "firstname") this.props.firstnameToParent(e.target.value);
+    else if (name === "lastname") this.props.lastnameToParent(e.target.value);
   };
 
   render() {
     return (
-      <div>
+      <div className="modal-name-input">
         <TextInput
+          name="firstname"
           label="firstname"
           value={this.state.firstname}
           onChange={this.handleChange}
-          onKeyUp={this.handleFirstNameKeyup}
         />
         <TextInput
+          name="lastname"
           label="lastname"
           value={this.state.lastname}
           onChange={this.handleChange}
-          onKeyUp={this.handleLastNameKeyup}
         />
       </div>
     );
   }
 }
 
-export { SelectGender, SelectSexOrientation, InputName, InputTwoFields };
+class InputBio extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      bio: ""
+    };
+  }
+
+  componentDidMount() {
+    this.setState({
+      bio: this.props.bio
+    });
+  }
+
+  handleChange = e => {
+    this.setState({
+      bio: e.target.value
+    });
+    this.props.bioToParent(e.target.value);
+  };
+
+  render() {
+    return (
+      <Textarea
+        label="Bio"
+        onChange={this.handleChange}
+        value={this.state.bio}
+        data-length={140}
+      />
+    );
+  }
+}
+
+class BirthdatePicker extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      birthdate: null
+    };
+  }
+
+  componentDidMount() {
+    this.setState({
+      birthdate: this.props.bio
+    });
+  }
+
+  handleChange = e => {
+    console.log(e.target.value);
+    this.setState({
+      birthdate: e.target.value
+    });
+    this.props.birthdateToParent(e.target.value);
+  };
+
+  render() {
+    return (
+      <DatePicker
+        onChange={this.handleChange}
+        options={{ defaultDate: this.state.birthdate, container: "div" }}
+      />
+    );
+  }
+}
+
+export {
+  SelectGender,
+  SelectSexOrientation,
+  InputName,
+  InputTwoNames,
+  InputBio,
+  BirthdatePicker
+};

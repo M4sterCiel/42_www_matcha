@@ -73,7 +73,7 @@ class Register extends Component {
                     <div className="register-error">
                       {this.state.lastnameError}
                     </div>
-                    <label htmlFor="lastname-register">Last name</label>
+                    <label htmlFor="lastname-register">Lastname</label>
                   </div>
                   <div className="input-field col s6 name-size">
                     <i className="material-icons prefix input-icons">
@@ -93,7 +93,7 @@ class Register extends Component {
                     <div className="register-error">
                       {this.state.firstnameError}
                     </div>
-                    <label htmlFor="firstname-register">First name</label>
+                    <label htmlFor="firstname-register">Firstname</label>
                   </div>
                   <div className="input-field col s12">
                     <i className="material-icons prefix input-icons">
@@ -249,16 +249,16 @@ class Register extends Component {
     }
   }
 
-  // Checking first name format is valid
+  // Checking firstname format is valid
   validateFirstName = () => {
     let firstnameError = "";
     let firstnameRegex = /^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*-?[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*$/;
 
     if (/\s/.test(this.state.firstname)) {
-      firstnameError = "First name cannot contain spaces";
+      firstnameError = "Firstname cannot contain spaces";
       this.setState({ firstnameValid: false });
     } else if (!this.state.firstname.match(firstnameRegex)) {
-      firstnameError = "First name is invalid";
+      firstnameError = "Firstname is invalid";
       this.setState({ firstnameValid: false });
     }
 
@@ -266,16 +266,16 @@ class Register extends Component {
     this.setState({ firstnameValid: true });
   };
 
-  // Checking last name format is valid
+  // Checking lastname format is valid
   validateLastName = () => {
     let lastnameError = "";
     let lastnameRegex = /^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*-?[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*$/;
 
     if (/\s/.test(this.state.lastname)) {
-      lastnameError = "Last name cannot contain spaces";
+      lastnameError = "Lastname cannot contain spaces";
       this.setState({ lastnameValid: false });
     } else if (!this.state.lastname.match(lastnameRegex)) {
-      lastnameError = "Last name is invalid";
+      lastnameError = "Lastname is invalid";
       this.setState({ lastnameValid: false });
     } else {
       this.setState({ lastnameValid: true });
