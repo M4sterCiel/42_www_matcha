@@ -158,7 +158,6 @@ class InputBio extends Component {
   }
 
   handleChange = e => {
-    console.log(e.target);
     this.setState({
       bio: e.target.value
     });
@@ -168,9 +167,9 @@ class InputBio extends Component {
   render() {
     return (
       <Textarea
-        label="Bio"
+        label="Say something about you..."
         onChange={this.handleChange}
-        value={this.state.bio}
+        value={this.props.bio}
         data-length={140}
       />
     );
@@ -204,9 +203,8 @@ class BirthdatePicker extends Component {
     return (
       <DatePicker
         options={{
-          defaultDate: this.state.birthdate,
+          defaultDate: new Date(this.props.birthdate),
           setDefaultDate: true,
-          format: "yyyy-mm-dd",
           container: "#root",
           onClose: this.handleChange
         }}
