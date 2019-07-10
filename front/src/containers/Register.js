@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import "./App.css";
-import NavBar from "./components/NavBar";
+import "../styles/App.css";
+import NavBar from "../components/NavBar";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
-import Materialize from "materialize-css";
-import AuthService from "./services/AuthService";
+import AuthService from "../services/AuthService";
 import { NavLink } from "react-router-dom";
 import GeoPosition from "geolocator";
 import Axios from "axios";
-//import iplocation from "iplocation";
+import { BackgroundAdd } from "../components/Background";
+import ErrorToast from "../services/ErrorToastService";
 
 class Register extends Component {
   constructor(props) {
@@ -60,7 +60,9 @@ class Register extends Component {
               <div className="card-panel">
                 <form onSubmit={this.handleSubmit}>
                   <div className="input-field col s6 name-size">
-                    <i className="material-icons prefix input-icons">person_outline</i>
+                    <i className="material-icons prefix input-icons">
+                      person_outline
+                    </i>
                     <input
                       type="text"
                       name="lastname"
@@ -75,10 +77,12 @@ class Register extends Component {
                     <div className="register-error">
                       {this.state.lastnameError}
                     </div>
-                    <label htmlFor="lastname-register">Last name</label>
+                    <label htmlFor="lastname-register">Lastname</label>
                   </div>
                   <div className="input-field col s6 name-size">
-                    <i className="material-icons prefix input-icons">person_outline</i>
+                    <i className="material-icons prefix input-icons">
+                      person_outline
+                    </i>
                     <input
                       type="text"
                       name="firstname"
@@ -93,10 +97,12 @@ class Register extends Component {
                     <div className="register-error">
                       {this.state.firstnameError}
                     </div>
-                    <label htmlFor="firstname-register">First name</label>
+                    <label htmlFor="firstname-register">Firstname</label>
                   </div>
                   <div className="input-field col s12">
-                    <i className="material-icons prefix input-icons">person_outline</i>
+                    <i className="material-icons prefix input-icons">
+                      person_outline
+                    </i>
                     <input
                       type="text"
                       name="username"
@@ -115,7 +121,9 @@ class Register extends Component {
                     <label htmlFor="username-register">Username</label>
                   </div>
                   <div className="input-field col s12">
-                    <i className="material-icons prefix input-icons">mail_outline</i>
+                    <i className="material-icons prefix input-icons">
+                      mail_outline
+                    </i>
                     <input
                       type="email"
                       name="email"
@@ -131,7 +139,9 @@ class Register extends Component {
                     <label htmlFor="email-register">Email</label>
                   </div>
                   <div className="input-field col s12">
-                    <i className="material-icons prefix input-icons">lock_outline</i>
+                    <i className="material-icons prefix input-icons">
+                      lock_outline
+                    </i>
                     <input
                       type="password"
                       name="pwd"
@@ -191,7 +201,9 @@ class Register extends Component {
                     <label htmlFor="pwd-login">Password</label>
                   </div>
                   <div className="input-field col s12">
-                    <i className="material-icons prefix input-icons">lock_outline</i>
+                    <i className="material-icons prefix input-icons">
+                      lock_outline
+                    </i>
                     <input
                       type="password"
                       name="rep-pwd"
@@ -238,19 +250,15 @@ class Register extends Component {
 
   // Redirect user if already logged in
   componentWillMount() {
+    BackgroundAdd();
     if (this.Auth.loggedIn()) {
-      let message = "you are already logged in";
-      Materialize.toast({
-        html: message,
-        displayLength: 1000,
-        classes: "rounded error-toast"
-      });
+      ErrorToast.auth.userAlreadyLogged();
       this.props.history.replace("/");
     }
     this.getLocation();
-    }
+  }
 
-  showPosition = (pos) => {
+  showPosition = pos => {
     var options = {
       enableHighAccuracy: true,
       desiredAccuracy: 30,
@@ -259,28 +267,28 @@ class Register extends Component {
       maximumAge: 0,
       fallbackToIP: true,
       addressLookup: true
-  };
+    };
     GeoPosition.locate(options, (err, location) => {
       console.log(err || location);
-      this.setState({ userLocation: location});
+      this.setState({ userLocation: location });
       this.setState({ locationValid: true });
     });
   };
 
-  errorPosition = (error) => {
+  errorPosition = error => {
     var options = {
       homeMobileCountryCode: 208,
       homeMobileNetworkCode: 1,
-      carrier: 'Orange',
+      carrier: "Orange",
       radioType: GeoPosition.RadioType.GSM,
       fallbackToIP: true,
       addressLookup: true,
       timezone: false
-  }; 
+    };
     GeoPosition.locateByMobile(options, (err, location) => {
-        console.log(err || location);
-        this.setState({ userLocation: location});
-        this.setState({ locationValid: true });
+      console.log(err || location);
+      this.setState({ userLocation: location });
+      this.setState({ locationValid: true });
     });
   };
 
@@ -288,24 +296,27 @@ class Register extends Component {
     GeoPosition.config({
       language: "en",
       google: {
-          version: "3",
-          key: "AIzaSyCrQGnPtopWTSK9joyPAxlEGcl535KlQQQ"
+        version: "3",
+        key: "AIzaSyCrQGnPtopWTSK9joyPAxlEGcl535KlQQQ"
       }
-  });
+    });
 
-  navigator.geolocation.getCurrentPosition(this.showPosition, this.errorPosition);
-};
+    navigator.geolocation.getCurrentPosition(
+      this.showPosition,
+      this.errorPosition
+    );
+  };
 
-  // Checking first name format is valid
+  // Checking firstname format is valid
   validateFirstName = () => {
     let firstnameError = "";
     let firstnameRegex = /^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*-?[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*$/;
 
     if (/\s/.test(this.state.firstname)) {
-      firstnameError = "First name cannot contain spaces";
+      firstnameError = "Firstname cannot contain spaces";
       this.setState({ firstnameValid: false });
     } else if (!this.state.firstname.match(firstnameRegex)) {
-      firstnameError = "First name is invalid";
+      firstnameError = "Firstname is invalid";
       this.setState({ firstnameValid: false });
     }
 
@@ -313,16 +324,16 @@ class Register extends Component {
     this.setState({ firstnameValid: true });
   };
 
-  // Checking last name format is valid
+  // Checking lastname format is valid
   validateLastName = () => {
     let lastnameError = "";
     let lastnameRegex = /^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*-?[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*$/;
 
     if (/\s/.test(this.state.lastname)) {
-      lastnameError = "Last name cannot contain spaces";
+      lastnameError = "Lastname cannot contain spaces";
       this.setState({ lastnameValid: false });
     } else if (!this.state.lastname.match(lastnameRegex)) {
-      lastnameError = "Last name is invalid";
+      lastnameError = "Lastname is invalid";
       this.setState({ lastnameValid: false });
     } else {
       this.setState({ lastnameValid: true });
@@ -427,35 +438,28 @@ class Register extends Component {
   // Submitting user data to backend
   handleSubmit = async e => {
     e.preventDefault();
-    await Axios.post('/users/register', {
+    await Axios.post("/users/register", {
       lastname: this.capitalizeFirstLetter(this.state.lastname.toLowerCase()),
-        firstname: this.capitalizeFirstLetter(
-          this.state.firstname.toLowerCase()
-        ),
-        username: this.state.username.toLowerCase(),
-        email: this.state.email.toLowerCase(),
-        pwd1: this.state.pwd1,
-        pwd2: this.state.pwd2,
-        location: this.state.userLocation
+      firstname: this.capitalizeFirstLetter(this.state.firstname.toLowerCase()),
+      username: this.state.username.toLowerCase(),
+      email: this.state.email.toLowerCase(),
+      pwd1: this.state.pwd1,
+      pwd2: this.state.pwd2,
+      location: this.state.userLocation
     })
       .then(res => {
         this.setState({ responseToPost: res.data });
         Materialize.toast({
-        html: "An email has been sent",
-        displayLength: 5000,
-        classes: "rounded confirm-toast"
+          html: "An email has been sent",
+          displayLength: 5000,
+          classes: "rounded confirm-toast"
         });
         this.props.history.push("/users/login");
       })
       .catch(err => {
-        let message = err.response.data['error'];
-        Materialize.toast({
-        html: message,
-        displayLength: 5000,
-        classes: "rounded error-toast"
-        });
-       // console.log(err.response.data['error']);
-      })
+        let message = err.response.data["error"];
+        ErrorToast.default.error(message);
+      });
   };
 }
 

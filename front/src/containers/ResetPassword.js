@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import "./App.css";
-import NavBar from "./components/NavBar";
+import "../styles/App.css";
+import NavBar from "../components/NavBar";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
-import Materialize from "materialize-css";
-import AuthService from "./services/AuthService";
+import AuthService from "../services/AuthService";
 import { NavLink } from "react-router-dom";
+import ErrorToast from "../services/ErrorToastService";
+import InfoToast from "../services/InfoToastService";
 
 class ResetPassword extends Component {
   constructor(props) {
@@ -144,12 +145,7 @@ class ResetPassword extends Component {
   // Redirect user if already logged in
   componentDidMount() {
     if (this.Auth.loggedIn()) {
-      let message = "you are already logged in";
-      Materialize.toast({
-        html: message,
-        displayLength: 1000,
-        classes: "rounded error-toast"
-      });
+      ErrorToast.auth.userAlreadyLogged();
       this.props.history.replace("/");
     } else {
       this.callApi()
@@ -162,12 +158,7 @@ class ResetPassword extends Component {
         .catch(err => {
           console.log(err);
           this.props.history.replace("/users/login");
-          let message = "password reset key is invalid";
-          Materialize.toast({
-            html: message,
-            displayLength: 1000,
-            classes: "rounded error-toast"
-          });
+          ErrorToast.auth.invalidPwdResetKey();
         });
     }
   }
@@ -252,20 +243,11 @@ class ResetPassword extends Component {
     const body = await response.text();
     if (response.ok) {
       this.setState({ responseToPost: body });
-      let message = "password has been changed";
-      Materialize.toast({
-        html: message,
-        displayLength: 1200,
-        classes: "rounded info-toast"
-      });
+      InfoToast.auth.changedPassword();
       this.props.history.push("/users/login");
     } else {
       let message = body.substr(10, body.length - 12);
-      Materialize.toast({
-        html: message,
-        displayLength: 1000,
-        classes: "rounded error-toast"
-      });
+      ErrorToast.default.error(message);
     }
   };
 }

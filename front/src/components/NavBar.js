@@ -21,10 +21,10 @@ class NavBar extends Component {
       return (
         <ul className="right hide-on-med-and-down">
           <li>
-            <a href={"/users/profile/" + Auth.getConfirm().username}>
+            <NavLink to={"/users/profile/" + Auth.getConfirm().username}>
               {" "}
               My profile{" "}
-            </a>
+            </NavLink>
           </li>
           <li>
             <button className="nav-buttons" onClick={logout}>
