@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TextInput, Textarea, DatePicker } from "react-materialize";
+import { TextInput, Textarea, DatePicker, Chip } from "react-materialize";
 
 class SelectGender extends Component {
   constructor(props) {
@@ -214,10 +214,36 @@ class BirthdatePicker extends Component {
   }
 }
 
+class InterestTags extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      myTagsArray: ["1", "2", "3"],
+      defaultTagsArray: ["4", "5", "6"]
+    };
+  }
+
+  render() {
+    const myTags = this.state.myTagsArray.map(tagEl => (
+      <Chip close={true}>{tagEl}</Chip>
+    ));
+    const defaultTags = this.state.defaultTagsArray.map(tagEl => (
+      <Chip close={false}>{tagEl}</Chip>
+    ));
+    return (
+      <div className="tags-component">
+        {myTags}
+        {defaultTags}
+      </div>
+    );
+  }
+}
+
 export {
   SelectGender,
   SelectSexOrientation,
   InputTwoNames,
   InputBio,
-  BirthdatePicker
+  BirthdatePicker,
+  InterestTags
 };

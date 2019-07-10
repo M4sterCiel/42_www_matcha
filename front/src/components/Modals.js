@@ -4,7 +4,8 @@ import {
   SelectSexOrientation,
   InputTwoNames,
   InputBio,
-  BirthdatePicker
+  BirthdatePicker,
+  InterestTags
 } from "./EditProfileInfo";
 import { Modal } from "react-materialize";
 
@@ -151,6 +152,7 @@ class ModalUserEditProfileInfo extends Component {
               birthdate={this.state.birthdate}
             />
           )}
+          <InterestTags />
         </Modal>
       </div>
     );
