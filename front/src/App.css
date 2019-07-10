@@ -274,6 +274,22 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   height: 30px;
 }
 
+/* Chat page */
+
+#messageView {
+  height: 400px;
+  overflow: hidden;
+  scroll-behavior: auto;
+}
+
+.messagesLeft {
+  text-align: left;
+}
+
+.messagesRigth {
+  text-align: right;
+}
+
 /* MEDIA QUERIES FOR RESPONSIVE */
 
 @media screen and (max-width: 1000px) {

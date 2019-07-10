@@ -7,16 +7,16 @@ var io            = require("socket.io").listen(http);
 var chatRoute     = require('./chatRoute');
 var chatController        = require('../controllers/chatController');
 
+/* Listenning port */
+
 const PORT        = 8080;
 
 http.listen(PORT, () => {
   console.log("Listening on port: ", PORT);
 });
 
-var connections = [];
-var clients = [];
-
 /* Middlewares */
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/users/", userRoute.router);
@@ -27,6 +27,23 @@ app.get("/setup", (req, resp) => {
   resp.send({ message: "Database Matcha created succefully" });
 });
 
+
+/* Socket.io */
+
+var connections = [];
+var clients = [];
+var onlineTab = [];
+
+var online = io.on('connection', (socket) => {
+  onlineTab.push(socket);
+
+  console.log("%d socket(s) online", onlineTab.length);
+
+  socket.on('disconnect', () => {
+    onlineTab.splice(-1, 1);
+    console.log("%d socket(s) online", onlineTab.length);
+  })
+})
 var nsp = io
 .of('/chat');
 
@@ -49,10 +66,8 @@ nsp.on('connection', (socket) => {
   socket.on(room_id, data => {
    // console.log(data);
     chatController.saveMessage([data, userID, room_id]);
-    socket.broadcast.emit(room_id, data);
+    socket.broadcast.emit(room_id, { data, userID, userName });
   })
-
-  chatController.respond(socket);
 
   socket.on('disconnect', () => {
     connections.splice(-1, 1);
@@ -65,48 +80,5 @@ nsp.on('connection', (socket) => {
       }
     }
   });
-  console.log(clients);
+  //console.log(clients);
 });
-
-/* io.on('connection', (socket) => {
-  
-  var clientInfo = new Object();
-  clientInfo.userID = socket.handshake.query['userID'];
-  clientInfo.socketID = socket.id;
-  clients.push(clientInfo);
-
-  connections.push(socket);
-  //console.log(socket.handshake.query);
-  console.log("%s user(s) connected", connections.length);
-  //console.log(socket.id);
-
-  socket.join('myroom');
-  socket.broadcast.emit('plop', "a new user joined the room");
-  socket.broadcast.emit('online', socket.handshake.query['userName'] + " joined the room");
-  io.to('myroom').emit('hello', 'world');
-  socket.on('hello', (data) => {
-    //console.log(data);
-  });
-  socket.on('myroom', data => {
-    console.log(data);
-    socket.broadcast.emit('myroom', data);
-  })
-  socket.on('disconnect', () => {
-    connections.splice(-1, 1);
-    for( var i=0, len=clients.length; i<len; ++i ){
-      var c = clients[i];
-
-      if(c.socketID == socket.id){
-          clients.splice(i,1);
-          break;
-      }
-  }
-    console.log("disconnected");
-    console.log("%s user(s) connected", connections.length);
-  });
-  console.log(clients);
-});
-
-io.in('myroom').emit('hello', 'world');
-
- */

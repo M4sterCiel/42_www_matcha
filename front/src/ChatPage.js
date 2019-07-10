@@ -23,7 +23,7 @@ class Chat extends Component {
             userID: '',
             userName: '',
             userToken: this.Auth.getToken(),
-            fakeID: 12345
+            fakeID: 1234589
         }
     }
 
@@ -34,8 +34,10 @@ class Chat extends Component {
                 <div>
                     <h1>Chat Session</h1>
                     <br></br>
-                    <div id="message">
-                        <this.msgList msg={this.state.listMessages} />
+                    <div id="messageView">
+                        <this.msgList 
+                        value={this.state.listMessages} 
+                        />
                     </div>
                 </div>
                 <form onSubmit={ this.handleSubmit }>
@@ -69,7 +71,12 @@ class Chat extends Component {
             .then(res => {
                 const tab = [];
                 for (var i=0; i<res.data.result.length; i++)
-                    tab.push(res.data.result[i]['content']);
+                    tab.push({
+                        id: i,
+                        value: res.data.result[i]['content'],
+                        userID: res.data.result[i]['user_id'],
+                        date: res.data.result[i]['date']
+                    });
                 this.setState({ listMessages: tab });
                 //console.log(this.state.listMessages);
             })
@@ -90,18 +97,24 @@ class Chat extends Component {
               }
         }) });
         this.state.socket.on(this.state.fakeID, (data) => {
-            /* this.setState({ msg: data }); */
+            console.log(data);
             var tab = this.state.listMessages;
-            tab.push(data);
+            tab.push({
+                id: this.state.listMessages.length + 1,
+                value: data['data'],
+                userID: data['user_id'],
+                date: ''
+            });
             this.setState({ listMessages: tab });
+            console.log(tab);
         });
     };
 
-    msgList(props) {
-        console.log(props.msg);
-        const msg = props.msg;
-        const listItems = msg.map((number) =>
-          <li>{number}</li>
+    msgList = (props) => {
+       // console.log(this.state.userID);
+        const value = props.value;
+        const listItems = value.map((e) =>
+          <li className={this.state.userID === e.userID ? "messagesRigth" : "messagesLeft"} user_id={e.userID} key={e.id}>{e.value}</li>
         );
         return (
           <ul>{listItems}</ul>
@@ -115,12 +128,17 @@ class Chat extends Component {
     handleSubmit = async e => {
         e.preventDefault();
         var tab = this.state.listMessages;
-        tab.push(this.state.toSend);
+        tab.push({
+            id: this.state.listMessages.length + 1,
+            value: this.state.toSend,
+            userID: this.state.userID,
+            date: ''
+        });
         this.setState({ listMessages: tab });
         this.state.socket.emit(this.state.fakeID, this.state.toSend);
         this.setState({ toSend: '' });
     }
-    /* Trouver un moyen de passer l'id de la room correspondante soit par les props ou redux ou peu importe mais il faut */
+    /* Trouver un moyen de passer l'id de la room correspondante soit par les props ou redux ou peu importe mais il le faut */
 }
 
 export default withAuth(Chat);
