@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./App.css";
+import "./styles/App.css";
 import NavBar from "./components/NavBar";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
@@ -114,7 +114,7 @@ class Chat extends Component {
        // console.log(this.state.userID);
         const value = props.value;
         const listItems = value.map((e) =>
-          <li className={this.state.userID === e.userID ? "messagesRigth" : "messagesLeft"} user_id={e.userID} key={e.id}>{e.value}</li>
+          <li className={this.state.userID === e.userID ? "messagesRight" : "messagesLeft"} user_id={e.userID} key={e.id}>{e.value}</li>
         );
         return (
           <ul>{listItems}</ul>

@@ -9,6 +9,7 @@ import GeoPosition from "geolocator";
 import Axios from "axios";
 import { BackgroundAdd } from "../components/Background";
 import ErrorToast from "../services/ErrorToastService";
+import Materialize from "react-materialize";
 
 class Register extends Component {
   constructor(props) {

@@ -301,7 +301,6 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   margin-bottom: -1em;
 }
 
-<<<<<<< HEAD:front/src/App.css
 /* Delete user component */
 
 .delete-btn {
@@ -321,9 +320,10 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   text-align: left;
 }
 
-.messagesRigth {
+.messagesRight {
   text-align: right;
-=======
+}
+
 .tooltip .tooltip-text {
   visibility: hidden;
   width: 120px;
@@ -450,7 +450,6 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 .datepicker-cancel,
 .datepicker-done {
   color: #ffb6d3 !important;
->>>>>>> Lucas:front/src/styles/App.css
 }
 
 /* MEDIA QUERIES FOR RESPONSIVE */
