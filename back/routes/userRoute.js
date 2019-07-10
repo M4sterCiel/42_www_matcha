@@ -13,6 +13,7 @@ exports.router = (() => {
     .get(userController.checkPasswordResetKey);
   userRouter.route("/reset-password/:key").post(userController.updatePassword);
   userRouter.route("/register").post(userController.createUser);
+  userRouter.route('/delete-account').delete(userController.deleteUser);
 
   return userRouter;
 })();

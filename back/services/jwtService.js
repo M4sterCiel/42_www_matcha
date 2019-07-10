@@ -33,5 +33,13 @@ module.exports = {
       } catch (err) {}
     }
     return userId;
+  },
+
+  verifyToken: token => {
+    if (token != null) {
+        var jwtToken = jwt.verify(token, PRIVATE_KEY);
+        if (jwtToken != null) return (true);
+        else return (false);
+    }
   }
 };

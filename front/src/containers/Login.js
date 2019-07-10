@@ -6,6 +6,7 @@ import FacebookLogin from "react-facebook-login";
 import "materialize-css/dist/css/materialize.min.css";
 import AuthService from "../services/AuthService";
 import { NavLink } from "react-router-dom";
+import Axios from "axios";
 import { BackgroundAdd } from "../components/Background";
 import ErrorToast from "../services/ErrorToastService";
 
@@ -177,23 +178,20 @@ class Login extends Component {
   // On user button submit, execute this
   handleSubmit = async e => {
     e.preventDefault();
-    const response = await fetch("/users/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        login: this.state.login.toLowerCase(),
-        pwd: this.state.pwd
+    Axios.post("/users/login", {
+      login: this.state.login.toLowerCase(),
+      pwd: this.state.pwd
+    })
+      .then(res => {
+        //console.log(res.data);
+        this.setState({ responseToPost: res.status });
+        localStorage.setItem("Token", res.data["token"]);
+        this.props.history.push("/");
       })
-    });
-
-    const body = await response.json();
-    if (response.ok) {
-      this.setState({ responseToPost: body.status });
-      localStorage.setItem("Token", body.token);
-      this.props.history.push("/");
-    } else {
-      ErrorToast.auth.userAlreadyLogged();
-    }
+      .catch(err => {
+        console.log(err);
+        ErrorToast.auth.userAlreadyLogged();
+      });
   };
 }
 

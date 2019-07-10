@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import AuthService from "../services/AuthService";
+import io from 'socket.io-client';
 
 // HOC to wrap component and verify authentication
 export default function withAuth(AuthComponent) {
@@ -21,6 +22,11 @@ export default function withAuth(AuthComponent) {
           this.setState({
             confirm: confirm,
             loaded: true
+          });
+          const socket = io({
+            query: {
+              userID: confirm.id
+            }
           });
         } catch (err) {
           console.log(err);

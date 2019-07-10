@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import "../containers/App";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
+import Materialize from "materialize-css";
+import Axios from "axios";
 
 class ConfirmAddr extends Component {
   constructor(props) {
@@ -12,27 +14,29 @@ class ConfirmAddr extends Component {
   }
 
   componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ status: res.message }))
-      .catch(err => console.log(err));
+    let key = document.location.href;
+    key = key.split("/");
+    Axios.get("/users/register/" + key[key.length - 1])
+      .then(res => {
+        Materialize.toast({
+          html: res.data["message"],
+          displayLength: 5000,
+          classes: "rounded confirm-toast"
+        });
+        this.props.history.push("/");
+      })
+      .catch(err => {
+        Materialize.toast({
+          html: "An error has occurred",
+          displayLength: 5000,
+          classes: "rounded error-toast"
+        });
+        this.props.history.push("/");
+      });
   }
 
-  callApi = async () => {
-    var key = document.location.href;
-    key = key.split("/");
-    const response = await fetch("/users/register/" + key[key.length - 1]);
-    const body = await response.json();
-
-    if (response.status !== 200) throw Error(body.message);
-    return body;
-  };
-
   render() {
-    return (
-      <div className="App">
-        <p>Page de validation du lien a construire</p>
-      </div>
-    );
+    return <div className="App" />;
   }
 }
 

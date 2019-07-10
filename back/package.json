@@ -12,6 +12,7 @@
   "author": "ralleman, lcordeno",
   "license": "MIT",
   "dependencies": {
+    "@google/maps": "^0.5.5",
     "body-parser": "^1.19.0",
     "concurrently": "^4.1.0",
     "cookie-parser": "^1.4.4",
@@ -27,5 +28,6 @@
     "querystring": "^0.2.0",
     "request": "^2.69.0",
     "socket.io": "^2.2.0"
-  }
+  },
+  "devDependencies": {}
 }

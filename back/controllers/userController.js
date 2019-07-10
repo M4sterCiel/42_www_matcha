@@ -75,8 +75,8 @@ module.exports = {
       var updated = await userModel.updateRegister(req.params.key);
       if (updated)
         return res.status(200).json({ message: "Successfully activated" });
-      else return res.status(500).json({ message: "couldn't update status" });
-    } else return res.status(500).json({ message: "couldn't update status" });
+      else return res.status(400).json({ message: "couldn't update status" });
+    } else return res.status(400).json({ message: "couldn't update status" });
   },
 
   createUser: async (req, res, next) => {
@@ -87,6 +87,9 @@ module.exports = {
     var mail      = req.body.email;
     var pwd1      = req.body.pwd1;
     var pwd2      = req.body.pwd2;
+    var city      = req.body.location['address']['city'];
+    var latitude  = req.body.location['coords']['latitude'];
+    var longitude = req.body.location['coords']['longitude'];
 
     //Check inputs
     var err;
@@ -111,27 +114,15 @@ module.exports = {
       firstname,
       username,
       mail,
-      pwd1
+      pwd1,
+      city,
+      latitude,
+      longitude
     ]);
     if (ret.status == "User created with success")
       return res.status(201).send(ret.status);
     else return res.status(400).send(ret.status);
   },
-
-  /*   getUserProfile: async (req, res, next) => {
-    //Check if session is expired
-    var headerAuth = req.headers["authorization"];
-    var userId = jwtUtils.getUserId(headerAuth);
-
-    if (userId == -1) return res.status(401).json({ error: "Invalid token" });
-
-    // Get data from db
-    var userData = await UserService.getUserData(userId);
-    if (userData.error)
-      return res.status(401).json({ message: userData.error });
-
-    return res.status(200).json({ data: userData });
-  }, */
 
   getUserProfile: async (req, res, next) => {
     // Get user id from username
@@ -142,6 +133,24 @@ module.exports = {
     if (userData.error)
       return res.status(401).json({ message: userData.error });
 
-    return res.status(200).json({ data: userData });
+    var userPicture = await UserService.getProfilePicture(userId);
+    
+    if (userData.error)
+      return res.status(401).json({ message: userData.error });
+
+    return res.status(200).json({ data: userData, picture: userPicture });
+  },
+
+  deleteUser: async (req, res, next) => {
+
+    var authorization = req.headers['authorization'];
+    var userId = jwtUtils.getUserId(authorization);
+
+    if (userId != -1)
+    {
+      var ret = await userModel.deleteUser(userId);
+      //console.log(ret);
+    }
+    return res.status(200).json({ msg: "Bravoooo!" });
   }
 };

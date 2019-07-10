@@ -5,8 +5,11 @@ import NavBar from "../components/NavBar";
 import "materialize-css/dist/css/materialize.min.css";
 import AuthService from "../services/AuthService";
 import { NavLink } from "react-router-dom";
+import GeoPosition from "geolocator";
+import Axios from "axios";
 import { BackgroundAdd } from "../components/Background";
 import ErrorToast from "../services/ErrorToastService";
+import Materialize from "react-materialize";
 
 class Register extends Component {
   constructor(props) {
@@ -29,11 +32,13 @@ class Register extends Component {
       usernameValid: false,
       emailValid: false,
       pwd1Valid: false,
+      locationValid: false,
       pwd1VerifyBox: "box-disabled",
       pwdHasLowercase: false,
       pwdHasUppercase: false,
       pwdHasNumber: false,
       pwdHasMinLen: false,
+      userLocation: "",
       responseToPost: ""
     };
     this.Auth = new AuthService();
@@ -102,6 +107,7 @@ class Register extends Component {
                     <input
                       type="text"
                       name="username"
+                      autoComplete="username"
                       id="username-register"
                       value={this.state.username}
                       onChange={e =>
@@ -141,6 +147,7 @@ class Register extends Component {
                       type="password"
                       name="pwd"
                       id="pwd-login"
+                      autoComplete="new-password"
                       value={this.state.pwd1}
                       onChange={e => this.setState({ pwd1: e.target.value })}
                       onKeyUp={this.handlePwdKeyUp}
@@ -202,6 +209,7 @@ class Register extends Component {
                       type="password"
                       name="rep-pwd"
                       id="rep-pwd-login"
+                      autoComplete="new-password"
                       value={this.state.pwd2}
                       onChange={e => this.setState({ pwd2: e.target.value })}
                       onKeyUp={this.handlePwdKeyUp}
@@ -222,6 +230,7 @@ class Register extends Component {
                       !this.state.usernameValid ||
                       !this.state.emailValid ||
                       !this.state.pwd1Valid ||
+                      !this.state.locationValid ||
                       this.state.pwd2 !== this.state.pwd1
                     }
                   />
@@ -247,7 +256,57 @@ class Register extends Component {
       ErrorToast.auth.userAlreadyLogged();
       this.props.history.replace("/");
     }
+    this.getLocation();
   }
+
+  showPosition = pos => {
+    var options = {
+      enableHighAccuracy: true,
+      desiredAccuracy: 30,
+      timeout: 5000,
+      maximumWait: 5000,
+      maximumAge: 0,
+      fallbackToIP: true,
+      addressLookup: true
+    };
+    GeoPosition.locate(options, (err, location) => {
+      console.log(err || location);
+      this.setState({ userLocation: location });
+      this.setState({ locationValid: true });
+    });
+  };
+
+  errorPosition = error => {
+    var options = {
+      homeMobileCountryCode: 208,
+      homeMobileNetworkCode: 1,
+      carrier: "Orange",
+      radioType: GeoPosition.RadioType.GSM,
+      fallbackToIP: true,
+      addressLookup: true,
+      timezone: false
+    };
+    GeoPosition.locateByMobile(options, (err, location) => {
+      console.log(err || location);
+      this.setState({ userLocation: location });
+      this.setState({ locationValid: true });
+    });
+  };
+
+  getLocation = () => {
+    GeoPosition.config({
+      language: "en",
+      google: {
+        version: "3",
+        key: "AIzaSyCrQGnPtopWTSK9joyPAxlEGcl535KlQQQ"
+      }
+    });
+
+    navigator.geolocation.getCurrentPosition(
+      this.showPosition,
+      this.errorPosition
+    );
+  };
 
   // Checking firstname format is valid
   validateFirstName = () => {
@@ -380,29 +439,28 @@ class Register extends Component {
   // Submitting user data to backend
   handleSubmit = async e => {
     e.preventDefault();
-    const response = await fetch("/users/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        lastname: this.capitalizeFirstLetter(this.state.lastname.toLowerCase()),
-        firstname: this.capitalizeFirstLetter(
-          this.state.firstname.toLowerCase()
-        ),
-        username: this.state.username.toLowerCase(),
-        email: this.state.email.toLowerCase(),
-        pwd1: this.state.pwd1,
-        pwd2: this.state.pwd2
+    await Axios.post("/users/register", {
+      lastname: this.capitalizeFirstLetter(this.state.lastname.toLowerCase()),
+      firstname: this.capitalizeFirstLetter(this.state.firstname.toLowerCase()),
+      username: this.state.username.toLowerCase(),
+      email: this.state.email.toLowerCase(),
+      pwd1: this.state.pwd1,
+      pwd2: this.state.pwd2,
+      location: this.state.userLocation
+    })
+      .then(res => {
+        this.setState({ responseToPost: res.data });
+        Materialize.toast({
+          html: "An email has been sent",
+          displayLength: 5000,
+          classes: "rounded confirm-toast"
+        });
+        this.props.history.push("/users/login");
       })
-    });
-
-    const body = await response.text();
-    if (response.ok) {
-      this.setState({ responseToPost: body });
-      this.props.history.push("/users/login");
-    } else {
-      let message = body.substr(10, body.length - 12);
-      ErrorToast.default.error(message);
-    }
+      .catch(err => {
+        let message = err.response.data["error"];
+        ErrorToast.default.error(message);
+      });
   };
 }
 
