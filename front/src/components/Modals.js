@@ -5,7 +5,8 @@ import {
   InputTwoNames,
   InputBio,
   BirthdatePicker,
-  InterestTags
+  InterestTags,
+  SelectLocation
 } from "./EditProfileInfo";
 import { Modal } from "react-materialize";
 
@@ -48,6 +49,7 @@ class ModalUserEditProfileInfo extends Component {
       lastname: "",
       bio: "",
       birthdate: "",
+      interests: [],
       username: ""
     };
     this.handleGenderData = this.handleGenderData.bind(this);
@@ -56,6 +58,7 @@ class ModalUserEditProfileInfo extends Component {
     this.handleLastnameData = this.handleLastnameData.bind(this);
     this.handleBioData = this.handleBioData.bind(this);
     this.handleBirthdateData = this.handleBirthdateData.bind(this);
+    this.handleInterestsData = this.handleInterestsData.bind(this);
   }
 
   componentDidMount() {
@@ -107,6 +110,12 @@ class ModalUserEditProfileInfo extends Component {
     });
   }
 
+  handleInterestsData(data) {
+    this.setState({
+      interests: data
+    });
+  }
+
   render() {
     return (
       <div>
@@ -152,7 +161,11 @@ class ModalUserEditProfileInfo extends Component {
               birthdate={this.state.birthdate}
             />
           )}
-          <InterestTags />
+          <InterestTags
+            interestsToParent={this.handleInterestsData}
+            interests={this.state.interests}
+          />
+          <SelectLocation />
         </Modal>
       </div>
     );

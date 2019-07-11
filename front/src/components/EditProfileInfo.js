@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { TextInput, Textarea, DatePicker, Chip } from "react-materialize";
+import GeoPosition from "geolocator";
 
 class SelectGender extends Component {
   constructor(props) {
@@ -288,18 +289,89 @@ class InterestTags extends Component {
       />
     ));
 
+    const emptyTags = <p class="no-tags-message">No interests yet</p>;
+
     return (
       <div className="tags-component">
         <div>
-          <p>Your tags</p>
-          {myTags}
+          <p>Your interests:</p>
+          {myTags.length ? myTags : emptyTags}
         </div>
         <div className="chips-default-tags">
-          <p>Select other tags from</p>
+          <p>Add interests from:</p>
           {defaultTags}
         </div>
       </div>
     );
+  }
+}
+
+class SelectLocation extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      lat: "",
+      long: "",
+      address: ""
+    };
+  }
+
+  componentDidMount() {
+    this.getLocation();
+  }
+
+  showPosition = pos => {
+    var options = {
+      enableHighAccuracy: true,
+      desiredAccuracy: 30,
+      timeout: 5000,
+      maximumWait: 5000,
+      maximumAge: 0,
+      fallbackToIP: true,
+      addressLookup: true
+    };
+    GeoPosition.locate(options, (err, location) => {
+      console.log(err || location);
+      this.setState({ userLocation: location });
+      this.setState({ address: location.formattedAddress });
+      this.setState({ locationValid: true });
+    });
+  };
+
+  errorPosition = error => {
+    var options = {
+      homeMobileCountryCode: 208,
+      homeMobileNetworkCode: 1,
+      carrier: "Orange",
+      radioType: GeoPosition.RadioType.GSM,
+      fallbackToIP: true,
+      addressLookup: true,
+      timezone: false
+    };
+    GeoPosition.locateByMobile(options, (err, location) => {
+      console.log(err || location);
+      this.setState({ userLocation: location });
+      this.setState({ locationValid: true });
+    });
+  };
+
+  getLocation = () => {
+    GeoPosition.config({
+      language: "en",
+      google: {
+        version: "3",
+        key: "AIzaSyCrQGnPtopWTSK9joyPAxlEGcl535KlQQQ"
+      }
+    });
+
+    navigator.geolocation.getCurrentPosition(
+      this.showPosition,
+      this.errorPosition
+    );
+  };
+
+  render() {
+    return <div>{this.state.address}</div>;
   }
 }
 
@@ -309,5 +381,6 @@ export {
   InputTwoNames,
   InputBio,
   BirthdatePicker,
-  InterestTags
+  InterestTags,
+  SelectLocation
 };

@@ -471,6 +471,13 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
   background-color: #ffb6d3 !important;
 }
 
+.no-tags-message {
+  line-height: 32px;
+  color: grey;
+  opacity: 0.5;
+  margin: 40px 0px 30px 0px;
+}
+
 /* MEDIA QUERIES FOR RESPONSIVE */
 
 @media screen and (max-width: 1000px) {
