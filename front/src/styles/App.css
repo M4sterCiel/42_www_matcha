@@ -459,6 +459,7 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 }
 
 .chips {
+  display: inline-block;
   border-bottom: none;
 }
 

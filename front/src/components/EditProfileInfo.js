@@ -221,32 +221,73 @@ class InterestTags extends Component {
       myTagsArray: ["sea", "sex", "fun"],
       defaultTagsArray: ["beer", "pizza", "alcohol"]
     };
+    this.chipSelectDefault = this.chipSelectDefault.bind(this);
+    this.chipDelete = this.chipDelete.bind(this);
+  }
+
+  createMyTags(tab) {
+    this.setState({
+      myTagsArray: tab
+    });
+  }
+
+  chipDelete() {
+    const tagElements = document.querySelectorAll(".my-tags-chip > .chip");
+    let tagsTab = [];
+    for (var value of tagElements.values()) {
+      tagsTab = tagsTab.concat(value.innerText.replace("\nclose", ""));
+    }
+    this.createMyTags(tagsTab);
+  }
+
+  chipSelectDefault(target) {
+    if (
+      !this.state.myTagsArray.find(
+        tag => tag === target[0].children[0].innerText
+      )
+    ) {
+      this.setState(state => {
+        const myTagsArray = state.myTagsArray.concat(
+          target[0].children[0].innerText
+        );
+        return {
+          myTagsArray
+        };
+      });
+    }
   }
 
   render() {
-    const myTagsData = this.state.myTagsArray.map(tagEl => ({
-      tag: tagEl
-    }));
-    const myTags = (
-      <Chip
-        options={{ data: myTagsData, onChipDelete: console.log("delete") }}
-      />
-    );
-    const defaultTagsData = this.state.defaultTagsArray.map(tagEl => ({
-      tag: tagEl
-    }));
-    function chipSelect() {
-      console.log("Chips Clicked");
+    function tagToArray(tagValue) {
+      return [
+        {
+          tag: tagValue
+        }
+      ];
     }
-    const defaultTags = (
+
+    const myTags = this.state.myTagsArray.map(tagEl => (
       <Chip
+        key={tagEl}
+        options={{
+          data: tagToArray(tagEl),
+          onChipDelete: this.chipDelete
+        }}
+        className="my-tags-chip"
+      />
+    ));
+
+    const defaultTags = this.state.defaultTagsArray.map(tagEl => (
+      <Chip
+        key={tagEl}
         close={false}
         options={{
-          data: defaultTagsData,
-          onChipSelect: chipSelect
+          data: tagToArray(tagEl),
+          onChipSelect: this.chipSelectDefault
         }}
       />
-    );
+    ));
+
     return (
       <div className="tags-component">
         <div>
