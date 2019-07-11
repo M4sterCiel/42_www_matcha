@@ -452,6 +452,24 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
   color: #ffb6d3 !important;
 }
 
+/* Interest Tags */
+
+.chips input {
+  display: none !important;
+}
+
+.chips {
+  border-bottom: none;
+}
+
+.chips-default-tags i {
+  display: none;
+}
+
+.chip {
+  background-color: #ffb6d3 !important;
+}
+
 /* MEDIA QUERIES FOR RESPONSIVE */
 
 @media screen and (max-width: 1000px) {

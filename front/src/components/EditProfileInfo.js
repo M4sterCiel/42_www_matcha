@@ -218,22 +218,45 @@ class InterestTags extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      myTagsArray: ["1", "2", "3"],
-      defaultTagsArray: ["4", "5", "6"]
+      myTagsArray: ["sea", "sex", "fun"],
+      defaultTagsArray: ["beer", "pizza", "alcohol"]
     };
   }
 
   render() {
-    const myTags = this.state.myTagsArray.map(tagEl => (
-      <Chip close={true}>{tagEl}</Chip>
-    ));
-    const defaultTags = this.state.defaultTagsArray.map(tagEl => (
-      <Chip close={false}>{tagEl}</Chip>
-    ));
+    const myTagsData = this.state.myTagsArray.map(tagEl => ({
+      tag: tagEl
+    }));
+    const myTags = (
+      <Chip
+        options={{ data: myTagsData, onChipDelete: console.log("delete") }}
+      />
+    );
+    const defaultTagsData = this.state.defaultTagsArray.map(tagEl => ({
+      tag: tagEl
+    }));
+    function chipSelect() {
+      console.log("Chips Clicked");
+    }
+    const defaultTags = (
+      <Chip
+        close={false}
+        options={{
+          data: defaultTagsData,
+          onChipSelect: chipSelect
+        }}
+      />
+    );
     return (
       <div className="tags-component">
-        {myTags}
-        {defaultTags}
+        <div>
+          <p>Your tags</p>
+          {myTags}
+        </div>
+        <div className="chips-default-tags">
+          <p>Select other tags from</p>
+          {defaultTags}
+        </div>
       </div>
     );
   }
