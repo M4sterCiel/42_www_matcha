@@ -8,7 +8,7 @@ class ProfileSettingsButton extends Component {
         floating
         fab={{ direction: "left", hoverEnabled: false }}
         icon="settings"
-        className="blue"
+        className="blue pulse"
         large
       >
         <Button
@@ -42,7 +42,7 @@ class ProfileActionsButton extends Component {
         floating
         fab={{ direction: "left", hoverEnabled: false }}
         icon="more_vert"
-        className="red"
+        className="red pulse"
         large
       >
         <Button

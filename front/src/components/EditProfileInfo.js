@@ -1,6 +1,14 @@
 import React, { Component } from "react";
-import { TextInput, Textarea, DatePicker, Chip } from "react-materialize";
+import {
+  TextInput,
+  Textarea,
+  DatePicker,
+  Chip,
+  Autocomplete
+} from "react-materialize";
 import GeoPosition from "geolocator";
+import InfoToast from "../services/InfoToastService";
+import cities from "../assets/data-json/cities";
 
 class SelectGender extends Component {
   constructor(props) {
@@ -14,6 +22,7 @@ class SelectGender extends Component {
     this.setState({
       gender: this.props.gender
     });
+    console.log(cities["France"]);
   }
 
   handleChange = e => {
@@ -255,6 +264,10 @@ class InterestTags extends Component {
           myTagsArray
         };
       });
+    } else {
+      InfoToast.default.info(
+        `Tag ${target[0].children[0].innerText} has already been added`
+      );
     }
   }
 
@@ -314,10 +327,12 @@ class SelectLocation extends Component {
       long: "",
       address: ""
     };
+    this.citiesJSON = cities["France"];
   }
 
   componentDidMount() {
     this.getLocation();
+    this.getGeocode();
   }
 
   showPosition = pos => {
@@ -370,8 +385,42 @@ class SelectLocation extends Component {
     );
   };
 
+  getGeocode = () => {
+    GeoPosition.config({
+      language: "en",
+      google: {
+        version: "3",
+        key: "AIzaSyCrQGnPtopWTSK9joyPAxlEGcl535KlQQQ"
+      }
+    });
+
+    var address = "Paris";
+    GeoPosition.geocode(address, function(err, location) {
+      console.log(err || location);
+    });
+  };
+
   render() {
-    return <div>{this.state.address}</div>;
+    return (
+      <div className="location-component">
+        <Autocomplete
+          options={{
+            data: this
+              .citiesJSON /* {
+                            "Gus Fring": null,
+              "Saul Goodman": null,
+              "Tuco Salamanca":
+                "https://upload.wikimedia.org/wikipedia/commons/6/62/Flag_of_France.png"
+            } */
+          }}
+          placeholder="Insert here"
+          icon="textsms"
+        />
+
+        <p>You live in:</p>
+        {this.state.address}
+      </div>
+    );
   }
 }
 

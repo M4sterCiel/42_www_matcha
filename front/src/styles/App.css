@@ -469,6 +469,11 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 
 .chip {
   background-color: #ffb6d3 !important;
+  cursor: pointer;
+}
+
+.chip:focus {
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .no-tags-message {
