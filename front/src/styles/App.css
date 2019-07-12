@@ -301,6 +301,10 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   margin-bottom: -1em;
 }
 
+.prefix.active {
+  color: #ffb6d3 !important;
+}
+
 /* Delete user component */
 
 .delete-btn {

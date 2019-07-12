@@ -349,6 +349,7 @@ class SelectLocation extends Component {
       console.log(err || location);
       this.setState({ userLocation: location });
       this.setState({ address: location.formattedAddress });
+      this.setState({ city: location.address.city });
       this.setState({ locationValid: true });
     });
   };
@@ -413,12 +414,14 @@ class SelectLocation extends Component {
                 "https://upload.wikimedia.org/wikipedia/commons/6/62/Flag_of_France.png"
             } */
           }}
-          placeholder="Insert here"
-          icon="textsms"
+          placeholder="Insert city here"
+          icon="place"
         />
 
         <p>You live in:</p>
         {this.state.address}
+        <br />
+        {this.state.city}
       </div>
     );
   }
