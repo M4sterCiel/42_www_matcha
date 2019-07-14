@@ -55,8 +55,8 @@ class NavBar extends Component {
       else return <LoggedOutLinks />;
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-      var elems = document.querySelectorAll('.sidenav');
+    document.addEventListener("DOMContentLoaded", function() {
+      var elems = document.querySelectorAll(".sidenav");
       var instances = M.Sidenav.init(elems);
     });
 
@@ -67,7 +67,7 @@ class NavBar extends Component {
             <NavLink to="/" className="brand-logo">
               <img className="header-logo" src={logo} alt="" />
             </NavLink>
-            <a href="#" data-target="mobile-demo" className="sidenav-trigger">
+            <a data-target="mobile-demo" className="sidenav-trigger">
               <i className="material-icons">menu</i>
             </a>
             <NavLinks />

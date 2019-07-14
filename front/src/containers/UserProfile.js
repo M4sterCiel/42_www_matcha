@@ -24,7 +24,6 @@ class UserProfile extends Component {
 
   render() {
     if (!this.state.user.id) return null;
-    console.log(this.props);
     return (
       <div className="App">
         <NavBar />
@@ -61,7 +60,9 @@ class UserProfile extends Component {
                     <span className="card-title black-text">
                       {this.state.user.firstname} {this.state.user.lastname}
                     </span>
-                    <ModalUserEditProfileInfo userData={this.state.user} />
+                    {this.state.user.id === this.props.userConnectedData.id && (
+                      <ModalUserEditProfileInfo userData={this.state.user} />
+                    )}
                   </div>
                 </div>
               </div>

@@ -61,6 +61,8 @@ class ModalUserEditProfileInfo extends Component {
     this.handleBioData = this.handleBioData.bind(this);
     this.handleBirthdateData = this.handleBirthdateData.bind(this);
     this.handleInterestsData = this.handleInterestsData.bind(this);
+    this.handleCoordLatData = this.handleCoordLatData.bind(this);
+    this.handleCoordLongData = this.handleCoordLongData.bind(this);
   }
 
   componentDidMount() {
@@ -120,6 +122,17 @@ class ModalUserEditProfileInfo extends Component {
     });
   }
 
+  handleCoordLatData(lat) {
+    this.setState({
+      geo_lat: lat
+    });
+  }
+  handleCoordLongData(long) {
+    this.setState({
+      geo_long: long
+    });
+  }
+
   render() {
     return (
       <div>
@@ -172,6 +185,8 @@ class ModalUserEditProfileInfo extends Component {
           <SelectLocation
             lat={this.props.userData.geo_lat}
             long={this.props.userData.geo_long}
+            latToParent={this.handleCoordLatData}
+            longToParent={this.handleCoordLongData}
           />
         </Modal>
       </div>

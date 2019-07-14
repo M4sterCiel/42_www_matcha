@@ -4,7 +4,9 @@ import {
   Textarea,
   DatePicker,
   Chip,
-  Autocomplete
+  Autocomplete,
+  Button,
+  Icon
 } from "react-materialize";
 import GeoPosition from "geolocator";
 import InfoToast from "../services/InfoToastService";
@@ -324,7 +326,9 @@ class SelectLocation extends Component {
     this.state = {
       lat: "",
       long: "",
-      city: ""
+      city: "",
+      cityInput: "",
+      editLocationActive: false
     };
     this.citiesJSON = cities["France"];
   }
@@ -336,6 +340,16 @@ class SelectLocation extends Component {
       lat: this.props.lat,
       long: this.props.long
     });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.city !== prevState.city &&
+      prevState.city !== undefined &&
+      prevState.city !== ""
+    ) {
+      InfoToast.default.info("Your city has been changed");
+    }
   }
 
   initGeolocator = () => {
@@ -361,8 +375,12 @@ class SelectLocation extends Component {
     GeoPosition.locate(options, (err, location) => {
       console.log(err || location);
       this.setState({ userLocation: location });
-      this.setState({ address: location.formattedAddress });
+      this.setState({ city: location.address.city });
+      this.setState({ lat: location.coords.latitude });
+      this.setState({ long: location.coords.longitude });
       this.setState({ locationValid: true });
+      this.props.latToParent(location.coords.latitude);
+      this.props.longToParent(location.coords.longitude);
     });
   };
 
@@ -379,7 +397,12 @@ class SelectLocation extends Component {
     GeoPosition.locateByMobile(options, (err, location) => {
       console.log(err || location);
       this.setState({ userLocation: location });
+      this.setState({ city: location.address.city });
+      this.setState({ lat: location.coords.latitude });
+      this.setState({ long: location.coords.longitude });
       this.setState({ locationValid: true });
+      this.props.latToParent(location.coords.latitude);
+      this.props.longToParent(location.coords.longitude);
     });
   };
 
@@ -402,19 +425,104 @@ class SelectLocation extends Component {
     });
   };
 
+  getLatLongFromCity = city => {
+    GeoPosition.geocode(city, (err, location) => {
+      console.log(err || location);
+      this.setState({
+        lat: location.coords.latitude,
+        long: location.coords.longitude
+      });
+      this.props.latToParent(location.coords.latitude);
+      this.props.longToParent(location.coords.longitude);
+    });
+  };
+
+  showEditLocation = () => {
+    this.setState({
+      editLocationActive: true
+    });
+  };
+
+  hideEditLocation = () => {
+    this.setState({
+      editLocationActive: false
+    });
+  };
+
+  switchEditLocation = () => {
+    if (this.state.editLocationActive) this.hideEditLocation();
+    else this.showEditLocation();
+  };
+
+  geolocateMe = () => {
+    this.getLocation();
+    this.hideEditLocation();
+    InfoToast.default.info("Please wait while you are being geolocated...");
+  };
+
+  confirmAutoCity = () => {
+    document.querySelectorAll(".edit-location-submit")[0].disabled = false;
+  };
+
+  handleAutocompleteSubmit = () => {
+    this.setState({
+      city: document.querySelectorAll(".edit-location-autoc-input > input")[0]
+        .value
+    });
+    this.getLatLongFromCity(
+      document.querySelectorAll(".edit-location-autoc-input > input")[0].value
+    );
+    this.hideEditLocation();
+  };
+
+  handleAutocompleteChange = () => {
+    document.querySelectorAll(".edit-location-submit")[0].disabled = true;
+  };
+
   render() {
     return (
       <div className="location-component">
-        <Autocomplete
-          options={{
-            data: this.citiesJSON
-          }}
-          placeholder="Insert city here"
-          icon="place"
-        />
-
-        <p>You live in:</p>
+        <p>Your city is:</p>
         {this.state.city}
+        <Button
+          waves="light"
+          style={{ marginLeft: "15px" }}
+          onClick={this.switchEditLocation}
+        >
+          Edit
+          <Icon left>edit_location</Icon>
+        </Button>
+        {this.state.editLocationActive ? (
+          <div className="edit-location-input">
+            <div className="edit-location-autoc">
+              <Autocomplete
+                className="edit-location-autoc-input"
+                style={{ display: "inline-block" }}
+                options={{
+                  data: this.citiesJSON,
+                  minLength: 3,
+                  onAutocomplete: this.confirmAutoCity
+                }}
+                placeholder="Insert city here"
+                icon="place"
+                onChange={this.handleAutocompleteChange}
+              />
+              <Button
+                className="edit-location-submit"
+                onClick={this.handleAutocompleteSubmit}
+              >
+                Confirm
+              </Button>
+            </div>
+            <p>Or</p>
+            <Button waves="light" onClick={this.geolocateMe}>
+              Geolocate me
+              <Icon left>location_searching</Icon>
+            </Button>
+          </div>
+        ) : (
+          false
+        )}
       </div>
     );
   }
