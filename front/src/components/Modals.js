@@ -50,6 +50,8 @@ class ModalUserEditProfileInfo extends Component {
       bio: "",
       birthdate: "",
       interests: [],
+      geo_lat: null,
+      geo_long: null,
       username: ""
     };
     this.handleGenderData = this.handleGenderData.bind(this);
@@ -70,6 +72,8 @@ class ModalUserEditProfileInfo extends Component {
       bio: this.props.userData.bio,
       birthdate:
         this.props.userData.birthdate !== null && this.props.userData.birthdate,
+      geo_lat: this.props.userData.geo_lat,
+      geo_long: this.props.userData.geo_long,
       username: this.props.userData.username
     });
   }
@@ -165,7 +169,10 @@ class ModalUserEditProfileInfo extends Component {
             interestsToParent={this.handleInterestsData}
             interests={this.state.interests}
           />
-          <SelectLocation />
+          <SelectLocation
+            lat={this.props.userData.geo_lat}
+            long={this.props.userData.geo_long}
+          />
         </Modal>
       </div>
     );

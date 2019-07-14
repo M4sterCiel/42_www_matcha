@@ -22,7 +22,6 @@ class SelectGender extends Component {
     this.setState({
       gender: this.props.gender
     });
-    console.log(cities["France"]);
   }
 
   handleChange = e => {
@@ -325,15 +324,29 @@ class SelectLocation extends Component {
     this.state = {
       lat: "",
       long: "",
-      address: ""
+      city: ""
     };
     this.citiesJSON = cities["France"];
   }
 
   componentDidMount() {
-    this.getLocation();
-    this.getGeocode();
+    this.initGeolocator();
+    this.getCityFromLatLong(this.props.lat, this.props.long);
+    this.setState({
+      lat: this.props.lat,
+      long: this.props.long
+    });
   }
+
+  initGeolocator = () => {
+    GeoPosition.config({
+      language: "en",
+      google: {
+        version: "3",
+        key: "AIzaSyCrQGnPtopWTSK9joyPAxlEGcl535KlQQQ"
+      }
+    });
+  };
 
   showPosition = pos => {
     var options = {
@@ -349,7 +362,6 @@ class SelectLocation extends Component {
       console.log(err || location);
       this.setState({ userLocation: location });
       this.setState({ address: location.formattedAddress });
-      this.setState({ city: location.address.city });
       this.setState({ locationValid: true });
     });
   };
@@ -372,32 +384,21 @@ class SelectLocation extends Component {
   };
 
   getLocation = () => {
-    GeoPosition.config({
-      language: "en",
-      google: {
-        version: "3",
-        key: "AIzaSyCrQGnPtopWTSK9joyPAxlEGcl535KlQQQ"
-      }
-    });
-
     navigator.geolocation.getCurrentPosition(
       this.showPosition,
       this.errorPosition
     );
   };
 
-  getGeocode = () => {
-    GeoPosition.config({
-      language: "en",
-      google: {
-        version: "3",
-        key: "AIzaSyCrQGnPtopWTSK9joyPAxlEGcl535KlQQQ"
-      }
-    });
+  getCityFromLatLong = (lat, long) => {
+    const coords = {
+      latitude: lat,
+      longitude: long
+    };
 
-    var address = "Paris";
-    GeoPosition.geocode(address, function(err, location) {
-      console.log(err || location);
+    GeoPosition.reverseGeocode(coords, (err, location) => {
+      console.log(err || location.address.city);
+      this.setState({ city: location.address.city });
     });
   };
 
@@ -406,21 +407,13 @@ class SelectLocation extends Component {
       <div className="location-component">
         <Autocomplete
           options={{
-            data: this
-              .citiesJSON /* {
-                            "Gus Fring": null,
-              "Saul Goodman": null,
-              "Tuco Salamanca":
-                "https://upload.wikimedia.org/wikipedia/commons/6/62/Flag_of_France.png"
-            } */
+            data: this.citiesJSON
           }}
           placeholder="Insert city here"
           icon="place"
         />
 
         <p>You live in:</p>
-        {this.state.address}
-        <br />
         {this.state.city}
       </div>
     );
