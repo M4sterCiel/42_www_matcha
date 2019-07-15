@@ -26,7 +26,7 @@ con.connect(function(err) {
   require('./database').query(historyTable, function (err, result) {
     if (err) throw err;
   });
-  var likesTable = "CREATE TABLE IF NOT EXISTS likes (id INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY, user_1 int(11) NOT NULL, user_2 int(11) NOT NULL, date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)";
+  var likesTable = "CREATE TABLE IF NOT EXISTS likes (id INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY, user_1 int(11) NOT NULL, user_2 int(11) NOT NULL, username_1 VARCHAR(255), username_2 VARCHAR(255), date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)";
   require('./database').query(likesTable, function (err, result) {
     if (err) throw err;
   });

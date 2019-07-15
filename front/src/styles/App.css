@@ -310,6 +310,41 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 
 /* Chat page */
 
+.collection-item:hover {
+  background-color: rgba(96, 96, 100, 0.1);
+}
+.clickable {
+  cursor: pointer;
+}
+
+#green-circle {
+  background: rgb(66, 183, 42); 
+  border-radius: 50%; 
+  display: inline-block; 
+  height: 10px; 
+  margin-left: 4px; 
+  width: 10px;
+}
+
+#grey-circle {
+  background: rgb(110, 114, 109); 
+  border-radius: 50%; 
+  display: inline-block; 
+  height: 10px; 
+  margin-left: 4px; 
+  width: 10px;
+}
+
+.chatBox {
+  width: 300px;
+}
+.chat-conv-container {
+  width: 100%;
+  max-width: 100% !important;
+  margin: 0 auto;
+  padding: 0 .5rem;
+}
+
 #messageView {
   height: 400px;
   overflow: hidden;

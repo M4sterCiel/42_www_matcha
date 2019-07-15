@@ -105,5 +105,17 @@ module.exports = {
     catch (err) {
       throw new Error(err);
     }
+  },
+
+  saveStatus: async userID => {
+    try {
+      var result = await pool.query({
+        sql: "UPDATE users SET `online`= 1 WHERE `id`= ?",
+        values: userID
+      });
+      return result.affectedRows;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 };

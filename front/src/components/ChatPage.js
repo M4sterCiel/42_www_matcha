@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import "./styles/App.css";
-import NavBar from "./components/NavBar";
+import "../styles/App.css";
+import NavBar from "./NavBar";
 //import Footer from './components/Footer';
 import "materialize-css/dist/css/materialize.min.css";
 import io from 'socket.io-client';
-import AuthService from "./services/AuthService";
+import AuthService from "../services/AuthService";
 import Axios from "axios";
-import withAuth from "./components/withAuth";
+import withAuth from "./withAuth";
 
 
 class Chat extends Component {
@@ -32,7 +32,6 @@ class Chat extends Component {
             <div className="App">
                 <NavBar />
                 <div>
-                    <h1>Chat Session</h1>
                     <br></br>
                     <div id="messageView">
                         <this.msgList 

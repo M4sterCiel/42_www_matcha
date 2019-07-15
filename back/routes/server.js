@@ -35,13 +35,27 @@ var clients = [];
 var onlineTab = [];
 
 var online = io.on('connection', (socket) => {
-  onlineTab.push(socket);
+  onlineTab.push({ 
+    userID: socket.handshake.query['userID'],
+    socketID: socket.id
+  });
 
+  chatController.saveStatus(socket.handshake.query['userID']);
   console.log("%d socket(s) online", onlineTab.length);
+  console.log(onlineTab);
+
+  socket.broadcast.emit('online', {
+    user_id: socket.handshake.query['userID'],
+    status: 'Online' });
 
   socket.on('disconnect', () => {
-    onlineTab.splice(-1, 1);
+    for (var i=0;i<onlineTab.length;i++)
+    {
+      if (onlineTab[i]['socketID'] == socket.id)
+        onlineTab.splice(i, 1);
+    }
     console.log("%d socket(s) online", onlineTab.length);
+    console.log(onlineTab);
   })
 })
 var nsp = io

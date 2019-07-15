@@ -8,7 +8,8 @@ import ForgotPassword from "./containers/ForgotPassword";
 import ResetPassword from "./containers/ResetPassword";
 import UserProfile from "./containers/UserProfile";
 import NotFound from "./containers/NotFound";
-import ChatPage from "./ChatPage";
+import ChatPage from "./components/ChatPage";
+import ChatConv from "./components/ChatConv";
 
 export default function MainRouter() {
   return (
@@ -22,7 +23,8 @@ export default function MainRouter() {
           <Route path="/users/forgot-password" component={ForgotPassword} />
           <Route path="/users/reset-password/:key" component={ResetPassword} />
           <Route path="/users/profile/:username" component={UserProfile} />
-          <Route path="/chat/:room_id" component={ChatPage} />
+          <Route path="/chat/room/:room_id" component={ChatPage} />
+          <Route path="/chat/conv" component={ChatConv} />
           <Route component={NotFound} />
         </Switch>
       </div>

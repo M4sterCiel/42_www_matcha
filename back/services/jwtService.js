@@ -38,8 +38,9 @@ module.exports = {
   verifyToken: token => {
     if (token != null) {
         var jwtToken = jwt.verify(token, PRIVATE_KEY);
-        if (jwtToken != null) return (true);
-        else return (false);
+        //console.log(jwtToken);
+        if (jwtToken != null) return (jwtToken);
+        else return (null);
     }
   }
 };
