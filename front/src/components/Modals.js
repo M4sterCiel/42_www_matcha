@@ -8,6 +8,7 @@ import {
   InterestTags,
   SelectLocation
 } from "./EditProfileInfo";
+import { EditProfilePictures } from "./EditProfilePictures";
 import { Modal } from "react-materialize";
 
 class ModalUserCompleteProfile extends Component {
@@ -194,4 +195,26 @@ class ModalUserEditProfileInfo extends Component {
   }
 }
 
-export { ModalUserCompleteProfile, ModalUserEditProfileInfo };
+class ModalUserEditProfilePictures extends Component {
+  render() {
+    return (
+      <div>
+        <Modal
+          id="edit-pictures-modal"
+          className="modals"
+          header="Edit your profile pictures"
+          fixedFooter
+          trigger={false}
+        >
+          <EditProfilePictures />
+        </Modal>
+      </div>
+    );
+  }
+}
+
+export {
+  ModalUserCompleteProfile,
+  ModalUserEditProfileInfo,
+  ModalUserEditProfilePictures
+};

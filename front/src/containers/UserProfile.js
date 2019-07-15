@@ -6,7 +6,10 @@ import {
   ProfileSettingsButton,
   ProfileActionsButton
 } from "../components/Buttons";
-import { ModalUserEditProfileInfo } from "../components/Modals";
+import {
+  ModalUserEditProfileInfo,
+  ModalUserEditProfilePictures
+} from "../components/Modals";
 import ApiCall from "../services/ApiCall";
 import ErrorToast from "../services/ErrorToastService";
 
@@ -62,6 +65,9 @@ class UserProfile extends Component {
                     </span>
                     {this.state.user.id === this.props.userConnectedData.id && (
                       <ModalUserEditProfileInfo userData={this.state.user} />
+                    )}
+                    {this.state.user.id === this.props.userConnectedData.id && (
+                      <ModalUserEditProfilePictures />
                     )}
                   </div>
                 </div>

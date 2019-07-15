@@ -22,7 +22,8 @@ class ProfileSettingsButton extends Component {
           floating
           tooltip="add a photo"
           icon="add_a_photo"
-          className="blue"
+          className="blue modal-trigger"
+          href="#edit-pictures-modal"
         />
         <Button
           floating
