@@ -2,10 +2,10 @@ import Materialize from "materialize-css";
 
 export default {
   default: {
-    error: message => {
+    error: (message, length) => {
       Materialize.toast({
         html: message,
-        displayLength: 1000,
+        displayLength: length,
         classes: "rounded error-toast"
       });
     }

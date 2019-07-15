@@ -10,6 +10,7 @@ import {
 } from "react-materialize";
 import GeoPosition from "geolocator";
 import InfoToast from "../services/InfoToastService";
+import ErrorToast from "../services/ErrorToastService";
 import cities from "../assets/data-json/cities";
 
 class SelectGender extends Component {
@@ -326,7 +327,7 @@ class SelectLocation extends Component {
     this.state = {
       lat: "",
       long: "",
-      city: "",
+      city: "Not set",
       cityInput: "",
       editLocationActive: false
     };
@@ -335,18 +336,21 @@ class SelectLocation extends Component {
 
   componentDidMount() {
     this.initGeolocator();
-    this.getCityFromLatLong(this.props.lat, this.props.long);
-    this.setState({
-      lat: this.props.lat,
-      long: this.props.long
-    });
+    if (this.props.lat && this.props.long) {
+      this.getCityFromLatLong(this.props.lat, this.props.long);
+      this.setState({
+        lat: this.props.lat,
+        long: this.props.long
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (
       this.state.city !== prevState.city &&
       prevState.city !== undefined &&
-      prevState.city !== ""
+      prevState.city !== "" &&
+      prevState.city !== "Not set"
     ) {
       InfoToast.default.info("Your city has been changed");
     }
@@ -421,19 +425,31 @@ class SelectLocation extends Component {
 
     GeoPosition.reverseGeocode(coords, (err, location) => {
       console.log(err || location.address.city);
-      this.setState({ city: location.address.city });
+      if (location.address.city) this.setState({ city: location.address.city });
+      else
+        ErrorToast.default.error(
+          "Couldn't get city from coordinates, please try again later...",
+          1400
+        );
     });
   };
 
   getLatLongFromCity = city => {
     GeoPosition.geocode(city, (err, location) => {
       console.log(err || location);
-      this.setState({
-        lat: location.coords.latitude,
-        long: location.coords.longitude
-      });
-      this.props.latToParent(location.coords.latitude);
-      this.props.longToParent(location.coords.longitude);
+      if (location !== null && location.coords.longitude !== null) {
+        this.setState({
+          lat: location.coords.latitude,
+          long: location.coords.longitude
+        });
+        this.props.latToParent(location.coords.latitude);
+        this.props.longToParent(location.coords.longitude);
+      } else {
+        ErrorToast.default.error(
+          "Couldn't get coordinates from city entered",
+          1000
+        );
+      }
     });
   };
 
@@ -465,14 +481,20 @@ class SelectLocation extends Component {
   };
 
   handleAutocompleteSubmit = () => {
-    this.setState({
-      city: document.querySelectorAll(".edit-location-autoc-input > input")[0]
-        .value
-    });
-    this.getLatLongFromCity(
+    if (
       document.querySelectorAll(".edit-location-autoc-input > input")[0].value
-    );
-    this.hideEditLocation();
+    ) {
+      this.setState({
+        city: document.querySelectorAll(".edit-location-autoc-input > input")[0]
+          .value
+      });
+      this.getLatLongFromCity(
+        document.querySelectorAll(".edit-location-autoc-input > input")[0].value
+      );
+      this.hideEditLocation();
+    } else {
+      ErrorToast.default.error("Please enter a city", 1400);
+    }
   };
 
   handleAutocompleteChange = () => {

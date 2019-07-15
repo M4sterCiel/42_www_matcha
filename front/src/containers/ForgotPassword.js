@@ -124,7 +124,7 @@ class ForgotPassword extends Component {
       InfoToast.mail.resetPassword();
       this.props.history.push("/");
     } else {
-      ErrorToast.default.error(body.message);
+      ErrorToast.default.error(body.message, 1000);
     }
   };
 }
