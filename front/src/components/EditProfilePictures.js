@@ -30,16 +30,7 @@ class EditProfilePictures extends Component {
     };
   }
 
-  componentDidMount() {
-    /*     let boxes = document.querySelectorAll(".picture-box");
-
-    for (let i = 0; i < boxes.length; i++) {
-      let box = boxes[i];
-      let mainPic = this.state.pictures[i].mainPic;
-      let url = this.state.pictures[i].url;
-      this.initImageUpload(box, mainPic, url);
-    } */
-  }
+  componentDidMount() {}
 
   handlePictureSelect = (id, e) => {
     let file = e.target.files[0];
