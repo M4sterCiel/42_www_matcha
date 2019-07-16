@@ -44,37 +44,6 @@ class EditProfilePictures extends Component {
     }
   };
 
-  processPicture = (file, target, id) => {
-    let reader = new FileReader();
-
-    reader.onload = () => {
-      target
-        .closest(".picture-box")
-        .querySelector(".js--image-preview").style.backgroundImage =
-        "url(" + reader.result + ")";
-    };
-
-    reader.onloadend = () => {
-      this.setState(state => {
-        const pictures = state.pictures;
-        pictures[id].url = reader.result;
-        return {
-          pictures
-        };
-      });
-    };
-    reader.readAsDataURL(file);
-    if (
-      target
-        .closest(".picture-box")
-        .querySelector(".js--image-preview")
-        .className.indexOf("js--no-default") === -1
-    )
-      target
-        .closest(".picture-box")
-        .querySelector(".js--image-preview").className += " js--no-default";
-  };
-
   isPictureTypeValid = file => {
     let imageType = /image.*/;
     if (!file.type.match(imageType)) {
@@ -95,6 +64,63 @@ class EditProfilePictures extends Component {
         this.processPicture(file, target, id);
       }
     };
+  };
+
+  processPicture = (file, target, id) => {
+    let reader = new FileReader();
+
+    reader.onload = () => {
+      target
+        .closest(".picture-box")
+        .querySelector(".js--image-preview").style.backgroundImage =
+        "url(" + reader.result + ")";
+    };
+
+    reader.onloadend = () => {
+      this.setState(state => {
+        const pictures = state.pictures;
+        pictures[id].url = reader.result;
+        return {
+          pictures
+        };
+      });
+    };
+    reader.readAsDataURL(file);
+    this.setNoPictureDefault(target);
+    /*     if (
+      target
+        .closest(".picture-box")
+        .querySelector(".js--image-preview")
+        .className.indexOf("js--no-default") === -1
+    )
+      target
+        .closest(".picture-box")
+        .querySelector(".js--image-preview").className += " js--no-default"; */
+  };
+
+  setNoPictureDefault = target => {
+    if (
+      target
+        .closest(".picture-box")
+        .querySelector(".js--image-preview")
+        .className.indexOf("js--no-default") === -1
+    )
+      target
+        .closest(".picture-box")
+        .querySelector(".js--image-preview").className += " js--no-default";
+  };
+
+  removeNoPictureDefault = target => {
+    if (
+      target
+        .closest(".picture-box")
+        .querySelector(".js--image-preview")
+        .className.indexOf("js--no-default") !== -1
+    )
+      target
+        .closest(".picture-box")
+        .querySelector(".js--image-preview")
+        .classList.remove("js--no-default");
   };
 
   showEditPictureUI = e => {
@@ -121,6 +147,23 @@ class EditProfilePictures extends Component {
     e.target
       .closest(".js--image-preview")
       .querySelector(".placeholder-message-no-pic").style.display = "none";
+  };
+
+  handleRemovePicture = (id, e) => {
+    e.target
+      .closest(".picture-box")
+      .querySelector(".js--image-preview").style.backgroundImage = "url()";
+    this.setState(state => {
+      const pictures = state.pictures;
+      pictures[id].url = "";
+      return {
+        pictures
+      };
+    });
+    console.log(e.target);
+    this.removeNoPictureDefault(
+      e.target.closest(".picture-box").querySelector(".js--image-preview")
+    );
   };
 
   render() {
@@ -154,6 +197,7 @@ class EditProfilePictures extends Component {
                 className="red btn-delete-picture"
                 tooltip="Delete picture"
                 waves="light"
+                onClick={e => this.handleRemovePicture(index, e)}
               />
             </div>
           )}
