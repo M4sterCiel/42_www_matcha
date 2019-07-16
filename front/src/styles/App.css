@@ -625,14 +625,26 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 
 button.btn-star-picture {
   position: absolute;
-  opacity: 0.2;
+  opacity: 0.5;
   top: 10%;
   right: 5%;
 }
 
 button.btn-delete-picture {
   position: absolute;
+  opacity: 0.5;
   top: 70%;
+  right: 5%;
+}
+
+.btn-star-picture:hover,
+.btn-delete-picture:hover {
+  opacity: 1 !important;
+}
+
+button.btn-star-picture-main {
+  position: absolute;
+  top: 10%;
   right: 5%;
 }
 

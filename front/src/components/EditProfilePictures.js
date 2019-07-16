@@ -66,6 +66,12 @@ class EditProfilePictures extends Component {
     };
   };
 
+  doesMainProfilePicExist = pictures => {
+    return pictures.some(picture => {
+      return picture["mainPic"] === true;
+    });
+  };
+
   processPicture = (file, target, id) => {
     let reader = new FileReader();
 
@@ -80,22 +86,32 @@ class EditProfilePictures extends Component {
       this.setState(state => {
         const pictures = state.pictures;
         pictures[id].url = reader.result;
+        if (!this.doesMainProfilePicExist(pictures))
+          pictures[id].mainPic = true;
         return {
           pictures
         };
       });
     };
     reader.readAsDataURL(file);
+    target.closest(".picture-box").querySelector(".image-upload").value = "";
     this.setNoPictureDefault(target);
-    /*     if (
-      target
-        .closest(".picture-box")
-        .querySelector(".js--image-preview")
-        .className.indexOf("js--no-default") === -1
-    )
-      target
-        .closest(".picture-box")
-        .querySelector(".js--image-preview").className += " js--no-default"; */
+  };
+
+  makePictureMainProfilePicture = id => {
+    if (id === false) {
+      return;
+    }
+    this.setState(state => {
+      const pictures = state.pictures;
+      pictures.forEach(picture => {
+        picture.mainPic = false;
+      });
+      pictures[id].mainPic = true;
+      return {
+        pictures
+      };
+    });
   };
 
   setNoPictureDefault = target => {
@@ -149,18 +165,35 @@ class EditProfilePictures extends Component {
       .querySelector(".placeholder-message-no-pic").style.display = "none";
   };
 
+  findExistingPicture = id => {
+    let i = 0;
+    while (i < this.state.pictures.length) {
+      if (i === id) {
+        i++;
+      } else if (this.state.pictures[i].url !== "") {
+        return i;
+      } else {
+        i++;
+      }
+    }
+    return false;
+  };
+
   handleRemovePicture = (id, e) => {
     e.target
       .closest(".picture-box")
       .querySelector(".js--image-preview").style.backgroundImage = "url()";
+    if (this.state.pictures[id].mainPic === true) {
+      this.makePictureMainProfilePicture(this.findExistingPicture(id));
+    }
     this.setState(state => {
       const pictures = state.pictures;
       pictures[id].url = "";
+      pictures[id].mainPic = false;
       return {
         pictures
       };
     });
-    console.log(e.target);
     this.removeNoPictureDefault(
       e.target.closest(".picture-box").querySelector(".js--image-preview")
     );
@@ -183,22 +216,36 @@ class EditProfilePictures extends Component {
           }
         >
           {picture.url !== "" && (
-            <div className="btn-container-edit-picture">
-              <Button
-                floating
-                icon="star"
-                className="blue btn-star-picture"
-                tooltip="Make profile picture"
-                waves="light"
-              />
-              <Button
-                floating
-                icon="delete"
-                className="red btn-delete-picture"
-                tooltip="Delete picture"
-                waves="light"
-                onClick={e => this.handleRemovePicture(index, e)}
-              />
+            <div>
+              {picture.mainPic && (
+                <Button
+                  floating
+                  icon="star"
+                  className="blue btn-star-picture-main"
+                  tooltip="Main profile picture"
+                  waves="light"
+                />
+              )}
+              <div className="btn-container-edit-picture">
+                {!picture.mainPic && (
+                  <Button
+                    floating
+                    icon="star"
+                    className="blue btn-star-picture"
+                    tooltip="Make profile picture"
+                    waves="light"
+                    onClick={() => this.makePictureMainProfilePicture(index)}
+                  />
+                )}
+                <Button
+                  floating
+                  icon="delete"
+                  className="red btn-delete-picture"
+                  tooltip="Delete picture"
+                  waves="light"
+                  onClick={e => this.handleRemovePicture(index, e)}
+                />
+              </div>
             </div>
           )}
           {picture.url === "" && (
