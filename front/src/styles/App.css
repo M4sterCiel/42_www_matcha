@@ -525,6 +525,10 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
   background-color: lighten(#ffb6d3, 10%);
 }
 
+.upload-options:hover i.material-icons {
+  color: white !important;
+}
+
 .upload-options input {
   width: 0.1px;
   height: 0.1px;
@@ -535,6 +539,7 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 }
 
 .upload-options label {
+  color: white;
   display: flex;
   align-items: center;
   width: 100%;
@@ -544,6 +549,10 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
   white-space: nowrap;
   cursor: pointer;
   overflow: hidden;
+}
+
+.upload-options:hover {
+  background-color: #ffe9f2;
 }
 
 .picture-edit-add-icon {
@@ -608,6 +617,33 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
     opacity: 0;
     transform: scale(2.5);
   }
+}
+
+.btn-container-edit-picture {
+  display: none;
+}
+
+button.btn-star-picture {
+  position: absolute;
+  opacity: 0.2;
+  top: 10%;
+  right: 5%;
+}
+
+button.btn-delete-picture {
+  position: absolute;
+  top: 70%;
+  right: 5%;
+}
+
+.placeholder-message-no-pic {
+  display: none;
+  position: absolute;
+  z-index: 50;
+  width: 100px;
+  height: 50px;
+  top: calc(50% - 25px);
+  left: calc(50% - 50px);
 }
 
 /* MEDIA QUERIES FOR RESPONSIVE */
