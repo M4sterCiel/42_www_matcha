@@ -43,7 +43,13 @@ class EditProfilePictures extends Component {
 
   handlePictureSelect = (id, e) => {
     let file = e.target.files[0];
-    this.checkType(file, e.target, id);
+    if (file) {
+      if (this.isPictureTypeValid(file)) {
+        this.processPictureFileIfValid(file, e.target, id);
+      } else {
+        ErrorToast.default.error("Please upload a correct image", 1400);
+      }
+    }
   };
 
   processPicture = (file, target, id) => {
@@ -77,17 +83,26 @@ class EditProfilePictures extends Component {
         .querySelector(".js--image-preview").className += " js--no-default";
   };
 
-  checkType = (file, target, id) => {
+  isPictureTypeValid = file => {
     let imageType = /image.*/;
-    if (!file) {
-      ErrorToast.default.error("Please upload a correct image", 1400);
-      return;
-    } else if (!file.type.match(imageType)) {
-      ErrorToast.default.error("Please upload a correct image", 1400);
-      return;
-    } else {
-      this.processPicture(file, target, id);
+    if (!file.type.match(imageType)) {
+      return false;
     }
+    return true;
+  };
+
+  processPictureFileIfValid = (file, target, id) => {
+    let pic = new Image();
+
+    pic.src = window.URL.createObjectURL(file);
+    pic.onload = () => {
+      let width = pic.naturalWidth;
+      let height = pic.naturalHeight;
+      window.URL.revokeObjectURL(pic.src);
+      if (width && height) {
+        this.processPicture(file, target, id);
+      }
+    };
   };
 
   render() {
@@ -107,81 +122,7 @@ class EditProfilePictures extends Component {
         </div>
       </div>
     ));
-    return (
-      <div className="edit-pictures-box">
-        {pictureBoxes}
-        {/* <div className="picture-box">
-          <div className="js--image-preview" />
-          <div
-            className="upload-options"
-            onChange={e => this.handlePictureSelect(0, e)}
-          >
-            <label>
-              <input type="file" className="image-upload" accept="image/*" />
-              <i className="material-icons picture-edit-add-icon">
-                {this.state.pictures[0].url !== "" ? "edit" : "add"}
-              </i>
-            </label>
-          </div>
-        </div>
-        <div className="picture-box">
-          <div className="js--image-preview" />
-          <div
-            className="upload-options"
-            onChange={e => this.handlePictureSelect(1, e)}
-          >
-            <label>
-              <input type="file" className="image-upload" accept="image/*" />
-              <i className="material-icons picture-edit-add-icon">
-                {this.state.pictures[1].url !== "" ? "edit" : "add"}
-              </i>
-            </label>
-          </div>
-        </div>
-        <div className="picture-box">
-          <div className="js--image-preview" />
-          <div
-            className="upload-options"
-            onChange={e => this.handlePictureSelect(2, e)}
-          >
-            <label>
-              <input type="file" className="image-upload" accept="image/*" />
-              <i className="material-icons picture-edit-add-icon">
-                {this.state.pictures[2].url !== "" ? "edit" : "add"}
-              </i>
-            </label>
-          </div>
-        </div>
-        <div className="picture-box">
-          <div className="js--image-preview" />
-          <div
-            className="upload-options"
-            onChange={e => this.handlePictureSelect(3, e)}
-          >
-            <label>
-              <input type="file" className="image-upload" accept="image/*" />
-              <i className="material-icons picture-edit-add-icon">
-                {this.state.pictures[3].url !== "" ? "edit" : "add"}
-              </i>
-            </label>
-          </div>
-        </div>
-        <div className="picture-box">
-          <div className="js--image-preview" />
-          <div
-            className="upload-options"
-            onChange={e => this.handlePictureSelect(4, e)}
-          >
-            <label>
-              <input type="file" className="image-upload" accept="image/*" />
-              <i className="material-icons picture-edit-add-icon">
-                {this.state.pictures[4].url !== "" ? "edit" : "add"}
-              </i>
-            </label>
-          </div>
-        </div> */}
-      </div>
-    );
+    return <div className="edit-pictures-box">{pictureBoxes}</div>;
   }
 }
 
