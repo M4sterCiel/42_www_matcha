@@ -689,6 +689,21 @@ button.btn-star-picture-main {
   }
 }
 
+@media screen and (max-width: 440px) {
+  .picture-box {
+    min-width: 250px;
+    height: 250px;
+  }
+
+  .js--image-preview {
+    height: 200px;
+  }
+
+  .upload-options {
+    height: 50px;
+  }
+}
+
 @media screen and (max-width: 360px) {
   .input-icons {
     display: none;
@@ -710,5 +725,18 @@ button.btn-star-picture-main {
 
   #password-message {
     margin-left: 0px;
+  }
+
+  .picture-box {
+    min-width: 200px;
+    height: 200px;
+  }
+
+  .js--image-preview {
+    height: 150px;
+  }
+
+  .upload-options {
+    height: 50px;
   }
 }
