@@ -34,7 +34,7 @@ class SelectGender extends Component {
 
   render() {
     return (
-      <div className="switch-field two-fields-switch">
+      <div className="switch-field">
         <input
           type="radio"
           id="radio-one"
@@ -42,6 +42,7 @@ class SelectGender extends Component {
           value="man"
           onChange={this.handleChange}
           checked={this.state.gender === "man"}
+          className="input-modal"
         />
         <label htmlFor="radio-one">Man</label>
         <input
@@ -51,6 +52,7 @@ class SelectGender extends Component {
           value="woman"
           onChange={this.handleChange}
           checked={this.state.gender === "woman"}
+          className="input-modal"
         />
         <label htmlFor="radio-two">Woman</label>
       </div>
@@ -79,7 +81,7 @@ class SelectSexOrientation extends Component {
 
   render() {
     return (
-      <div className="switch-field three-fields-switch">
+      <div className="switch-field">
         <input
           type="radio"
           id="radio-three"
@@ -87,6 +89,7 @@ class SelectSexOrientation extends Component {
           value="bi"
           onChange={this.handleChange}
           checked={this.state.sexOrientation === "bi"}
+          className="input-modal"
         />
         <label htmlFor="radio-three">Bi</label>
         <input
@@ -105,6 +108,7 @@ class SelectSexOrientation extends Component {
           value="homo"
           onChange={this.handleChange}
           checked={this.state.sexOrientation === "homo"}
+          className="input-modal"
         />
         <label htmlFor="radio-five">Homo</label>
       </div>
@@ -137,18 +141,20 @@ class InputTwoNames extends Component {
 
   render() {
     return (
-      <div className="modal-name-input">
+      <div>
         <TextInput
           name="firstname"
-          label="firstname"
+          label="Firstname"
           value={this.state.firstname}
           onChange={this.handleChange}
+          className="input-modal"
         />
         <TextInput
           name="lastname"
-          label="lastname"
+          label="Lastname"
           value={this.state.lastname}
           onChange={this.handleChange}
+          className="input-modal"
         />
       </div>
     );
@@ -213,15 +219,21 @@ class BirthdatePicker extends Component {
 
   render() {
     return (
-      <DatePicker
-        options={{
-          defaultDate: new Date(this.props.birthdate),
-          setDefaultDate: true,
-          container: "#root",
-          onClose: this.handleChange
-        }}
-        className="birthdate-picker-modal"
-      />
+      <div>
+        <label className="left-label" htmlFor="birthdate-edit-profile">
+          Birthdate
+        </label>
+        <DatePicker
+          options={{
+            defaultDate: new Date(this.props.birthdate),
+            setDefaultDate: true,
+            container: "#root",
+            onClose: this.handleChange
+          }}
+          className="birthdate-picker-modal"
+          id="birthdate-edit-profile"
+        />
+      </div>
     );
   }
 }
@@ -231,7 +243,22 @@ class InterestTags extends Component {
     super(props);
     this.state = {
       myTagsArray: ["sea", "sex", "fun"],
-      defaultTagsArray: ["beer", "pizza", "alcohol"]
+      defaultTagsArray: [
+        "beer",
+        "pizza",
+        "alcohol",
+        "rice",
+        "barbec",
+        "vodka",
+        "xbox one",
+        "ps4",
+        "hello les amis",
+        "radiateur",
+        "slient",
+        "lolling",
+        "not lolling hard",
+        "poneys"
+      ]
     };
     this.chipSelectDefault = this.chipSelectDefault.bind(this);
     this.chipDelete = this.chipDelete.bind(this);
@@ -289,7 +316,7 @@ class InterestTags extends Component {
           data: tagToArray(tagEl),
           onChipDelete: this.chipDelete
         }}
-        className="my-tags-chip"
+        className="my-tags-chip chip-general"
       />
     ));
 
@@ -301,6 +328,7 @@ class InterestTags extends Component {
           data: tagToArray(tagEl),
           onChipSelect: this.chipSelectDefault
         }}
+        className="chip-general"
       />
     ));
 
@@ -309,11 +337,11 @@ class InterestTags extends Component {
     return (
       <div className="tags-component">
         <div>
-          <p>Your interests:</p>
+          <p>Already interested in</p>
           {myTags.length ? myTags : emptyTags}
         </div>
         <div className="chips-default-tags">
-          <p>Add interests from:</p>
+          <p>Add more interests</p>
           {defaultTags}
         </div>
       </div>

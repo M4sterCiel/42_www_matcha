@@ -146,39 +146,39 @@ class ModalUserEditProfileInfo extends Component {
         >
           You can edit and save the information that will be visibile on your
           profile
-          <span className="profile-fields-labels">My name is:</span>
-          {this.state.firstname !== "" && this.state.lastname !== "" && (
-            <InputTwoNames
-              firstnameToParent={this.handleFirstnameData}
-              lastnameToParent={this.handleLastnameData}
-              firstname={this.state.firstname}
-              lastname={this.state.lastname}
-            />
-          )}
-          <span className="profile-fields-labels">I am:</span>
+          <span className="profile-fields-labels">My details</span>
+          <div className="modal-input">
+            {this.state.firstname !== "" && this.state.lastname !== "" && (
+              <InputTwoNames
+                firstnameToParent={this.handleFirstnameData}
+                lastnameToParent={this.handleLastnameData}
+                firstname={this.state.firstname}
+                lastname={this.state.lastname}
+              />
+            )}
+            <InputBio bioToParent={this.handleBioData} bio={this.state.bio} />
+            {this.state.birthdate !== "" && (
+              <BirthdatePicker
+                birthdateToParent={this.handleBirthdateData}
+                birthdate={this.state.birthdate}
+              />
+            )}
+          </div>
+          <span className="profile-fields-labels">Gender</span>
           {this.state.gender !== "" && (
             <SelectGender
               genderToParent={this.handleGenderData}
               gender={this.state.gender}
             />
           )}
-          <span className="profile-fields-labels">I prefer:</span>
+          <span className="profile-fields-labels">Sexual Orientation</span>
           {this.state.sexOrientation !== "" && (
             <SelectSexOrientation
               sexOrientationToParent={this.handleSexOrientationData}
               sexOrientation={this.state.sexOrientation}
             />
           )}
-          <span className="profile-fields-labels">My bio is:</span>
-          <InputBio bioToParent={this.handleBioData} bio={this.state.bio} />
-          <span>{this.state.bio}</span>
-          <span className="profile-fields-labels">I am born in:</span>
-          {this.state.birthdate !== "" && (
-            <BirthdatePicker
-              birthdateToParent={this.handleBirthdateData}
-              birthdate={this.state.birthdate}
-            />
-          )}
+          <span className="profile-fields-labels">Interested in</span>
           <InterestTags
             interestsToParent={this.handleInterestsData}
             interests={this.state.interests}

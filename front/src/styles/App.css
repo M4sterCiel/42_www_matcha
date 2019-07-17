@@ -126,20 +126,12 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 }
 
 .switch-field {
-  margin: 10px auto !important;
+  margin: 20px auto !important;
 }
 
-.two-fields-switch {
-  width: 145px;
-}
-
-.three-fields-switch {
-  width: 200px;
-}
-
-.modal-name-input {
-  margin: 10px auto;
-  width: 250px;
+.modal-input {
+  padding: 0px 10px;
+  margin-top: 30px;
 }
 
 .modal-name-input input {
@@ -305,29 +297,6 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   color: #ffb6d3 !important;
 }
 
-/* Delete user component */
-
-.delete-btn {
-  width: 160px;
-  height: 30px;
-}
-
-/* Chat page */
-
-#messageView {
-  height: 400px;
-  overflow: hidden;
-  scroll-behavior: auto;
-}
-
-.messagesLeft {
-  text-align: left;
-}
-
-.messagesRight {
-  text-align: right;
-}
-
 .tooltip .tooltip-text {
   visibility: hidden;
   width: 120px;
@@ -407,9 +376,18 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 }
 
 .profile-fields-labels {
+  background-color: #ffb6d3;
+  text-align: left;
+  border-radius: 30px;
+  color: white;
   display: block;
-  padding: 10px 0px;
+  padding: 10px 0px 10px 20px;
+  margin: 10px 0px;
   font-weight: 900;
+}
+
+.left-label {
+  float: left !important;
 }
 
 textarea.materialize-textarea:focus:not([readonly]) {
@@ -424,6 +402,45 @@ textarea.materialize-textarea:focus {
 
 textarea.materialize-textarea:focus:not([readonly]) + label {
   color: #9e9e9e !important;
+}
+
+label.active {
+  left: 0px !important;
+}
+
+input[type="text"]:not(.browser-default):focus:not([readonly]) + label {
+  color: #ffb6d3 !important;
+}
+
+textarea:not(.browser-default):focus:not([readonly]) + label {
+  color: #ffb6d3 !important;
+}
+
+.input-modal {
+  margin: 0px !important;
+}
+
+/* Delete user component */
+
+.delete-btn {
+  width: 160px;
+  height: 30px;
+}
+
+/* Chat page */
+
+#messageView {
+  height: 400px;
+  overflow: hidden;
+  scroll-behavior: auto;
+}
+
+.messagesLeft {
+  text-align: left;
+}
+
+.messagesRight {
+  text-align: right;
 }
 
 /* Modals */
@@ -474,6 +491,10 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 .chip {
   background-color: #ffb6d3 !important;
   cursor: pointer;
+}
+
+.chip-general {
+  margin: 0px !important;
 }
 
 .chip:focus {
