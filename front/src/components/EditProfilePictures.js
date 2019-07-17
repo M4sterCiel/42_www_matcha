@@ -6,32 +6,15 @@ class EditProfilePictures extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pictures: [
-        {
-          mainPic: false,
-          url: ""
-        },
-        {
-          mainPic: false,
-          url: ""
-        },
-        {
-          mainPic: false,
-          url: ""
-        },
-        {
-          mainPic: false,
-          url: ""
-        },
-        {
-          mainPic: false,
-          url: ""
-        }
-      ]
+      pictures: []
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.setState({
+      pictures: this.props.pictures
+    });
+  }
 
   handlePictureSelect = (id, e) => {
     let file = e.target.files[0];
@@ -75,23 +58,14 @@ class EditProfilePictures extends Component {
   processPicture = (file, target, id) => {
     let reader = new FileReader();
 
-    reader.onload = () => {
-      target
-        .closest(".picture-box")
-        .querySelector(".js--image-preview").style.backgroundImage =
-        "url(" + reader.result + ")";
-    };
-
     reader.onloadend = () => {
-      this.setState(state => {
-        const pictures = state.pictures;
-        pictures[id].url = reader.result;
-        if (!this.doesMainProfilePicExist(pictures))
-          pictures[id].mainPic = true;
-        return {
-          pictures
-        };
+      const pics = this.state.pictures;
+      pics[id].url = reader.result;
+      if (!this.doesMainProfilePicExist(pics)) pics[id].mainPic = true;
+      this.setState({
+        pictures: pics
       });
+      this.props.picturesToParent(pics);
     };
     reader.readAsDataURL(file);
     target.closest(".picture-box").querySelector(".image-upload").value = "";
@@ -102,16 +76,15 @@ class EditProfilePictures extends Component {
     if (id === false) {
       return;
     }
-    this.setState(state => {
-      const pictures = state.pictures;
-      pictures.forEach(picture => {
-        picture.mainPic = false;
-      });
-      pictures[id].mainPic = true;
-      return {
-        pictures
-      };
+    const pics = this.state.pictures;
+    pics.forEach(pic => {
+      pic.mainPic = false;
     });
+    pics[id].mainPic = true;
+    this.setState({
+      pictures: pics
+    });
+    this.props.picturesToParent(pics);
   };
 
   setNoPictureDefault = target => {
@@ -186,14 +159,13 @@ class EditProfilePictures extends Component {
     if (this.state.pictures[id].mainPic === true) {
       this.makePictureMainProfilePicture(this.findExistingPicture(id));
     }
-    this.setState(state => {
-      const pictures = state.pictures;
-      pictures[id].url = "";
-      pictures[id].mainPic = false;
-      return {
-        pictures
-      };
+    const pics = this.state.pictures;
+    pics[id].url = "";
+    pics[id].mainPic = false;
+    this.setState({
+      pictures: pics
     });
+    this.props.picturesToParent(pics);
     this.removeNoPictureDefault(
       e.target.closest(".picture-box").querySelector(".js--image-preview")
     );
@@ -203,7 +175,11 @@ class EditProfilePictures extends Component {
     const pictureBoxes = this.state.pictures.map((picture, index) => (
       <div className="picture-box" key={index}>
         <div
-          className="js--image-preview"
+          className={
+            picture.url !== ""
+              ? "js--image-preview js--no-default"
+              : "js--image-preview"
+          }
           onMouseOver={
             picture.url !== ""
               ? e => this.showEditPictureUI(e)
@@ -214,6 +190,7 @@ class EditProfilePictures extends Component {
               ? e => this.hideEditPictureUI(e)
               : e => this.hideMessageToAddPic(e)
           }
+          style={{ backgroundImage: `url(${picture.url})` }}
         >
           {picture.url !== "" && (
             <div>

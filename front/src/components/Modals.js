@@ -123,14 +123,14 @@ class ModalUserEditProfileInfo extends Component {
     });
   }
 
-  handleCoordLatData(lat) {
+  handleCoordLatData(data) {
     this.setState({
-      geo_lat: lat
+      geo_lat: data
     });
   }
-  handleCoordLongData(long) {
+  handleCoordLongData(data) {
     this.setState({
-      geo_long: long
+      geo_long: data
     });
   }
 
@@ -196,6 +196,42 @@ class ModalUserEditProfileInfo extends Component {
 }
 
 class ModalUserEditProfilePictures extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pictures: [
+        {
+          mainPic: true,
+          url:
+            "https://news.nationalgeographic.com/content/dam/news/2018/05/17/you-can-train-your-cat/02-cat-training-NationalGeographic_1484324.ngsversion.1526587209178.adapt.1900.1.jpg"
+        },
+        {
+          mainPic: false,
+          url: ""
+        },
+        {
+          mainPic: false,
+          url: ""
+        },
+        {
+          mainPic: false,
+          url: ""
+        },
+        {
+          mainPic: false,
+          url: ""
+        }
+      ]
+    };
+    this.handlePicturesData = this.handlePicturesData.bind(this);
+  }
+
+  handlePicturesData(data) {
+    this.setState({
+      pictures: data
+    });
+  }
+
   render() {
     return (
       <div>
@@ -206,7 +242,10 @@ class ModalUserEditProfilePictures extends Component {
           fixedFooter
           trigger={false}
         >
-          <EditProfilePictures />
+          <EditProfilePictures
+            pictures={this.state.pictures}
+            picturesToParent={this.handlePicturesData}
+          />
         </Modal>
       </div>
     );
