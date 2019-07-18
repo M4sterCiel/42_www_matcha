@@ -147,6 +147,39 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   box-shadow: 0 1px 0 0 #ffb6d3;
 }
 
+/* Sliders */
+
+.MuiSlider-root {
+  color: "red";
+  height: 8;
+}
+
+.MuiSlider-thumb {
+  height: 24px !important;
+  width: 24px !important;
+  background-color: #fff !important;
+  border: 2px solid currentColor !important;
+  margin-top: -8 !important;
+  margin-left: -12 !important;
+  /*   "&:focus,&:hover,&$active": {
+    boxshadow: "inherit";
+  } */
+}
+
+.MuiSlider-valueLabel {
+  left: calc(-50% + 4px);
+}
+
+.MuiSlider-track {
+  height: 10px;
+  border-radius: 4px;
+}
+
+.MuiSlider-rail {
+  height: 10px;
+  border-radius: 4px;
+}
+
 /* Toasts messages */
 
 .info-toast {
@@ -472,6 +505,10 @@ textarea:not(.browser-default):focus:not([readonly]) + label {
 
 .modal-close {
   color: white;
+}
+
+.modal-intro {
+  margin-bottom: 20px;
 }
 
 /* Date picker */

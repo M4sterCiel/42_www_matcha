@@ -8,6 +8,7 @@ import {
   InterestTags,
   SelectLocation
 } from "./EditProfileInfo";
+import { AgeSlider } from "./EditAccountSettings";
 import { EditProfilePictures } from "./EditProfilePictures";
 import { Modal } from "react-materialize";
 
@@ -144,8 +145,10 @@ class ModalUserEditProfileInfo extends Component {
           fixedFooter
           trigger={false}
         >
-          You can edit and save the information that will be visibile on your
-          profile
+          <p className="modal-intro">
+            You can edit and save the information that will be visibile on your
+            profile
+          </p>
           <span className="profile-fields-labels">My details</span>
           <div className="modal-input">
             {this.state.firstname !== "" && this.state.lastname !== "" && (
@@ -243,6 +246,10 @@ class ModalUserEditProfilePictures extends Component {
           fixedFooter
           trigger={false}
         >
+          <p className="modal-intro">
+            Add up to 5 profile pictures (adding pictures helps with growing
+            popularity)
+          </p>
           <EditProfilePictures
             pictures={this.state.pictures}
             picturesToParent={this.handlePicturesData}
@@ -253,8 +260,31 @@ class ModalUserEditProfilePictures extends Component {
   }
 }
 
+class ModalUserEditAccountSettings extends Component {
+  render() {
+    return (
+      <div>
+        <Modal
+          id="edit-account-modal"
+          className="modals"
+          header="Edit your account settings"
+          fixedFooter
+          trigger={false}
+        >
+          <p className="modal-intro">
+            You can edit your Matcha discovery settings and personal account
+            settings
+          </p>
+          <AgeSlider />
+        </Modal>
+      </div>
+    );
+  }
+}
+
 export {
   ModalUserCompleteProfile,
   ModalUserEditProfileInfo,
-  ModalUserEditProfilePictures
+  ModalUserEditProfilePictures,
+  ModalUserEditAccountSettings
 };

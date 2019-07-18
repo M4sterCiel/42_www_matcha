@@ -20,16 +20,17 @@ class ProfileSettingsButton extends Component {
         />
         <Button
           floating
-          tooltip="add a photo"
+          tooltip="add/edit profile pictures"
           icon="add_a_photo"
           className="blue modal-trigger"
           href="#edit-pictures-modal"
         />
         <Button
           floating
-          tooltip="edit profile settings"
+          tooltip="edit account settings"
           icon="account_circle"
-          className="blue"
+          className="blue modal-trigger"
+          href="#edit-account-modal"
         />
       </Button>
     );

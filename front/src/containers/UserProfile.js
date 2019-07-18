@@ -8,7 +8,8 @@ import {
 } from "../components/Buttons";
 import {
   ModalUserEditProfileInfo,
-  ModalUserEditProfilePictures
+  ModalUserEditProfilePictures,
+  ModalUserEditAccountSettings
 } from "../components/Modals";
 import ApiCall from "../services/ApiCall";
 import ErrorToast from "../services/ErrorToastService";
@@ -68,6 +69,9 @@ class UserProfile extends Component {
                     )}
                     {this.state.user.id === this.props.userConnectedData.id && (
                       <ModalUserEditProfilePictures />
+                    )}
+                    {this.state.user.id === this.props.userConnectedData.id && (
+                      <ModalUserEditAccountSettings />
                     )}
                   </div>
                 </div>
