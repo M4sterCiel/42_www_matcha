@@ -361,6 +361,12 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   }
 }
 
+.valign-wrapper .center-align .empty-box {
+    padding-top: 30%;
+    background-color: #a9a9a9;
+    margin-top: 1%;
+}
+
 #chat-title {
   text-align: center;
 }
@@ -387,7 +393,6 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 
 .chatbox-message {
   min-width: 320px;
-
   overflow: auto;
 }
 

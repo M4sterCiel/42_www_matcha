@@ -12,6 +12,7 @@ module.exports = {
         var room_id = req.params.room_id;
        // console.log('room id = ' + room_id);
         var result = await chatModel.getMessages(room_id);
+        //console.log(result);
         return res.status(200).json({ result });
     },
 

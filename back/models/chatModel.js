@@ -21,6 +21,7 @@ module.exports = {
               sql: "SELECT * FROM messages WHERE room_id = ?",
               values: [room_id]
             });
+            //console.log(result);
             if (result) return result;
           } catch (err) {
             throw new Error(err);

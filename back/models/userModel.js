@@ -125,6 +125,7 @@ module.exports = {
         sql: "SELECT `id`, online FROM users WHERE id IN (?)",
         values: [data]
       });
+      console.log(result);
       if (result) return result;
     } catch (err) {
       throw new Error(err);

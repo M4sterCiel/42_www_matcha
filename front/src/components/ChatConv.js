@@ -71,7 +71,7 @@ class ChatConv extends Component {
                 var tab = this.state.matches;
                 //console.log(tab);
                 for (var i=0;i<tab.length;i++) {
-                    if (tab[i]['userID'] === data['user_id'])
+                    if (tab[i]['userID'] == data['user_id'])
                         tab[i]['status'] = 'Online';
                 }
                 this.setState({ matches: tab });
@@ -80,7 +80,7 @@ class ChatConv extends Component {
             this.state.socket.on('offline', (data) => {
                 var tab = this.state.matches;
                 for (var i=0;i<tab.length;i++) {
-                    if (tab[i]['userID'] === data['user_id'])
+                    if (tab[i]['userID'] == data['user_id'])
                         tab[i]['status'] = 'Offline';
                 }
                 this.setState({ matches: tab });
@@ -91,7 +91,7 @@ class ChatConv extends Component {
     contactList = (props) => {
          const value = props.value;
          const contacts = value.map((e) =>
-            <li className="collection-item avatar clickable" key={e.id} onClick={() => this.displayChatbox(e.room_id)}>
+            <li className="collection-item avatar clickable" key={e.id} onClick={() => this.displayChatbox(e.room_id, e.username)}>
                 <i className="material-icons circle pink">person_pin</i>
                 <span className="title truncate">{e.username}</span>
                 <p>{e.status}</p>
@@ -109,9 +109,9 @@ class ChatConv extends Component {
       }
   
 
-       displayChatbox = (roomId) => {
+       displayChatbox = (roomId, username) => {
            //console.log(roomId);
-           this.props.roomToParent(roomId);
+           this.props.roomToParent(roomId, username);
        }
 }
 

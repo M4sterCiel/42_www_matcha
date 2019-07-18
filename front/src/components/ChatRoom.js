@@ -3,7 +3,7 @@ import "../styles/App.css";
 import "materialize-css/dist/css/materialize.min.css";
 import io from 'socket.io-client';
 import AuthService from "../services/AuthService";
-import Axios from "axios";
+//import Axios from "axios";
 
 
 class Chat extends Component {
@@ -16,13 +16,12 @@ class Chat extends Component {
             msg: '',
             toSend: '',
             listMessages: [],
-            listItems: '',
             socket: '',
             userID: '',
             userName: '',
             userToken: this.Auth.getToken(),
-            fakeID: 1234589,
-            usernameOther: 'fake username'
+            room_id: '',
+            usernameOther: ''
         }
     }
 
@@ -31,11 +30,16 @@ class Chat extends Component {
             <div>
             <div className="row main-chat-box">
             <h5 id="chat-title">{this.state.usernameOther+"'s conversation"}</h5><hr className="grey" />
-            <div id="chatbox-message" className="col s12 m9 l9 chatbox-message" style={{height: this.state.winSize}}>
+            <div id="chatbox-message" className="col s12 chatbox-message" style={{height: this.state.winSize}}>
+                <br />
+                <span className="valign-wrapper center-align">Say hi to your new match, {this.state.usernameOther}.</span>
+                <br />
                 <div>
+                    {this.state.listMessages.length > 0 &&
                     <this.msgList 
                     value={this.state.listMessages} 
                     />
+                    }
                 </div>
             </div>
             </div>
@@ -69,24 +73,23 @@ class Chat extends Component {
 
     async componentDidMount() {
         this.setState({ winSize: window.innerHeight - 190});
+    };
 
-        await Axios.get('/chat/room/' + this.state.fakeID)
-            .then(res => {
-                const tab = [];
-                for (var i=0; i<res.data.result.length; i++)
-                    tab.push({
-                        id: i,
-                        value: res.data.result[i]['content'],
-                        userID: res.data.result[i]['user_id'],
-                        date: res.data.result[i]['date']
-                    });
-                this.setState({ listMessages: tab });
-                this.goToElement(this.state.listMessages.length - 1);
-                //console.log(this.state.listMessages);
-            })
-            .catch(err => {
-                console.log(err);
-            })
+    componentDidUpdate() {
+        if (this.state.listMessages !== this.props.listMessages)
+            this.initializeComponent();
+    }
+
+    initializeComponent = async () => {
+        if (this.state.socket)
+            this.state.socket.close();
+        this.setState({ 
+            listMessages: this.props.listMessages,
+            room_id: this.props.room_id,
+            usernameOther: this.props.username
+         });
+        //this.setState({ room_id: this.props.room_id });
+
         await this.setState({
             userID: this.Auth.getIdViaToken(this.state.userToken),
             userName: this.Auth.getUsernameViaToken(this.state.userToken)
@@ -97,11 +100,11 @@ class Chat extends Component {
                 token: this.state.userToken,
                 userID: this.state.userID,
                 userName: this.state.userName,
-                room_id: this.state.fakeID
+                room_id: this.state.room_id
               }
         }) });
 
-        this.state.socket.on(this.state.fakeID, (data) => {
+        this.state.socket.on(this.state.room_id, (data) => {
             //console.log(data);
             var tab = this.state.listMessages;
             tab.push({
@@ -114,7 +117,12 @@ class Chat extends Component {
             //console.log(tab);
             this.goToElement(tab.length);
         });
-    };
+        //console.log(this.state.listMessages);
+        if (this.state.listMessages.length < 1)
+            return;
+        this.goToElement(this.state.listMessages.length - 1);
+
+    }
 
     goToElement = (nb) => {
         //console.log(nb);
@@ -128,17 +136,12 @@ class Chat extends Component {
           <div className={this.state.userID === e.userID ? "row right-align" : "row left-align"} key={e.id}>
 				<div className={this.state.userID === e.userID ? "col s12 m8 l6 right" : "col s12 m8 l6 left"}>
 						<div className="row valign-wrapper">
-                        
-                        
-                            
 							<div className={this.state.userID === e.userID ? "chat-field2 grey" : "chat-field red"}>
 								<span id={"id-msg"+e.id} className="chat-message white-text">
 									{e.value}
 								</span>
 								<div id={"id-msg"+e.id} className={this.state.userID === e.userID ? "example2" : "example"}></div>  
 							</div>
-
-                            
 						</div>
 				</div>
 			</div>
@@ -163,7 +166,7 @@ class Chat extends Component {
         });
         await this.setState({ listMessages: tab });
         this.goToElement(tab.length);
-        this.state.socket.emit(this.state.fakeID, this.state.toSend);
+        this.state.socket.emit(this.state.room_id, this.state.toSend);
         this.setState({ toSend: '' });
     }
 
