@@ -34,7 +34,7 @@ class SelectGender extends Component {
 
   render() {
     return (
-      <div className="switch-field">
+      <div className="switch-field switch-two-fields">
         <input
           type="radio"
           id="radio-one"
@@ -81,7 +81,7 @@ class SelectSexOrientation extends Component {
 
   render() {
     return (
-      <div className="switch-field">
+      <div className="switch-field switch-three-fields">
         <input
           type="radio"
           id="radio-three"
@@ -332,7 +332,7 @@ class InterestTags extends Component {
       />
     ));
 
-    const emptyTags = <p class="no-tags-message">No interests yet</p>;
+    const emptyTags = <p className="no-tags-message">No interests yet</p>;
 
     return (
       <div className="tags-component">
@@ -532,7 +532,6 @@ class SelectLocation extends Component {
   render() {
     return (
       <div className="location-component">
-        <p>Your city is:</p>
         {this.state.city}
         <Button
           waves="light"

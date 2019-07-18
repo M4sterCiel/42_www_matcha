@@ -164,6 +164,13 @@ class ModalUserEditProfileInfo extends Component {
               />
             )}
           </div>
+          <span className="profile-fields-labels">City</span>
+          <SelectLocation
+            lat={this.props.userData.geo_lat}
+            long={this.props.userData.geo_long}
+            latToParent={this.handleCoordLatData}
+            longToParent={this.handleCoordLongData}
+          />
           <span className="profile-fields-labels">Gender</span>
           {this.state.gender !== "" && (
             <SelectGender
@@ -182,12 +189,6 @@ class ModalUserEditProfileInfo extends Component {
           <InterestTags
             interestsToParent={this.handleInterestsData}
             interests={this.state.interests}
-          />
-          <SelectLocation
-            lat={this.props.userData.geo_lat}
-            long={this.props.userData.geo_long}
-            latToParent={this.handleCoordLatData}
-            longToParent={this.handleCoordLongData}
           />
         </Modal>
       </div>
