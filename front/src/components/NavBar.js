@@ -27,6 +27,12 @@ class NavBar extends Component {
             </NavLink>
           </li>
           <li>
+            <NavLink to="/chat/messages">
+              {" "}
+              Chats
+            </NavLink>
+          </li>
+          <li>
             <button className="nav-buttons" onClick={logout}>
               Log out
             </button>

@@ -18,15 +18,27 @@ module.exports = {
     getMatchList: async (req, res, next) => {
         var userID = jwtService.verifyToken(req.params['token'])['id'];
         var result = await matchModel.getMatchList(userID);
-        return res.status(200).json({ result });
+        var status = [];
+
+        for (var i=0;i<result.length;i++) {
+            status[i] = result[i]['user_1'] != userID ? result[i]['user_1'] : result[i]['user_2'];
+        }
+        status = await userModel.getStatus(status);
+        //console.log({ status });
+        return res.status(200).json({ result, status });
     },
 
     getStatus: (req, res, next) => {
         var tab = req.body.tab;
-        console.log(tab);
+        //console.log(tab);
+        return res.status(200).json({ Message: 'ok' });
     },
 
-    saveStatus: async userID => {
-        await userModel.saveStatus(userID);
+    onlineStatus: async userID => {
+        await userModel.saveStatus(1, userID);
+    },
+    
+    offlineStatus: async userID => {
+        await userModel.saveStatus(0, userID);
     }
 }

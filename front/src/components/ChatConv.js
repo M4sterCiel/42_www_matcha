@@ -4,7 +4,6 @@ import "materialize-css/dist/css/materialize.min.css";
 import io from 'socket.io-client';
 import AuthService from "../services/AuthService";
 import Axios from "axios";
-import withAuth from "./withAuth";
 
 class ChatConv extends Component {
     constructor(props) {
@@ -22,7 +21,7 @@ class ChatConv extends Component {
     render() {
         return (
             <ul className="collection with-header chatBox">
-                <li className="collection-header"><h4>Chats</h4></li>
+                <li className="collection-header"><h5 style={{textAlign: 'center'}}>Chats</h5></li>
                 <this.contactList value={this.state.matches} />
             </ul>
         )
@@ -31,7 +30,8 @@ class ChatConv extends Component {
     async componentDidMount() {
         await Axios.get('/chat/matches/' + this.Auth.getToken())
             .then(res => {
-               // console.log(res.data['result']);
+                //console.log(res.data['result']);
+                //console.log(res.data['status']);
                 const tab = [];
                 for (var i=0;i<res.data['result'].length;i++)
                     tab.push({
@@ -41,21 +41,24 @@ class ChatConv extends Component {
                         room_id: res.data['result'][i]['room_id'],
                         status: ''
                     })
+                i = 0;
+                
+                while (i < res.data['status'].length) {
+                    var k = 0;
+                    while (k < tab.length) {
+                        if (tab[k]['userID'] === res.data['status'][i]['id'])
+                            tab[k]['status'] = res.data['status'][i]['online'] === 1 ? 'Online' : 'Offline';
+                        k++;
+                    }
+                    i++;
+                }
                 this.setState({ matches: tab });
-               // console.log(this.state.matches);
+                //console.log(this.state.matches);
             })
             .catch(err => {
                 console.log(err);
             });
-
-            await Axios.post('/chat/status', { tab: this.state.matches })
-                .then(res => {
-                    var tab = this.state.matches;
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-
+ 
             await this.setState({ socket: io({
                 query: {
                     userID: this.state.userID,
@@ -66,14 +69,23 @@ class ChatConv extends Component {
 
             this.state.socket.on('online', (data) => {
                 var tab = this.state.matches;
-                //console.log(data);
+                //console.log(tab);
                 for (var i=0;i<tab.length;i++) {
                     if (tab[i]['userID'] === data['user_id'])
-                        tab[i]['status'] = data['status'];
+                        tab[i]['status'] = 'Online';
                 }
                 this.setState({ matches: tab });
-                //console.log(tab);
-            })
+                //console.log(this.state.matches);
+            });
+            this.state.socket.on('offline', (data) => {
+                var tab = this.state.matches;
+                for (var i=0;i<tab.length;i++) {
+                    if (tab[i]['userID'] === data['user_id'])
+                        tab[i]['status'] = 'Offline';
+                }
+                this.setState({ matches: tab });
+                //console.log(this.state.matches);
+            });
 }
 
     contactList = (props) => {
@@ -91,10 +103,16 @@ class ChatConv extends Component {
          );
        }
 
-       displayChatbox = (props) => {
-           console.log("click");
-           console.log(props);
+       componentWillUnmount() {
+        if (this.state.socket !== '')
+          this.state.socket.close();
+      }
+  
+
+       displayChatbox = (roomId) => {
+           //console.log(roomId);
+           this.props.roomToParent(roomId);
        }
 }
 
-export default withAuth(ChatConv);
+export default ChatConv;

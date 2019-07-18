@@ -1,6 +1,7 @@
 import decode from "jwt-decode";
 
 export default class AuthService {
+
   // Setting token in local storage
   setToken(idToken) {
     localStorage.setItem("Token", idToken);

@@ -9,6 +9,7 @@ import {
 import { ModalUserEditProfileInfo } from "../components/Modals";
 import ApiCall from "../services/ApiCall";
 import ErrorToast from "../services/ErrorToastService";
+import withAuth from "../components/withAuth";
 
 class UserProfile extends Component {
   constructor(props) {
@@ -149,4 +150,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(UserProfile);
+export default withAuth(connect(mapStateToProps)(UserProfile));

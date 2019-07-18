@@ -9,7 +9,8 @@ export default function withAuth(AuthComponent) {
   return class AuthWrapped extends Component {
     state = {
       confirm: null,
-      loaded: false
+      loaded: false,
+      socket: ''
     };
 
     componentDidMount() {
@@ -23,17 +24,23 @@ export default function withAuth(AuthComponent) {
             confirm: confirm,
             loaded: true
           });
-          const socket = io({
+           this.setState({ socket: io({
             query: {
               userID: confirm.id
             }
-          });
+          })
+          }); 
         } catch (err) {
           console.log(err);
           Auth.logout();
           this.props.history.replace("/users/login");
         }
       }
+    }
+
+    componentWillUnmount() {
+      if (this.state.socket !== '')
+        this.state.socket.close();
     }
 
     render() {

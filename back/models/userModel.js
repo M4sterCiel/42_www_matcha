@@ -107,13 +107,25 @@ module.exports = {
     }
   },
 
-  saveStatus: async userID => {
+  saveStatus: async (status, userID) => {
     try {
       var result = await pool.query({
-        sql: "UPDATE users SET `online`= 1 WHERE `id`= ?",
-        values: userID
+        sql: "UPDATE users SET `online`= ? WHERE `id`= ?",
+        values: [status, userID]
       });
       return result.affectedRows;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
+  getStatus: async data => {
+    try {
+      var result = await pool.query({
+        sql: "SELECT `id`, online FROM users WHERE id IN (?)",
+        values: [data]
+      });
+      if (result) return result;
     } catch (err) {
       throw new Error(err);
     }

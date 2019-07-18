@@ -40,9 +40,9 @@ var online = io.on('connection', (socket) => {
     socketID: socket.id
   });
 
-  chatController.saveStatus(socket.handshake.query['userID']);
+  chatController.onlineStatus(socket.handshake.query['userID']);
   console.log("%d socket(s) online", onlineTab.length);
-  console.log(onlineTab);
+  console.log({onlineTab});
 
   socket.broadcast.emit('online', {
     user_id: socket.handshake.query['userID'],
@@ -54,10 +54,14 @@ var online = io.on('connection', (socket) => {
       if (onlineTab[i]['socketID'] == socket.id)
         onlineTab.splice(i, 1);
     }
+    socket.broadcast.emit('offline', {
+      user_id: socket.handshake.query['userID'],
+      status: 'Offline' });
+      chatController.offlineStatus(socket.handshake.query['userID']);
     console.log("%d socket(s) online", onlineTab.length);
-    console.log(onlineTab);
+    console.log({onlineTab});
   })
-})
+});
 var nsp = io
 .of('/chat');
 
