@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Slider from "@material-ui/core/Slider";
+import { Button, Icon, TextInput } from "react-materialize";
 
 class AgeSlider extends Component {
   constructor(props) {
@@ -194,4 +195,66 @@ class CommonInterestsSlider extends Component {
   }
 }
 
-export { AgeSlider, DistanceSlider, PopularitySlider, CommonInterestsSlider };
+class EditEmailBox extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "toto@email.fr",
+      editEmailActive: false
+    };
+  }
+
+  showEditEmail = () => {
+    this.setState({
+      editEmailActive: true
+    });
+  };
+
+  hideEditEmail = () => {
+    this.setState({
+      editEmailActive: false
+    });
+  };
+
+  switchEditEmail = () => {
+    if (this.state.editEmailActive) this.hideEditEmail();
+    else this.showEditEmail();
+  };
+
+  render() {
+    return (
+      <div className="edit-email-container">
+        {this.state.email}
+        <Button
+          waves="light"
+          style={{ marginLeft: "15px" }}
+          onClick={this.switchEditEmail}
+        >
+          Edit
+          <Icon left>email</Icon>
+        </Button>
+        {this.state.editEmailActive && (
+          <div className="edit-email-input">
+            <div className="edit-email-text-input">
+              <TextInput label="Email" />{" "}
+            </div>
+            <Button
+              className="edit-email-submit"
+              onClick={this.handleAutocompleteSubmit}
+            >
+              Confirm
+            </Button>
+          </div>
+        )}
+      </div>
+    );
+  }
+}
+
+export {
+  AgeSlider,
+  DistanceSlider,
+  PopularitySlider,
+  CommonInterestsSlider,
+  EditEmailBox
+};

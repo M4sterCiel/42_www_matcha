@@ -475,7 +475,21 @@ textarea:not(.browser-default):focus:not([readonly]) + label {
   width: calc(100% - 120px);
 }
 
-.location-component {
+.location-container {
+  margin: 20px 0px;
+}
+
+.edit-email-input {
+  width: 90%;
+  margin: auto;
+}
+
+.edit-email-text-input {
+  display: inline-block;
+  width: calc(100% - 100px);
+}
+
+.edit-email-container {
   margin: 20px 0px;
 }
 
@@ -641,6 +655,7 @@ textarea:not(.browser-default):focus:not([readonly]) + label {
 
 .picture-edit-add-icon {
   margin: auto;
+  font-size: 32px;
 }
 
 .upload-options span {

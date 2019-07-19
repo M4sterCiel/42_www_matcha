@@ -12,7 +12,8 @@ import {
   AgeSlider,
   DistanceSlider,
   PopularitySlider,
-  CommonInterestsSlider
+  CommonInterestsSlider,
+  EditEmailBox
 } from "./EditAccountSettings";
 import { EditProfilePictures } from "./EditProfilePictures";
 import { Modal } from "react-materialize";
@@ -332,6 +333,7 @@ class ModalUserEditAccountSettings extends Component {
             commonInterestsToParent={this.handleCommonInterestsData}
           />
           <span className="profile-fields-labels">Account settings</span>
+          <EditEmailBox />
         </Modal>
       </div>
     );

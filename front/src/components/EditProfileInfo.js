@@ -531,7 +531,7 @@ class SelectLocation extends Component {
 
   render() {
     return (
-      <div className="location-component">
+      <div className="location-container">
         {this.state.city}
         <Button
           waves="light"
@@ -541,7 +541,7 @@ class SelectLocation extends Component {
           Edit
           <Icon left>edit_location</Icon>
         </Button>
-        {this.state.editLocationActive ? (
+        {this.state.editLocationActive && (
           <div className="edit-location-input">
             <div className="edit-location-autoc">
               <Autocomplete
@@ -552,7 +552,7 @@ class SelectLocation extends Component {
                   minLength: 3,
                   onAutocomplete: this.confirmAutoCity
                 }}
-                placeholder="Insert city here"
+                placeholder="Insert city here (3 letters min)"
                 icon="place"
                 onChange={this.handleAutocompleteChange}
               />
@@ -569,8 +569,6 @@ class SelectLocation extends Component {
               <Icon left>location_searching</Icon>
             </Button>
           </div>
-        ) : (
-          false
         )}
       </div>
     );
