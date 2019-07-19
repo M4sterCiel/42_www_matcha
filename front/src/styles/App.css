@@ -150,8 +150,8 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 /* Sliders */
 
 .MuiSlider-root {
-  color: "red";
-  height: 8;
+  color: #ffb6d3 !important;
+  height: 8px !important;
 }
 
 .MuiSlider-thumb {
@@ -159,25 +159,31 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   width: 24px !important;
   background-color: #fff !important;
   border: 2px solid currentColor !important;
-  margin-top: -8 !important;
-  margin-left: -12 !important;
-  /*   "&:focus,&:hover,&$active": {
-    boxshadow: "inherit";
-  } */
+  margin-top: -8px !important;
+  margin-left: -12px !important;
 }
 
 .MuiSlider-valueLabel {
-  left: calc(-50% + 4px);
+  left: calc(-50% + 4px) !important;
 }
 
 .MuiSlider-track {
-  height: 10px;
+  height: 8px !important;
   border-radius: 4px;
 }
 
 .MuiSlider-rail {
-  height: 10px;
+  height: 8px !important;
   border-radius: 4px;
+}
+
+.slider-label {
+  margin-bottom: 15px;
+}
+
+.slider-container {
+  width: 95%;
+  margin: 10px auto;
 }
 
 /* Toasts messages */
@@ -422,13 +428,17 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   border-radius: 30px;
   color: white;
   display: block;
-  padding: 10px 0px 10px 20px;
+  padding: 10px 0px 10px 0px;
   margin: 10px 0px;
   font-weight: 900;
 }
 
 .left-label {
   float: left !important;
+}
+
+.right-label {
+  float: right !important;
 }
 
 textarea.materialize-textarea:focus:not([readonly]) {

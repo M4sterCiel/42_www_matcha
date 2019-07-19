@@ -8,7 +8,12 @@ import {
   InterestTags,
   SelectLocation
 } from "./EditProfileInfo";
-import { AgeSlider } from "./EditAccountSettings";
+import {
+  AgeSlider,
+  DistanceSlider,
+  PopularitySlider,
+  CommonInterestsSlider
+} from "./EditAccountSettings";
 import { EditProfilePictures } from "./EditProfilePictures";
 import { Modal } from "react-materialize";
 
@@ -261,6 +266,40 @@ class ModalUserEditProfilePictures extends Component {
 }
 
 class ModalUserEditAccountSettings extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ageRange: [20, 50],
+      distance: 30,
+      popularityRange: [0, 200],
+      commonInterestsRange: [2, 10]
+    };
+  }
+
+  handleAgeData = data => {
+    this.setState({
+      ageRange: data
+    });
+  };
+
+  handleDistanceData = data => {
+    this.setState({
+      distance: data
+    });
+  };
+
+  handlePopularityData = data => {
+    this.setState({
+      popularityRange: data
+    });
+  };
+
+  handleCommonInterestsData = data => {
+    this.setState({
+      commonInterestsRange: data
+    });
+  };
+
   render() {
     return (
       <div>
@@ -275,7 +314,24 @@ class ModalUserEditAccountSettings extends Component {
             You can edit your Matcha discovery settings and personal account
             settings
           </p>
-          <AgeSlider />
+          <span className="profile-fields-labels">Discovery settings</span>
+          <AgeSlider
+            range={this.state.ageRange}
+            ageToParent={this.handleAgeData}
+          />
+          <DistanceSlider
+            value={this.state.distance}
+            distanceToParent={this.handleDistanceData}
+          />
+          <PopularitySlider
+            range={this.state.popularityRange}
+            popularityToParent={this.handlePopularityData}
+          />
+          <CommonInterestsSlider
+            range={this.state.commonInterestsRange}
+            commonInterestsToParent={this.handleCommonInterestsData}
+          />
+          <span className="profile-fields-labels">Account settings</span>
         </Modal>
       </div>
     );
