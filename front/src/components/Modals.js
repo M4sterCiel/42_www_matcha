@@ -13,7 +13,8 @@ import {
   DistanceSlider,
   PopularitySlider,
   CommonInterestsSlider,
-  EditEmailBox
+  EditEmailBox,
+  EditPasswordBox
 } from "./EditAccountSettings";
 import { EditProfilePictures } from "./EditProfilePictures";
 import { Modal } from "react-materialize";
@@ -334,6 +335,7 @@ class ModalUserEditAccountSettings extends Component {
           />
           <span className="profile-fields-labels">Account settings</span>
           <EditEmailBox />
+          <EditPasswordBox />
         </Modal>
       </div>
     );

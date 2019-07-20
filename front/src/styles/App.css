@@ -241,7 +241,7 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   height: 50px;
 }
 
-#password-message {
+.password-message {
   background-color: #f1f1f1;
   color: #000;
   position: relative;
@@ -463,6 +463,14 @@ input[type="text"]:not(.browser-default):focus:not([readonly]) + label {
   color: #ffb6d3 !important;
 }
 
+input[type="email"]:not(.browser-default):focus:not([readonly]) + label {
+  color: #ffb6d3 !important;
+}
+
+input[type="password"]:not(.browser-default):focus:not([readonly]) + label {
+  color: #ffb6d3 !important;
+}
+
 textarea:not(.browser-default):focus:not([readonly]) + label {
   color: #ffb6d3 !important;
 }
@@ -484,6 +492,13 @@ textarea:not(.browser-default):focus:not([readonly]) + label {
   margin: auto;
 }
 
+.edit-dropdown-background {
+  background-color: rgba(255, 233, 242, 0.3);
+  border-radius: 30px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
 .edit-email-text-input {
   display: inline-block;
   width: calc(100% - 100px);
@@ -491,6 +506,18 @@ textarea:not(.browser-default):focus:not([readonly]) + label {
 
 .edit-email-container {
   margin: 20px 0px;
+}
+
+.general-input-error {
+  color: #ff6666;
+  text-align: left;
+  font-size: 12px;
+  margin-top: -10px;
+  position: absolute;
+}
+
+.edit-password-message {
+  margin-left: 0px !important;
 }
 
 /* Delete user component */
@@ -826,7 +853,7 @@ button.btn-star-picture-main {
     margin-left: 0px !important;
   }
 
-  #password-message {
+  .password-message {
     margin-left: 0px;
   }
 

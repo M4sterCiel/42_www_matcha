@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Slider from "@material-ui/core/Slider";
 import { Button, Icon, TextInput } from "react-materialize";
+import ValidateInput from "../validation/ValidateInput";
 
 class AgeSlider extends Component {
   constructor(props) {
@@ -200,7 +201,10 @@ class EditEmailBox extends Component {
     super(props);
     this.state = {
       email: "toto@email.fr",
-      editEmailActive: false
+      newEmail: "",
+      editEmailActive: false,
+      emailValid: false,
+      emailError: ""
     };
   }
 
@@ -221,6 +225,23 @@ class EditEmailBox extends Component {
     else this.showEditEmail();
   };
 
+  handleEmailKeyUp = e => {
+    let result = ValidateInput.user.email(e.target.value);
+
+    this.setState({
+      emailError: result.emailError,
+      emailValid: result.emailValid
+    });
+  };
+
+  handleEmailSubmit = () => {
+    this.setState({
+      email: this.state.newEmail,
+      newEmail: ""
+    });
+    this.hideEditEmail();
+  };
+
   render() {
     return (
       <div className="edit-email-container">
@@ -234,13 +255,199 @@ class EditEmailBox extends Component {
           <Icon left>email</Icon>
         </Button>
         {this.state.editEmailActive && (
-          <div className="edit-email-input">
+          <div className="edit-email-input edit-dropdown-background">
             <div className="edit-email-text-input">
-              <TextInput label="Email" />{" "}
+              <TextInput
+                label="New email"
+                onChange={e => this.setState({ newEmail: e.target.value })}
+                onKeyUp={this.handleEmailKeyUp}
+              >
+                {" "}
+                <div className="general-input-error">
+                  {this.state.emailError}
+                </div>
+              </TextInput>
             </div>
             <Button
               className="edit-email-submit"
-              onClick={this.handleAutocompleteSubmit}
+              onClick={this.handleEmailSubmit}
+              disabled={!this.state.emailValid || this.state.newEmail === ""}
+            >
+              Confirm
+            </Button>
+          </div>
+        )}
+      </div>
+    );
+  }
+}
+
+class EditPasswordBox extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      password: "",
+      pwd1: "",
+      pwd2: "",
+      pwd1Valid: false,
+      pwd2Valid: false,
+      pwd2Error: "",
+      editPasswordActive: false
+    };
+  }
+
+  showEditPassword = () => {
+    this.setState({
+      editPasswordActive: true
+    });
+  };
+
+  hideEditPassword = () => {
+    this.setState({
+      editPasswordActive: false
+    });
+  };
+
+  switchEditPassword = () => {
+    if (this.state.editPasswordActive) this.hideEditPassword();
+    else this.showEditPassword();
+  };
+
+  validatePwd = () => {
+    if (/[a-z]/.test(this.state.pwd1)) {
+      this.setState({ pwdHasLowercase: true });
+    } else {
+      this.setState({ pwdHasLowercase: false });
+    }
+    if (/[A-Z]/g.test(this.state.pwd1)) {
+      this.setState({ pwdHasUppercase: true });
+    } else {
+      this.setState({ pwdHasUppercase: false });
+    }
+    if (/[0-9]/g.test(this.state.pwd1)) {
+      this.setState({ pwdHasNumber: true });
+    } else {
+      this.setState({ pwdHasNumber: false });
+    }
+    if (this.state.pwd1.length >= 8) {
+      this.setState({ pwdHasMinLen: true });
+    } else {
+      this.setState({ pwdHasMinLen: false });
+    }
+    if (
+      this.state.pwdHasLowercase &&
+      this.state.pwdHasUppercase &&
+      this.state.pwdHasNumber &&
+      this.state.pwdHasMinLen
+    ) {
+      this.setState({ pwd1Valid: true });
+    } else {
+      this.setState({ pwd1Valid: false });
+    }
+  };
+
+  // Checking passwords match
+  validateRepeatPwd = () => {
+    if (this.state.pwd1 === this.state.pwd2) {
+      this.setState({ pwd2Error: "" });
+    } else if (this.state.pwd2 !== "") {
+      this.setState({ pwd2Error: "Passwords don't match" });
+    }
+  };
+
+  // Checking over both passwords on change
+  handlePwdKeyUp = async e => {
+    await this.validatePwd();
+    await this.validateRepeatPwd();
+  };
+
+  handlePasswordSubmit = () => {
+    this.setState({
+      password: this.state.pwd1,
+      pwd1: "",
+      pwd2: ""
+    });
+    this.hideEditPassword();
+  };
+
+  render() {
+    return (
+      <div>
+        <Button
+          waves="light"
+          style={{ marginLeft: "15px" }}
+          onClick={this.switchEditPassword}
+        >
+          Modify password
+        </Button>
+        {this.state.editPasswordActive && (
+          <div className="edit-dropdown-background">
+            <TextInput
+              password={true}
+              name="pwd"
+              label="New password"
+              id="pwd-login"
+              value={this.state.pwd1}
+              onChange={e => this.setState({ pwd1: e.target.value })}
+              onKeyUp={this.handlePwdKeyUp}
+              onFocus={e => this.setState({ pwd1VerifyBox: "box-enabled" })}
+              onBlur={e => this.setState({ pwd1VerifyBox: "box-disabled" })}
+              required
+            />
+            <div
+              className={
+                "password-message edit-password-message " +
+                this.state.pwd1VerifyBox
+              }
+            >
+              <h3 id="pwd1-verify-title">
+                Password must contain the following:
+              </h3>
+              <p
+                id="letter"
+                className={this.state.pwdHasLowercase ? "valid" : "invalid"}
+              >
+                A <b>lowercase</b> letter
+              </p>
+              <p
+                id="capital"
+                className={this.state.pwdHasUppercase ? "valid" : "invalid"}
+              >
+                A <b>capital (uppercase)</b> letter
+              </p>
+              <p
+                id="number"
+                className={this.state.pwdHasNumber ? "valid" : "invalid"}
+              >
+                A <b>number</b>
+              </p>
+              <p
+                id="length"
+                className={this.state.pwdHasMinLen ? "valid" : "invalid"}
+              >
+                Minimum <b>8 characters</b>
+              </p>
+            </div>
+            <TextInput
+              password={true}
+              name="rep-pwd"
+              label="Repeat new password"
+              id="rep-pwd-login"
+              value={this.state.pwd2}
+              onChange={e => this.setState({ pwd2: e.target.value })}
+              onKeyUp={this.handlePwdKeyUp}
+              required
+            />
+            <div className="general-input-error">{this.state.pwd2Error}</div>
+            <Button
+              className="edit-submit"
+              onClick={this.handlePasswordSubmit}
+              disabled={
+                !this.state.pwd1Valid ||
+                this.state.pwd2 !== this.state.pwd1 ||
+                this.state.pwd1 === "" ||
+                this.state.pwd2 === ""
+              }
             >
               Confirm
             </Button>
@@ -256,5 +463,6 @@ export {
   DistanceSlider,
   PopularitySlider,
   CommonInterestsSlider,
-  EditEmailBox
+  EditEmailBox,
+  EditPasswordBox
 };
