@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Slider from "@material-ui/core/Slider";
-import { Button, Icon, TextInput } from "react-materialize";
+import { Button, Icon, TextInput, Switch, Modal } from "react-materialize";
 import ValidateInput from "../validation/ValidateInput";
 
 class AgeSlider extends Component {
@@ -83,14 +83,16 @@ class DistanceSlider extends Component {
         >
           {this.state.value} km
         </label>
-        <Slider
-          name="slider-edit-distance"
-          min={0}
-          max={50}
-          value={this.state.value}
-          onChange={this.handleChange}
-          valueLabelDisplay="auto"
-        />
+        {this.state.value !== null && (
+          <Slider
+            name="slider-edit-distance"
+            min={0}
+            max={50}
+            value={this.state.value}
+            onChange={this.handleChange}
+            valueLabelDisplay="auto"
+          />
+        )}
       </div>
     );
   }
@@ -292,7 +294,12 @@ class EditPasswordBox extends Component {
       pwd1Valid: false,
       pwd2Valid: false,
       pwd2Error: "",
-      editPasswordActive: false
+      editPasswordActive: false,
+      pwd1VerifyBox: "box-disabled",
+      pwdHasLowercase: false,
+      pwdHasUppercase: false,
+      pwdHasNumber: false,
+      pwdHasMinLen: false
     };
   }
 
@@ -458,11 +465,66 @@ class EditPasswordBox extends Component {
   }
 }
 
+class NotificationSwitch extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      status: false
+    };
+  }
+
+  render() {
+    return (
+      <div className="notification-switch-box">
+        <span className="notification-switch-label">Notifications</span>
+        <Switch
+          className="notification-switch"
+          offLabel="Off"
+          onLabel="On"
+          checked={this.state.status}
+        />
+      </div>
+    );
+  }
+}
+
+class DeleteAccountBtn extends Component {
+  render() {
+    return (
+      <div>
+        <Modal
+          header="Delete account"
+          fixedFooter
+          trigger={
+            <Button waves="light" className="delete-account-btn">
+              Delete account
+            </Button>
+          }
+          className="action-modal"
+          actions={[
+            <Button waves="green" modal="close" flat>
+              Cancel
+            </Button>,
+            <Button waves="green" modal="close" flat>
+              Confirm
+            </Button>
+          ]}
+        >
+          Are you sure you want to delete your account? (all your data will be
+          removed)
+        </Modal>
+      </div>
+    );
+  }
+}
+
 export {
   AgeSlider,
   DistanceSlider,
   PopularitySlider,
   CommonInterestsSlider,
   EditEmailBox,
-  EditPasswordBox
+  EditPasswordBox,
+  NotificationSwitch,
+  DeleteAccountBtn
 };

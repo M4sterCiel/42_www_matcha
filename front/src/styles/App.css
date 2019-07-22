@@ -520,11 +520,29 @@ textarea:not(.browser-default):focus:not([readonly]) + label {
   margin-left: 0px !important;
 }
 
-/* Delete user component */
+.notification-switch-box {
+  margin: 25px 0px;
+}
 
-.delete-btn {
-  width: 160px;
-  height: 30px;
+.notification-switch-label {
+  display: inline-block;
+}
+
+.switch {
+  display: inline-block !important;
+  padding: 0px 10px;
+}
+
+.lever {
+  background-color: rgba(255, 182, 211, 0.5) !important;
+}
+
+.switch label input[type="checkbox"]:checked + .lever:after {
+  background-color: #ffb6d3 !important;
+}
+
+.delete-account-btn {
+  background-color: red !important;
 }
 
 /* Chat page */
@@ -560,6 +578,13 @@ textarea:not(.browser-default):focus:not([readonly]) + label {
 
 .modal-intro {
   margin-bottom: 20px;
+}
+
+.action-modal {
+  width: 600px;
+  height: 200px !important;
+  border-radius: 30px;
+  top: calc(50% - 100px) !important;
 }
 
 /* Date picker */
@@ -815,6 +840,14 @@ button.btn-star-picture-main {
   }
 }
 
+@media screen and (max-width: 600px) {
+  .action-modal {
+    width: 420px;
+    height: 200px !important;
+    top: calc(50% - 100px) !important;
+  }
+}
+
 @media screen and (max-width: 440px) {
   .picture-box {
     min-width: 250px;
@@ -831,6 +864,12 @@ button.btn-star-picture-main {
 
   .edit-location-autoc-input {
     width: 90%;
+  }
+
+  .action-modal {
+    width: 340px;
+    height: 220px !important;
+    top: calc(50% - 110px) !important;
   }
 }
 
@@ -868,5 +907,11 @@ button.btn-star-picture-main {
 
   .upload-options {
     height: 50px;
+  }
+
+  .action-modal {
+    width: 300px;
+    height: 220px !important;
+    top: calc(50% - 110px) !important;
   }
 }
