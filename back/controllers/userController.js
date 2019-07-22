@@ -1,7 +1,7 @@
-var UserService   = require("../services/userService");
-var userModel     = require("../models/userModel");
-var input         = require("../services/inputService");
-var jwtUtils      = require("../services/jwtService");
+var UserService = require("../services/userService");
+var userModel = require("../models/userModel");
+var input = require("../services/inputService");
+var jwtUtils = require("../services/jwtService");
 
 module.exports = {
   login: async (req, res, next) => {
@@ -17,6 +17,22 @@ module.exports = {
       return res.status(200).json({
         message: "Succesfully User Retrieved",
         token: jwtUtils.tokenGenerator([id, username])
+      });
+    }
+  },
+
+  updateUserField: async (req, res, next) => {
+    var result = await userModel.updateOne(
+      req.params.id,
+      req.params.field,
+      req.body.data
+    );
+
+    if (result.error) return res.status(401).json({ message: result.error });
+    else {
+      return res.status(200).json({
+        message: `${req.params.field} updated`,
+        res: res
       });
     }
   },
@@ -81,15 +97,15 @@ module.exports = {
 
   createUser: async (req, res, next) => {
     //Params
-    var lastname  = req.body.lastname;
+    var lastname = req.body.lastname;
     var firstname = req.body.firstname;
-    var username  = req.body.username;
-    var mail      = req.body.email;
-    var pwd1      = req.body.pwd1;
-    var pwd2      = req.body.pwd2;
-    var city      = req.body.location['address']['city'];
-    var latitude  = req.body.location['coords']['latitude'];
-    var longitude = req.body.location['coords']['longitude'];
+    var username = req.body.username;
+    var mail = req.body.email;
+    var pwd1 = req.body.pwd1;
+    var pwd2 = req.body.pwd2;
+    var city = req.body.location["address"]["city"];
+    var latitude = req.body.location["coords"]["latitude"];
+    var longitude = req.body.location["coords"]["longitude"];
 
     //Check inputs
     var err;
@@ -134,7 +150,7 @@ module.exports = {
       return res.status(401).json({ message: userData.error });
 
     var userPicture = await UserService.getProfilePicture(userId);
-    
+
     if (userData.error)
       return res.status(401).json({ message: userData.error });
 
@@ -142,12 +158,10 @@ module.exports = {
   },
 
   deleteUser: async (req, res, next) => {
-
-    var authorization = req.headers['authorization'];
+    var authorization = req.headers["authorization"];
     var userId = jwtUtils.getUserId(authorization);
 
-    if (userId != -1)
-    {
+    if (userId != -1) {
       var ret = await userModel.deleteUser(userId);
       //console.log(ret);
     }

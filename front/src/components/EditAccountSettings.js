@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Slider from "@material-ui/core/Slider";
 import { Button, Icon, TextInput, Switch, Modal } from "react-materialize";
 import ValidateInput from "../validation/ValidateInput";
+import ApiCall from "../services/ApiCall";
 
 class AgeSlider extends Component {
   constructor(props) {
@@ -202,12 +203,20 @@ class EditEmailBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "toto@email.fr",
+      id: null,
+      email: "",
       newEmail: "",
       editEmailActive: false,
       emailValid: false,
       emailError: ""
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      id: this.props.user.id,
+      email: this.props.user.email
+    });
   }
 
   showEditEmail = () => {
@@ -236,12 +245,27 @@ class EditEmailBox extends Component {
     });
   };
 
-  handleEmailSubmit = () => {
-    this.setState({
+  handleEmailSubmit = async e => {
+    /*     this.setState({
       email: this.state.newEmail,
       newEmail: ""
-    });
-    this.hideEditEmail();
+    }); */
+    e.preventDefault();
+    await ApiCall.user
+      .updateUserField(this.state.id, "mail", this.state.newEmail)
+      .then(
+        res => console.log(res)
+        /*         this.setState({
+          email: this.state.newEmail,
+          newEmail: ""
+        }) */
+      )
+      .catch(err => {
+        /*         ErrorToast.user.userNotFound();
+        this.props.history.replace("/"); */
+        console.log("NOK");
+        console.log(err);
+      });
   };
 
   render() {
@@ -473,6 +497,12 @@ class NotificationSwitch extends Component {
     };
   }
 
+  handleSwitch = () => {
+    this.setState({
+      status: !this.state.status
+    });
+  };
+
   render() {
     return (
       <div className="notification-switch-box">
@@ -482,6 +512,7 @@ class NotificationSwitch extends Component {
           offLabel="Off"
           onLabel="On"
           checked={this.state.status}
+          onClick={this.handleSwitch}
         />
       </div>
     );

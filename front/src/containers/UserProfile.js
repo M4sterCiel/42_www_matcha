@@ -71,7 +71,9 @@ class UserProfile extends Component {
                       <ModalUserEditProfilePictures />
                     )}
                     {this.state.user.id === this.props.userConnectedData.id && (
-                      <ModalUserEditAccountSettings />
+                      <ModalUserEditAccountSettings
+                        user={this.props.userConnectedData}
+                      />
                     )}
                   </div>
                 </div>
@@ -137,6 +139,7 @@ class UserProfile extends Component {
     let url = document.location.href;
     let username = url.split("/");
     username = username[username.length - 1];
+    console.log(username);
     ApiCall.user
       .getUserFromUsername(username)
       .then(res =>

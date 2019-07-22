@@ -273,11 +273,20 @@ class ModalUserEditAccountSettings extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userId: null,
+      email: "",
       ageRange: [20, 50],
       distance: 30,
       popularityRange: [0, 200],
       commonInterestsRange: [2, 10]
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      userId: this.props.user.id,
+      email: this.props.user.mail
+    });
   }
 
   handleAgeData = data => {
@@ -307,40 +316,44 @@ class ModalUserEditAccountSettings extends Component {
   render() {
     return (
       <div>
-        <Modal
-          id="edit-account-modal"
-          className="modals"
-          header="Edit your account settings"
-          fixedFooter
-          trigger={false}
-        >
-          <p className="modal-intro">
-            You can edit your Matcha discovery settings and personal account
-            settings
-          </p>
-          <span className="profile-fields-labels">Discovery settings</span>
-          <AgeSlider
-            range={this.state.ageRange}
-            ageToParent={this.handleAgeData}
-          />
-          <DistanceSlider
-            value={this.state.distance}
-            distanceToParent={this.handleDistanceData}
-          />
-          <PopularitySlider
-            range={this.state.popularityRange}
-            popularityToParent={this.handlePopularityData}
-          />
-          <CommonInterestsSlider
-            range={this.state.commonInterestsRange}
-            commonInterestsToParent={this.handleCommonInterestsData}
-          />
-          <span className="profile-fields-labels">Account settings</span>
-          <EditEmailBox />
-          <EditPasswordBox />
-          <NotificationSwitch />
-          <DeleteAccountBtn />
-        </Modal>
+        {this.state.userId !== null && (
+          <Modal
+            id="edit-account-modal"
+            className="modals"
+            header="Edit your account settings"
+            fixedFooter
+            trigger={false}
+          >
+            <p className="modal-intro">
+              You can edit your Matcha discovery settings and personal account
+              settings
+            </p>
+            <span className="profile-fields-labels">Discovery settings</span>
+            <AgeSlider
+              range={this.state.ageRange}
+              ageToParent={this.handleAgeData}
+            />
+            <DistanceSlider
+              value={this.state.distance}
+              distanceToParent={this.handleDistanceData}
+            />
+            <PopularitySlider
+              range={this.state.popularityRange}
+              popularityToParent={this.handlePopularityData}
+            />
+            <CommonInterestsSlider
+              range={this.state.commonInterestsRange}
+              commonInterestsToParent={this.handleCommonInterestsData}
+            />
+            <span className="profile-fields-labels">Account settings</span>
+            <EditEmailBox
+              user={{ id: this.state.userId, email: this.state.email }}
+            />
+            <EditPasswordBox />
+            <NotificationSwitch />
+            <DeleteAccountBtn />
+          </Modal>
+        )}
       </div>
     );
   }

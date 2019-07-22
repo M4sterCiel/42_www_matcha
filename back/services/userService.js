@@ -1,7 +1,7 @@
-var userModel     = require("../models/userModel");
-var pictureModel  = require("../models/pictureModel");
-var passwordHash  = require("password-hash");
-var sendmail      = require("../services/mailService");
+var userModel = require("../models/userModel");
+var pictureModel = require("../models/pictureModel");
+var passwordHash = require("password-hash");
+var sendmail = require("../services/mailService");
 
 module.exports = {
   getUser: async data => {
@@ -87,13 +87,10 @@ module.exports = {
   getProfilePicture: async id => {
     try {
       var result = await pictureModel.findProfile("user_id", id);
-      if (result[0] === undefined)
-      {
+      if (result[0] === undefined) {
         result = "default";
         return result;
-      }
-      else
-        return result[0]['base64'];
+      } else return result[0]["base64"];
     } catch (err) {
       console.log(err);
       return { error: err };

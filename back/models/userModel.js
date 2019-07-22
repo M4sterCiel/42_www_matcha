@@ -14,6 +14,18 @@ module.exports = {
     }
   },
 
+  updateOne: async (id, field, data) => {
+    try {
+      var result = await pool.query({
+        sql: "UPDATE users SET `?` = ? WHERE `id` = ?",
+        values: [field, data, id]
+      });
+      if (result) return result;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
   createOne: async data => {
     //console.log(data);
     data[4] = passwordHash.generate(data[4], {
@@ -82,7 +94,7 @@ module.exports = {
     }
   },
 
-  resetPasswordResetKey: async (key) => {
+  resetPasswordResetKey: async key => {
     try {
       var result = await pool.query({
         sql: "UPDATE users SET `password_key`= NULL WHERE `password_key`= ?",
@@ -94,15 +106,14 @@ module.exports = {
     }
   },
 
-  deleteUser: async (userId) => {
+  deleteUser: async userId => {
     try {
       var result = await pool.query({
         sql: "DELETE FROM users WHERE `id` = ?",
         values: userId
       });
       return result.affectedRows;
-    }
-    catch (err) {
+    } catch (err) {
       throw new Error(err);
     }
   }

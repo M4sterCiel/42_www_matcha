@@ -4,6 +4,7 @@ var userController = require("../controllers/userController");
 exports.router = (() => {
   var userRouter = express.Router();
 
+  userRouter.route("/update/:id/:field").post(userController.updateUserField);
   userRouter.route("/register/:key").get(userController.checkValidity);
   userRouter.route("/profile/:username").get(userController.getUserProfile);
   userRouter.route("/login").post(userController.login);
@@ -13,7 +14,7 @@ exports.router = (() => {
     .get(userController.checkPasswordResetKey);
   userRouter.route("/reset-password/:key").post(userController.updatePassword);
   userRouter.route("/register").post(userController.createUser);
-  userRouter.route('/delete-account').delete(userController.deleteUser);
+  userRouter.route("/delete-account").delete(userController.deleteUser);
 
   return userRouter;
 })();
