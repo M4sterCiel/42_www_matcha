@@ -188,8 +188,7 @@ class Login extends Component {
         localStorage.setItem("Token", res.data["token"]);
         this.props.history.push("/");
       })
-      .catch(err => {
-        console.log(err);
+      .catch((err)  => {
         ErrorToast.auth.userAlreadyLogged();
       });
   };

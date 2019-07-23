@@ -33,8 +33,8 @@ var connections = [];
 var clients = [];
 var onlineTab = [];
 
-io.on('connection', (socket) => {
-  onlineTab.push({ 
+io.on('connection', async (socket) => {
+  await onlineTab.push({ 
     userID: socket.handshake.query['userID'],
     socketID: socket.id
   });

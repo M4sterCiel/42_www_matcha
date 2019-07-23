@@ -18,6 +18,7 @@ class NavBar extends Component {
     this.state = {
       userID: '',
       socket: '',
+      socketChat: '',
       nbMessages: null
     }
     this.Auth = new AuthService();
@@ -44,17 +45,26 @@ class NavBar extends Component {
       // cancel the request (the message parameter is optional)
       //source.cancel('Operation canceled by the user.');
 
-    if (!this.state.socket) {
-    await this.setState({ socket: io('/chat'), 
+    await this.setState({ socket: io( { 
       transports: ['polling'], 
       upgrade: false,
       query: {
           userID: this.state.userID
         } 
+      })
       });
-    }
+    
+      await this.setState({ socketChat: io('/chat', { 
+      transports: ['polling'], 
+      upgrade: false,
+      query: {
+          userID: this.state.userID
+        } 
+      })
+      });
+  
 
-    this.state.socket.on('new message', data => {
+    this.state.socketChat.on('new message', data => {
       if (data['userID_other'] === this.state.userID)
         this.setState({ nbMessages: this.state.nbMessages + 1 })
     });
@@ -89,11 +99,11 @@ class NavBar extends Component {
             </NavLink>
           </li>
           <li>
-            <Link to="/chat/messages">
+            <NavLink to="/chat/messages">
               <Badge className={classes.margin} badgeContent={countMessages} color="secondary">
                 <MailIcon />
               </Badge>
-            </Link>
+            </NavLink>
           </li>
           <li>
             <button className="nav-buttons" onClick={logout}>

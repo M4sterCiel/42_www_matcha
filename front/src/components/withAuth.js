@@ -24,16 +24,19 @@ export default function withAuth(AuthComponent) {
             confirm: confirm,
             loaded: true
           });
-          if (!this.state.socket) {
-           await this.setState({ socket: io({
-            transports: ['polling'], 
-            upgrade: false,
-            query: {
-              userID: confirm.id
-            }
-          })
-          }); 
-        }
+
+          /* if (this.state.socket !== '' || !this.state.socket.connected)
+          {
+            await this.setState({ socket: io({
+              transports: ['polling'], 
+              upgrade: false,
+              query: {
+                userID: confirm.id
+              }
+            })
+            }); 
+          } */
+        //console.log(this.state.socket);
         } catch (err) {
           console.log(err);
           Auth.logout();
