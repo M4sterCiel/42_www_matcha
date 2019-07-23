@@ -3,6 +3,8 @@ import Slider from "@material-ui/core/Slider";
 import { Button, Icon, TextInput, Switch, Modal } from "react-materialize";
 import ValidateInput from "../validation/ValidateInput";
 import ApiCall from "../services/ApiCall";
+import ErrorToast from "../services/ErrorToastService";
+import InfoToast from "../services/InfoToastService";
 
 class AgeSlider extends Component {
   constructor(props) {
@@ -246,25 +248,20 @@ class EditEmailBox extends Component {
   };
 
   handleEmailSubmit = async e => {
-    /*     this.setState({
-      email: this.state.newEmail,
-      newEmail: ""
-    }); */
     e.preventDefault();
     await ApiCall.user
       .updateUserField(this.state.id, "mail", this.state.newEmail)
-      .then(
-        res => console.log(res)
-        /*         this.setState({
+      .then(res => {
+        this.setState({
           email: this.state.newEmail,
           newEmail: ""
-        }) */
-      )
+        });
+        InfoToast.default.info("Email updated with success");
+        this.hideEditEmail();
+      })
       .catch(err => {
-        /*         ErrorToast.user.userNotFound();
-        this.props.history.replace("/"); */
-        console.log("NOK");
-        console.log(err);
+        let message = err.response.data["error"];
+        ErrorToast.default.error(message, 1400);
       });
   };
 

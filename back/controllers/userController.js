@@ -22,6 +22,12 @@ module.exports = {
   },
 
   updateUserField: async (req, res, next) => {
+    var err = await input.mail(req.body.data);
+    if (err.error)
+      return res
+        .status(400)
+        .json({ error: `${req.params.field} ` + err.error });
+
     var result = await userModel.updateOne(
       req.params.id,
       req.params.field,
@@ -31,8 +37,7 @@ module.exports = {
     if (result.error) return res.status(401).json({ message: result.error });
     else {
       return res.status(200).json({
-        message: `${req.params.field} updated`,
-        res: res
+        message: `${req.params.field} updated`
       });
     }
   },

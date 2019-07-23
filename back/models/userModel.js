@@ -17,7 +17,7 @@ module.exports = {
   updateOne: async (id, field, data) => {
     try {
       var result = await pool.query({
-        sql: "UPDATE users SET `?` = ? WHERE `id` = ?",
+        sql: "UPDATE users SET ?? = ? WHERE `id` = ?",
         values: [field, data, id]
       });
       if (result) return result;
