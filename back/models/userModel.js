@@ -57,6 +57,23 @@ module.exports = {
     }
   },
 
+  updatePasswordWithId: async (pwd, id) => {
+    pwd = passwordHash.generate(pwd, {
+      algorithm: "sha512",
+      saltLength: 10,
+      iterations: 5
+    });
+    try {
+      var result = await pool.query({
+        sql: "UPDATE users SET `password` = ? WHERE `id` = ?",
+        values: [pwd, id]
+      });
+      return result.affectedRows;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
   setPasswordResetKey: async (id, key) => {
     try {
       var result = await pool.query({
@@ -78,7 +95,7 @@ module.exports = {
     try {
       var result = await pool.query({
         sql: "UPDATE users SET `password` = ? WHERE `password_key` = ?",
-        values: [pwd, key, key]
+        values: [pwd, key]
       });
       try {
         var result2 = await pool.query({
@@ -89,18 +106,6 @@ module.exports = {
       } catch (err) {
         throw new Error(err);
       }
-    } catch (err) {
-      throw new Error(err);
-    }
-  },
-
-  resetPasswordResetKey: async key => {
-    try {
-      var result = await pool.query({
-        sql: "UPDATE users SET `password_key`= NULL WHERE `password_key`= ?",
-        values: key
-      });
-      return result.affectedRows;
     } catch (err) {
       throw new Error(err);
     }

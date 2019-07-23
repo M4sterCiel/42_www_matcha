@@ -363,7 +363,7 @@ class Register extends Component {
       this.setState({ pwdHasNumber: false });
     }
 
-    if (this.state.pwd1.length >= 8) {
+    if (this.state.pwd1.length >= 8 && this.state.pwd1.length <= 30) {
       this.setState({ pwdHasMinLen: true });
     } else {
       this.setState({ pwdHasMinLen: false });

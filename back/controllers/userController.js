@@ -22,11 +22,32 @@ module.exports = {
   },
 
   updateUserField: async (req, res, next) => {
-    var err = await input.mail(req.body.data);
-    if (err.error)
+    var err = "";
+    switch (req.params.field) {
+      case "firstname":
+        err = await input.firstname(req.body.data);
+        break;
+      case "lastname":
+        err = await input.lastname(req.body.data);
+        break;
+      case "mail":
+        err = await input.mail(req.body.data);
+        break;
+      default:
+        err = "wrong field";
+        break;
+    }
+
+    if (err.error) {
       return res
         .status(400)
         .json({ error: `${req.params.field} ` + err.error });
+    }
+    if (err === "wrong field") {
+      return res
+        .status(400)
+        .json({ error: `${req.params.field} is a wrong field` });
+    }
 
     var result = await userModel.updateOne(
       req.params.id,
@@ -68,7 +89,42 @@ module.exports = {
         .json({ message: "password reset key isn't valid" });
   },
 
-  updatePassword: async (req, res, next) => {
+  verifyPasswordWithId: async (req, res, next) => {
+    var err;
+    if ((err = input.password(req.body.password).error))
+      return res.status(400).json({ error: "password " + err });
+    var result = await UserService.verifyPasswordWithId(
+      req.body.password,
+      req.params.id
+    );
+
+    if (result.status !== "Password is valid")
+      return res.status(401).json({ message: "Password isn't valid" });
+    else {
+      return res.status(200).json({
+        message: "Password is valid"
+      });
+    }
+  },
+
+  updatePasswordWithId: async (req, res, next) => {
+    var err;
+    if ((err = input.password(req.body.password).error))
+      return res.status(400).json({ error: "password " + err });
+    var result = await UserService.updatePasswordWithId(
+      req.body.password,
+      req.params.id
+    );
+    if (result.status !== "Password updated with success")
+      return res.status(401).json({ message: "Couldn't update password" });
+    else {
+      return res.status(200).json({
+        message: "Password updated"
+      });
+    }
+  },
+
+  updatePasswordWithKey: async (req, res, next) => {
     //Params
     var pwd1 = req.body.pwd1;
     var pwd2 = req.body.pwd2;
@@ -84,7 +140,7 @@ module.exports = {
       return res.status(400).json({ error: "passwords don't match" });
 
     var ret = await UserService.updatePasswordWithKey(pwd1, key);
-    if (ret.status == "Password updated with success")
+    if (ret.status === "Password updated with success")
       return res.status(201).send(ret.status);
     else return res.status(400).send(ret.status);
   },
@@ -140,7 +196,7 @@ module.exports = {
       latitude,
       longitude
     ]);
-    if (ret.status == "User created with success")
+    if (ret.status === "User created with success")
       return res.status(201).send(ret.status);
     else return res.status(400).send(ret.status);
   },

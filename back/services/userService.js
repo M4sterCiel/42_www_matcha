@@ -65,6 +65,27 @@ module.exports = {
     }
   },
 
+  verifyPasswordWithId: async (pwd, id) => {
+    var result = await userModel.findOne("id", id);
+    if (result) {
+      var hashed = result[0]["password"];
+      if (passwordHash.verify(pwd, hashed))
+        return { status: "Password is valid" };
+      else {
+        return { status: "Password isn't valid" };
+      }
+    }
+  },
+
+  updatePasswordWithId: async (pwd, id) => {
+    var updated = await userModel.updatePasswordWithId(pwd, id);
+    if (updated !== "") {
+      return { status: "Password updated with success" };
+    } else {
+      return { status: "An error has occurred" };
+    }
+  },
+
   updatePasswordWithKey: async (pwd, key) => {
     var updated = await userModel.updatePasswordWithKey(pwd, key);
     if (updated) {

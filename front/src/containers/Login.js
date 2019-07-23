@@ -129,8 +129,8 @@ class Login extends Component {
       loginError = "Please enter a valid Username/Email";
     } else if (this.state.login === "") {
       loginError = "Username/Email cannot be empty";
-    } else if (this.state.login.length > 20) {
-      loginError = "Username/Email must be less or equal to 20 chars";
+    } else if (this.state.login.length > 30) {
+      loginError = "Username/Email must be less or equal to 30 chars";
     }
 
     if (loginError) {
@@ -183,14 +183,13 @@ class Login extends Component {
       pwd: this.state.pwd
     })
       .then(res => {
-        //console.log(res.data);
         this.setState({ responseToPost: res.status });
         localStorage.setItem("Token", res.data["token"]);
         this.props.history.push("/");
       })
       .catch(err => {
         console.log(err);
-        ErrorToast.auth.userAlreadyLogged();
+        ErrorToast.default.error(err.response["data"]["message"], 1400);
       });
   };
 }

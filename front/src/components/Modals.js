@@ -349,7 +349,7 @@ class ModalUserEditAccountSettings extends Component {
             <EditEmailBox
               user={{ id: this.state.userId, email: this.state.email }}
             />
-            <EditPasswordBox />
+            <EditPasswordBox userId={this.state.userId} />
             <NotificationSwitch />
             <DeleteAccountBtn />
           </Modal>

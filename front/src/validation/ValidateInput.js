@@ -51,7 +51,12 @@ export default {
         };
       } else if (!value.match(usernameRegex)) {
         return {
-          usernameError: "Username is invalid (use constters and numbers)",
+          usernameError: "Username is invalid (use letters and numbers)",
+          usernameValid: false
+        };
+      } else if (value.length > 30) {
+        return {
+          usernameError: "Username is too long (must be equal or less than 30)",
           usernameValid: false
         };
       }
@@ -74,61 +79,16 @@ export default {
           emailError: "Email is invalid (example@email.com)",
           emailValid: false
         };
+      } else if (value.length > 30) {
+        return {
+          emailError: "Email is too long (must be equal or less than 30)",
+          emailValid: false
+        };
       }
       return {
         emailError: "",
         emailValid: true
       };
-    },
-    // Checking password format is valid
-    password: value => {
-      let pwdHasLowercase = false;
-      let pwdHasUppercase = false;
-      let pwdHasNumber = false;
-      let pwdHasMinLen = false;
-
-      if (/[a-z]/.test(value)) {
-        pwdHasLowercase = true;
-      } else {
-        pwdHasLowercase = false;
-      }
-      if (/[A-Z]/g.test(value)) {
-        pwdHasUppercase = true;
-      } else {
-        pwdHasUppercase = false;
-      }
-      if (/[0-9]/g.test(value)) {
-        pwdHasNumber = true;
-      } else {
-        pwdHasNumber = false;
-      }
-      if (value.length >= 8) {
-        pwdHasMinLen = true;
-      } else {
-        pwdHasMinLen = false;
-      }
-
-      if (pwdHasLowercase && pwdHasUppercase && pwdHasNumber && pwdHasMinLen) {
-        return {
-          passwordCharsReq: {
-            pwdHasLowercase: pwdHasLowercase,
-            pwdHasUppercase: pwdHasUppercase,
-            pwdHasNumber: pwdHasNumber,
-            pwdHasMinLen: pwdHasMinLen
-          },
-          pwd1Valid: true
-        };
-      } else {
-        return {
-          passwordCharsReq: {
-            pwdHasLowercase: pwdHasLowercase,
-            pwdHasUppercase: pwdHasUppercase,
-            pwdHasNumber: pwdHasNumber,
-            pwdHasMinLen: pwdHasMinLen
-          },
-          pwd1Valid: false
-        };
-      }
     }
   }
 };
