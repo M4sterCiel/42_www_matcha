@@ -1,11 +1,10 @@
-let express       = require("express");
-let app           = express();
-let bodyParser    = require("body-parser");
-let userRoute     = require("./userRoute");
-var http          = require('http').createServer(app);
-var io            = require("socket.io").listen(http);
-var chatRoute     = require('./chatRoute');
-var chatController        = require('../controllers/chatController');
+let app             = require("express")();
+var http            = require('http').Server(app, {'transports': ['polling']});
+var io              = require("socket.io").listen(http);
+let bodyParser      = require("body-parser");
+let userRoute       = require("./userRoute");
+var chatRoute       = require('./chatRoute');
+var chatController  = require('../controllers/chatController');
 
 /* Listenning port */
 
@@ -34,7 +33,7 @@ var connections = [];
 var clients = [];
 var onlineTab = [];
 
-var online = io.on('connection', (socket) => {
+io.on('connection', (socket) => {
   onlineTab.push({ 
     userID: socket.handshake.query['userID'],
     socketID: socket.id
@@ -42,7 +41,7 @@ var online = io.on('connection', (socket) => {
 
   chatController.onlineStatus(socket.handshake.query['userID']);
   console.log("%d socket(s) online", onlineTab.length);
-  console.log({onlineTab});
+  console.log({ onlineTab });
 
   socket.broadcast.emit('online', {
     user_id: socket.handshake.query['userID'],
@@ -54,16 +53,19 @@ var online = io.on('connection', (socket) => {
       if (onlineTab[i]['socketID'] == socket.id)
         onlineTab.splice(i, 1);
     }
-    socket.broadcast.emit('offline', {
-      user_id: socket.handshake.query['userID'],
-      status: 'Offline' });
-      chatController.offlineStatus(socket.handshake.query['userID']);
-    console.log("%d socket(s) online", onlineTab.length);
-    console.log({onlineTab});
+    var result = onlineTab.find(elem => elem.userID === socket.handshake.query['userID']);
+    if (result === undefined)
+    {
+      socket.broadcast.emit('offline', {
+        user_id: socket.handshake.query['userID'],
+        status: 'Offline' });
+        chatController.offlineStatus(socket.handshake.query['userID']);
+      console.log("%d socket(s) online", onlineTab.length);
+      console.log({onlineTab});
+    }
   })
 });
-var nsp = io
-.of('/chat');
+var nsp = io.of('/chat');
 
 nsp.on('connection', (socket) => {
 
@@ -73,18 +75,13 @@ nsp.on('connection', (socket) => {
   var userName    = socket.handshake.query['userName'];
   var room_id     = socket.handshake.query['room_id'];
 
-  var clientInfo = new Object();
-  clientInfo.userID = socket.handshake.query['userID'];
-  clientInfo.socketID = socket.id;
-  clients.push(clientInfo);
-  connections.push(socket);
-
   socket.join(room_id);
 
-  socket.on(room_id, data => {
-   // console.log(data);
+  socket.on(room_id, (data, userID_other) => {
     chatController.saveMessage([data, userID, room_id]);
+    chatController.saveNotification(userID_other, userID, 'message', '', room_id);
     socket.broadcast.emit(room_id, { data, userID, userName });
+    socket.broadcast.emit('new message', { room_id, userID_other });
   })
 
   socket.on('disconnect', () => {
@@ -98,5 +95,4 @@ nsp.on('connection', (socket) => {
       }
     }
   });
-  //console.log(clients);
 });

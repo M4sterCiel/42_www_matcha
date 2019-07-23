@@ -60,6 +60,8 @@ class ChatConv extends Component {
             });
  
             await this.setState({ socket: io({
+                transports: ['polling'], 
+                upgrade: false,
                 query: {
                     userID: this.state.userID,
                     matches: this.state.matches
@@ -91,7 +93,7 @@ class ChatConv extends Component {
     contactList = (props) => {
          const value = props.value;
          const contacts = value.map((e) =>
-            <li className="collection-item avatar clickable" key={e.id} onClick={() => this.displayChatbox(e.room_id, e.username)}>
+            <li className="collection-item avatar clickable" key={e.id} onClick={() => this.displayChatbox(e.room_id, e.username, e.userID)}>
                 <i className="material-icons circle pink">person_pin</i>
                 <span className="title truncate">{e.username}</span>
                 <p>{e.status}</p>
@@ -104,14 +106,14 @@ class ChatConv extends Component {
        }
 
        componentWillUnmount() {
-        if (this.state.socket !== '')
+        if (this.state.socket)
           this.state.socket.close();
       }
   
 
-       displayChatbox = (roomId, username) => {
+       displayChatbox = (roomId, username, userID) => {
            //console.log(roomId);
-           this.props.roomToParent(roomId, username);
+           this.props.roomToParent(roomId, username, userID);
        }
 }
 

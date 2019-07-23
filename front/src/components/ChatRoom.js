@@ -21,7 +21,8 @@ class Chat extends Component {
             userName: '',
             userToken: this.Auth.getToken(),
             room_id: '',
-            usernameOther: ''
+            usernameOther: '',
+            userID_other: ''
         }
     }
 
@@ -71,7 +72,7 @@ class Chat extends Component {
         );
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         this.setState({ winSize: window.innerHeight - 190});
     };
 
@@ -83,26 +84,30 @@ class Chat extends Component {
     initializeComponent = async () => {
         if (this.state.socket)
             this.state.socket.close();
-        this.setState({ 
+        await this.setState({ 
             listMessages: this.props.listMessages,
             room_id: this.props.room_id,
-            usernameOther: this.props.username
+            usernameOther: this.props.username,
+            userID_other: this.props.userID_other
          });
-        //this.setState({ room_id: this.props.room_id });
 
         await this.setState({
             userID: this.Auth.getIdViaToken(this.state.userToken),
             userName: this.Auth.getUsernameViaToken(this.state.userToken)
           });
+        
 
         await this.setState({ socket: io('/chat', {
+            transports: ['polling'], 
+            upgrade: false,
             query: {
                 token: this.state.userToken,
                 userID: this.state.userID,
                 userName: this.state.userName,
                 room_id: this.state.room_id
-              }
-        }) });
+            }
+            })
+        });
 
         this.state.socket.on(this.state.room_id, (data) => {
             //console.log(data);
@@ -164,18 +169,19 @@ class Chat extends Component {
             userID: this.state.userID,
             date: ''
         });
+
+        //console.log(this.state.room_id);
         await this.setState({ listMessages: tab });
         this.goToElement(tab.length);
-        this.state.socket.emit(this.state.room_id, this.state.toSend);
+        this.state.socket.emit(this.state.room_id, this.state.toSend, this.state.userID_other);
         this.setState({ toSend: '' });
     }
 
     componentWillUnmount() {
-        if (this.state.socket !== '')
+        if (this.state.socket)
           this.state.socket.close();
       }
   
-    /* Trouver un moyen de passer l'id de la room correspondante soit par les props ou redux ou peu importe mais il le faut */
 }
 
 export default Chat;

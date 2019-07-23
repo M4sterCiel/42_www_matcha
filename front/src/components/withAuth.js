@@ -13,23 +13,27 @@ export default function withAuth(AuthComponent) {
       socket: ''
     };
 
-    componentDidMount() {
+    async componentDidMount() {
       if (!Auth.loggedIn()) {
         this.props.history.replace("/users/login");
       } else {
         try {
-          const confirm = Auth.getConfirm();
-          console.log("confirmation is:", confirm);
+          const confirm = await Auth.getConfirm();
+          //console.log("confirmation is:", confirm);
           this.setState({
             confirm: confirm,
             loaded: true
           });
-           this.setState({ socket: io({
+          if (!this.state.socket) {
+           await this.setState({ socket: io({
+            transports: ['polling'], 
+            upgrade: false,
             query: {
               userID: confirm.id
             }
           })
           }); 
+        }
         } catch (err) {
           console.log(err);
           Auth.logout();
@@ -39,18 +43,20 @@ export default function withAuth(AuthComponent) {
     }
 
     componentWillUnmount() {
-      if (this.state.socket !== '')
+      if (this.state.socket)
         this.state.socket.close();
+        //console.log('closing socket');
     }
 
     render() {
       if (this.state.loaded === true) {
         if (this.state.confirm) {
-          console.log("confirmed!");
+          //console.log("confirmed!");
           return (
             <AuthComponent
               history={this.props.history}
               confirm={this.state.confirm}
+              //socket={this.state.socket}
             />
           );
         } else {

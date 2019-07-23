@@ -4,20 +4,82 @@ import M from "materialize-css";
 import AuthService from "../services/AuthService";
 import { withRouter, NavLink } from "react-router-dom";
 import logo from "../assets/logo-with-name.png";
+import io from "socket.io-client";
+import Axios from "axios";
+import Badge from '@material-ui/core/Badge';
+import MailIcon from '@material-ui/icons/Mail';
+import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 const Auth = new AuthService();
 
 class NavBar extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      userID: '',
+      socket: '',
+      nbMessages: null
+    }
     this.Auth = new AuthService();
     this.handleLogout = this.handleLogout.bind(this);
     this.Auth.getConfirm = this.Auth.getConfirm.bind(this);
     this.Auth.loggedIn = this.Auth.loggedIn.bind(this);
   }
 
+   async componentDidMount() {
+
+    //const CancelToken = Axios.CancelToken;
+    //const source = CancelToken.source();
+
+    if (!localStorage.getItem('Token'))
+      return;
+    await this.setState({ userID: this.Auth.getConfirm()['id'] });
+    Axios.get('/chat/notification/' + this.state.userID)
+      .then(res => {
+        this.setState({ nbMessages: res.data['notification'][0]['COUNT (*)'] });
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      // cancel the request (the message parameter is optional)
+      //source.cancel('Operation canceled by the user.');
+
+    if (!this.state.socket) {
+    await this.setState({ socket: io('/chat'), 
+      transports: ['polling'], 
+      upgrade: false,
+      query: {
+          userID: this.state.userID
+        } 
+      });
+    }
+
+    this.state.socket.on('new message', data => {
+      if (data['userID_other'] === this.state.userID)
+        this.setState({ nbMessages: this.state.nbMessages + 1 })
+    });
+  }
+
+  componentWillUnmount() {
+    if (this.state.socket)
+      this.state.socket.close();
+  }
+
   render() {
+    const countMessages = this.state.nbMessages;
     const logout = this.handleLogout;
+    
+
+    const useStyles = makeStyles(theme => ({
+      margin: {
+        margin: theme.spacing(2),
+        marginRight: theme.spacing(3),
+      },
+    }));
+
+
     function LoggedInLinks() {
+      const classes = useStyles();
       return (
         <ul className="right hide-on-med-and-down">
           <li>
@@ -27,10 +89,11 @@ class NavBar extends Component {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/chat/messages">
-              {" "}
-              Chats
-            </NavLink>
+            <Link to="/chat/messages">
+              <Badge className={classes.margin} badgeContent={countMessages} color="secondary">
+                <MailIcon />
+              </Badge>
+            </Link>
           </li>
           <li>
             <button className="nav-buttons" onClick={logout}>

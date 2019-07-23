@@ -5,6 +5,7 @@ var userModel       = require('../models/userModel');
 
 module.exports = {
     saveMessage: async data => {
+        //console.log(data);
         await chatModel.saveMessage(data);
     },
 
@@ -29,17 +30,21 @@ module.exports = {
         return res.status(200).json({ result, status });
     },
 
-    getStatus: (req, res, next) => {
-        var tab = req.body.tab;
-        //console.log(tab);
-        return res.status(200).json({ Message: 'ok' });
-    },
-
     onlineStatus: async userID => {
         await userModel.saveStatus(1, userID);
     },
     
     offlineStatus: async userID => {
         await userModel.saveStatus(0, userID);
+    },
+
+    saveNotification: async (user_id, sender_id, type, data, reference) => {
+        await chatModel.saveNotification([user_id, sender_id, type, data, reference]);
+    },
+
+    getNotification: async (req, res, next) => {
+        var userID = req.params.userID;
+        var result = await chatModel.getNotification(userID);
+        return res.status(200).json({ notification: result });
     }
 }

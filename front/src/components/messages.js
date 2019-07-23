@@ -8,25 +8,26 @@ import withAuth from "./withAuth";
 import ChatConv from './ChatConv';
 import ChatRoom from './ChatRoom';
 import NavBar from './NavBar';
-import Logo from "../assets/no-message.png"
 
 
-class Testclass extends Component {
+class Messages extends Component {
     constructor(props) {
         super(props);
         this.Auth = new AuthService();
         this.state = {
             room: null,
             username: '',
+            userID: '',
             listMessages: []
         }
         this.handleRoomData = this.handleRoomData.bind(this);
     }
 
-    async handleRoomData(room_id, username) {
+    async handleRoomData(room_id, username, userID) {
         await this.setState({
             room: room_id,
-            username: username
+            username: username,
+            userID: userID
         });
         this.updateChat();
     }
@@ -62,6 +63,7 @@ class Testclass extends Component {
                         room_id={this.state.room} 
                         listMessages={this.state.listMessages}
                         username={this.state.username}
+                        userID_other={this.state.userID}
                         />
                         }
                     </div>
@@ -89,6 +91,7 @@ class Testclass extends Component {
                 console.log(err);
             })
             //console.log(this.state.listMessages);
+            console.log(this.props.socket);
     }
 
     updateChat = async () => {
@@ -112,5 +115,5 @@ class Testclass extends Component {
 
 }
 
-export default withAuth(Testclass);
+export default withAuth(Messages);
 
