@@ -278,7 +278,8 @@ class ModalUserEditAccountSettings extends Component {
       ageRange: [20, 50],
       distance: 30,
       popularityRange: [0, 200],
-      commonInterestsRange: [2, 10]
+      commonInterestsRange: [2, 10],
+      notifications: false
     };
   }
 
@@ -310,6 +311,12 @@ class ModalUserEditAccountSettings extends Component {
   handleCommonInterestsData = data => {
     this.setState({
       commonInterestsRange: data
+    });
+  };
+
+  handleEmailData = data => {
+    this.setState({
+      email: data
     });
   };
 
@@ -348,9 +355,10 @@ class ModalUserEditAccountSettings extends Component {
             <span className="profile-fields-labels">Account settings</span>
             <EditEmailBox
               user={{ id: this.state.userId, email: this.state.email }}
+              emailToParent={this.handleEmailData}
             />
             <EditPasswordBox userId={this.state.userId} />
-            <NotificationSwitch />
+            <NotificationSwitch notifications={this.state.notifications} />
             <DeleteAccountBtn />
           </Modal>
         )}

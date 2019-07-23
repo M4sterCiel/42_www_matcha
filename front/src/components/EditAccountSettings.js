@@ -258,6 +258,7 @@ class EditEmailBox extends Component {
         this.setState({
           email: this.state.newEmail
         });
+        this.props.emailToParent(this.state.newEmail);
         InfoToast.default.info("Email updated with success");
         this.hideEditEmail();
       })
@@ -578,6 +579,12 @@ class NotificationSwitch extends Component {
     this.state = {
       status: false
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      status: this.props.notifications
+    });
   }
 
   handleSwitch = () => {
