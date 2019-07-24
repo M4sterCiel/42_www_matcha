@@ -45,8 +45,8 @@ class NavBar extends Component {
       // cancel the request (the message parameter is optional)
       //source.cancel('Operation canceled by the user.');
 
-    await this.setState({ socket: io( { 
-      transports: ['polling'], 
+    await this.setState({ socket: io({ 
+      transports: ['polling'],
       upgrade: false,
       query: {
           userID: this.state.userID
@@ -54,9 +54,9 @@ class NavBar extends Component {
       })
       });
     
-      await this.setState({ socketChat: io('/chat', { 
-      transports: ['polling'], 
-      upgrade: false,
+      await this.setState({ socketChat: io('localhost:3000/chat', {
+        transports: ['polling'], 
+        upgrade: false,
       query: {
           userID: this.state.userID
         } 
@@ -71,8 +71,10 @@ class NavBar extends Component {
   }
 
   componentWillUnmount() {
-    if (this.state.socket)
+    if (this.state.socket !== '')
       this.state.socket.close();
+    if (this.state.socketChat !== '')
+      this.state.socketChat.close();
   }
 
   render() {

@@ -25,7 +25,7 @@ class UserProfile extends Component {
 
   render() {
     if (!this.state.user.id) return null;
-    console.log(this.props);
+    //console.log(this.props);
     return (
       <div className="App">
         <NavBar />
@@ -37,7 +37,7 @@ class UserProfile extends Component {
                   <div className="card-image">
                     <img
                       className="profile-background-image"
-                      src="http://www.img.lirent.net/2014/10/Android-Lollipop-wallpapers-Download.jpg"
+                      src=""
                       alt=""
                     />
                   </div>
@@ -119,7 +119,7 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
-    console.log(this.Auth.loggedIn());
+    //console.log(this.Auth.loggedIn());
     if (!this.Auth.loggedIn()) {
       ErrorToast.auth.pageRequiresLogin();
       this.props.history.replace("/users/login");
@@ -143,7 +143,7 @@ class UserProfile extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
+  //console.log(state);
   return {
     userConnectedData: state.user.data,
     userConnectedStatus: state.user.status

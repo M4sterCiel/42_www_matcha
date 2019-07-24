@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import AuthService from "../services/AuthService";
-import io from 'socket.io-client';
+//import io from 'socket.io-client';
 
 // HOC to wrap component and verify authentication
 export default function withAuth(AuthComponent) {
@@ -45,11 +45,11 @@ export default function withAuth(AuthComponent) {
       }
     }
 
-    componentWillUnmount() {
+    /* componentWillUnmount() {
       if (this.state.socket)
         this.state.socket.close();
         //console.log('closing socket');
-    }
+    } */
 
     render() {
       if (this.state.loaded === true) {

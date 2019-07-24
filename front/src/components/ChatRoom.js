@@ -98,7 +98,7 @@ class Chat extends Component {
         
 
         await this.setState({ socket: io('/chat', {
-            transports: ['polling'], 
+            transports: ['polling'],
             upgrade: false,
             query: {
                 token: this.state.userToken,

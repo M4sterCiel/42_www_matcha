@@ -60,7 +60,7 @@ class ChatConv extends Component {
             });
  
             await this.setState({ socket: io({
-                transports: ['polling'], 
+                transports: ['polling'],
                 upgrade: false,
                 query: {
                     userID: this.state.userID,
@@ -106,7 +106,7 @@ class ChatConv extends Component {
        }
 
        componentWillUnmount() {
-        if (this.state.socket)
+        if (this.state.socket !== '')
           this.state.socket.close();
       }
   

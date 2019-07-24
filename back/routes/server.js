@@ -1,6 +1,8 @@
 let app             = require("express")();
-var http            = require('http').Server(app, {'transports': ['polling']});
-var io              = require("socket.io").listen(http);
+var http            = require('http').Server(app);
+var io              = require("socket.io").listen(http, {
+  transports: ['polling']
+});
 let bodyParser      = require("body-parser");
 let userRoute       = require("./userRoute");
 var chatRoute       = require('./chatRoute');
