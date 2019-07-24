@@ -8,7 +8,6 @@ import io from "socket.io-client";
 import Axios from "axios";
 import Badge from '@material-ui/core/Badge';
 import MailIcon from '@material-ui/icons/Mail';
-import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 const Auth = new AuthService();
 
@@ -54,7 +53,7 @@ class NavBar extends Component {
       })
       });
     
-      await this.setState({ socketChat: io('localhost:3000/chat', {
+      /* await this.setState({ socketChat: io('/chat', {
         transports: ['polling'], 
         upgrade: false,
       query: {
@@ -62,9 +61,9 @@ class NavBar extends Component {
         } 
       })
       });
-  
+   */
 
-    this.state.socketChat.on('new message', data => {
+    this.state.socket.on('new message', data => {
       if (data['userID_other'] === this.state.userID)
         this.setState({ nbMessages: this.state.nbMessages + 1 })
     });

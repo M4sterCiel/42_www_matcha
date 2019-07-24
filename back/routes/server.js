@@ -1,8 +1,6 @@
 let app             = require("express")();
 var http            = require('http').Server(app);
-var io              = require("socket.io").listen(http, {
-  transports: ['polling']
-});
+var io              = require("socket.io").listen(http);
 let bodyParser      = require("body-parser");
 let userRoute       = require("./userRoute");
 var chatRoute       = require('./chatRoute');
@@ -10,7 +8,7 @@ var chatController  = require('../controllers/chatController');
 
 /* Listenning port */
 
-const PORT        = 8080;
+const PORT        = 5001;
 
 http.listen(PORT, () => {
   console.log("Listening on port: ", PORT);
@@ -35,7 +33,7 @@ var connections = [];
 var clients = [];
 var onlineTab = [];
 
-io.on('connection', async (socket) => {
+var mainSocket = io.on('connection', async (socket) => {
   await onlineTab.push({ 
     userID: socket.handshake.query['userID'],
     socketID: socket.id
@@ -83,8 +81,8 @@ nsp.on('connection', (socket) => {
     chatController.saveMessage([data, userID, room_id]);
     chatController.saveNotification(userID_other, userID, 'message', '', room_id);
     socket.broadcast.emit(room_id, { data, userID, userName });
-    socket.broadcast.emit('new message', { room_id, userID_other });
-  })
+    mainSocket.emit('new message', { room_id, userID_other });
+  });
 
   socket.on('disconnect', () => {
     connections.splice(-1, 1);
