@@ -89,12 +89,33 @@ class ChatConv extends Component {
                 this.setState({ matches: tab });
                 //console.log(this.state.matches);
             });
+
+            this.state.socket.on('new message', data => {
+                if (data['userID_other'] != this.state.userID)
+                    return;
+                var elem;
+                for (var i=0;i<this.state.matches.length;i++) {
+                    if (this.state.matches[i]['room_id'] == data['room_id'])
+                    {
+                        elem = document.getElementById('contactList-'+this.state.matches[i]['room_id']);
+                        break;
+                    }
+                }
+                this.sortContactList(data['room_id']);
+                elem.style = 'background-color: #ffcdd2;';
+              });
+
+            this.state.socket.on('readMessage', (data, roomID) => {
+            if (data != this.state.userID)
+                return;
+            document.getElementById('contactList-'+roomID).style = 'background-color: white;';
+            })
 }
 
     contactList = (props) => {
          const value = props.value;
          const contacts = value.map((e) =>
-            <li className="collection-item avatar clickable" key={e.id} onClick={() => this.displayChatbox(e.room_id, e.username, e.userID)}>
+            <li className="collection-item avatar clickable" key={e.id} id={'contactList-'+e.room_id} onClick={() => this.displayChatbox(e.room_id, e.username, e.userID)}>
                 <i className="material-icons circle pink">person_pin</i>
                 <span className="title truncate">{e.username}</span>
                 <p>{e.status}</p>
@@ -111,10 +132,24 @@ class ChatConv extends Component {
           this.state.socket.close();
       }
   
+      sortContactList = (roomID) => {
+        var copy;
+        var index;
+        for (var i=0;i<this.state.matches.length;i++) {
+            if (this.state.matches[i]['room_id'] == roomID) {
+                copy = this.state.matches[i];
+                index = i;
+            }
+        }
+        var tab = this.state.matches;
+        tab.splice(index, 1);
+        tab.splice(0, 0, copy);
+        this.setState({ matches: tab });
+      }
 
        displayChatbox = (roomId, username, userID) => {
-           //console.log(roomId);
            this.props.roomToParent(roomId, username, userID);
+           document.getElementById('contactList-'+roomId).style = 'background-color: white;';
        }
 }
 

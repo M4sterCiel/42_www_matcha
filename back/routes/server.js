@@ -86,7 +86,7 @@ nsp.on('connection', (socket) => {
 
   socket.on('readMessage', (data) => {
     chatController.readMessage(data, userID);
-    mainSocket.emit('readMessage', userID);
+    mainSocket.emit('readMessage', userID, data);
   })
 
   socket.on('disconnect', () => {

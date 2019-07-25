@@ -55,6 +55,7 @@ class Chat extends Component {
                     type="text"
                     id="msgToSend"
                     name="msgToSend"
+                    autoComplete='off'
                     value={this.state.toSend}
                     onChange={this.handleChange}
                     required
@@ -175,18 +176,22 @@ class Chat extends Component {
 
     handleSubmit = async e => {
         e.preventDefault();
-        var tab = this.state.listMessages;
-        tab.push({
-            id: this.state.listMessages.length + 1,
-            value: this.state.toSend,
-            userID: this.state.userID,
-            date: ''
-        });
+        await this.setState({ toSend: this.state.toSend.trim() });
+        if (this.state.toSend !== '')
+        {
+            var tab = this.state.listMessages;
+            tab.push({
+                id: this.state.listMessages.length + 1,
+                value: this.state.toSend,
+                userID: this.state.userID,
+                date: ''
+            });
 
-        //console.log(this.state.room_id);
-        await this.setState({ listMessages: tab });
-        this.goToElement(tab.length);
-        this.state.socket.emit(this.state.room_id, this.state.toSend, this.state.userID_other);
+            //console.log(this.state.room_id);
+            await this.setState({ listMessages: tab });
+            this.goToElement(tab.length);
+            this.state.socket.emit(this.state.room_id, this.state.toSend, this.state.userID_other);
+        }
         this.setState({ toSend: '' });
     }
 

@@ -312,7 +312,7 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 /* Chat page */
 
 .row .col.m8 {
-  max-width: 45%;
+  max-width: 55%;
 }
 
 .chat-field{
@@ -324,6 +324,7 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   border:2px solid red;
   border-top-right-radius:10px;
   text-align: left;
+  word-break: break-word;
 }
 
 .chat-field2{
@@ -335,6 +336,7 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   border:2px solid grey;
   border-top-left-radius: 10px;
   text-align: left;
+  word-break: break-word;
 }
 
 @media only screen and (min-width: 601px) {
