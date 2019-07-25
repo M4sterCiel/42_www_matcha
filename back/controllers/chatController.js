@@ -7,6 +7,7 @@ module.exports = {
     saveMessage: async data => {
         //console.log(data);
         await chatModel.saveMessage(data);
+        await matchModel.updateNbMsg(data[2]);
     },
 
     getMessages: async (req, res, next) => {
@@ -46,9 +47,15 @@ module.exports = {
         await chatModel.saveNotification([user_id, sender_id, type, data, reference]);
     },
 
-    getNotification: async (req, res, next) => {
+    getCountNotification: async (req, res, next) => {
         var userID = req.params.userID;
-        var result = await chatModel.getNotification(userID);
+        var result = await chatModel.getCountNotification(userID);
+        return res.status(200).json({ notification: result });
+    },
+    
+    getListNotification: async (req, res, next) => {
+        var userID = req.params.userID;
+        var result = await chatModel.getListNotification(userID);
         return res.status(200).json({ notification: result });
     }
 }

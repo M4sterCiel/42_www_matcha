@@ -59,57 +59,57 @@ class ChatConv extends Component {
                 console.log(err);
             });
  
-            await this.setState({ socket: io({
-                transports: ['polling'],
-                requestTimeout: 5000,
-                upgrade: false,
-                query: {
-                    userID: this.state.userID,
-                    matches: this.state.matches
-                  }
-                })
-            });
-
-            this.state.socket.on('online', (data) => {
-                var tab = this.state.matches;
-                //console.log(tab);
-                for (var i=0;i<tab.length;i++) {
-                    if (tab[i]['userID'] == data['user_id'])
-                        tab[i]['status'] = 'Online';
+        await this.setState({ socket: io({
+            transports: ['polling'],
+            requestTimeout: 5000,
+            upgrade: false,
+            query: {
+                userID: this.state.userID,
+                matches: this.state.matches
                 }
-                this.setState({ matches: tab });
-                //console.log(this.state.matches);
-            });
-            this.state.socket.on('offline', (data) => {
-                var tab = this.state.matches;
-                for (var i=0;i<tab.length;i++) {
-                    if (tab[i]['userID'] == data['user_id'])
-                        tab[i]['status'] = 'Offline';
-                }
-                this.setState({ matches: tab });
-                //console.log(this.state.matches);
-            });
-
-            this.state.socket.on('new message', data => {
-                if (data['userID_other'] != this.state.userID)
-                    return;
-                var elem;
-                for (var i=0;i<this.state.matches.length;i++) {
-                    if (this.state.matches[i]['room_id'] == data['room_id'])
-                    {
-                        elem = document.getElementById('contactList-'+this.state.matches[i]['room_id']);
-                        break;
-                    }
-                }
-                this.sortContactList(data['room_id']);
-                elem.style = 'background-color: #ffcdd2;';
-              });
-
-            this.state.socket.on('readMessage', (data, roomID) => {
-            if (data != this.state.userID)
-                return;
-            document.getElementById('contactList-'+roomID).style = 'background-color: white;';
             })
+        });
+
+        this.state.socket.on('online', (data) => {
+            var tab = this.state.matches;
+            for (var i=0;i<tab.length;i++) {
+                if (tab[i]['userID'] == data['user_id'])
+                    tab[i]['status'] = 'Online';
+            }
+            this.setState({ matches: tab });
+        });
+        
+        this.state.socket.on('offline', (data) => {
+            var tab = this.state.matches;
+            for (var i=0;i<tab.length;i++) {
+                if (tab[i]['userID'] == data['user_id'])
+                    tab[i]['status'] = 'Offline';
+            }
+            this.setState({ matches: tab });
+        });
+
+        this.state.socket.on('new message', data => {
+            if (data['userID_other'] != this.state.userID)
+                return;
+            var elem;
+            for (var i=0;i<this.state.matches.length;i++) {
+                if (this.state.matches[i]['room_id'] == data['room_id'])
+                {
+                    elem = document.getElementById('contactList-'+this.state.matches[i]['room_id']);
+                    break;
+                }
+            }
+            this.sortContactList(data['room_id']);
+            elem.style = 'background-color: #ffcdd2;';
+        });
+
+        this.callNotifApi();
+
+        this.state.socket.on('readMessage', (data, roomID) => {
+        if (data != this.state.userID)
+            return;
+        document.getElementById('contactList-'+roomID).style = 'background-color: white;';
+        })
 }
 
     contactList = (props) => {
@@ -127,30 +127,43 @@ class ChatConv extends Component {
          );
        }
 
-       componentWillUnmount() {
-        if (this.state.socket !== '')
-          this.state.socket.close();
+    componentWillUnmount() {
+    if (this.state.socket !== '')
+        this.state.socket.close();
       }
   
-      sortContactList = (roomID) => {
-        var copy;
-        var index;
-        for (var i=0;i<this.state.matches.length;i++) {
-            if (this.state.matches[i]['room_id'] == roomID) {
-                copy = this.state.matches[i];
-                index = i;
-            }
+    sortContactList = (roomID) => {
+    var copy;
+    var index;
+    for (var i=0;i<this.state.matches.length;i++) {
+        if (this.state.matches[i]['room_id'] == roomID) {
+            copy = this.state.matches[i];
+            index = i;
         }
-        var tab = this.state.matches;
-        tab.splice(index, 1);
-        tab.splice(0, 0, copy);
-        this.setState({ matches: tab });
-      }
+    }
+    var tab = this.state.matches;
+    tab.splice(index, 1);
+    tab.splice(0, 0, copy);
+    this.setState({ matches: tab });
+    }
 
-       displayChatbox = (roomId, username, userID) => {
-           this.props.roomToParent(roomId, username, userID);
-           document.getElementById('contactList-'+roomId).style = 'background-color: white;';
-       }
+    displayChatbox = (roomId, username, userID) => {
+        this.props.roomToParent(roomId, username, userID);
+        document.getElementById('contactList-'+roomId).style = 'background-color: white;';
+    }
+
+    callNotifApi = async () => {
+        await Axios.get('/chat/notification/list/' + this.state.userID)
+          .then(res => {
+            var tab = res.data['notification'];
+            for (var i=0;i<tab.length;i++) {
+                document.getElementById('contactList-'+tab[i]['reference']).style = 'background-color: #ffcdd2;';
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          })
+      }
 }
 
 export default ChatConv;

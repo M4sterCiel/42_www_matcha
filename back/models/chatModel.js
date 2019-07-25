@@ -41,10 +41,23 @@ module.exports = {
       }
     },
 
-    getNotification: async userID => {
+    getCountNotification: async userID => {
       try {
         var result = await pool.query({
           sql: "SELECT COUNT (*) FROM notification WHERE `user_id` = ? AND `isRead` = 0",
+          values: [userID]
+        });
+        //console.log(result);
+        if (result) return result;
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
+    
+    getListNotification: async userID => {
+      try {
+        var result = await pool.query({
+          sql: "SELECT * FROM notification WHERE `user_id` = ? AND `isRead` = 0",
           values: [userID]
         });
         //console.log(result);
@@ -57,7 +70,7 @@ module.exports = {
     readNotification: async (type, ref, userID) => {
       try {
         var result = await pool.query({
-          sql: "UPDATE notification SET isRead = 1 WHERE type = ? AND reference = ? AND user_id = ?",
+          sql: "DELETE FROM notification WHERE type = ? AND reference = ? AND user_id = ?",
           values: [type, ref, userID]
         });
         //console.log(result);

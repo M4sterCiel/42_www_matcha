@@ -30,8 +30,8 @@ class NavBar extends Component {
 
     if (!localStorage.getItem('Token'))
       return;
-    /* await this.setState({ userID: this.Auth.getConfirm()['id'] });
-    Axios.get('/chat/notification/' + this.state.userID)
+    await this.setState({ userID: this.Auth.getConfirm()['id'] });
+   /* Axios.get('/chat/notification/' + this.state.userID)
       .then(res => {
         this.setState({ nbMessages: res.data['notification'][0]['COUNT (*)'] });
       })
@@ -64,8 +64,7 @@ class NavBar extends Component {
   }
 
   callNotifApi = async () => {
-    await this.setState({ userID: this.Auth.getConfirm()['id'] });
-    Axios.get('/chat/notification/' + this.state.userID)
+    await Axios.get('/chat/notification/' + this.state.userID)
       .then(res => {
         this.setState({ nbMessages: res.data['notification'][0]['COUNT (*)'] });
       })
