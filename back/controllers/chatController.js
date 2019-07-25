@@ -38,6 +38,10 @@ module.exports = {
         await userModel.saveStatus(0, userID);
     },
 
+    readMessage: async (data, userID) => {
+        await chatModel.readNotification(2, data, userID);
+    },
+
     saveNotification: async (user_id, sender_id, type, data, reference) => {
         await chatModel.saveNotification([user_id, sender_id, type, data, reference]);
     },

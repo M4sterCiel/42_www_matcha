@@ -84,6 +84,11 @@ nsp.on('connection', (socket) => {
     mainSocket.emit('new message', { room_id, userID_other });
   });
 
+  socket.on('readMessage', (data) => {
+    chatController.readMessage(data, userID);
+    mainSocket.emit('readMessage', userID);
+  })
+
   socket.on('disconnect', () => {
     connections.splice(-1, 1);
     for( var i=0, len=clients.length; i<len; ++i ){

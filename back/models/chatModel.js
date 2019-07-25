@@ -52,5 +52,18 @@ module.exports = {
       } catch (err) {
         throw new Error(err);
       }
+    },
+
+    readNotification: async (type, ref, userID) => {
+      try {
+        var result = await pool.query({
+          sql: "UPDATE notification SET isRead = 1 WHERE type = ? AND reference = ? AND user_id = ?",
+          values: [type, ref, userID]
+        });
+        //console.log(result);
+        if (result) return result;
+      } catch (err) {
+        throw new Error(err);
+      }
     }
 }

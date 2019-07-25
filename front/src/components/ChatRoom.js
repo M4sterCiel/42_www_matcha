@@ -13,6 +13,7 @@ class Chat extends Component {
         this.Auth = new AuthService();
         this.state = {
             winSize: '',
+            isRead: null,
             msg: '',
             toSend: '',
             listMessages: [],
@@ -29,7 +30,10 @@ class Chat extends Component {
     render() {
         return (
             <div>
-            <div className="row main-chat-box">
+            <div 
+            className="row main-chat-box"
+            onMouseMove= {this.handleMouseEvent}
+            >
             <h5 id="chat-title">{this.state.usernameOther+"'s conversation"}</h5><hr className="grey" />
             <div id="chatbox-message" className="col s12 chatbox-message" style={{height: this.state.winSize}}>
                 <br />
@@ -99,6 +103,7 @@ class Chat extends Component {
 
         await this.setState({ socket: io('/chat', {
             transports: ['polling'],
+            requestTimeout: 5000,
             upgrade: false,
             query: {
                 token: this.state.userToken,
@@ -108,6 +113,8 @@ class Chat extends Component {
             }
             })
         });
+
+        this.state.socket.emit('readMessage', this.state.room_id);
 
         this.state.socket.on(this.state.room_id, (data) => {
             //console.log(data);
@@ -120,6 +127,7 @@ class Chat extends Component {
             });
             this.setState({ listMessages: tab });
             //console.log(tab);
+            this.setState({ isRead: 1 });
             this.goToElement(tab.length);
         });
         //console.log(this.state.listMessages);
@@ -127,6 +135,11 @@ class Chat extends Component {
             return;
         this.goToElement(this.state.listMessages.length - 1);
 
+    }
+
+    handleMouseEvent = () => {
+        if (this.state.isRead !== null)
+            this.state.socket.emit('readMessage', this.state.room_id);
     }
 
     goToElement = (nb) => {

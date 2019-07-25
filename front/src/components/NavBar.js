@@ -28,11 +28,42 @@ class NavBar extends Component {
 
    async componentDidMount() {
 
-    //const CancelToken = Axios.CancelToken;
-    //const source = CancelToken.source();
-
     if (!localStorage.getItem('Token'))
       return;
+    /* await this.setState({ userID: this.Auth.getConfirm()['id'] });
+    Axios.get('/chat/notification/' + this.state.userID)
+      .then(res => {
+        this.setState({ nbMessages: res.data['notification'][0]['COUNT (*)'] });
+      })
+      .catch(err => {
+        console.log(err);
+      }) */
+    
+    await this.callNotifApi();
+
+    await this.setState({ socket: io({ 
+      transports: ['polling'],
+      requestTimeout: 5000,
+      upgrade: false,
+      query: {
+          userID: this.state.userID
+        } 
+      })
+      });
+    
+
+    this.state.socket.on('new message', data => {
+      if (data['userID_other'] === this.state.userID)
+        this.setState({ nbMessages: this.state.nbMessages + 1 })
+    });
+
+    this.state.socket.on('readMessage', data => {
+      if (data == this.state.userID)
+        this.callNotifApi();
+    })
+  }
+
+  callNotifApi = async () => {
     await this.setState({ userID: this.Auth.getConfirm()['id'] });
     Axios.get('/chat/notification/' + this.state.userID)
       .then(res => {
@@ -41,32 +72,6 @@ class NavBar extends Component {
       .catch(err => {
         console.log(err);
       })
-      // cancel the request (the message parameter is optional)
-      //source.cancel('Operation canceled by the user.');
-
-    await this.setState({ socket: io({ 
-      transports: ['polling'],
-      upgrade: false,
-      query: {
-          userID: this.state.userID
-        } 
-      })
-      });
-    
-      /* await this.setState({ socketChat: io('/chat', {
-        transports: ['polling'], 
-        upgrade: false,
-      query: {
-          userID: this.state.userID
-        } 
-      })
-      });
-   */
-
-    this.state.socket.on('new message', data => {
-      if (data['userID_other'] === this.state.userID)
-        this.setState({ nbMessages: this.state.nbMessages + 1 })
-    });
   }
 
   componentWillUnmount() {

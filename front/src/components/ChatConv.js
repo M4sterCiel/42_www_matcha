@@ -61,6 +61,7 @@ class ChatConv extends Component {
  
             await this.setState({ socket: io({
                 transports: ['polling'],
+                requestTimeout: 5000,
                 upgrade: false,
                 query: {
                     userID: this.state.userID,
