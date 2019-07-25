@@ -40,7 +40,7 @@ class Messages extends Component {
                 className="row left align"
                 style={{minWidth: 100 + '%'}}
                 >
-                    <div className="col s3">
+                    <div className="col s3" style={{height: this.state.winSize}} >
                         <ChatConv 
                         roomToParent={this.handleRoomData}
                          />
@@ -55,7 +55,7 @@ class Messages extends Component {
                             marginTop: 1 + '%',
                             height: window.innerHeight - 100
                         }}>
-                        <h5>Select a conversation.</h5>
+                            {this.state.listMessages.length < 1 && <h5>Select a conversation.</h5>}
                         </div>
                         }
                         {this.state.room !== null &&

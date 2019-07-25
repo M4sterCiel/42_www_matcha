@@ -458,7 +458,7 @@ class Register extends Component {
         this.props.history.push("/users/login");
       })
       .catch(err => {
-        let message = err.response.data["error"];
+        let message = err.response;
         ErrorToast.default.error(message);
       });
   };

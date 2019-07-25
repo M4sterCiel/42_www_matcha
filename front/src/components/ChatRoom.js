@@ -59,6 +59,7 @@ class Chat extends Component {
                     value={this.state.toSend}
                     onChange={this.handleChange}
                     required
+                    autoFocus
                     ></input>
                 </div>
                 <div id="btn-chat-box" className="col s3 btn-chat-box">
@@ -78,7 +79,7 @@ class Chat extends Component {
     }
 
     componentDidMount() {
-        this.setState({ winSize: window.innerHeight - 190});
+        this.setState({ winSize: window.innerHeight - 200});
     };
 
     componentDidUpdate() {
@@ -136,6 +137,10 @@ class Chat extends Component {
             return;
         this.goToElement(this.state.listMessages.length - 1);
 
+    }
+
+    handleResizeWindow = () => {
+        this.setState({ winSize: window.innerHeight - 200});
     }
 
     handleMouseEvent = () => {

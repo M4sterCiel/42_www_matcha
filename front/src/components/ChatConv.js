@@ -4,12 +4,14 @@ import "materialize-css/dist/css/materialize.min.css";
 import io from 'socket.io-client';
 import AuthService from "../services/AuthService";
 import Axios from "axios";
+import Autocomplete from "react-materialize/lib/Autocomplete";
 
 class ChatConv extends Component {
     constructor(props) {
         super(props);
         this.Auth = new AuthService();
         this.state = {
+            winSize: '',
             userID: this.Auth.getConfirm()['id'],
             status: 0,
             socket: '',
@@ -28,6 +30,7 @@ class ChatConv extends Component {
     }
 
     async componentDidMount() {
+        this.setState({ winSize: window.innerHeight - 160});
         await Axios.get('/chat/matches/' + this.Auth.getToken())
             .then(res => {
                 //console.log(res.data['result']);
@@ -108,7 +111,7 @@ class ChatConv extends Component {
         this.state.socket.on('readMessage', (data, roomID) => {
         if (data != this.state.userID)
             return;
-        document.getElementById('contactList-'+roomID).style = 'background-color: white;';
+        document.getElementById('contactList-'+roomID).removeAttribute('style');
         })
 }
 
@@ -123,7 +126,7 @@ class ChatConv extends Component {
             </li>
          );
          return (
-           <ul>{contacts}</ul>
+           <ul style={{height: this.state.winSize, overflow: 'auto'}}>{contacts}</ul>
          );
        }
 
@@ -149,7 +152,7 @@ class ChatConv extends Component {
 
     displayChatbox = (roomId, username, userID) => {
         this.props.roomToParent(roomId, username, userID);
-        document.getElementById('contactList-'+roomId).style = 'background-color: white;';
+        document.getElementById('contactList-'+roomId).removeAttribute('style');
     }
 
     callNotifApi = async () => {
