@@ -72,7 +72,6 @@ class NavBar extends Component {
   callMsgNotifApi = async () => {
     await Axios.get('/chat/notification/messages/' + this.state.userID)
       .then(res => {
-        console.log(res.data)
         this.setState({ nbMessages: res.data['notification'][0]['COUNT (*)'] });
       })
       .catch(err => {
@@ -83,6 +82,8 @@ class NavBar extends Component {
   callMainNotifApi = async () => {
     await Axios.get('/users/notification/main/' + this.state.userID)
       .then(res => {
+        var tab = res.data.ret;
+        console.log(tab);
         this.setState({ nbNotifications: null });
       })
       .catch(err => {

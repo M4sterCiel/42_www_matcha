@@ -156,6 +156,7 @@ class Chat extends Component {
        // console.log(this.state.userID);
         const value = props.value;
         const listItems = value.map((e) =>
+        // eslint-disable-next-line
           <div className={this.state.userID == e.userID ? "row right-align" : "row left-align"} key={e.id}>
 				<div className={this.state.userID == e.userID ? "col s12 m8 l6 right" : "col s12 m8 l6 left"}>
 						<div className="row valign-wrapper">

@@ -139,7 +139,7 @@ module.exports = {
         sql: "SELECT * FROM notification WHERE `user_id` = ? AND type != 2",
         values: [userID]
       });
-      console.log(result);
+      //console.log(result);
       if (result) return result;
     } catch (err) {
       throw new Error(err);

@@ -157,6 +157,6 @@ module.exports = {
   getMainNotification: async (req, res, next) => {
     var userID = req.params['userID'];
     var ret = await userModel.getNotification(userID);
-    return res.status(200).json({ msg: 'OK' });
+    return res.status(200).json({ ret });
   }
 };
