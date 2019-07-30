@@ -5,7 +5,6 @@ import io from 'socket.io-client';
 import AuthService from "../services/AuthService";
 //import Axios from "axios";
 
-
 class Chat extends Component {
 
     constructor(props) {
@@ -124,7 +123,7 @@ class Chat extends Component {
             tab.push({
                 id: this.state.listMessages.length + 1,
                 value: data['data'],
-                userID: data['user_id'],
+                userID: data['userID'],
                 date: ''
             });
             this.setState({ listMessages: tab });
@@ -157,14 +156,14 @@ class Chat extends Component {
        // console.log(this.state.userID);
         const value = props.value;
         const listItems = value.map((e) =>
-          <div className={this.state.userID === e.userID ? "row right-align" : "row left-align"} key={e.id}>
-				<div className={this.state.userID === e.userID ? "col s12 m8 l6 right" : "col s12 m8 l6 left"}>
+          <div className={this.state.userID == e.userID ? "row right-align" : "row left-align"} key={e.id}>
+				<div className={this.state.userID == e.userID ? "col s12 m8 l6 right" : "col s12 m8 l6 left"}>
 						<div className="row valign-wrapper">
-							<div className={this.state.userID === e.userID ? "chat-field2 grey" : "chat-field red"}>
+							<div className={this.state.userID == e.userID ? "chat-field2 grey" : "chat-field red"}>
 								<span id={"id-msg"+e.id} className="chat-message white-text">
 									{e.value}
 								</span>
-								<div id={"id-msg"+e.id} className={this.state.userID === e.userID ? "example2" : "example"}></div>  
+								<div id={"id-msg"+e.id} className={this.state.userID == e.userID ? "example2" : "example"}></div>  
 							</div>
 						</div>
 				</div>

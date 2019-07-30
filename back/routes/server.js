@@ -47,7 +47,8 @@ var mainSocket = io.on('connection', async (socket) => {
     user_id: socket.handshake.query['userID'],
     status: 'Online' });
 
-  socket.on('disconnect', () => {
+  socket.on('disconnect', (reason) => {
+    console.log(reason);
     for (var i=0;i<onlineTab.length;i++)
     {
       if (onlineTab[i]['socketID'] == socket.id)

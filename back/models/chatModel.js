@@ -44,7 +44,7 @@ module.exports = {
     getCountNotification: async userID => {
       try {
         var result = await pool.query({
-          sql: "SELECT COUNT (*) FROM notification WHERE `user_id` = ? AND `isRead` = 0",
+          sql: "SELECT COUNT (*) FROM notification WHERE `user_id` = ? AND type = 2 AND `isRead` = 0",
           values: [userID]
         });
         //console.log(result);
@@ -57,7 +57,7 @@ module.exports = {
     getListNotification: async userID => {
       try {
         var result = await pool.query({
-          sql: "SELECT * FROM notification WHERE `user_id` = ? AND `isRead` = 0",
+          sql: "SELECT * FROM notification WHERE `user_id` = ? AND type = 2 AND `isRead` = 0",
           values: [userID]
         });
         //console.log(result);

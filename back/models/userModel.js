@@ -120,13 +120,26 @@ module.exports = {
   },
 
   getStatus: async data => {
-    console.log(data);
+    //ßconsole.log(data);
     try {
       var result = await pool.query({
         sql: "SELECT `id`, online FROM users WHERE `id` IN (?)",
         values: [data]
       });
       //console.log(result);
+      if (result) return result;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
+  getNotification: async userID => {
+    try {
+      var result = await pool.query({
+        sql: "SELECT * FROM notification WHERE `user_id` = ? AND type != 2",
+        values: [userID]
+      });
+      console.log(result);
       if (result) return result;
     } catch (err) {
       throw new Error(err);

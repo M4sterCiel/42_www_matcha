@@ -7,8 +7,7 @@ exports.router = (() => {
   chatRouter.route('/room/:room_id').get(chatController.getMessages);
   chatRouter.route('/matches/:token').get(chatController.getMatchList);
   chatRouter.route('/notification/list/:userID').get(chatController.getListNotification);
-  chatRouter.route('/notification/:userID').get(chatController.getCountNotification);
-
+  chatRouter.route('/notification/messages/:userID').get(chatController.getCountMsgNotification);
 
   return chatRouter;
 })();

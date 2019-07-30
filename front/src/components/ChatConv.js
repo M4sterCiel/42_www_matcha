@@ -4,7 +4,6 @@ import "materialize-css/dist/css/materialize.min.css";
 import io from 'socket.io-client';
 import AuthService from "../services/AuthService";
 import Axios from "axios";
-import Autocomplete from "react-materialize/lib/Autocomplete";
 
 class ChatConv extends Component {
     constructor(props) {
@@ -76,6 +75,7 @@ class ChatConv extends Component {
         this.state.socket.on('online', (data) => {
             var tab = this.state.matches;
             for (var i=0;i<tab.length;i++) {
+                //eslint-disable-next-line
                 if (tab[i]['userID'] == data['user_id'])
                     tab[i]['status'] = 'Online';
             }
@@ -85,6 +85,7 @@ class ChatConv extends Component {
         this.state.socket.on('offline', (data) => {
             var tab = this.state.matches;
             for (var i=0;i<tab.length;i++) {
+                // eslint-disable-next-line
                 if (tab[i]['userID'] == data['user_id'])
                     tab[i]['status'] = 'Offline';
             }
@@ -92,10 +93,12 @@ class ChatConv extends Component {
         });
 
         this.state.socket.on('new message', data => {
+            // eslint-disable-next-line
             if (data['userID_other'] != this.state.userID)
                 return;
             var elem;
             for (var i=0;i<this.state.matches.length;i++) {
+                // eslint-disable-next-line
                 if (this.state.matches[i]['room_id'] == data['room_id'])
                 {
                     elem = document.getElementById('contactList-'+this.state.matches[i]['room_id']);
@@ -109,6 +112,7 @@ class ChatConv extends Component {
         this.callNotifApi();
 
         this.state.socket.on('readMessage', (data, roomID) => {
+            // eslint-disable-next-line
         if (data != this.state.userID)
             return;
         document.getElementById('contactList-'+roomID).removeAttribute('style');
@@ -139,6 +143,7 @@ class ChatConv extends Component {
     var copy;
     var index;
     for (var i=0;i<this.state.matches.length;i++) {
+        // eslint-disable-next-line
         if (this.state.matches[i]['room_id'] == roomID) {
             copy = this.state.matches[i];
             index = i;
@@ -170,3 +175,4 @@ class ChatConv extends Component {
 }
 
 export default ChatConv;
+

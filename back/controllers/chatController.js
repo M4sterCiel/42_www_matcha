@@ -47,7 +47,7 @@ module.exports = {
         await chatModel.saveNotification([user_id, sender_id, type, data, reference]);
     },
 
-    getCountNotification: async (req, res, next) => {
+    getCountMsgNotification: async (req, res, next) => {
         var userID = req.params.userID;
         var result = await chatModel.getCountNotification(userID);
         return res.status(200).json({ notification: result });

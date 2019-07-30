@@ -14,6 +14,7 @@ exports.router = (() => {
   userRouter.route("/reset-password/:key").post(userController.updatePassword);
   userRouter.route("/register").post(userController.createUser);
   userRouter.route('/delete-account').delete(userController.deleteUser);
+  userRouter.route('/notification/main/:userID').get(userController.getMainNotification);
 
   return userRouter;
 })();

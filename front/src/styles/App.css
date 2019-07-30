@@ -302,6 +302,14 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   margin-bottom: -1em;
 }
 
+.MuiButton-root:focus {
+  background-color: none;
+}
+
+button:focus {
+  background-color: inherit;
+}
+
 /* Delete user component */
 
 .delete-btn {
