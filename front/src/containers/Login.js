@@ -189,7 +189,7 @@ class Login extends Component {
       })
       .catch(err => {
         console.log(err);
-        ErrorToast.default.error(err.response["data"]["message"], 1400);
+        ErrorToast.custom.error(err.response["data"]["message"], 1400);
       });
   };
 }

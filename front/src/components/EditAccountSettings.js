@@ -259,12 +259,12 @@ class EditEmailBox extends Component {
           email: this.state.newEmail
         });
         this.props.emailToParent(this.state.newEmail);
-        InfoToast.default.info("Email updated with success");
+        InfoToast.custom.info("Email updated with success", 3000);
         this.hideEditEmail();
       })
       .catch(err => {
         let message = err.response.data["error"];
-        ErrorToast.default.error(message, 1400);
+        ErrorToast.custom.error(message, 1400);
       });
   };
 
@@ -440,7 +440,7 @@ class EditPasswordBox extends Component {
         });
       })
       .catch(err => {
-        ErrorToast.default.error(err.response.data.message, 1400);
+        ErrorToast.custom.error(err.response.data.message, 1400);
       });
   };
 
@@ -451,11 +451,11 @@ class EditPasswordBox extends Component {
       .updatePasswordWithId(this.state.id, this.state.pwd1)
       .then(res => {
         console.log(res);
-        InfoToast.default.info("Password updated with success");
+        InfoToast.custom.info("Password updated with success", 3000);
         this.hideEditPassword();
       })
       .catch(err => {
-        ErrorToast.default.error(err.response.data.message, 1400);
+        ErrorToast.custom.error(err.response.data.message, 1400);
       });
   };
 

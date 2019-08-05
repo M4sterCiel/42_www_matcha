@@ -294,8 +294,8 @@ class InterestTags extends Component {
         };
       });
     } else {
-      InfoToast.default.info(
-        `Tag ${target[0].children[0].innerText} has already been added`
+      InfoToast.custom.info(
+        `Tag ${target[0].children[0].innerText} has already been added`, 1500
       );
     }
   }
@@ -380,7 +380,7 @@ class SelectLocation extends Component {
       prevState.city !== "" &&
       prevState.city !== "Not set"
     ) {
-      InfoToast.default.info("Your city has been changed");
+      InfoToast.custom.info("Your city has been changed", 1500);
     }
   }
 
@@ -455,7 +455,7 @@ class SelectLocation extends Component {
       console.log(err || location.address.city);
       if (location.address.city) this.setState({ city: location.address.city });
       else
-        ErrorToast.default.error(
+        ErrorToast.custom.error(
           "Couldn't get city from coordinates, please try again later...",
           1400
         );
@@ -473,7 +473,7 @@ class SelectLocation extends Component {
         this.props.latToParent(location.coords.latitude);
         this.props.longToParent(location.coords.longitude);
       } else {
-        ErrorToast.default.error(
+        ErrorToast.custom.error(
           "Couldn't get coordinates from city entered",
           1000
         );
@@ -501,7 +501,7 @@ class SelectLocation extends Component {
   geolocateMe = () => {
     this.getLocation();
     this.hideEditLocation();
-    InfoToast.default.info("Please wait while you are being geolocated...");
+    InfoToast.custom.info("Please wait while you are being geolocated...", 1500);
   };
 
   confirmAutoCity = () => {
@@ -521,7 +521,7 @@ class SelectLocation extends Component {
       );
       this.hideEditLocation();
     } else {
-      ErrorToast.default.error("Please enter a city", 1400);
+      ErrorToast.custom.error("Please enter a city", 1400);
     }
   };
 

@@ -9,7 +9,7 @@ import GeoPosition from "geolocator";
 import Axios from "axios";
 import { BackgroundAdd } from "../components/Background";
 import ErrorToast from "../services/ErrorToastService";
-import Materialize from "react-materialize";
+import InfoToast from "../services/InfoToastService";
 import ValidateInput from "../validation/ValidateInput";
 
 class Register extends Component {
@@ -415,16 +415,13 @@ class Register extends Component {
     })
       .then(res => {
         this.setState({ responseToPost: res.data });
-        Materialize.toast({
-          html: "An email has been sent",
-          displayLength: 5000,
-          classes: "rounded confirm-toast"
-        });
+        InfoToast.custom.info("An email to validate your account has been sent", 3000);
         this.props.history.push("/users/login");
       })
       .catch(err => {
+        console.log(err);
         let message = err.response.data["error"];
-        ErrorToast.default.error(message, 1000);
+        ErrorToast.custom.error(message, 1000);
       });
   };
 }

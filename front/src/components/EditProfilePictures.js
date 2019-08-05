@@ -22,7 +22,7 @@ class EditProfilePictures extends Component {
       if (this.isPictureTypeValid(file)) {
         this.processPictureFileIfValid(file, e.target, id);
       } else {
-        ErrorToast.default.error("Please upload a correct image", 1400);
+        ErrorToast.custom.error("Please upload a correct image", 1400);
       }
     }
   };

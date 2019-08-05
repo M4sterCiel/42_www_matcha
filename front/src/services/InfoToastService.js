@@ -1,11 +1,11 @@
 import Materialize from "materialize-css";
 
 export default {
-  default: {
-    info: message => {
+  custom: {
+    info: (message, length) => {
       Materialize.toast({
         html: message,
-        displayLength: 1400,
+        displayLength: length,
         classes: "rounded info-toast"
       });
     }

@@ -243,7 +243,7 @@ class ResetPassword extends Component {
       this.props.history.push("/users/login");
     } else {
       let message = body.substr(10, body.length - 12);
-      ErrorToast.default.error(message, 1000);
+      ErrorToast.custom.error(message, 1000);
     }
   };
 }

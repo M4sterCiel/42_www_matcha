@@ -1,7 +1,7 @@
 import Materialize from "materialize-css";
 
 export default {
-  default: {
+  custom: {
     error: (message, length) => {
       Materialize.toast({
         html: message,
