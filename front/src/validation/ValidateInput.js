@@ -14,7 +14,12 @@ export default {
           firstnameError: "Firstname is invalid",
           firstnameValid: false
         };
-      }
+      } else if (value === "") {
+        return {
+          firstnameError: "Firstname cannot be empty",
+          firstnameValid: false
+        };
+      } 
       return {
         firstnameError: "",
         firstnameValid: true
@@ -34,7 +39,12 @@ export default {
           lastnameError: "Lastname is invalid",
           lastnameValid: false
         };
-      }
+      } else if (value === "") {
+        return {
+          lastnameError: "Lastname cannot be empty",
+          lastnameValid: false
+        };
+      } 
       return {
         lastnameError: "",
         lastnameValid: true
@@ -59,7 +69,12 @@ export default {
           usernameError: "Username is too long (must be equal or less than 30)",
           usernameValid: false
         };
-      }
+      } else if (value === "") {
+        return {
+          usernameError: "Username cannot be empty",
+          usernameValid: false
+        };
+      } 
       return {
         usernameError: "",
         usernameValid: true
@@ -84,7 +99,12 @@ export default {
           emailError: "Email is too long (must be equal or less than 30)",
           emailValid: false
         };
-      }
+      } else if (value === "") {
+        return {
+          emailError: "Email cannot be empty",
+          emailValid: false
+        };
+      } 
       return {
         emailError: "",
         emailValid: true

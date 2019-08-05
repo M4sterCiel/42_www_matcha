@@ -19,7 +19,8 @@ import {
   DeleteAccountBtn
 } from "./EditAccountSettings";
 import { EditProfilePictures } from "./EditProfilePictures";
-import { Modal } from "react-materialize";
+import { Modal, Button } from "react-materialize";
+import { connect } from "react-redux";
 
 class ModalUserCompleteProfile extends Component {
   constructor(props) {
@@ -34,6 +35,7 @@ class ModalUserCompleteProfile extends Component {
       userData: this.props.userData
     });
   }
+
   render() {
     return (
       <Modal header="Modal Header" className="modal" fixedFooter>
@@ -56,14 +58,15 @@ class ModalUserEditProfileInfo extends Component {
     this.state = {
       gender: "",
       sexOrientation: "",
-      firstname: "",
-      lastname: "",
+      firstname: null,
+      lastname: null,
       bio: "",
-      birthdate: "",
+      birthdate: null,
       interests: [],
       geo_lat: null,
       geo_long: null,
-      username: ""
+      username: "",
+      birthdateChanged: false
     };
     this.handleGenderData = this.handleGenderData.bind(this);
     this.handleSexOrientationData = this.handleSexOrientationData.bind(this);
@@ -74,6 +77,7 @@ class ModalUserEditProfileInfo extends Component {
     this.handleInterestsData = this.handleInterestsData.bind(this);
     this.handleCoordLatData = this.handleCoordLatData.bind(this);
     this.handleCoordLongData = this.handleCoordLongData.bind(this);
+    this.resetMyDetails = this.resetMyDetails.bind(this);
   }
 
   componentDidMount() {
@@ -122,9 +126,16 @@ class ModalUserEditProfileInfo extends Component {
   }
 
   handleBirthdateData(data) {
-    this.setState({
-      birthdate: data
-    });
+    if (this.state.birthdate !== this.props.userData.birthdate) {
+      this.setState({
+        birthdate: data,
+        birthdateChanged: true
+      });
+    } else {
+      this.setState({
+        birthdateChanged: false
+      });
+    }
   }
 
   handleInterestsData(data) {
@@ -138,10 +149,15 @@ class ModalUserEditProfileInfo extends Component {
       geo_lat: data
     });
   }
+
   handleCoordLongData(data) {
     this.setState({
       geo_long: data
     });
+  }
+
+  resetMyDetails() {
+    console.log("Reset to be done");
   }
 
   render() {
@@ -160,7 +176,7 @@ class ModalUserEditProfileInfo extends Component {
           </p>
           <span className="profile-fields-labels">My details</span>
           <div className="modal-input">
-            {this.state.firstname !== "" && this.state.lastname !== "" && (
+            {this.state.firstname !== null && this.state.lastname !== null && (
               <InputTwoNames
                 firstnameToParent={this.handleFirstnameData}
                 lastnameToParent={this.handleLastnameData}
@@ -169,12 +185,19 @@ class ModalUserEditProfileInfo extends Component {
               />
             )}
             <InputBio bioToParent={this.handleBioData} bio={this.state.bio} />
-            {this.state.birthdate !== "" && (
+            {this.state.birthdate !== null && (
               <BirthdatePicker
                 birthdateToParent={this.handleBirthdateData}
                 birthdate={this.state.birthdate}
               />
             )}
+            { (this.state.firstname !== this.props.userData.firstname || this.state.lastname !== this.props.userData.lastname 
+            || (this.state.bio !== this.props.userData.bio && this.state.bio !== "") || this.state.birthdateChanged === true) &&
+            <div className="modal-input-btns">
+              <Button className="btn waves-effect waves-light multiple-btns" onClick={ e => this.resetMyDetails()} >Cancel</Button>
+              <Button className="btn waves-effect waves-light multiple-btns">Save</Button>
+            </div>
+            }
           </div>
           <span className="profile-fields-labels">City</span>
           <SelectLocation
@@ -366,6 +389,13 @@ class ModalUserEditAccountSettings extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    userConnectedData: state.user.data,
+    userConnectedStatus: state.user.status
+  };
+};
 
 export {
   ModalUserCompleteProfile,

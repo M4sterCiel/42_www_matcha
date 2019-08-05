@@ -92,7 +92,7 @@ module.exports = {
   verifyPasswordWithId: async (req, res, next) => {
     var err;
     if ((err = input.password(req.body.password).error))
-      return res.status(400).json({ error: "password " + err });
+      return res.status(400).json({ message: "password " + err });
     var result = await UserService.verifyPasswordWithId(
       req.body.password,
       req.params.id
@@ -110,7 +110,7 @@ module.exports = {
   updatePasswordWithId: async (req, res, next) => {
     var err;
     if ((err = input.password(req.body.password).error))
-      return res.status(400).json({ error: "password " + err });
+      return res.status(400).json({ message: "password " + err });
     var result = await UserService.updatePasswordWithId(
       req.body.password,
       req.params.id
@@ -204,6 +204,8 @@ module.exports = {
   getUserProfile: async (req, res, next) => {
     // Get user id from username
     var userId = await UserService.getUserIdFromUsername(req.params.username);
+    if (userId.error)
+      return res.status(401).json({ message: userId.error });
 
     // Get data from db based on user access rights
     var userData = await UserService.getUserData(userId);

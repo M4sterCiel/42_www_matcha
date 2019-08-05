@@ -10,6 +10,7 @@ module.exports = {
       });
       if (result) return result;
     } catch (err) {
+      console.log(err);
       throw new Error(err);
     }
   },

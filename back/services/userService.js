@@ -48,7 +48,10 @@ module.exports = {
   getUserIdFromUsername: async username => {
     try {
       var result = await userModel.findOne("username", username);
-      return result[0].id;
+      if (result != "")
+        return result[0].id;
+      else 
+        return { error: "User not found" };
     } catch (err) {
       console.log(err);
       return { error: err };

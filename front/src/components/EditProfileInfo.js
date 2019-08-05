@@ -12,6 +12,7 @@ import GeoPosition from "geolocator";
 import InfoToast from "../services/InfoToastService";
 import ErrorToast from "../services/ErrorToastService";
 import cities from "../assets/data-json/cities";
+import ValidateInput from "../validation/ValidateInput";
 
 class SelectGender extends Component {
   constructor(props) {
@@ -121,7 +122,11 @@ class InputTwoNames extends Component {
     super(props);
     this.state = {
       firstname: "",
-      lastname: ""
+      firstnameError: "",
+      firstnameValid: false,
+      lastname: "",
+      lastnameError: "",
+      lastnameValid: false
     };
   }
 
@@ -134,10 +139,31 @@ class InputTwoNames extends Component {
 
   handleChange = e => {
     const name = e.target.name;
+
     this.setState({ [name]: e.target.value });
     if (name === "firstname") this.props.firstnameToParent(e.target.value);
     else if (name === "lastname") this.props.lastnameToParent(e.target.value);
   };
+
+  handleFirstnameKeyUp = e => {
+    let result = ValidateInput.user.firstname(e.target.value);
+
+    this.setState({
+      firstnameError: result.firstnameError,
+      firstnameValid: result.firstnameValid
+    });
+  };
+
+  handleLastnameKeyUp = e => {
+    let result = ValidateInput.user.lastname(e.target.value);
+
+    this.setState({
+      lastnameError: result.lastnameError,
+      lastnameValid: result.lastnameValid
+    });
+  };
+
+
 
   render() {
     return (
@@ -147,15 +173,29 @@ class InputTwoNames extends Component {
           label="Firstname"
           value={this.state.firstname}
           onChange={this.handleChange}
+          onKeyUp={this.handleFirstnameKeyUp}
           className="input-modal"
         />
+        {
+          this.state.firstnameError !== "" &&
+          <div className="input-error-block">
+          {this.state.firstnameError}
+          </div>
+        }
         <TextInput
           name="lastname"
           label="Lastname"
           value={this.state.lastname}
           onChange={this.handleChange}
+          onKeyUp={this.handleLastnameKeyUp}
           className="input-modal"
         />
+        {
+          this.state.lastnameError !== "" &&
+          <div className="input-error-block">
+          {this.state.lastnameError}
+          </div>
+        }
       </div>
     );
   }
@@ -170,9 +210,11 @@ class InputBio extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      bio: this.props.bio
-    });
+    if (this.props.bio !== "") {
+      this.setState({
+        bio: this.props.bio
+      });
+    }
   }
 
   handleChange = e => {
@@ -187,7 +229,7 @@ class InputBio extends Component {
       <Textarea
         label="Say something about you..."
         onChange={this.handleChange}
-        value={this.props.bio}
+        value={this.state.bio}
         data-length={140}
       />
     );
@@ -225,8 +267,7 @@ class BirthdatePicker extends Component {
         </label>
         <DatePicker
           options={{
-            defaultDate: new Date(this.props.birthdate),
-            setDefaultDate: true,
+            defaultDate: new Date(this.state.birthdate),
             container: "#root",
             onClose: this.handleChange
           }}
