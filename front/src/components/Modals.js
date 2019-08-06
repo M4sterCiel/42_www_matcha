@@ -58,6 +58,10 @@ class ModalUserEditProfileInfo extends Component {
     this.state = {
       gender: "",
       sexOrientation: "",
+      originalFirstname: null,
+      originalLastname: null,
+      originalBio: "",
+      originalBirthdate: null,
       firstname: null,
       lastname: null,
       bio: "",
@@ -65,8 +69,7 @@ class ModalUserEditProfileInfo extends Component {
       interests: [],
       geo_lat: null,
       geo_long: null,
-      username: "",
-      birthdateChanged: false
+      username: ""
     };
     this.handleGenderData = this.handleGenderData.bind(this);
     this.handleSexOrientationData = this.handleSexOrientationData.bind(this);
@@ -84,11 +87,14 @@ class ModalUserEditProfileInfo extends Component {
     this.setState({
       gender: this.props.userData.gender,
       sexOrientation: this.props.userData.sexual_orientation,
+      originalFirstname: this.props.userData.firstname,
+      originalLastname: this.props.userData.lastname,
+      originalBio: this.props.userData.bio,
+      originalBirthdate: this.props.userData.birthdate,
       firstname: this.props.userData.firstname,
       lastname: this.props.userData.lastname,
       bio: this.props.userData.bio,
-      birthdate:
-        this.props.userData.birthdate !== null && this.props.userData.birthdate,
+      birthdate: this.props.userData.birthdate,
       geo_lat: this.props.userData.geo_lat,
       geo_long: this.props.userData.geo_long,
       username: this.props.userData.username
@@ -126,16 +132,9 @@ class ModalUserEditProfileInfo extends Component {
   }
 
   handleBirthdateData(data) {
-    if (this.state.birthdate !== this.props.userData.birthdate) {
       this.setState({
         birthdate: data,
-        birthdateChanged: true
       });
-    } else {
-      this.setState({
-        birthdateChanged: false
-      });
-    }
   }
 
   handleInterestsData(data) {
@@ -157,7 +156,12 @@ class ModalUserEditProfileInfo extends Component {
   }
 
   resetMyDetails() {
-    console.log("Reset to be done");
+    this.setState({
+      firstname: this.state.originalFirstname,
+      lastname: this.state.originalLastname,
+      bio: this.state.originalBio,
+      birthdate: this.state.originalBirthdate
+    })
   }
 
   render() {
@@ -185,14 +189,12 @@ class ModalUserEditProfileInfo extends Component {
               />
             )}
             <InputBio bioToParent={this.handleBioData} bio={this.state.bio} />
-            {this.state.birthdate !== null && (
-              <BirthdatePicker
-                birthdateToParent={this.handleBirthdateData}
-                birthdate={this.state.birthdate}
-              />
-            )}
+            <BirthdatePicker
+              birthdateToParent={this.handleBirthdateData}
+              birthdate={this.state.birthdate}
+            />
             { (this.state.firstname !== this.props.userData.firstname || this.state.lastname !== this.props.userData.lastname 
-            || (this.state.bio !== this.props.userData.bio && this.state.bio !== "") || this.state.birthdateChanged === true) &&
+            || (this.state.bio !== this.props.userData.bio && this.state.bio !== "") || (this.state.birthdate !== this.state.originalBirthdate && this.state.birthdate !== "")) &&
             <div className="modal-input-btns">
               <Button className="btn waves-effect waves-light multiple-btns" onClick={ e => this.resetMyDetails()} >Cancel</Button>
               <Button className="btn waves-effect waves-light multiple-btns">Save</Button>

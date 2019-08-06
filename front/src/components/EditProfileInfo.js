@@ -137,6 +137,13 @@ class InputTwoNames extends Component {
     });
   }
 
+  componentDidUpdate() {
+    if (this.state.firstname !== this.props.firstname)
+      document.querySelector("input[name='firstname']").value = this.props.firstname;
+    if (this.state.lastname !== this.props.lastname)
+      document.querySelector("input[name='lastname']").value = this.props.lastname;
+  }
+
   handleChange = e => {
     const name = e.target.name;
 
@@ -217,6 +224,11 @@ class InputBio extends Component {
     }
   }
 
+  componentDidUpdate() {
+    if (this.state.bio !== this.props.bio)
+      document.querySelector("textarea[name='bio']").value = this.props.bio;
+  }
+
   handleChange = e => {
     this.setState({
       bio: e.target.value
@@ -227,6 +239,7 @@ class InputBio extends Component {
   render() {
     return (
       <Textarea
+        name="bio"
         label="Say something about you..."
         onChange={this.handleChange}
         value={this.state.bio}
@@ -250,13 +263,19 @@ class BirthdatePicker extends Component {
     });
   }
 
+  componentDidUpdate() {
+    if (this.state.birthdate !== this.props.birthdate && this.props.birthdate !== false) {
+      document.querySelector("input[name='birthdate']").value = this.props.birthdate;
+    }
+  }
+
   handleChange = e => {
-    this.setState({
-      birthdate: document.querySelector(".birthdate-picker-modal").value
-    });
     this.props.birthdateToParent(
       document.querySelector(".birthdate-picker-modal").value
     );
+    this.setState({
+      birthdate: document.querySelector(".birthdate-picker-modal").value
+    });
   };
 
   render() {
@@ -266,6 +285,7 @@ class BirthdatePicker extends Component {
           Birthdate
         </label>
         <DatePicker
+          name="birthdate"
           options={{
             defaultDate: new Date(this.state.birthdate),
             container: "#root",
