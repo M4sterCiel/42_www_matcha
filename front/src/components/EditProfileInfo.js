@@ -123,10 +123,10 @@ class InputTwoNames extends Component {
     this.state = {
       firstname: "",
       firstnameError: "",
-      firstnameValid: false,
+      firstnameValid: true,
       lastname: "",
       lastnameError: "",
-      lastnameValid: false
+      lastnameValid: true
     };
   }
 
@@ -138,39 +138,67 @@ class InputTwoNames extends Component {
   }
 
   componentDidUpdate() {
-    if (this.state.firstname !== this.props.firstname)
-      document.querySelector("input[name='firstname']").value = this.props.firstname;
-    if (this.state.lastname !== this.props.lastname)
-      document.querySelector("input[name='lastname']").value = this.props.lastname;
+    if (
+      document.querySelector("input[name='firstname']").value !==
+      this.props.firstname
+    ) {
+      console.log(this.props.firstname);
+      document.querySelector(
+        "input[name='firstname']"
+      ).value = this.props.firstname;
+      this.setState({
+        firstname: this.props.firstname,
+        firstnameValid: true,
+        firstnameError: ""
+      });
+      console.log("firstname");
+    }
+    if (
+      document.querySelector("input[name='lastname']").value !==
+      this.props.lastname
+    ) {
+      document.querySelector(
+        "input[name='lastname']"
+      ).value = this.props.lastname;
+      this.setState({
+        lastname: this.props.lastname,
+        lastnameValid: true,
+        lastnameError: ""
+      });
+      console.log("lastname");
+    }
   }
 
   handleChange = e => {
     const name = e.target.name;
 
     this.setState({ [name]: e.target.value });
-    if (name === "firstname") this.props.firstnameToParent(e.target.value);
-    else if (name === "lastname") this.props.lastnameToParent(e.target.value);
+    if (name === "firstname") {
+      this.props.firstnameToParent(e.target.value);
+      let result = ValidateInput.user.firstname(e.target.value);
+
+      this.setState({
+        firstnameError: result.firstnameError,
+        firstnameValid: result.firstnameValid
+      });
+      this.props.validInput(
+        result.firstnameValid && this.state.lastnameValid ? true : false
+      );
+    } else if (name === "lastname") {
+      let result = ValidateInput.user.lastname(e.target.value);
+
+      this.setState({
+        lastnameError: result.lastnameError,
+        lastnameValid: result.lastnameValid
+      });
+      this.props.validInput(
+        this.state.firstnameValid && result.lastnameValid ? true : false
+      );
+      this.props.lastnameToParent(e.target.value);
+    }
+    console.log(this.state.firstnameValid);
+    console.log(this.state.lastnameValid);
   };
-
-  handleFirstnameKeyUp = e => {
-    let result = ValidateInput.user.firstname(e.target.value);
-
-    this.setState({
-      firstnameError: result.firstnameError,
-      firstnameValid: result.firstnameValid
-    });
-  };
-
-  handleLastnameKeyUp = e => {
-    let result = ValidateInput.user.lastname(e.target.value);
-
-    this.setState({
-      lastnameError: result.lastnameError,
-      lastnameValid: result.lastnameValid
-    });
-  };
-
-
 
   render() {
     return (
@@ -183,12 +211,9 @@ class InputTwoNames extends Component {
           onKeyUp={this.handleFirstnameKeyUp}
           className="input-modal"
         />
-        {
-          this.state.firstnameError !== "" &&
-          <div className="input-error-block">
-          {this.state.firstnameError}
-          </div>
-        }
+        {!this.state.firstnameValid && (
+          <div className="input-error-block">{this.state.firstnameError}</div>
+        )}
         <TextInput
           name="lastname"
           label="Lastname"
@@ -197,12 +222,9 @@ class InputTwoNames extends Component {
           onKeyUp={this.handleLastnameKeyUp}
           className="input-modal"
         />
-        {
-          this.state.lastnameError !== "" &&
-          <div className="input-error-block">
-          {this.state.lastnameError}
-          </div>
-        }
+        {!this.state.lastnameValid && (
+          <div className="input-error-block">{this.state.lastnameError}</div>
+        )}
       </div>
     );
   }
@@ -264,8 +286,13 @@ class BirthdatePicker extends Component {
   }
 
   componentDidUpdate() {
-    if (this.state.birthdate !== this.props.birthdate && this.props.birthdate !== false) {
-      document.querySelector("input[name='birthdate']").value = this.props.birthdate;
+    if (
+      this.state.birthdate !== this.props.birthdate &&
+      this.props.birthdate !== false
+    ) {
+      document.querySelector(
+        "input[name='birthdate']"
+      ).value = this.props.birthdate;
     }
   }
 
@@ -356,7 +383,8 @@ class InterestTags extends Component {
       });
     } else {
       InfoToast.custom.info(
-        `Tag ${target[0].children[0].innerText} has already been added`, 1500
+        `Tag ${target[0].children[0].innerText} has already been added`,
+        1500
       );
     }
   }
@@ -562,7 +590,10 @@ class SelectLocation extends Component {
   geolocateMe = () => {
     this.getLocation();
     this.hideEditLocation();
-    InfoToast.custom.info("Please wait while you are being geolocated...", 1500);
+    InfoToast.custom.info(
+      "Please wait while you are being geolocated...",
+      1500
+    );
   };
 
   confirmAutoCity = () => {

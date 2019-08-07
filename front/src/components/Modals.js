@@ -69,7 +69,8 @@ class ModalUserEditProfileInfo extends Component {
       interests: [],
       geo_lat: null,
       geo_long: null,
-      username: ""
+      username: "",
+      isTwoNamesInputValid: false
     };
     this.handleGenderData = this.handleGenderData.bind(this);
     this.handleSexOrientationData = this.handleSexOrientationData.bind(this);
@@ -80,6 +81,7 @@ class ModalUserEditProfileInfo extends Component {
     this.handleInterestsData = this.handleInterestsData.bind(this);
     this.handleCoordLatData = this.handleCoordLatData.bind(this);
     this.handleCoordLongData = this.handleCoordLongData.bind(this);
+    this.isTwoNamesInputValid = this.isTwoNamesInputValid.bind(this);
     this.resetMyDetails = this.resetMyDetails.bind(this);
   }
 
@@ -132,9 +134,9 @@ class ModalUserEditProfileInfo extends Component {
   }
 
   handleBirthdateData(data) {
-      this.setState({
-        birthdate: data,
-      });
+    this.setState({
+      birthdate: data
+    });
   }
 
   handleInterestsData(data) {
@@ -155,13 +157,19 @@ class ModalUserEditProfileInfo extends Component {
     });
   }
 
+  isTwoNamesInputValid(data) {
+    this.setState({
+      isTwoNamesInputValid: data
+    });
+  }
+
   resetMyDetails() {
     this.setState({
       firstname: this.state.originalFirstname,
       lastname: this.state.originalLastname,
       bio: this.state.originalBio,
       birthdate: this.state.originalBirthdate
-    })
+    });
   }
 
   render() {
@@ -179,6 +187,9 @@ class ModalUserEditProfileInfo extends Component {
             profile
           </p>
           <span className="profile-fields-labels">My details</span>
+          <p>{this.state.firstname}</p>
+          <p>{this.state.lastname}</p>
+          <p>{this.state.isTwoNamesInputValid ? "true" : "false"}</p>
           <div className="modal-input">
             {this.state.firstname !== null && this.state.lastname !== null && (
               <InputTwoNames
@@ -186,6 +197,7 @@ class ModalUserEditProfileInfo extends Component {
                 lastnameToParent={this.handleLastnameData}
                 firstname={this.state.firstname}
                 lastname={this.state.lastname}
+                validInput={this.isTwoNamesInputValid}
               />
             )}
             <InputBio bioToParent={this.handleBioData} bio={this.state.bio} />
@@ -193,13 +205,27 @@ class ModalUserEditProfileInfo extends Component {
               birthdateToParent={this.handleBirthdateData}
               birthdate={this.state.birthdate}
             />
-            { (this.state.firstname !== this.props.userData.firstname || this.state.lastname !== this.props.userData.lastname 
-            || (this.state.bio !== this.props.userData.bio && this.state.bio !== "") || (this.state.birthdate !== this.state.originalBirthdate && this.state.birthdate !== "")) &&
-            <div className="modal-input-btns">
-              <Button className="btn waves-effect waves-light multiple-btns" onClick={ e => this.resetMyDetails()} >Cancel</Button>
-              <Button className="btn waves-effect waves-light multiple-btns">Save</Button>
-            </div>
-            }
+            {(this.state.firstname !== this.props.userData.firstname ||
+              this.state.lastname !== this.props.userData.lastname ||
+              (this.state.bio !== this.props.userData.bio &&
+                this.state.bio !== "") ||
+              (this.state.birthdate !== this.state.originalBirthdate &&
+                this.state.birthdate !== "")) && (
+              <div className="modal-input-btns">
+                <Button
+                  className="btn waves-effect waves-light multiple-btns"
+                  onClick={e => this.resetMyDetails()}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="btn waves-effect waves-light multiple-btns"
+                  disabled={!this.state.isTwoNamesInputValid}
+                >
+                  Save
+                </Button>
+              </div>
+            )}
           </div>
           <span className="profile-fields-labels">City</span>
           <SelectLocation
