@@ -20,6 +20,7 @@ import {
 } from "./EditAccountSettings";
 import { EditProfilePictures } from "./EditProfilePictures";
 import { Modal, Button } from "react-materialize";
+import ApiCall from "../services/ApiCall";
 
 class ModalUserCompleteProfile extends Component {
   constructor(props) {
@@ -185,6 +186,23 @@ class ModalUserEditProfileInfo extends Component {
     console.log(this.state.lastname);
     console.log(this.state.bio);
     console.log(this.state.birthdate);
+    console.log(this.props.userData.id);
+    e.preventDefault();
+    if (this.state.firstname !== this.state.originalFirstname) {
+      await ApiCall.user
+        .updateUserField(
+          this.props.userData.id,
+          "firstname",
+          this.state.firstname
+        )
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          let message = err.response.data["error"];
+          console.log(message);
+        });
+    }
   };
 
   render() {
