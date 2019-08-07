@@ -20,7 +20,6 @@ import {
 } from "./EditAccountSettings";
 import { EditProfilePictures } from "./EditProfilePictures";
 import { Modal, Button } from "react-materialize";
-import { connect } from "react-redux";
 
 class ModalUserCompleteProfile extends Component {
   constructor(props) {
@@ -70,7 +69,8 @@ class ModalUserEditProfileInfo extends Component {
       geo_lat: null,
       geo_long: null,
       username: "",
-      isTwoNamesInputValid: false
+      isTwoNamesInputValid: true,
+      isBioInputValid: true
     };
     this.handleGenderData = this.handleGenderData.bind(this);
     this.handleSexOrientationData = this.handleSexOrientationData.bind(this);
@@ -82,6 +82,7 @@ class ModalUserEditProfileInfo extends Component {
     this.handleCoordLatData = this.handleCoordLatData.bind(this);
     this.handleCoordLongData = this.handleCoordLongData.bind(this);
     this.isTwoNamesInputValid = this.isTwoNamesInputValid.bind(this);
+    this.isBioInputValid = this.isBioInputValid.bind(this);
     this.resetMyDetails = this.resetMyDetails.bind(this);
   }
 
@@ -91,11 +92,12 @@ class ModalUserEditProfileInfo extends Component {
       sexOrientation: this.props.userData.sexual_orientation,
       originalFirstname: this.props.userData.firstname,
       originalLastname: this.props.userData.lastname,
-      originalBio: this.props.userData.bio,
+      originalBio:
+        this.props.userData.bio === null ? "" : this.props.userData.bio,
       originalBirthdate: this.props.userData.birthdate,
       firstname: this.props.userData.firstname,
       lastname: this.props.userData.lastname,
-      bio: this.props.userData.bio,
+      bio: this.props.userData.bio === null ? "" : this.props.userData.bio,
       birthdate: this.props.userData.birthdate,
       geo_lat: this.props.userData.geo_lat,
       geo_long: this.props.userData.geo_long,
@@ -163,6 +165,12 @@ class ModalUserEditProfileInfo extends Component {
     });
   }
 
+  isBioInputValid(data) {
+    this.setState({
+      isBioInputValid: data
+    });
+  }
+
   resetMyDetails() {
     this.setState({
       firstname: this.state.originalFirstname,
@@ -171,6 +179,13 @@ class ModalUserEditProfileInfo extends Component {
       birthdate: this.state.originalBirthdate
     });
   }
+
+  handleSubmitMyDetails = async e => {
+    console.log(this.state.firstname);
+    console.log(this.state.lastname);
+    console.log(this.state.bio);
+    console.log(this.state.birthdate);
+  };
 
   render() {
     return (
@@ -187,9 +202,6 @@ class ModalUserEditProfileInfo extends Component {
             profile
           </p>
           <span className="profile-fields-labels">My details</span>
-          <p>{this.state.firstname}</p>
-          <p>{this.state.lastname}</p>
-          <p>{this.state.isTwoNamesInputValid ? "true" : "false"}</p>
           <div className="modal-input">
             {this.state.firstname !== null && this.state.lastname !== null && (
               <InputTwoNames
@@ -200,7 +212,11 @@ class ModalUserEditProfileInfo extends Component {
                 validInput={this.isTwoNamesInputValid}
               />
             )}
-            <InputBio bioToParent={this.handleBioData} bio={this.state.bio} />
+            <InputBio
+              bioToParent={this.handleBioData}
+              bio={this.state.bio}
+              validInput={this.isBioInputValid}
+            />
             <BirthdatePicker
               birthdateToParent={this.handleBirthdateData}
               birthdate={this.state.birthdate}
@@ -220,7 +236,11 @@ class ModalUserEditProfileInfo extends Component {
                 </Button>
                 <Button
                   className="btn waves-effect waves-light multiple-btns"
-                  disabled={!this.state.isTwoNamesInputValid}
+                  onClick={this.handleSubmitMyDetails}
+                  disabled={
+                    !this.state.isTwoNamesInputValid ||
+                    !this.state.isBioInputValid
+                  }
                 >
                   Save
                 </Button>
@@ -417,13 +437,6 @@ class ModalUserEditAccountSettings extends Component {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    userConnectedData: state.user.data,
-    userConnectedStatus: state.user.status
-  };
-};
 
 export {
   ModalUserCompleteProfile,

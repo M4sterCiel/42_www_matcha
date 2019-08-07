@@ -131,7 +131,6 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
-    console.log(this.Auth.loggedIn());
     if (!this.Auth.loggedIn()) {
       ErrorToast.auth.pageRequiresLogin();
       this.props.history.replace("/users/login");

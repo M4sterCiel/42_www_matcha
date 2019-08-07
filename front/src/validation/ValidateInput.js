@@ -19,7 +19,7 @@ export default {
           firstnameError: "Firstname cannot be empty",
           firstnameValid: false
         };
-      } 
+      }
       return {
         firstnameError: "",
         firstnameValid: true
@@ -44,7 +44,7 @@ export default {
           lastnameError: "Lastname cannot be empty",
           lastnameValid: false
         };
-      } 
+      }
       return {
         lastnameError: "",
         lastnameValid: true
@@ -74,7 +74,7 @@ export default {
           usernameError: "Username cannot be empty",
           usernameValid: false
         };
-      } 
+      }
       return {
         usernameError: "",
         usernameValid: true
@@ -104,10 +104,28 @@ export default {
           emailError: "Email cannot be empty",
           emailValid: false
         };
-      } 
+      }
       return {
         emailError: "",
         emailValid: true
+      };
+    },
+    // Checking bio format is valid
+    bio: value => {
+      if (/^\s+/.test(value)) {
+        return {
+          bioError: "Bio cannot start with space",
+          bioValid: false
+        };
+      } else if (value.length > 140) {
+        return {
+          bioError: "Bio is too long",
+          bioValid: false
+        };
+      }
+      return {
+        bioError: "",
+        bioValid: true
       };
     }
   }
