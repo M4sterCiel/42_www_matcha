@@ -63,6 +63,47 @@ module.exports = {
     }
   },
 
+  updateUserData: async (req, res, next) => {
+    console.log(req.body.data);
+    var err = "";
+    req.body.data.map(async value => {
+      switch (value) {
+        case "firstname":
+          err = await input.firstname(req.body.data[value]);
+          break;
+        case "lastname":
+          err = await input.lastname(req.body.data[value]);
+          break;
+        case "mail":
+          err = await input.mail(req.body.data[value]);
+          break;
+        default:
+          err = "wrong field";
+          break;
+      }
+
+      if (err.error) {
+        return res
+          .status(400)
+          .json({ error: `${req.body.data[value]} ` + err.error });
+      }
+      if (err === "wrong field") {
+        return res
+          .status(400)
+          .json({ error: `${req.body.data[value]} is a wrong field` });
+      }
+    });
+
+    var result = await userModel.updateData(req.params.id, req.body.data);
+
+    if (result.error) return res.status(401).json({ message: result.error });
+    else {
+      return res.status(200).json({
+        message: `User data updated`
+      });
+    }
+  },
+
   forgotPassword: async (req, res, next) => {
     var user = await UserService.doesUserLoginExist({
       login: req.body.login
@@ -204,8 +245,7 @@ module.exports = {
   getUserProfile: async (req, res, next) => {
     // Get user id from username
     var userId = await UserService.getUserIdFromUsername(req.params.username);
-    if (userId.error)
-      return res.status(401).json({ message: userId.error });
+    if (userId.error) return res.status(401).json({ message: userId.error });
 
     // Get data from db based on user access rights
     var userData = await UserService.getUserData(userId);

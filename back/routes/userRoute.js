@@ -11,6 +11,7 @@ exports.router = (() => {
     .route("/update/:id/password")
     .post(userController.updatePasswordWithId);
   userRouter.route("/update/:id/:field").post(userController.updateUserField);
+  userRouter.route("/update/:id").post(userController.updateUserData);
   userRouter.route("/register/:key").get(userController.checkValidity);
   userRouter.route("/profile/:username").get(userController.getUserProfile);
   userRouter.route("/login").post(userController.login);

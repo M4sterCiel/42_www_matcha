@@ -27,6 +27,21 @@ module.exports = {
     }
   },
 
+  updateData: async (id, data) => {
+    try {
+      let update_set = Object.keys(data).map(value => {
+        return ` ${value}  = "${data[value]}"`;
+      });
+      var result = await pool.query({
+        sql: "UPDATE users SET ? WHERE `id` = ?",
+        values: [update_set.join(" ,"), id]
+      });
+      if (result) return result;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
   createOne: async data => {
     //console.log(data);
     data[4] = passwordHash.generate(data[4], {

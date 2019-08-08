@@ -8,6 +8,8 @@ export default {
       axios
         .post(`/users/update/${id}/${field}`, { data: data })
         .then(res => res.data),
+    updateUserData: (id, data) =>
+      axios.post(`/users/update/${id}`, { data: data }).then(res => res.data),
     verifyPasswordWithId: (id, password) =>
       axios
         .post(`/users/verify/${id}/password`, { password: password })
