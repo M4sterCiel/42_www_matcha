@@ -12,7 +12,6 @@ const Auth = new AuthService();
 const store = configureStore();
 
 if (Auth.loggedIn()) {
-  console.log("store dispatch");
   store.dispatch(getUserData(Auth.getConfirm().username));
 }
 

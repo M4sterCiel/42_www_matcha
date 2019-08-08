@@ -9,6 +9,8 @@ import { NavLink } from "react-router-dom";
 import Axios from "axios";
 import { BackgroundAdd } from "../components/Background";
 import ErrorToast from "../services/ErrorToastService";
+import * as actionCreators from "../actions/user-actions";
+import { connect } from "react-redux";
 
 class Login extends Component {
   constructor(props) {
@@ -185,6 +187,7 @@ class Login extends Component {
       .then(res => {
         this.setState({ responseToPost: res.status });
         localStorage.setItem("Token", res.data["token"]);
+        this.props.getUserData(res.data["username"]);
         this.props.history.push("/");
       })
       .catch(err => {
@@ -194,4 +197,11 @@ class Login extends Component {
   };
 }
 
-export default Login;
+const mapStateToProps = state => {
+  return { state };
+};
+
+export default connect(
+  mapStateToProps,
+  actionCreators
+)(Login);

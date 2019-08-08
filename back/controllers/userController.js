@@ -16,6 +16,7 @@ module.exports = {
       var username = user.userData[0]["username"];
       return res.status(200).json({
         message: "Succesfully User Retrieved",
+        username: username,
         token: jwtUtils.tokenGenerator([id, username])
       });
     }

@@ -111,6 +111,8 @@ class UserProfile extends Component {
     let username = url.split("/");
     username = username[username.length - 1];
 
+    console.log(this.state.user.id);
+    console.log(this.props.userConnectedData.id);
     if (
       username !== this.state.user.username &&
       this.state.user.username !== undefined
