@@ -6,11 +6,9 @@ import {
   ProfileSettingsButton,
   ProfileActionsButton
 } from "../components/Buttons";
-import {
-  ModalUserEditProfileInfo,
-  ModalUserEditProfilePictures,
-  ModalUserEditAccountSettings
-} from "../components/Modals";
+import ModalUserEditProfileInfo from "../components/modals/ModalUserEditProfileInfo";
+import ModalUserEditProfilePictures from "../components/modals/ModalUserEditProfilePictures";
+import ModalUserEditAccountSettings from "../components/modals/ModalUserEditAccountSettings";
 import ApiCall from "../services/ApiCall";
 import ErrorToast from "../services/ErrorToastService";
 

@@ -32,9 +32,10 @@ module.exports = {
       let update_set = Object.keys(data).map(value => {
         return ` ${value}  = "${data[value]}"`;
       });
+      console.log(update_set);
       var result = await pool.query({
-        sql: "UPDATE users SET ? WHERE `id` = ?",
-        values: [update_set.join(" ,"), id]
+        sql: "UPDATE users SET " + update_set.join(" ,") + " WHERE `id` = ?",
+        values: [id]
       });
       if (result) return result;
     } catch (err) {
@@ -43,7 +44,6 @@ module.exports = {
   },
 
   createOne: async data => {
-    //console.log(data);
     data[4] = passwordHash.generate(data[4], {
       algorithm: "sha512",
       saltLength: 10,

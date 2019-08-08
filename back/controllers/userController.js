@@ -65,9 +65,8 @@ module.exports = {
   },
 
   updateUserData: async (req, res, next) => {
-    console.log(req.body.data);
     var err = "";
-    req.body.data.map(async value => {
+    /*     Object.keys(req.body.data).map(async value => {
       switch (value) {
         case "firstname":
           err = await input.firstname(req.body.data[value]);
@@ -93,7 +92,7 @@ module.exports = {
           .status(400)
           .json({ error: `${req.body.data[value]} is a wrong field` });
       }
-    });
+    }); */
 
     var result = await userModel.updateData(req.params.id, req.body.data);
 

@@ -7,50 +7,11 @@ import {
   BirthdatePicker,
   InterestTags,
   SelectLocation
-} from "./EditProfileInfo";
-import {
-  AgeSlider,
-  DistanceSlider,
-  PopularitySlider,
-  CommonInterestsSlider,
-  EditEmailBox,
-  EditPasswordBox,
-  NotificationSwitch,
-  DeleteAccountBtn
-} from "./EditAccountSettings";
-import { EditProfilePictures } from "./EditProfilePictures";
+} from "../EditProfileInfo";
 import { Modal, Button } from "react-materialize";
-import ApiCall from "../services/ApiCall";
-
-class ModalUserCompleteProfile extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userData: []
-    };
-  }
-
-  componentDidMount() {
-    this.setState({
-      userData: this.props.userData
-    });
-  }
-
-  render() {
-    return (
-      <Modal header="Modal Header" className="modal" fixedFooter>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
-        <SelectGender
-          genderToParent={this.handleGenderData}
-          gender={this.state.gender}
-        />
-      </Modal>
-    );
-  }
-}
+import ApiCall from "../../services/ApiCall";
+import * as actionCreators from "../../actions/user-actions";
+import { connect } from "react-redux";
 
 class ModalUserEditProfileInfo extends Component {
   constructor(props) {
@@ -182,19 +143,12 @@ class ModalUserEditProfileInfo extends Component {
   }
 
   handleSubmitMyDetails = async e => {
-    console.log(this.state.firstname);
-    console.log(this.state.lastname);
-    console.log(this.state.bio);
-    console.log(this.state.birthdate);
-    console.log(this.props.userData.id);
     e.preventDefault();
-    if (this.state.firstname !== this.state.originalFirstname) {
+    /*     if (this.state.firstname !== this.state.originalFirstname) {
       await ApiCall.user
-        .updateUserField(
-          this.props.userData.id,
-          "firstname",
-          this.state.firstname
-        )
+        .updateUserData(this.props.userData.id, {
+          firstname: this.state.firstname
+        })
         .then(res => {
           console.log(res);
         })
@@ -202,7 +156,21 @@ class ModalUserEditProfileInfo extends Component {
           let message = err.response.data["error"];
           console.log(message);
         });
-    }
+    } */
+    var date = new Date(this.state.birthdate);
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    this.props.updateUserData(
+      this.props.userData.id,
+      this.props.userData.username,
+      {
+        firstname: this.state.firstname,
+        lastname: this.state.lastname,
+        bio: this.state.bio,
+        birthdate: year + "-" + month + "-" + day
+      }
+    );
   };
 
   render() {
@@ -297,168 +265,11 @@ class ModalUserEditProfileInfo extends Component {
   }
 }
 
-class ModalUserEditProfilePictures extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pictures: [
-        {
-          mainPic: true,
-          url:
-            "https://news.nationalgeographic.com/content/dam/news/2018/05/17/you-can-train-your-cat/02-cat-training-NationalGeographic_1484324.ngsversion.1526587209178.adapt.1900.1.jpg"
-        },
-        {
-          mainPic: false,
-          url: ""
-        },
-        {
-          mainPic: false,
-          url: ""
-        },
-        {
-          mainPic: false,
-          url: ""
-        },
-        {
-          mainPic: false,
-          url: ""
-        }
-      ]
-    };
-    this.handlePicturesData = this.handlePicturesData.bind(this);
-  }
-
-  handlePicturesData(data) {
-    this.setState({
-      pictures: data
-    });
-  }
-
-  render() {
-    return (
-      <div>
-        <Modal
-          id="edit-pictures-modal"
-          className="modals"
-          header="Edit your profile pictures"
-          fixedFooter
-          trigger={false}
-        >
-          <p className="modal-intro">
-            Add up to 5 profile pictures (adding pictures helps with growing
-            popularity)
-          </p>
-          <EditProfilePictures
-            pictures={this.state.pictures}
-            picturesToParent={this.handlePicturesData}
-          />
-        </Modal>
-      </div>
-    );
-  }
-}
-
-class ModalUserEditAccountSettings extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userId: null,
-      email: "",
-      ageRange: [20, 50],
-      distance: 30,
-      popularityRange: [0, 200],
-      commonInterestsRange: [2, 10],
-      notifications: false
-    };
-  }
-
-  componentDidMount() {
-    this.setState({
-      userId: this.props.user.id,
-      email: this.props.user.mail
-    });
-  }
-
-  handleAgeData = data => {
-    this.setState({
-      ageRange: data
-    });
-  };
-
-  handleDistanceData = data => {
-    this.setState({
-      distance: data
-    });
-  };
-
-  handlePopularityData = data => {
-    this.setState({
-      popularityRange: data
-    });
-  };
-
-  handleCommonInterestsData = data => {
-    this.setState({
-      commonInterestsRange: data
-    });
-  };
-
-  handleEmailData = data => {
-    this.setState({
-      email: data
-    });
-  };
-
-  render() {
-    return (
-      <div>
-        {this.state.userId !== null && (
-          <Modal
-            id="edit-account-modal"
-            className="modals"
-            header="Edit your account settings"
-            fixedFooter
-            trigger={false}
-          >
-            <p className="modal-intro">
-              You can edit your Matcha discovery settings and personal account
-              settings
-            </p>
-            <span className="profile-fields-labels">Discovery settings</span>
-            <AgeSlider
-              range={this.state.ageRange}
-              ageToParent={this.handleAgeData}
-            />
-            <DistanceSlider
-              value={this.state.distance}
-              distanceToParent={this.handleDistanceData}
-            />
-            <PopularitySlider
-              range={this.state.popularityRange}
-              popularityToParent={this.handlePopularityData}
-            />
-            <CommonInterestsSlider
-              range={this.state.commonInterestsRange}
-              commonInterestsToParent={this.handleCommonInterestsData}
-            />
-            <span className="profile-fields-labels">Account settings</span>
-            <EditEmailBox
-              user={{ id: this.state.userId, email: this.state.email }}
-              emailToParent={this.handleEmailData}
-            />
-            <EditPasswordBox userId={this.state.userId} />
-            <NotificationSwitch notifications={this.state.notifications} />
-            <DeleteAccountBtn />
-          </Modal>
-        )}
-      </div>
-    );
-  }
-}
-
-export {
-  ModalUserCompleteProfile,
-  ModalUserEditProfileInfo,
-  ModalUserEditProfilePictures,
-  ModalUserEditAccountSettings
+const mapStateToProps = state => {
+  return state;
 };
+
+export default connect(
+  mapStateToProps,
+  actionCreators
+)(ModalUserEditProfileInfo);
