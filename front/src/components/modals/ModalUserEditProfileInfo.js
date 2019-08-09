@@ -9,7 +9,6 @@ import {
   SelectLocation
 } from "../EditProfileInfo";
 import { Modal, Button } from "react-materialize";
-import ApiCall from "../../services/ApiCall";
 import * as actionCreators from "../../actions/user-actions";
 import { connect } from "react-redux";
 
@@ -50,20 +49,25 @@ class ModalUserEditProfileInfo extends Component {
 
   componentDidMount() {
     this.setState({
-      gender: this.props.userData.gender,
-      sexOrientation: this.props.userData.sexual_orientation,
-      originalFirstname: this.props.userData.firstname,
-      originalLastname: this.props.userData.lastname,
+      gender: this.props.userConnectedData.gender,
+      sexOrientation: this.props.userConnectedData.sexual_orientation,
+      originalFirstname: this.props.userConnectedData.firstname,
+      originalLastname: this.props.userConnectedData.lastname,
       originalBio:
-        this.props.userData.bio === null ? "" : this.props.userData.bio,
-      originalBirthdate: this.props.userData.birthdate,
-      firstname: this.props.userData.firstname,
-      lastname: this.props.userData.lastname,
-      bio: this.props.userData.bio === null ? "" : this.props.userData.bio,
-      birthdate: this.props.userData.birthdate,
-      geo_lat: this.props.userData.geo_lat,
-      geo_long: this.props.userData.geo_long,
-      username: this.props.userData.username
+        this.props.userConnectedData.bio === null
+          ? ""
+          : this.props.userConnectedData.bio,
+      originalBirthdate: this.props.userConnectedData.birthdate,
+      firstname: this.props.userConnectedData.firstname,
+      lastname: this.props.userConnectedData.lastname,
+      bio:
+        this.props.userConnectedData.bio === null
+          ? ""
+          : this.props.userConnectedData.bio,
+      birthdate: this.props.userConnectedData.birthdate,
+      geo_lat: this.props.userConnectedData.geo_lat,
+      geo_long: this.props.userConnectedData.geo_long,
+      username: this.props.userConnectedData.username
     });
   }
 
@@ -144,26 +148,13 @@ class ModalUserEditProfileInfo extends Component {
 
   handleSubmitMyDetails = async e => {
     e.preventDefault();
-    /*     if (this.state.firstname !== this.state.originalFirstname) {
-      await ApiCall.user
-        .updateUserData(this.props.userData.id, {
-          firstname: this.state.firstname
-        })
-        .then(res => {
-          console.log(res);
-        })
-        .catch(err => {
-          let message = err.response.data["error"];
-          console.log(message);
-        });
-    } */
     var date = new Date(this.state.birthdate);
     var day = date.getDate();
     var month = date.getMonth() + 1;
     var year = date.getFullYear();
     this.props.updateUserData(
-      this.props.userData.id,
-      this.props.userData.username,
+      this.props.userConnectedData.id,
+      this.props.userConnectedData.username,
       {
         firstname: this.state.firstname,
         lastname: this.state.lastname,
@@ -207,9 +198,9 @@ class ModalUserEditProfileInfo extends Component {
               birthdateToParent={this.handleBirthdateData}
               birthdate={this.state.birthdate}
             />
-            {(this.state.firstname !== this.props.userData.firstname ||
-              this.state.lastname !== this.props.userData.lastname ||
-              (this.state.bio !== this.props.userData.bio &&
+            {(this.state.firstname !== this.props.userConnectedData.firstname ||
+              this.state.lastname !== this.props.userConnectedData.lastname ||
+              (this.state.bio !== this.props.userConnectedData.bio &&
                 this.state.bio !== "") ||
               (this.state.birthdate !== this.state.originalBirthdate &&
                 this.state.birthdate !== "")) && (
@@ -235,8 +226,8 @@ class ModalUserEditProfileInfo extends Component {
           </div>
           <span className="profile-fields-labels">City</span>
           <SelectLocation
-            lat={this.props.userData.geo_lat}
-            long={this.props.userData.geo_long}
+            lat={this.props.userConnectedData.geo_lat}
+            long={this.props.userConnectedData.geo_long}
             latToParent={this.handleCoordLatData}
             longToParent={this.handleCoordLongData}
           />
@@ -266,7 +257,10 @@ class ModalUserEditProfileInfo extends Component {
 }
 
 const mapStateToProps = state => {
-  return state;
+  return {
+    userConnectedData: state.user.data,
+    userConnectedStatus: state.user.status
+  };
 };
 
 export default connect(

@@ -56,7 +56,6 @@ function userReducer(state = initalState, { type, payload }) {
         ...state,
         sendingRequest: false,
         requestReceived: false,
-        data: [],
         status: `${payload.message}`,
         statusClass: "error"
       };

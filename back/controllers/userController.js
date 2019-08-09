@@ -65,34 +65,17 @@ module.exports = {
   },
 
   updateUserData: async (req, res, next) => {
-    var err = "";
-    /*     Object.keys(req.body.data).map(async value => {
-      switch (value) {
-        case "firstname":
-          err = await input.firstname(req.body.data[value]);
-          break;
-        case "lastname":
-          err = await input.lastname(req.body.data[value]);
-          break;
-        case "mail":
-          err = await input.mail(req.body.data[value]);
-          break;
-        default:
-          err = "wrong field";
-          break;
-      }
-
-      if (err.error) {
-        return res
-          .status(400)
-          .json({ error: `${req.body.data[value]} ` + err.error });
-      }
-      if (err === "wrong field") {
-        return res
-          .status(400)
-          .json({ error: `${req.body.data[value]} is a wrong field` });
-      }
-    }); */
+    var err;
+    if (
+      req.body.data.lastname &&
+      (err = input.lastname(req.body.data.lastname).error)
+    )
+      return res.status(400).json({ error: "lastname " + err });
+    if (
+      req.body.data.firstname &&
+      (err = input.firstname(req.body.data.firstname).error)
+    )
+      return res.status(400).json({ error: "firstname " + err });
 
     var result = await userModel.updateData(req.params.id, req.body.data);
 
