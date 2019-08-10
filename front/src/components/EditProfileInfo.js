@@ -12,6 +12,7 @@ import GeoPosition from "geolocator";
 import InfoToast from "../services/InfoToastService";
 import ErrorToast from "../services/ErrorToastService";
 import cities from "../assets/data-json/cities";
+import moment from "moment";
 import ValidateInput from "../validation/ValidateInput";
 
 class SelectGender extends Component {
@@ -331,7 +332,12 @@ class BirthdatePicker extends Component {
         <DatePicker
           name="birthdate"
           options={{
-            defaultDate: new Date(this.state.birthdate),
+            defaultDate:
+              this.props.birthdate !== null
+                ? moment(new Date(this.props.birthdate)).format()
+                : null,
+            maxDate: moment().startOf("day")._d,
+            setDefaultDate: true,
             container: "#root",
             onClose: this.handleChange
           }}

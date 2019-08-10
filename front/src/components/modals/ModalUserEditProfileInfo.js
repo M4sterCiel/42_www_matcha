@@ -8,6 +8,7 @@ import {
   InterestTags,
   SelectLocation
 } from "../EditProfileInfo";
+import moment from "moment";
 import { Modal, Button } from "react-materialize";
 import * as actionCreators from "../../actions/user-actions";
 import { connect } from "react-redux";
@@ -57,14 +58,24 @@ class ModalUserEditProfileInfo extends Component {
         this.props.userConnectedData.bio === null
           ? ""
           : this.props.userConnectedData.bio,
-      originalBirthdate: this.props.userConnectedData.birthdate,
+      originalBirthdate:
+        this.props.userConnectedData.birthdate !== null
+          ? moment(new Date(this.props.userConnectedData.birthdate)).format(
+              "MMM DD, YYYY"
+            )
+          : null,
       firstname: this.props.userConnectedData.firstname,
       lastname: this.props.userConnectedData.lastname,
       bio:
         this.props.userConnectedData.bio === null
           ? ""
           : this.props.userConnectedData.bio,
-      birthdate: this.props.userConnectedData.birthdate,
+      birthdate:
+        this.props.userConnectedData.birthdate !== null
+          ? moment(new Date(this.props.userConnectedData.birthdate)).format(
+              "MMM DD, YYYY"
+            )
+          : null,
       geo_lat: this.props.userConnectedData.geo_lat,
       geo_long: this.props.userConnectedData.geo_long,
       username: this.props.userConnectedData.username
@@ -148,18 +159,17 @@ class ModalUserEditProfileInfo extends Component {
 
   handleSubmitMyDetails = async e => {
     e.preventDefault();
-    var date = new Date(this.state.birthdate);
-    var day = date.getDate();
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
     this.props.updateUserData(
       this.props.userConnectedData.id,
       this.props.userConnectedData.username,
       {
         firstname: this.state.firstname,
         lastname: this.state.lastname,
-        bio: this.state.bio,
-        birthdate: year + "-" + month + "-" + day
+        bio: this.state.bio === "" ? null : this.state.bio,
+        birthdate:
+          this.state.birthdate === null
+            ? null
+            : moment(new Date(this.state.birthdate)).format()
       }
     );
   };
@@ -202,7 +212,8 @@ class ModalUserEditProfileInfo extends Component {
               this.state.lastname !== this.props.userConnectedData.lastname ||
               (this.state.bio !== this.props.userConnectedData.bio &&
                 this.state.bio !== "") ||
-              (this.state.birthdate !== this.state.originalBirthdate &&
+              (this.state.birthdate !==
+                this.props.userConnectedData.birthdate &&
                 this.state.birthdate !== "")) && (
               <div className="modal-input-btns">
                 <Button
@@ -216,7 +227,9 @@ class ModalUserEditProfileInfo extends Component {
                   onClick={this.handleSubmitMyDetails}
                   disabled={
                     !this.state.isTwoNamesInputValid ||
-                    !this.state.isBioInputValid
+                    !this.state.isBioInputValid ||
+                    (this.state.birthdate instanceof Date &&
+                      !isNaN(this.state.birthdate))
                   }
                 >
                   Save

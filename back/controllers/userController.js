@@ -76,6 +76,13 @@ module.exports = {
       (err = input.firstname(req.body.data.firstname).error)
     )
       return res.status(400).json({ error: "firstname " + err });
+    if (req.body.data.bio && (err = input.bio(req.body.data.bio).error))
+      return res.status(400).json({ error: "bio " + err });
+    if (
+      req.body.data.birthdate &&
+      (err = input.date(req.body.data.birthdate).error)
+    )
+      return res.status(400).json({ error: "birthdate " + err });
 
     var result = await userModel.updateData(req.params.id, req.body.data);
 

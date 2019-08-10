@@ -66,7 +66,8 @@ export default {
         };
       } else if (value.length > 30) {
         return {
-          usernameError: "Username is too long (must be equal or less than 30)",
+          usernameError:
+            "Username is too long (must be more than 2 and less than or equal to 30)",
           usernameValid: false
         };
       } else if (value === "") {
@@ -115,6 +116,16 @@ export default {
       if (/^\s+/.test(value)) {
         return {
           bioError: "Bio cannot start with space",
+          bioValid: false
+        };
+      } else if (/\s+$/.test(value)) {
+        return {
+          bioError: "Bio cannot end with space",
+          bioValid: false
+        };
+      } else if (/\s\s+/.test(value)) {
+        return {
+          bioError: "Bio cannot have multiple spaces",
           bioValid: false
         };
       } else if (value.length > 140) {

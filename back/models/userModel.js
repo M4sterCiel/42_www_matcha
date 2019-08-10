@@ -30,9 +30,10 @@ module.exports = {
   updateData: async (id, data) => {
     try {
       let update_set = Object.keys(data).map(value => {
-        return ` ${value}  = "${data[value]}"`;
+        if (data[value] == null) {
+          return ` ${value}  = NULL`;
+        } else return ` ${value}  = "${data[value]}"`;
       });
-      console.log(update_set);
       var result = await pool.query({
         sql: "UPDATE users SET " + update_set.join(" ,") + " WHERE `id` = ?",
         values: [id]

@@ -8,6 +8,7 @@
     "geolocator": "^2.1.5",
     "jwt-decode": "^2.2.0",
     "materialize-css": "^1.0.0",
+    "moment": "^2.24.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-facebook-login": "^4.1.1",
