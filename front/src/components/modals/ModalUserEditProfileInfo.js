@@ -150,10 +150,15 @@ class ModalUserEditProfileInfo extends Component {
 
   resetMyDetails() {
     this.setState({
-      firstname: this.state.originalFirstname,
-      lastname: this.state.originalLastname,
-      bio: this.state.originalBio,
-      birthdate: this.state.originalBirthdate
+      firstname: this.props.userConnectedData.firstname,
+      lastname: this.props.userConnectedData.lastname,
+      bio: this.props.userConnectedData.bio,
+      birthdate:
+        this.props.userConnectedData.birthdate === null
+          ? null
+          : moment(new Date(this.props.userConnectedData.birthdate)).format(
+              "MMM DD, YYYY"
+            )
     });
   }
 
@@ -212,8 +217,8 @@ class ModalUserEditProfileInfo extends Component {
               this.state.lastname !== this.props.userConnectedData.lastname ||
               (this.state.bio !== this.props.userConnectedData.bio &&
                 this.state.bio !== "") ||
-              (this.state.birthdate !==
-                this.props.userConnectedData.birthdate &&
+              (moment(this.state.birthdate).format() !==
+                moment(this.props.userConnectedData.birthdate).format() &&
                 this.state.birthdate !== "")) && (
               <div className="modal-input-btns">
                 <Button

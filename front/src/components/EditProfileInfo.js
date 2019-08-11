@@ -301,6 +301,13 @@ class BirthdatePicker extends Component {
     this.setState({
       birthdate: this.props.birthdate
     });
+    console.log(moment(new Date("01 January 1900 00:00:00 UTC"))._d);
+    console.log(moment().startOf("day")._d);
+    console.log(
+      moment()
+        .startOf("day")
+        .subtract(100, "years")._d
+    );
   }
 
   componentDidUpdate() {
@@ -336,6 +343,9 @@ class BirthdatePicker extends Component {
               this.props.birthdate !== null
                 ? moment(new Date(this.props.birthdate)).format()
                 : null,
+            minDate: moment()
+              .startOf("day")
+              .subtract(100, "years")._d,
             maxDate: moment().startOf("day")._d,
             setDefaultDate: true,
             container: "#root",
