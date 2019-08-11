@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as actionCreators from "../../actions/user-actions";
 
 class SelectSexOrientation extends Component {
   constructor(props) {
@@ -9,14 +11,28 @@ class SelectSexOrientation extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      sexOrientation: this.props.sexOrientation
-    });
+    if (this.props.userConnectedData.sexual_orientation !== null) {
+      this.setState({
+        sexOrientation: this.props.userConnectedData.sexual_orientation
+      });
+    }
   }
 
   handleChange = e => {
-    this.setState({ sexOrientation: e.target.value });
-    this.props.sexOrientationToParent(e.target.value);
+    if (
+      e.target.value === "bi" ||
+      e.target.value === "homo" ||
+      e.target.value === "hetero"
+    ) {
+      this.setState({
+        sexOrientation: e.target.value
+      });
+      this.props.updateUserData(
+        this.props.userConnectedData.id,
+        this.props.userConnectedData.username,
+        { sexual_orientation: e.target.value }
+      );
+    }
   };
 
   render() {
@@ -56,4 +72,14 @@ class SelectSexOrientation extends Component {
   }
 }
 
-export default SelectSexOrientation;
+const mapStateToProps = state => {
+  return {
+    userConnectedData: state.user.data,
+    userConnectedStatus: state.user.status
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  actionCreators
+)(SelectSexOrientation);

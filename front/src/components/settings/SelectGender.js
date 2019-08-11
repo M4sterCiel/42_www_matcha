@@ -11,14 +11,24 @@ class SelectGender extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      gender: this.props.gender
-    });
+    if (this.props.userConnectedData.gender !== null) {
+      this.setState({
+        gender: this.props.userConnectedData.gender
+      });
+    }
   }
 
   handleChange = e => {
-    this.setState({ gender: e.target.value });
-    this.props.genderToParent(e.target.value);
+    if (e.target.value === "man" || e.target.value === "woman") {
+      this.setState({
+        gender: e.target.value
+      });
+      this.props.updateUserData(
+        this.props.userConnectedData.id,
+        this.props.userConnectedData.username,
+        { gender: e.target.value }
+      );
+    }
   };
 
   render() {

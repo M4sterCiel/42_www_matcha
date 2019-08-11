@@ -32,8 +32,6 @@ class ModalUserEditProfileInfo extends Component {
       isTwoNamesInputValid: true,
       isBioInputValid: true
     };
-    this.handleGenderData = this.handleGenderData.bind(this);
-    this.handleSexOrientationData = this.handleSexOrientationData.bind(this);
     this.handleFirstnameData = this.handleFirstnameData.bind(this);
     this.handleLastnameData = this.handleLastnameData.bind(this);
     this.handleBioData = this.handleBioData.bind(this);
@@ -75,18 +73,6 @@ class ModalUserEditProfileInfo extends Component {
       geo_lat: this.props.userConnectedData.geo_lat,
       geo_long: this.props.userConnectedData.geo_long,
       username: this.props.userConnectedData.username
-    });
-  }
-
-  handleGenderData(data) {
-    this.setState({
-      gender: data
-    });
-  }
-
-  handleSexOrientationData(data) {
-    this.setState({
-      sexOrientation: data
     });
   }
 
@@ -231,19 +217,9 @@ class ModalUserEditProfileInfo extends Component {
           <span className="profile-fields-labels">City</span>
           <SelectLocation />
           <span className="profile-fields-labels">Gender</span>
-          {this.state.gender !== "" && (
-            <SelectGender
-              genderToParent={this.handleGenderData}
-              gender={this.state.gender}
-            />
-          )}
+          {this.state.gender !== "" && <SelectGender />}
           <span className="profile-fields-labels">Sexual Orientation</span>
-          {this.state.sexOrientation !== "" && (
-            <SelectSexOrientation
-              sexOrientationToParent={this.handleSexOrientationData}
-              sexOrientation={this.state.sexOrientation}
-            />
-          )}
+          {this.state.sexOrientation !== "" && <SelectSexOrientation />}
           <span className="profile-fields-labels">Interested in</span>
           <InterestTags
             interestsToParent={this.handleInterestsData}
