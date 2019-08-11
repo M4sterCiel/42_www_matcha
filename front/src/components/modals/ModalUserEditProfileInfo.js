@@ -1,13 +1,11 @@
 import React, { Component } from "react";
-import {
-  SelectGender,
-  SelectSexOrientation,
-  InputTwoNames,
-  InputBio,
-  BirthdatePicker,
-  InterestTags,
-  SelectLocation
-} from "../EditProfileInfo";
+import SelectGender from "../settings/SelectGender";
+import SelectSexOrientation from "../settings/SelectSexOrientation";
+import InputTwoNames from "../settings/InputTwoNames";
+import InputBio from "../settings/InputBio";
+import BirthdatePicker from "../settings/BirthdatePicker";
+import InterestTags from "../settings/InterestTags";
+import SelectLocation from "../settings/SelectLocation";
 import moment from "moment";
 import { Modal, Button } from "react-materialize";
 import * as actionCreators from "../../actions/user-actions";
