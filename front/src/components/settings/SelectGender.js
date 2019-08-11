@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as actionCreators from "../../actions/user-actions";
 
 class SelectGender extends Component {
   constructor(props) {
@@ -47,4 +49,14 @@ class SelectGender extends Component {
   }
 }
 
-export default SelectGender;
+const mapStateToProps = state => {
+  return {
+    userConnectedData: state.user.data,
+    userConnectedStatus: state.user.status
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  actionCreators
+)(SelectGender);

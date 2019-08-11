@@ -39,8 +39,6 @@ class ModalUserEditProfileInfo extends Component {
     this.handleBioData = this.handleBioData.bind(this);
     this.handleBirthdateData = this.handleBirthdateData.bind(this);
     this.handleInterestsData = this.handleInterestsData.bind(this);
-    this.handleCoordLatData = this.handleCoordLatData.bind(this);
-    this.handleCoordLongData = this.handleCoordLongData.bind(this);
     this.isTwoNamesInputValid = this.isTwoNamesInputValid.bind(this);
     this.isBioInputValid = this.isBioInputValid.bind(this);
     this.resetMyDetails = this.resetMyDetails.bind(this);
@@ -119,18 +117,6 @@ class ModalUserEditProfileInfo extends Component {
   handleInterestsData(data) {
     this.setState({
       interests: data
-    });
-  }
-
-  handleCoordLatData(data) {
-    this.setState({
-      geo_lat: data
-    });
-  }
-
-  handleCoordLongData(data) {
-    this.setState({
-      geo_long: data
     });
   }
 
@@ -215,8 +201,10 @@ class ModalUserEditProfileInfo extends Component {
               this.state.lastname !== this.props.userConnectedData.lastname ||
               (this.state.bio !== this.props.userConnectedData.bio &&
                 this.state.bio !== "") ||
-              (moment(this.state.birthdate).format() !==
-                moment(this.props.userConnectedData.birthdate).format() &&
+              (moment(new Date(this.state.birthdate)).format() !==
+                moment(
+                  new Date(this.props.userConnectedData.birthdate)
+                ).format() &&
                 this.state.birthdate !== "")) && (
               <div className="modal-input-btns">
                 <Button
@@ -241,12 +229,7 @@ class ModalUserEditProfileInfo extends Component {
             )}
           </div>
           <span className="profile-fields-labels">City</span>
-          <SelectLocation
-            lat={this.props.userConnectedData.geo_lat}
-            long={this.props.userConnectedData.geo_long}
-            latToParent={this.handleCoordLatData}
-            longToParent={this.handleCoordLongData}
-          />
+          <SelectLocation />
           <span className="profile-fields-labels">Gender</span>
           {this.state.gender !== "" && (
             <SelectGender
