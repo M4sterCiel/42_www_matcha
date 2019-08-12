@@ -30,7 +30,11 @@ function userReducer(state = initalState, { type, payload }) {
         ...state,
         sendingRequest: false,
         requestReceived: true,
-        data: payload.data,
+        data: Object.assign(
+          payload.data,
+          { pictures: payload.pictures },
+          { tags: payload.tags }
+        ),
         status: "User Received",
         statusClass: "received"
       };

@@ -242,12 +242,15 @@ module.exports = {
     if (userData.error)
       return res.status(401).json({ message: userData.error });
 
-    var userPicture = await UserService.getProfilePicture(userId);
+    var userPictures = await UserService.getUserPictures(userId);
+    var userTags = await UserService.getUserTags(userId);
 
     if (userData.error)
       return res.status(401).json({ message: userData.error });
 
-    return res.status(200).json({ data: userData, picture: userPicture });
+    return res
+      .status(200)
+      .json({ data: userData, pictures: userPictures, tags: userTags });
   },
 
   deleteUser: async (req, res, next) => {

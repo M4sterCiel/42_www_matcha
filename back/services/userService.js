@@ -1,5 +1,6 @@
 var userModel = require("../models/userModel");
 var pictureModel = require("../models/pictureModel");
+var tagModel = require("../models/tagModel");
 var passwordHash = require("password-hash");
 var sendmail = require("../services/mailService");
 
@@ -48,10 +49,8 @@ module.exports = {
   getUserIdFromUsername: async username => {
     try {
       var result = await userModel.findOne("username", username);
-      if (result != "")
-        return result[0].id;
-      else 
-        return { error: "User not found" };
+      if (result != "") return result[0].id;
+      else return { error: "User not found" };
     } catch (err) {
       console.log(err);
       return { error: err };
@@ -98,10 +97,10 @@ module.exports = {
     }
   },
 
-  getAllPictures: async id => {
+  getUserPictures: async id => {
     try {
       var result = await pictureModel.findOne("user_id", id);
-      return result[0];
+      return result;
     } catch (err) {
       console.log(err);
       return { error: err };
@@ -115,6 +114,16 @@ module.exports = {
         result = "default";
         return result;
       } else return result[0]["base64"];
+    } catch (err) {
+      console.log(err);
+      return { error: err };
+    }
+  },
+
+  getUserTags: async id => {
+    try {
+      var result = await tagModel.findOne("user_id", id);
+      return result;
     } catch (err) {
       console.log(err);
       return { error: err };
