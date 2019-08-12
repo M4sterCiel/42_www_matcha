@@ -11,6 +11,9 @@ import ModalUserEditProfilePictures from "../components/modals/ModalUserEditProf
 import ModalUserEditAccountSettings from "../components/modals/ModalUserEditAccountSettings";
 import ApiCall from "../services/ApiCall";
 import ErrorToast from "../services/ErrorToastService";
+import defaultProfileNoGender from "../assets/default-profile-no-gender.png";
+import defaultProfileMan from "../assets/default-profile-man.jpg";
+import defaultProfileWoman from "../assets/default-profile-woman.jpg";
 
 class UserProfile extends Component {
   constructor(props) {
@@ -46,7 +49,13 @@ class UserProfile extends Component {
                       <div className="col s4 profile-pic">
                         <img
                           className="circle responsive-img"
-                          src="https://lh3.googleusercontent.com/-W2XryVdi-lA/U6tSAh3SsbI/AAAAAAAAFGY/ZHJiUEcR_Zs/w480-h480/avatar%2Bmaterial%2Bdesign.png"
+                          src={
+                            this.props.userConnectedData.gender === null
+                              ? defaultProfileNoGender
+                              : this.props.userConnectedData.gender === "man"
+                              ? defaultProfileMan
+                              : defaultProfileWoman
+                          }
                           alt=""
                         />
                       </div>

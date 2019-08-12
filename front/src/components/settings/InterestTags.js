@@ -59,25 +59,6 @@ class InterestTags extends Component {
     } else {
       InfoToast.custom.info(`Tag ${value} has already been added`, 1500);
     }
-    /*     if (
-      !this.state.myTagsArray.find(
-        tag => tag === target[0].children[0].innerText
-      )
-    ) {
-      this.setState(state => {
-        const myTagsArray = state.myTagsArray.concat(
-          target[0].children[0].innerText
-        );
-        return {
-          myTagsArray
-        };
-      });
-    } else {
-      InfoToast.custom.info(
-        `Tag ${target[0].children[0].innerText} has already been added`,
-        1500
-      );
-    } */
   }
 
   render() {

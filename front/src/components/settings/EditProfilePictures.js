@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Button } from "react-materialize";
-import ErrorToast from "../services/ErrorToastService";
+import { connect } from "react-redux";
+import * as actionCreators from "../../actions/tag-actions";
+import ErrorToast from "../../services/ErrorToastService";
 
 class EditProfilePictures extends Component {
   constructor(props) {
@@ -11,8 +13,10 @@ class EditProfilePictures extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props.pictures);
+    console.log(this.props.userConnectedData.pictures);
     this.setState({
-      pictures: this.props.pictures
+      pictures: this.props.userConnectedData.pictures
     });
   }
 
@@ -51,7 +55,7 @@ class EditProfilePictures extends Component {
 
   doesMainProfilePicExist = pictures => {
     return pictures.some(picture => {
-      return picture["mainPic"] === true;
+      return picture["profile_picture"] === true;
     });
   };
 
@@ -61,7 +65,7 @@ class EditProfilePictures extends Component {
     reader.onloadend = () => {
       const pics = this.state.pictures;
       pics[id].url = reader.result;
-      if (!this.doesMainProfilePicExist(pics)) pics[id].mainPic = true;
+      if (!this.doesMainProfilePicExist(pics)) pics[id].profile_picture = true;
       this.setState({
         pictures: pics
       });
@@ -78,9 +82,9 @@ class EditProfilePictures extends Component {
     }
     const pics = this.state.pictures;
     pics.forEach(pic => {
-      pic.mainPic = false;
+      pic.profile_picture = false;
     });
-    pics[id].mainPic = true;
+    pics[id].profile_picture = true;
     this.setState({
       pictures: pics
     });
@@ -156,12 +160,12 @@ class EditProfilePictures extends Component {
     e.target
       .closest(".picture-box")
       .querySelector(".js--image-preview").style.backgroundImage = "url()";
-    if (this.state.pictures[id].mainPic === true) {
+    if (this.state.pictures[id].profile_picture === true) {
       this.makePictureMainProfilePicture(this.findExistingPicture(id));
     }
     const pics = this.state.pictures;
     pics[id].url = "";
-    pics[id].mainPic = false;
+    pics[id].profile_picture = false;
     this.setState({
       pictures: pics
     });
@@ -194,7 +198,7 @@ class EditProfilePictures extends Component {
         >
           {picture.url !== "" && (
             <div>
-              {picture.mainPic && (
+              {picture.profile_picture === 1 && (
                 <Button
                   floating
                   icon="star"
@@ -204,7 +208,7 @@ class EditProfilePictures extends Component {
                 />
               )}
               <div className="btn-container-edit-picture">
-                {!picture.mainPic && (
+                {picture.profile_picture === 0 && (
                   <Button
                     floating
                     icon="star"
@@ -248,4 +252,14 @@ class EditProfilePictures extends Component {
   }
 }
 
-export { EditProfilePictures };
+const mapStateToProps = state => {
+  return {
+    userConnectedData: state.user.data,
+    userConnectedStatus: state.user.status
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  actionCreators
+)(EditProfilePictures);
