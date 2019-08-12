@@ -1,31 +1,32 @@
 import React, { Component } from "react";
 import { Chip } from "react-materialize";
+import { connect } from "react-redux";
+import * as actionCreators from "../../actions/tag-actions";
 import InfoToast from "../../services/InfoToastService";
 
 class InterestTags extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      myTagsArray: ["sea", "sex", "fun"],
-      defaultTagsArray: [
-        "beer",
-        "pizza",
-        "alcohol",
-        "rice",
-        "barbec",
-        "vodka",
-        "xbox one",
-        "ps4",
-        "hello les amis",
-        "radiateur",
-        "slient",
-        "lolling",
-        "not lolling hard",
-        "poneys"
-      ]
+      myTagsArray: [],
+      defaultTagsArray: []
     };
-    this.chipSelectDefault = this.chipSelectDefault.bind(this);
     this.chipDelete = this.chipDelete.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({
+      myTagsArray: this.props.userConnectedData.tags,
+      defaultTagsArray: this.props.userConnectedData.allTags
+    });
+  }
+
+  componentDidUpdate() {
+    if (this.state.myTagsArray !== this.props.userConnectedData.tags) {
+      this.setState({
+        myTagsArray: this.props.userConnectedData.tags
+      });
+    }
   }
 
   createMyTags(tab) {
@@ -34,17 +35,31 @@ class InterestTags extends Component {
     });
   }
 
-  chipDelete() {
-    const tagElements = document.querySelectorAll(".my-tags-chip > .chip");
-    let tagsTab = [];
-    for (var value of tagElements.values()) {
-      tagsTab = tagsTab.concat(value.innerText.replace("\nclose", ""));
-    }
-    this.createMyTags(tagsTab);
+  chipDelete(tag_id) {
+    this.props.deleteUserTag(
+      this.props.userConnectedData.id,
+      this.props.userConnectedData.username,
+      tag_id
+    );
   }
 
-  chipSelectDefault(target) {
-    if (
+  chipSelectDefault(tag_id, value) {
+    if (!this.state.myTagsArray.find(tag => tag.tag_id === tag_id)) {
+      this.setState({
+        myTagsArray: [
+          ...this.state.myTagsArray,
+          { tag_id: tag_id, value: value }
+        ]
+      });
+      this.props.createUserTag(
+        this.props.userConnectedData.id,
+        this.props.userConnectedData.username,
+        tag_id
+      );
+    } else {
+      InfoToast.custom.info(`Tag ${value} has already been added`, 1500);
+    }
+    /*     if (
       !this.state.myTagsArray.find(
         tag => tag === target[0].children[0].innerText
       )
@@ -62,7 +77,7 @@ class InterestTags extends Component {
         `Tag ${target[0].children[0].innerText} has already been added`,
         1500
       );
-    }
+    } */
   }
 
   render() {
@@ -76,10 +91,10 @@ class InterestTags extends Component {
 
     const myTags = this.state.myTagsArray.map(tagEl => (
       <Chip
-        key={tagEl}
+        key={tagEl.tag_id}
         options={{
-          data: tagToArray(tagEl),
-          onChipDelete: this.chipDelete
+          data: tagToArray(tagEl.value),
+          onChipDelete: () => this.chipDelete(tagEl.tag_id)
         }}
         className="my-tags-chip chip-general"
       />
@@ -87,11 +102,11 @@ class InterestTags extends Component {
 
     const defaultTags = this.state.defaultTagsArray.map(tagEl => (
       <Chip
-        key={tagEl}
+        key={tagEl.tag_id}
         close={false}
         options={{
-          data: tagToArray(tagEl),
-          onChipSelect: this.chipSelectDefault
+          data: tagToArray(tagEl.value),
+          onChipSelect: () => this.chipSelectDefault(tagEl.tag_id, tagEl.value)
         }}
         className="chip-general"
       />
@@ -114,4 +129,14 @@ class InterestTags extends Component {
   }
 }
 
-export default InterestTags;
+const mapStateToProps = state => {
+  return {
+    userConnectedData: state.user.data,
+    userConnectedStatus: state.user.status
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  actionCreators
+)(InterestTags);

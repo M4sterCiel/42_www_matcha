@@ -12,6 +12,12 @@ exports.router = (() => {
     .post(userController.updatePasswordWithId);
   userRouter.route("/update/:id/:field").post(userController.updateUserField);
   userRouter.route("/update/:id").post(userController.updateUserData);
+  userRouter
+    .route("/delete/user_tag/:user_id")
+    .post(userController.deleteUserTag);
+  userRouter
+    .route("/create/user_tag/:user_id")
+    .post(userController.createUserTag);
   userRouter.route("/register/:key").get(userController.checkValidity);
   userRouter.route("/profile/:username").get(userController.getUserProfile);
   userRouter.route("/login").post(userController.login);

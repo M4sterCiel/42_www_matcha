@@ -10,6 +10,14 @@ export default {
         .then(res => res.data),
     updateUserData: (id, data) =>
       axios.post(`/users/update/${id}`, { data: data }).then(res => res.data),
+    createUserTag: (user_id, tag_id) =>
+      axios
+        .post(`/users/create/user_tag/${user_id}`, { tag_id: tag_id })
+        .then(res => res.data),
+    deleteUserTag: (user_id, tag_id) =>
+      axios
+        .post(`/users/delete/user_tag/${user_id}`, { tag_id: tag_id })
+        .then(res => res.data),
     verifyPasswordWithId: (id, password) =>
       axios
         .post(`/users/verify/${id}/password`, { password: password })

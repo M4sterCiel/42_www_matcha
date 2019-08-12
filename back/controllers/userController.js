@@ -1,5 +1,6 @@
 var UserService = require("../services/userService");
 var userModel = require("../models/userModel");
+var tagModel = require("../models/tagModel");
 var input = require("../services/inputService");
 var jwtUtils = require("../services/jwtService");
 
@@ -85,6 +86,31 @@ module.exports = {
       return res.status(400).json({ error: "birthdate " + err });
 
     var result = await userModel.updateData(req.params.id, req.body.data);
+
+    if (result.error) return res.status(401).json({ message: result.error });
+    else {
+      return res.status(200).json({
+        message: `User data updated`
+      });
+    }
+  },
+
+  deleteUserTag: async (req, res, next) => {
+    console.log(req.params);
+    console.log(req.body.tag_id);
+    var result = await tagModel.deleteOne(req.params.user_id, req.body.tag_id);
+
+    console.log(result);
+    if (result.error) return res.status(401).json({ message: result.error });
+    else {
+      return res.status(200).json({
+        message: `User data updated`
+      });
+    }
+  },
+
+  createUserTag: async (req, res, next) => {
+    var result = await tagModel.addOne(req.params.user_id, req.body.tag_id);
 
     if (result.error) return res.status(401).json({ message: result.error });
     else {
@@ -244,13 +270,17 @@ module.exports = {
 
     var userPictures = await UserService.getUserPictures(userId);
     var userTags = await UserService.getUserTags(userId);
+    var allTags = await UserService.getAllTags(userId);
 
     if (userData.error)
       return res.status(401).json({ message: userData.error });
 
-    return res
-      .status(200)
-      .json({ data: userData, pictures: userPictures, tags: userTags });
+    return res.status(200).json({
+      data: userData,
+      pictures: userPictures,
+      tags: userTags,
+      allTags: allTags
+    });
   },
 
   deleteUser: async (req, res, next) => {

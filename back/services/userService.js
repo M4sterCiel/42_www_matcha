@@ -130,6 +130,16 @@ module.exports = {
     }
   },
 
+  getAllTags: async () => {
+    try {
+      var result = await tagModel.findAllTags();
+      return result;
+    } catch (err) {
+      console.log(err);
+      return { error: err };
+    }
+  },
+
   createUser: async data => {
     var uniqid = (
       new Date().getTime() + Math.floor(Math.random() * 10000 + 1)
