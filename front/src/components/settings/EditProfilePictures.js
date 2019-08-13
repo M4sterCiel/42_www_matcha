@@ -34,8 +34,6 @@ class EditProfilePictures extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.pictures);
-    console.log(this.props.userConnectedData.pictures);
     var picture_1 = this.props.userConnectedData.pictures.filter(pic => {
       return pic.pic_index === 0;
     });
@@ -124,7 +122,7 @@ class EditProfilePictures extends Component {
 
   doesMainProfilePicExist = pictures => {
     return pictures.some(picture => {
-      return picture["profile_picture"] === true;
+      return picture["profile_picture"] === 1;
     });
   };
 
@@ -134,21 +132,21 @@ class EditProfilePictures extends Component {
     reader.onloadend = () => {
       const pics = this.state.pictures;
       pics[index].url = reader.result;
-      if (!this.doesMainProfilePicExist(pics))
-        pics[index].profile_picture = true;
+      if (!this.doesMainProfilePicExist(pics)) pics[index].profile_picture = 1;
       this.props.updateUserPicture(
         this.props.userConnectedData.id,
         this.props.userConnectedData.username,
         {
           pic_index: index,
           url: pics[index].url,
-          profile_picture: pics[index].profile_picture === true ? 1 : 0
+          profile_picture: pics[index].profile_picture
         }
       );
-      /*       this.setState({
+      console.log(pics);
+      this.setState({
         pictures: pics
       });
-      this.props.picturesToParent(pics); */
+      /*       this.props.picturesToParent(pics); */
     };
     reader.readAsDataURL(file);
     target.closest(".picture-box").querySelector(".image-upload").value = "";
