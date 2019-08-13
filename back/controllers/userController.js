@@ -1,6 +1,7 @@
 var UserService = require("../services/userService");
 var userModel = require("../models/userModel");
 var tagModel = require("../models/tagModel");
+var pictureModel = require("../models/pictureModel");
 var input = require("../services/inputService");
 var jwtUtils = require("../services/jwtService");
 
@@ -57,7 +58,7 @@ module.exports = {
       req.body.data
     );
 
-    if (result.error) return res.status(401).json({ message: result.error });
+    if (result.error) return res.status(401).json({ error: result.error });
     else {
       return res.status(200).json({
         message: `${req.params.field} updated`
@@ -87,7 +88,7 @@ module.exports = {
 
     var result = await userModel.updateData(req.params.id, req.body.data);
 
-    if (result.error) return res.status(401).json({ message: result.error });
+    if (result.error) return res.status(401).json({ error: result.error });
     else {
       return res.status(200).json({
         message: `User data updated`
@@ -96,12 +97,13 @@ module.exports = {
   },
 
   deleteUserTag: async (req, res, next) => {
-    console.log(req.params);
-    console.log(req.body.tag_id);
+    if (isNaN(req.params.user_id) || isNaN(req.body.tag_id)) {
+      return res.status(400).json({ error: "Couldn't update tag" });
+    }
+
     var result = await tagModel.deleteOne(req.params.user_id, req.body.tag_id);
 
-    console.log(result);
-    if (result.error) return res.status(401).json({ message: result.error });
+    if (result.error) return res.status(401).json({ error: result.error });
     else {
       return res.status(200).json({
         message: `User data updated`
@@ -110,9 +112,49 @@ module.exports = {
   },
 
   createUserTag: async (req, res, next) => {
+    if (isNaN(req.params.user_id) || isNaN(req.body.tag_id)) {
+      return res.status(400).json({ error: "Couldn't update tag" });
+    }
+
     var result = await tagModel.addOne(req.params.user_id, req.body.tag_id);
 
-    if (result.error) return res.status(401).json({ message: result.error });
+    if (result.error) return res.status(401).json({ error: result.error });
+    else {
+      return res.status(200).json({
+        message: `User data updated`
+      });
+    }
+  },
+
+  deleteUserPicture: async (req, res, next) => {
+    if (isNaN(req.params.user_id) || isNaN(req.body.pic_index)) {
+      return res.status(400).json({ error: "Couldn't update picture" });
+    }
+
+    var result = await pictureModel.deleteOne(
+      req.params.user_id,
+      req.body.pic_index
+    );
+
+    if (result.error) return res.status(401).json({ error: result.error });
+    else {
+      return res.status(200).json({
+        message: `User data updated`
+      });
+    }
+  },
+
+  updateUserPicture: async (req, res, next) => {
+    if (isNaN(req.params.user_id)) {
+      return res.status(400).json({ error: "Couldn't update picture" });
+    }
+
+    var result = await pictureModel.updateOne(
+      req.params.user_id,
+      req.body.data
+    );
+
+    if (result.error) return res.status(401).json({ error: result.error });
     else {
       return res.status(200).json({
         message: `User data updated`

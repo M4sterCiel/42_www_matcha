@@ -39,11 +39,11 @@ export const deleteUserPicture = (user_id, username, data) => {
   };
 };
 
-export const addUserPicture = (user_id, username, data) => {
+export const updateUserPicture = (user_id, username, data) => {
   return dispatch => {
     dispatch({ type: "UPDATE_PICTURE" });
     ApiCall.user
-      .addUserPicture(user_id, username, data)
+      .updateUserPicture(user_id, username, data)
       .then(response => {
         dispatch({
           type: "PICTURE_UPDATED",

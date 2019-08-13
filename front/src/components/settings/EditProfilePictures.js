@@ -8,23 +8,85 @@ class EditProfilePictures extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pictures: []
+      pictures: [
+        {
+          profile_picture: 0,
+          url: ""
+        },
+        {
+          profile_picture: 0,
+          url: ""
+        },
+        {
+          profile_picture: 0,
+          url: ""
+        },
+        {
+          profile_picture: 0,
+          url: ""
+        },
+        {
+          profile_picture: 0,
+          url: ""
+        }
+      ]
     };
   }
 
   componentDidMount() {
     console.log(this.props.pictures);
     console.log(this.props.userConnectedData.pictures);
+    var picture_1 = this.props.userConnectedData.pictures.filter(pic => {
+      return pic.pic_index === 0;
+    });
+    var picture_2 = this.props.userConnectedData.pictures.filter(pic => {
+      return pic.pic_index === 1;
+    });
+    var picture_3 = this.props.userConnectedData.pictures.filter(pic => {
+      return pic.pic_index === 2;
+    });
+    var picture_4 = this.props.userConnectedData.pictures.filter(pic => {
+      return pic.pic_index === 3;
+    });
+    var picture_5 = this.props.userConnectedData.pictures.filter(pic => {
+      return pic.pic_index === 4;
+    });
     this.setState({
-      pictures: this.props.userConnectedData.pictures
+      pictures: [
+        {
+          profile_picture:
+            picture_1.length !== 0 ? picture_1[0].profile_picture : 0,
+          url: picture_1.length !== 0 ? picture_1[0].url : ""
+        },
+        {
+          profile_picture:
+            picture_2.length !== 0 ? picture_2[0].profile_picture : 0,
+          url: picture_2.length !== 0 ? picture_2[0].url : ""
+        },
+        {
+          profile_picture:
+            picture_3.length !== 0 ? picture_3[0].profile_picture : 0,
+          url: picture_3.length !== 0 ? picture_3[0].url : ""
+        },
+        {
+          profile_picture:
+            picture_4.length !== 0 ? picture_4[0].profile_picture : 0,
+          url: picture_4.length !== 0 ? picture_4[0].url : ""
+        },
+        {
+          profile_picture:
+            picture_5.length !== 0 ? picture_5[0].profile_picture : 0,
+          url: picture_5.length !== 0 ? picture_5[0].url : ""
+        }
+      ]
     });
   }
 
-  handlePictureSelect = (id, e) => {
+  handlePictureSelect = (index, e) => {
     let file = e.target.files[0];
     if (file) {
       if (this.isPictureTypeValid(file)) {
-        this.processPictureFileIfValid(file, e.target, id);
+        this.processPictureFileIfValid(file, e.target, index);
       } else {
         ErrorToast.custom.error("Please upload a correct image", 1400);
       }
@@ -39,7 +101,7 @@ class EditProfilePictures extends Component {
     return true;
   };
 
-  processPictureFileIfValid = (file, target, id) => {
+  processPictureFileIfValid = (file, target, index) => {
     let pic = new Image();
 
     pic.src = window.URL.createObjectURL(file);
@@ -48,7 +110,7 @@ class EditProfilePictures extends Component {
       let height = pic.naturalHeight;
       window.URL.revokeObjectURL(pic.src);
       if (width && height) {
-        this.processPicture(file, target, id);
+        this.processPicture(file, target, index);
       }
     };
   };
@@ -59,13 +121,14 @@ class EditProfilePictures extends Component {
     });
   };
 
-  processPicture = (file, target, id) => {
+  processPicture = (file, target, index) => {
     let reader = new FileReader();
 
     reader.onloadend = () => {
       const pics = this.state.pictures;
-      pics[id].url = reader.result;
-      if (!this.doesMainProfilePicExist(pics)) pics[id].profile_picture = true;
+      pics[index].url = reader.result;
+      if (!this.doesMainProfilePicExist(pics))
+        pics[index].profile_picture = true;
       this.setState({
         pictures: pics
       });
@@ -76,15 +139,15 @@ class EditProfilePictures extends Component {
     this.setNoPictureDefault(target);
   };
 
-  makePictureMainProfilePicture = id => {
-    if (id === false) {
+  makePictureMainProfilePicture = index => {
+    if (index === false) {
       return;
     }
     const pics = this.state.pictures;
     pics.forEach(pic => {
       pic.profile_picture = false;
     });
-    pics[id].profile_picture = true;
+    pics[index].profile_picture = true;
     this.setState({
       pictures: pics
     });
@@ -142,10 +205,10 @@ class EditProfilePictures extends Component {
       .querySelector(".placeholder-message-no-pic").style.display = "none";
   };
 
-  findExistingPicture = id => {
+  findExistingPicture = index => {
     let i = 0;
     while (i < this.state.pictures.length) {
-      if (i === id) {
+      if (i === index) {
         i++;
       } else if (this.state.pictures[i].url !== "") {
         return i;

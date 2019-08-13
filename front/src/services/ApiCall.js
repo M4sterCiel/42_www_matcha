@@ -18,6 +18,14 @@ export default {
       axios
         .post(`/users/delete/user_tag/${user_id}`, { tag_id: tag_id })
         .then(res => res.data),
+    updateUserPicture: (user_id, data) =>
+      axios
+        .post(`/users/update/user_picture/${user_id}`, { data: data })
+        .then(res => res.data),
+    deleteUserPicture: (user_id, data) =>
+      axios
+        .post(`/users/delete/user_picture/${user_id}`, { data: data })
+        .then(res => res.data),
     verifyPasswordWithId: (id, password) =>
       axios
         .post(`/users/verify/${id}/password`, { password: password })
