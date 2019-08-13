@@ -10,14 +10,18 @@ exports.router = (() => {
   userRouter
     .route("/update/:id/password")
     .post(userController.updatePasswordWithId);
-  userRouter.route("/update/:id/:field").post(userController.updateUserField);
+  userRouter
+    .route("/update/:id/custom/:field")
+    .post(userController.updateUserField);
   userRouter.route("/update/:id").post(userController.updateUserData);
+  userRouter.route("/delete/:user_id/tag").post(userController.deleteUserTag);
+  userRouter.route("/create/:user_id/tag").post(userController.createUserTag);
   userRouter
-    .route("/delete/user_tag/:user_id")
-    .post(userController.deleteUserTag);
+    .route("/delete/:user_id/picture")
+    .post(userController.deleteUserPicture);
   userRouter
-    .route("/create/user_tag/:user_id")
-    .post(userController.createUserTag);
+    .route("/update/:user_id/picture")
+    .post(userController.updateUserPicture);
   userRouter.route("/register/:key").get(userController.checkValidity);
   userRouter.route("/profile/:username").get(userController.getUserProfile);
   userRouter.route("/login").post(userController.login);

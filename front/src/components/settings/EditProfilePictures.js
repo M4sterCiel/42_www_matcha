@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Button } from "react-materialize";
 import { connect } from "react-redux";
-import * as actionCreators from "../../actions/tag-actions";
+import * as actionCreators from "../../actions/picture-actions";
 import ErrorToast from "../../services/ErrorToastService";
 
 class EditProfilePictures extends Component {
@@ -84,12 +84,17 @@ class EditProfilePictures extends Component {
 
   handlePictureSelect = (index, e) => {
     let file = e.target.files[0];
-    if (file) {
+    if (file && file.size / 1024 / 1024 < 2) {
       if (this.isPictureTypeValid(file)) {
         this.processPictureFileIfValid(file, e.target, index);
       } else {
         ErrorToast.custom.error("Please upload a correct image", 1400);
       }
+    } else {
+      ErrorToast.custom.error(
+        "Please upload a correct image (less than 2mb)",
+        1400
+      );
     }
   };
 
@@ -111,6 +116,8 @@ class EditProfilePictures extends Component {
       window.URL.revokeObjectURL(pic.src);
       if (width && height) {
         this.processPicture(file, target, index);
+      } else {
+        ErrorToast.custom.error("Please upload a correct image", 1400);
       }
     };
   };
@@ -129,10 +136,19 @@ class EditProfilePictures extends Component {
       pics[index].url = reader.result;
       if (!this.doesMainProfilePicExist(pics))
         pics[index].profile_picture = true;
-      this.setState({
+      this.props.updateUserPicture(
+        this.props.userConnectedData.id,
+        this.props.userConnectedData.username,
+        {
+          pic_index: index,
+          url: pics[index].url,
+          profile_picture: pics[index].profile_picture === true ? 1 : 0
+        }
+      );
+      /*       this.setState({
         pictures: pics
       });
-      this.props.picturesToParent(pics);
+      this.props.picturesToParent(pics); */
     };
     reader.readAsDataURL(file);
     target.closest(".picture-box").querySelector(".image-upload").value = "";

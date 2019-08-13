@@ -39,33 +39,28 @@ module.exports = {
 
   updateOne: async (id, data) => {
     try {
-      var result = await pool.query({
-        sql:
-          "IF EXISTS(SELECT * FROM pictures WHERE user_id = ? AND pic_index = ? UPDATE pictures SET url = ??, profile_picture = ?? WHERE user_id = ? AND pic_index = ? ELSE INSERT INTO pictures(user_id, url, pic_index, profile_picture) VALUES (" +
-          id +
-          ", " +
-          url +
-          ", " +
-          pic_index +
-          ", " +
-          profile_picture +
-          ")",
-        values: [
-          id,
-          data.pic_index,
-          data.url,
-          data.profile_picture,
-          id,
-          data.pic_index
-        ]
+      var PicIndexAlreadyExists = await pool.query({
+        sql: "SELECT * FROM pictures WHERE user_id = ? AND pic_index = ?",
+        values: [id, data.pic_index]
       });
-      return result.affectedRows;
+
+      console.log(PicIndexAlreadyExists.length);
+      if (PicIndexAlreadyExists.length !== 0) {
+        var result = await pool.query({
+          sql:
+            "UPDATE pictures SET url = ?, profile_picture = ? WHERE user_id = ? AND pic_index = ?",
+          values: [data.url, data.profile_picture, id, data.pic_index]
+        });
+      } else {
+        var result = await pool.query({
+          sql:
+            "INSERT INTO pictures(user_id, url, pic_index, profile_picture) VALUES (?, ?, ?, ?)",
+          values: [id, data.url, data.pic_index, data.profile_picture]
+        });
+      }
+      if (result) return result;
     } catch (err) {
       throw new Error(err);
     }
   }
 };
-
-/* .pic_index,
-      req.body.data.url,
-      req.body.data.profile_picture */

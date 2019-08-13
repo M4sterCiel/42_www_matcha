@@ -9,15 +9,15 @@ export const ERROR = "ERROR";
 
 const apiUrl = "/users";
 
-export const deleteUserPicture = (user_id, username, data) => {
+export const deleteUserPicture = (user_id, username, pic_index) => {
   return dispatch => {
     dispatch({ type: "UPDATE_PICTURE" });
     ApiCall.user
-      .deleteUserPicture(user_id, username, data)
+      .deleteUserPicture(user_id, pic_index)
       .then(response => {
         dispatch({
           type: "PICTURE_UPDATED",
-          payload: { user_id, username, data }
+          payload: { user_id, pic_index }
         });
         axios
           .get(`${apiUrl}/profile/${username}`)
@@ -33,6 +33,7 @@ export const deleteUserPicture = (user_id, username, data) => {
           });
       })
       .catch(error => {
+        console.log(error.response);
         ErrorToast.custom.error(error.response["data"]["error"], 1400);
         dispatch({ type: "ERROR", payload: error });
       });
@@ -41,9 +42,12 @@ export const deleteUserPicture = (user_id, username, data) => {
 
 export const updateUserPicture = (user_id, username, data) => {
   return dispatch => {
+    console.log(user_id);
+    console.log(username);
+    console.log(data);
     dispatch({ type: "UPDATE_PICTURE" });
     ApiCall.user
-      .updateUserPicture(user_id, username, data)
+      .updateUserPicture(user_id, data)
       .then(response => {
         dispatch({
           type: "PICTURE_UPDATED",
@@ -63,6 +67,7 @@ export const updateUserPicture = (user_id, username, data) => {
           });
       })
       .catch(error => {
+        console.log(error.response);
         ErrorToast.custom.error(error.response["data"]["error"], 1400);
         dispatch({ type: "ERROR", payload: error });
       });
