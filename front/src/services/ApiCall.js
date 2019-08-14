@@ -22,6 +22,10 @@ export default {
       axios
         .post(`/users/update/${user_id}/picture`, { data: data })
         .then(res => res.data),
+    deleteUserPicture: (user_id, pic_index) =>
+      axios
+        .post(`/users/delete/${user_id}/picture`, { pic_index: pic_index })
+        .then(res => res.data),
     updateUserProfilePicture: (user_id, pic_index) =>
       axios
         .post(`/users/update/${user_id}/profile_picture`, {

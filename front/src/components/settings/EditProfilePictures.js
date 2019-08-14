@@ -235,16 +235,21 @@ class EditProfilePictures extends Component {
     return false;
   };
 
-  handleRemovePicture = (id, e) => {
+  handleRemovePicture = (index, e) => {
     e.target
       .closest(".picture-box")
       .querySelector(".js--image-preview").style.backgroundImage = "url()";
-    if (this.state.pictures[id].profile_picture === true) {
-      this.makeProfilePicture(this.findExistingPicture(id));
+    if (this.state.pictures[index].profile_picture === 1) {
+      this.makeProfilePicture(this.findExistingPicture(index));
     }
     const pics = this.state.pictures;
-    pics[id].url = "";
-    pics[id].profile_picture = false;
+    pics[index].url = "";
+    pics[index].profile_picture = 0;
+    this.props.deleteUserPicture(
+      this.props.userConnectedData.id,
+      this.props.userConnectedData.username,
+      index
+    );
     this.setState({
       pictures: pics
     });

@@ -24,7 +24,7 @@ export const deleteUserPicture = (user_id, username, pic_index) => {
         axios
           .get(`${apiUrl}/profile/${username}`)
           .then(response => {
-            InfoToast.custom.info("Updated", 1400);
+            InfoToast.custom.info("Deleted", 1400);
             dispatch({ type: "USER_RECEIVED", payload: response.data });
           })
           .catch(error => {
@@ -84,7 +84,7 @@ export const updateUserProfilePicture = (user_id, username, pic_index) => {
         axios
           .get(`${apiUrl}/profile/${username}`)
           .then(response => {
-            InfoToast.custom.info("Updated", 1400);
+            InfoToast.custom.info("Profile picture changed", 1400);
             dispatch({ type: "USER_RECEIVED", payload: response.data });
           })
           .catch(error => {
