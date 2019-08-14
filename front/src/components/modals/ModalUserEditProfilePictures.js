@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import EditProfilePictures from "../settings/EditProfilePictures";
+import EditProfilePictures from "../profileEdit/EditProfilePictures";
 import { Modal } from "react-materialize";
 
 class ModalUserEditProfilePictures extends Component {

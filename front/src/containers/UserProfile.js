@@ -78,9 +78,7 @@ class UserProfile extends Component {
                       <ModalUserEditProfilePictures />
                     )}
                     {this.state.user.id === this.props.userConnectedData.id && (
-                      <ModalUserEditAccountSettings
-                        user={this.props.userConnectedData}
-                      />
+                      <ModalUserEditAccountSettings />
                     )}
                   </div>
                 </div>

@@ -32,10 +32,6 @@ export default {
           pic_index: pic_index
         })
         .then(res => res.data),
-    deleteUserPicture: (user_id, pic_index) =>
-      axios
-        .post(`/users/delete/${user_id}/picture`, { pic_index: pic_index })
-        .then(res => res.data),
     verifyPasswordWithId: (id, password) =>
       axios
         .post(`/users/verify/${id}/password`, { password: password })

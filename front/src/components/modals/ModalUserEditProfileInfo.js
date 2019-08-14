@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import SelectGender from "../settings/SelectGender";
-import SelectSexOrientation from "../settings/SelectSexOrientation";
-import InputTwoNames from "../settings/InputTwoNames";
-import InputBio from "../settings/InputBio";
-import BirthdatePicker from "../settings/BirthdatePicker";
-import InterestTags from "../settings/InterestTags";
-import SelectLocation from "../settings/SelectLocation";
+import SelectGender from "../profileEdit/SelectGender";
+import SelectSexOrientation from "../profileEdit/SelectSexOrientation";
+import InputTwoNames from "../profileEdit/InputTwoNames";
+import InputBio from "../profileEdit/InputBio";
+import BirthdatePicker from "../profileEdit/BirthdatePicker";
+import InterestTags from "../profileEdit/InterestTags";
+import SelectLocation from "../profileEdit/SelectLocation";
 import moment from "moment";
 import { Modal, Button } from "react-materialize";
 import * as actionCreators from "../../actions/user-actions";
@@ -17,10 +17,6 @@ class ModalUserEditProfileInfo extends Component {
     this.state = {
       gender: "",
       sexOrientation: "",
-      originalFirstname: null,
-      originalLastname: null,
-      originalBio: "",
-      originalBirthdate: null,
       firstname: null,
       lastname: null,
       bio: "",
@@ -36,7 +32,6 @@ class ModalUserEditProfileInfo extends Component {
     this.handleLastnameData = this.handleLastnameData.bind(this);
     this.handleBioData = this.handleBioData.bind(this);
     this.handleBirthdateData = this.handleBirthdateData.bind(this);
-    this.handleInterestsData = this.handleInterestsData.bind(this);
     this.isTwoNamesInputValid = this.isTwoNamesInputValid.bind(this);
     this.isBioInputValid = this.isBioInputValid.bind(this);
     this.resetMyDetails = this.resetMyDetails.bind(this);
@@ -46,18 +41,6 @@ class ModalUserEditProfileInfo extends Component {
     this.setState({
       gender: this.props.userConnectedData.gender,
       sexOrientation: this.props.userConnectedData.sexual_orientation,
-      originalFirstname: this.props.userConnectedData.firstname,
-      originalLastname: this.props.userConnectedData.lastname,
-      originalBio:
-        this.props.userConnectedData.bio === null
-          ? ""
-          : this.props.userConnectedData.bio,
-      originalBirthdate:
-        this.props.userConnectedData.birthdate !== null
-          ? moment(new Date(this.props.userConnectedData.birthdate)).format(
-              "MMM DD, YYYY"
-            )
-          : null,
       firstname: this.props.userConnectedData.firstname,
       lastname: this.props.userConnectedData.lastname,
       bio:
@@ -97,12 +80,6 @@ class ModalUserEditProfileInfo extends Component {
   handleBirthdateData(data) {
     this.setState({
       birthdate: data
-    });
-  }
-
-  handleInterestsData(data) {
-    this.setState({
-      interests: data
     });
   }
 
@@ -221,10 +198,7 @@ class ModalUserEditProfileInfo extends Component {
           <span className="profile-fields-labels">Sexual Orientation</span>
           {this.state.sexOrientation !== "" && <SelectSexOrientation />}
           <span className="profile-fields-labels">Interested in</span>
-          <InterestTags
-            interestsToParent={this.handleInterestsData}
-            interests={this.state.interests}
-          />
+          <InterestTags />
         </Modal>
       </div>
     );
