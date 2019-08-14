@@ -22,6 +22,9 @@ exports.router = (() => {
   userRouter
     .route("/update/:user_id/picture")
     .post(userController.updateUserPicture);
+  userRouter
+    .route("/update/:user_id/profile_picture")
+    .post(userController.updateUserProfilePicture);
   userRouter.route("/register/:key").get(userController.checkValidity);
   userRouter.route("/profile/:username").get(userController.getUserProfile);
   userRouter.route("/login").post(userController.login);

@@ -44,7 +44,6 @@ module.exports = {
         values: [id, data.pic_index]
       });
 
-      console.log(PicIndexAlreadyExists.length);
       if (PicIndexAlreadyExists.length !== 0) {
         var result = await pool.query({
           sql:
@@ -58,6 +57,25 @@ module.exports = {
           values: [id, data.url, data.pic_index, data.profile_picture]
         });
       }
+      if (result) return result;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
+  updateUserProfilePicture: async (id, pic_index) => {
+    try {
+      await pool.query({
+        sql:
+          "UPDATE pictures SET profile_picture = 0 WHERE user_id = ? AND profile_picture = 1",
+        values: [id]
+      });
+
+      var result = await pool.query({
+        sql:
+          "UPDATE pictures SET profile_picture = 1 WHERE user_id = ? AND pic_index = ?",
+        values: [id, pic_index]
+      });
       if (result) return result;
     } catch (err) {
       throw new Error(err);

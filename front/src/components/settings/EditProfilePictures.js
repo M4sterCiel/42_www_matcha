@@ -142,30 +142,32 @@ class EditProfilePictures extends Component {
           profile_picture: pics[index].profile_picture
         }
       );
-      console.log(pics);
       this.setState({
         pictures: pics
       });
-      /*       this.props.picturesToParent(pics); */
     };
     reader.readAsDataURL(file);
     target.closest(".picture-box").querySelector(".image-upload").value = "";
     this.setNoPictureDefault(target);
   };
 
-  makePictureMainProfilePicture = index => {
+  makeProfilePicture = index => {
     if (index === false) {
       return;
     }
     const pics = this.state.pictures;
     pics.forEach(pic => {
-      pic.profile_picture = false;
+      pic.profile_picture = 0;
     });
-    pics[index].profile_picture = true;
+    pics[index].profile_picture = 1;
+    this.props.updateUserProfilePicture(
+      this.props.userConnectedData.id,
+      this.props.userConnectedData.username,
+      index
+    );
     this.setState({
       pictures: pics
     });
-    this.props.picturesToParent(pics);
   };
 
   setNoPictureDefault = target => {
@@ -238,7 +240,7 @@ class EditProfilePictures extends Component {
       .closest(".picture-box")
       .querySelector(".js--image-preview").style.backgroundImage = "url()";
     if (this.state.pictures[id].profile_picture === true) {
-      this.makePictureMainProfilePicture(this.findExistingPicture(id));
+      this.makeProfilePicture(this.findExistingPicture(id));
     }
     const pics = this.state.pictures;
     pics[id].url = "";
@@ -292,7 +294,7 @@ class EditProfilePictures extends Component {
                     className="blue btn-star-picture"
                     tooltip="Make profile picture"
                     waves="light"
-                    onClick={() => this.makePictureMainProfilePicture(index)}
+                    onClick={() => this.makeProfilePicture(index)}
                   />
                 )}
                 <Button

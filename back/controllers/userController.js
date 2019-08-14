@@ -162,6 +162,24 @@ module.exports = {
     }
   },
 
+  updateUserProfilePicture: async (req, res, next) => {
+    if (isNaN(req.params.user_id)) {
+      return res.status(400).json({ error: "Couldn't update picture" });
+    }
+
+    var result = await pictureModel.updateUserProfilePicture(
+      req.params.user_id,
+      req.body.pic_index
+    );
+
+    if (result.error) return res.status(401).json({ error: result.error });
+    else {
+      return res.status(200).json({
+        message: `User data updated`
+      });
+    }
+  },
+
   forgotPassword: async (req, res, next) => {
     var user = await UserService.doesUserLoginExist({
       login: req.body.login

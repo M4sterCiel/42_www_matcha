@@ -1,6 +1,8 @@
 import {
   UPDATE_PICTURE,
   PICTURE_UPDATED,
+  UPDATE_PROFILE_PICTURE,
+  PROFILE_PICTURE_UPDATED,
   ERROR
 } from "../actions/picture-actions";
 
@@ -23,6 +25,23 @@ function pictureReducer(state = initalState, { type, payload }) {
         statusClass: "pending"
       };
     case PICTURE_UPDATED:
+      return {
+        ...state,
+        sendingRequest: false,
+        requestReceived: true,
+        dataSent: payload,
+        status: "User Updated",
+        statusClass: "updated"
+      };
+    case UPDATE_PROFILE_PICTURE:
+      return {
+        ...state,
+        sendingRequest: true,
+        requestReceived: false,
+        status: "Pending...",
+        statusClass: "pending"
+      };
+    case PROFILE_PICTURE_UPDATED:
       return {
         ...state,
         sendingRequest: false,
