@@ -62,8 +62,7 @@ class EditEmailBox extends Component {
         this.setState({
           email: this.state.newEmail
         });
-        this.props.emailToParent(this.state.newEmail);
-        InfoToast.custom.info("Email updated with success", 3000);
+        InfoToast.custom.info("Updated", 1400);
         this.hideEditEmail();
       })
       .catch(err => {

@@ -19,6 +19,7 @@ class NotificationSwitch extends Component {
     this.setState({
       status: !this.state.status
     });
+    this.props.notificationsToParent(!this.state.status);
   };
 
   render() {

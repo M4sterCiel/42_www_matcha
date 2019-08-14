@@ -78,6 +78,11 @@ module.exports = {
       (err = input.firstname(req.body.data.firstname).error)
     )
       return res.status(400).json({ error: "firstname " + err });
+    if (req.body.data.mail) {
+      err = await input.mail(req.body.data.mail);
+      if (err.error)
+        return res.status(400).json({ error: "mail " + err.error });
+    }
     if (req.body.data.bio && (err = input.bio(req.body.data.bio).error))
       return res.status(400).json({ error: "bio " + err });
     if (

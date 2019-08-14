@@ -52,3 +52,31 @@ export const updateUserData = (id, username, data) => {
     dispatch({ type: "AFTER_ASYNC" });
   };
 };
+
+export const updateUserField = (id, username, field, data) => {
+  return dispatch => {
+    dispatch({ type: "UPDATE_USER" });
+    ApiCall.user
+      .updateUserField(id, field, data)
+      .then(response => {
+        dispatch({ type: "USER_UPDATED", payload: data });
+        axios
+          .get(`${apiUrl}/profile/${username}`)
+          .then(response => {
+            InfoToast.custom.info("Updated", 1400);
+            dispatch({ type: "USER_RECEIVED", payload: response.data });
+          })
+          .catch(error => {
+            dispatch({
+              type: "ERROR",
+              payload: error
+            });
+          });
+      })
+      .catch(error => {
+        ErrorToast.custom.error(error.response["data"]["error"], 1400);
+        dispatch({ type: "ERROR", payload: error });
+      });
+    dispatch({ type: "AFTER_ASYNC" });
+  };
+};

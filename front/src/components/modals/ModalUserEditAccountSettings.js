@@ -98,13 +98,26 @@ class ModalUserEditAccountSettings extends Component {
       }
     );
     this.setState({
-      commonInterestsRange: data
+      notifications: data === 1 ? true : false
     });
   };
 
   handleEmailData = data => {
     this.setState({
       email: data
+    });
+  };
+
+  handleNotificationsData = data => {
+    this.props.updateUserData(
+      this.props.userConnectedData.id,
+      this.props.userConnectedData.username,
+      {
+        notifications_switch: data === true ? 1 : 0
+      }
+    );
+    this.setState({
+      commonInterestsRange: data
     });
   };
 
@@ -146,7 +159,10 @@ class ModalUserEditAccountSettings extends Component {
               emailToParent={this.handleEmailData}
             />
             <EditPasswordBox userId={this.state.userId} />
-            <NotificationSwitch notifications={this.state.notifications} />
+            <NotificationSwitch
+              notifications={this.state.notifications}
+              notificationsToParent={this.handleNotificationsData}
+            />
             <DeleteAccountBtn />
           </Modal>
         )}
