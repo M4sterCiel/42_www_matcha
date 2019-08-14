@@ -253,7 +253,6 @@ class EditProfilePictures extends Component {
     this.setState({
       pictures: pics
     });
-    this.props.picturesToParent(pics);
     this.removeNoPictureDefault(
       e.target.closest(".picture-box").querySelector(".js--image-preview")
     );
