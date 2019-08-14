@@ -3,6 +3,8 @@ import {
   USER_RECEIVED,
   UPDATE_USER,
   USER_UPDATED,
+  DELETE_USER,
+  USER_DELETED,
   ERROR
 } from "../actions/user-actions";
 
@@ -55,6 +57,23 @@ function userReducer(state = initalState, { type, payload }) {
         dataSent: payload,
         status: "User Updated",
         statusClass: "updated"
+      };
+    case DELETE_USER:
+      return {
+        ...state,
+        sendingRequest: true,
+        requestReceived: false,
+        dataSent: payload,
+        status: "Pending...",
+        statusClass: "pending"
+      };
+    case USER_DELETED:
+      return {
+        sendingRequest: false,
+        requestReceived: true,
+        data: [],
+        status: "User Deleted",
+        statusClass: "deleted"
       };
     case ERROR:
       return {

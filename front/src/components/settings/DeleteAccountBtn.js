@@ -1,7 +1,26 @@
 import React, { Component } from "react";
 import { Button, Modal } from "react-materialize";
+import { connect } from "react-redux";
+import * as actionCreators from "../../actions/user-actions";
+import AuthService from "../../services/AuthService";
 
 class DeleteAccountBtn extends Component {
+  constructor(props) {
+    super(props);
+    this.Auth = new AuthService();
+    this.state = {
+      userToken: this.Auth.getToken()
+    };
+  }
+
+  deleteUser = () => {
+    console.log(this.props.userConnectedData.id);
+    this.props.deleteUserData(this.props.userConnectedData.id, {
+      headers: { Authorization: `Bearer ${this.state.userToken}` }
+    });
+    this.Auth.logout();
+  };
+
   render() {
     return (
       <div>
@@ -18,7 +37,12 @@ class DeleteAccountBtn extends Component {
             <Button waves="green" modal="close" flat>
               Cancel
             </Button>,
-            <Button waves="green" modal="close" flat>
+            <Button
+              waves="green"
+              modal="confirm"
+              onClick={this.deleteUser}
+              flat
+            >
               Confirm
             </Button>
           ]}
@@ -31,4 +55,14 @@ class DeleteAccountBtn extends Component {
   }
 }
 
-export default DeleteAccountBtn;
+const mapStateToProps = state => {
+  return {
+    userConnectedData: state.user.data,
+    userConnectedStatus: state.user.status
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  actionCreators
+)(DeleteAccountBtn);

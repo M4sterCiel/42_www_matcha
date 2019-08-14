@@ -5,7 +5,7 @@ module.exports = {
     try {
       var result = await pool.query({
         sql:
-          "SELECT user_tags.tag_id, tags.value FROM user_tags INNER JOIN tags ON user_tags.tag_id = tags.tag_id WHERE user_tags.user_id = ??",
+          "SELECT user_tags.tag_id, tags.value FROM user_tags INNER JOIN tags ON user_tags.tag_id = tags.tag_id WHERE user_tags.user_id = ?",
         values: [id]
       });
       if (result) return result;
@@ -44,6 +44,18 @@ module.exports = {
         sql: "SELECT * FROM `tags`"
       });
       if (result) return result;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
+  deleteUserAllTags: async id => {
+    try {
+      var result = await pool.query({
+        sql: "DELETE FROM user_tags WHERE user_id = ?",
+        values: [id]
+      });
+      return result.affectedRows;
     } catch (err) {
       throw new Error(err);
     }

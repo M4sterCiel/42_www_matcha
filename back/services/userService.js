@@ -122,7 +122,7 @@ module.exports = {
 
   getUserTags: async id => {
     try {
-      var result = await tagModel.findOne("user_id", id);
+      var result = await tagModel.findOne(id);
       return result;
     } catch (err) {
       console.log(err);

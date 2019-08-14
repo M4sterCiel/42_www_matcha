@@ -415,7 +415,10 @@ class Register extends Component {
     })
       .then(res => {
         this.setState({ responseToPost: res.data });
-        InfoToast.custom.info("An email to validate your account has been sent", 3000);
+        InfoToast.custom.info(
+          "An email to validate your account has been sent",
+          3000
+        );
         this.props.history.push("/users/login");
       })
       .catch(err => {

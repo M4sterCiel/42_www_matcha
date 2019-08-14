@@ -128,11 +128,11 @@ module.exports = {
     }
   },
 
-  deleteUser: async userId => {
+  deleteUser: async user_id => {
     try {
       var result = await pool.query({
         sql: "DELETE FROM users WHERE `id` = ?",
-        values: userId
+        values: user_id
       });
       return result.affectedRows;
     } catch (err) {

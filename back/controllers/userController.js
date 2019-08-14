@@ -349,12 +349,14 @@ module.exports = {
   },
 
   deleteUser: async (req, res, next) => {
+    console.log(req);
     var authorization = req.headers["authorization"];
     var userId = jwtUtils.getUserId(authorization);
 
-    if (userId != -1) {
-      var ret = await userModel.deleteUser(userId);
-      //console.log(ret);
+    if (userId != -1 && req.params.user_id === userId) {
+      await userModel.deleteUser(userId);
+      await tagModel.deleteUserAllTags(userId);
+      await pictureModel.deleteUserAllPictures(userId);
     }
     return res.status(200).json({ msg: "Bravoooo!" });
   }
