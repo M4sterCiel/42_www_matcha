@@ -82,7 +82,7 @@ module.exports = {
     }
   },
 
-  deleteOne: async id => {
+  deleteUserAllPictures: async id => {
     try {
       var result = await pool.query({
         sql: "DELETE FROM pictures WHERE user_id = ?",

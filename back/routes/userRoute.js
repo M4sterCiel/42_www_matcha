@@ -36,7 +36,7 @@ exports.router = (() => {
     .route("/reset-password/:key")
     .post(userController.updatePasswordWithKey);
   userRouter.route("/register").post(userController.createUser);
-  userRouter.route("/delete/:user_id").delete(userController.deleteUser);
+  userRouter.route("/delete/:user_id").post(userController.deleteUser);
 
   return userRouter;
 })();

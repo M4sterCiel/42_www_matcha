@@ -271,8 +271,7 @@ class Register extends Component {
     };
     GeoPosition.locate(options, (err, location) => {
       console.log(err || location);
-      this.setState({ userLocation: location });
-      this.setState({ locationValid: true });
+      this.setState({ userLocation: location, locationValid: true });
     });
   };
 
@@ -288,8 +287,7 @@ class Register extends Component {
     };
     GeoPosition.locateByMobile(options, (err, location) => {
       console.log(err || location);
-      this.setState({ userLocation: location });
-      this.setState({ locationValid: true });
+      this.setState({ userLocation: location, locationValid: true });
     });
   };
 

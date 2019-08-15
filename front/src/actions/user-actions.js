@@ -92,7 +92,7 @@ export const deleteUserData = (id, headers) => {
         dispatch({ type: "USER_DELETED" });
       })
       .catch(error => {
-        ErrorToast.custom.error(error.response["data"]["error"], 1400);
+        ErrorToast.custom.error("An error occured, please try again", 1400);
         dispatch({ type: "ERROR", payload: error });
       });
   };

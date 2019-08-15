@@ -349,11 +349,10 @@ module.exports = {
   },
 
   deleteUser: async (req, res, next) => {
-    console.log(req);
-    var authorization = req.headers["authorization"];
+    var authorization = req.body.headers.authorization;
     var userId = jwtUtils.getUserId(authorization);
 
-    if (userId != -1 && req.params.user_id === userId) {
+    if (userId != -1 && req.params.user_id == userId) {
       await userModel.deleteUser(userId);
       await tagModel.deleteUserAllTags(userId);
       await pictureModel.deleteUserAllPictures(userId);

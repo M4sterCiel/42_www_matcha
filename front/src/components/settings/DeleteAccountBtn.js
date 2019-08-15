@@ -13,12 +13,12 @@ class DeleteAccountBtn extends Component {
     };
   }
 
-  deleteUser = () => {
-    console.log(this.props.userConnectedData.id);
-    this.props.deleteUserData(this.props.userConnectedData.id, {
-      headers: { Authorization: `Bearer ${this.state.userToken}` }
+  deleteUser = async () => {
+    await this.props.deleteUserData(this.props.userConnectedData.id, {
+      authorization: `Bearer ${this.state.userToken}`
     });
-    this.Auth.logout();
+    await this.Auth.logout();
+    await window.location.replace("/users/login");
   };
 
   render() {
