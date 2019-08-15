@@ -10,10 +10,14 @@ import ModalUserEditProfileInfo from "../components/modals/ModalUserEditProfileI
 import ModalUserEditProfilePictures from "../components/modals/ModalUserEditProfilePictures";
 import ModalUserEditAccountSettings from "../components/modals/ModalUserEditAccountSettings";
 import ApiCall from "../services/ApiCall";
+import UserBio from "../components/profile/UserBio";
 import ErrorToast from "../services/ErrorToastService";
 import defaultProfileNoGender from "../assets/default-profile-no-gender.png";
 import defaultProfileMan from "../assets/default-profile-man.jpg";
 import defaultProfileWoman from "../assets/default-profile-woman.jpg";
+import ProfileBackgroundMan from "../assets/man-profile-background.png";
+import ProfileBackgroundWoman from "../assets/woman-profile-background.png";
+import ProfileBackgroundManWoman from "../assets/man-woman-profile-background.png";
 
 class UserProfile extends Component {
   constructor(props) {
@@ -40,7 +44,16 @@ class UserProfile extends Component {
                   <div className="card-image">
                     <img
                       className="profile-background-image"
-                      src="http://www.img.lirent.net/2014/10/Android-Lollipop-wallpapers-Download.jpg"
+                      src={
+                        this.state.user.sexual_orientation === "bi"
+                          ? ProfileBackgroundManWoman
+                          : (this.state.user.sexual_orientation === "hetero" &&
+                              this.state.user.gender === "man") ||
+                            (this.state.user.sexual_orientation === "homo" &&
+                              this.state.user.gender === "woman")
+                          ? ProfileBackgroundWoman
+                          : ProfileBackgroundMan
+                      }
                       alt=""
                     />
                   </div>
@@ -71,7 +84,7 @@ class UserProfile extends Component {
                       </div>
                     </div>
                     <span className="card-title black-text">
-                      {this.state.user.firstname} {this.state.user.lastname}
+                      {this.state.user.username}
                     </span>
                     {this.state.user.id === this.props.userConnectedData.id && (
                       <ModalUserEditProfileInfo />
@@ -84,6 +97,9 @@ class UserProfile extends Component {
                     )}
                   </div>
                 </div>
+                {this.state.user.bio !== null && (
+                  <UserBio bio={this.state.user.bio} />
+                )}
               </div>
             </div>
           </div>
