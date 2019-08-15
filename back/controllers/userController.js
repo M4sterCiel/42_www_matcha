@@ -330,9 +330,6 @@ module.exports = {
 
     // Get data from db based on user access rights
     var userData = await UserService.getUserData(userId);
-    if (userData.error)
-      return res.status(401).json({ message: userData.error });
-
     var userPictures = await UserService.getUserPictures(userId);
     var userTags = await UserService.getUserTags(userId);
     var allTags = await UserService.getAllTags(userId);

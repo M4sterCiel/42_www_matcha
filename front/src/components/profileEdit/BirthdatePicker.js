@@ -52,7 +52,9 @@ class BirthdatePicker extends Component {
             minDate: moment()
               .startOf("day")
               .subtract(99, "years")._d,
-            maxDate: moment().startOf("day")._d,
+            maxDate: moment()
+              .startOf("day")
+              .subtract(18, "years")._d,
             setDefaultDate: true,
             container: "#root",
             onClose: this.handleChange

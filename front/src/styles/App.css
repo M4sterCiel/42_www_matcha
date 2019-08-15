@@ -152,7 +152,7 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 }
 
 .multiple-btns {
-  margin: 0px 10px
+  margin: 0px 10px;
 }
 
 .input-error-block {
@@ -314,6 +314,13 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 .card {
   overflow: visible;
 }
+
+.profile-picture-round {
+  width: 250px !important ;
+  height: 250px !important ;
+  max-width: none !important ;
+}
+
 .profile-pic {
   margin-top: -6em;
   z-index: 1;
@@ -838,6 +845,11 @@ button.btn-star-picture-main {
 }
 
 @media screen and (max-width: 640px) {
+  .profile-picture-round {
+    width: 200px !important ;
+    height: 200px !important ;
+  }
+
   #login-box {
     width: 90%;
   }
@@ -865,6 +877,11 @@ button.btn-star-picture-main {
 }
 
 @media screen and (max-width: 440px) {
+  .profile-picture-round {
+    width: 150px !important ;
+    height: 150px !important ;
+  }
+
   .picture-box {
     min-width: 250px;
     height: 250px;

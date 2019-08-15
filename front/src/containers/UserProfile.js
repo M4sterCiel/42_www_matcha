@@ -19,11 +19,11 @@ class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.Auth = new AuthService();
-    this.handleData = this.handleData.bind(this);
-    this.handleGenderData = this.handleGenderData.bind(this);
-    this.handleSexOrientationData = this.handleSexOrientationData.bind(this);
     this.state = {
-      user: []
+      user: [],
+      profile_picture: [],
+      pictures: [],
+      tags: []
     };
   }
 
@@ -48,11 +48,13 @@ class UserProfile extends Component {
                     <div className="row">
                       <div className="col s4 profile-pic">
                         <img
-                          className="circle responsive-img"
+                          className="circle responsive-img profile-picture-round"
                           src={
-                            this.props.userConnectedData.gender === null
+                            this.state.profile_picture.length !== 0
+                              ? this.state.profile_picture[0].url
+                              : this.state.user.gender === null
                               ? defaultProfileNoGender
-                              : this.props.userConnectedData.gender === "man"
+                              : this.state.user.gender === "man"
                               ? defaultProfileMan
                               : defaultProfileWoman
                           }
@@ -90,48 +92,56 @@ class UserProfile extends Component {
     );
   }
 
-  handleData(data) {
-    this.setState({
-      user: {
-        ...this.state.user,
-        firstname: data
-      }
-    });
-  }
-
-  handleGenderData(data) {
-    this.setState({
-      gender: data
-    });
-  }
-
-  handleSexOrientationData(data) {
-    this.setState({
-      sexOrientation: data
-    });
-  }
-
   componentDidUpdate() {
     let url = document.location.href;
     let username = url.split("/");
     username = username[username.length - 1];
 
-    if (
-      username !== this.state.user.username &&
-      this.state.user.username !== undefined
-    ) {
-      ApiCall.user
-        .getUserFromUsername(username)
-        .then(res =>
-          this.setState({
-            user: res
+    if (this.props.userConnectedData.username !== username) {
+      if (
+        username !== this.state.user.username &&
+        this.state.user.username !== undefined
+      ) {
+        ApiCall.user
+          .getUserFromUsername(username)
+          .then(res => {
+            if (res.pictures.length !== 0) {
+              var profile_picture = res.pictures.filter(pic => {
+                return pic.profile_picture === 1;
+              });
+            }
+
+            this.setState({
+              user: res.data,
+              profile_picture: res.pictures.length === 0 ? [] : profile_picture,
+              pictures: res.pictures,
+              tags: res.tags
+            });
           })
-        )
-        .catch(err => {
-          ErrorToast.user.userNotFound();
-          this.props.history.replace("/");
-          console.log(err);
+          .catch(err => {
+            ErrorToast.user.userNotFound();
+            this.props.history.replace("/");
+            console.log(err);
+          });
+      }
+    } else if (
+      this.state.user !== this.props.userConnectedData ||
+      this.state.pictures !== this.props.userConnectedData.pictures ||
+      this.state.tags !== this.props.userConnectedData.tags
+    ) {
+      if (this.props.userConnectedData.pictures.length !== 0) {
+        var profile_pic = this.props.userConnectedData.pictures.filter(pic => {
+          return pic.profile_picture === 1;
         });
+      }
+
+      this.setState({
+        user: this.props.userConnectedData,
+        profile_picture:
+          this.props.userConnectedData.pictures.length === 0 ? [] : profile_pic,
+        pictures: this.props.userConnectedData.pictures,
+        tags: this.props.userConnectedData.tags
+      });
     }
   }
 
@@ -143,18 +153,44 @@ class UserProfile extends Component {
     let url = document.location.href;
     let username = url.split("/");
     username = username[username.length - 1];
-    ApiCall.user
-      .getUserFromUsername(username)
-      .then(res =>
-        this.setState({
-          user: res
+
+    if (this.props.userConnectedData.username !== username) {
+      ApiCall.user
+        .getUserFromUsername(username)
+        .then(res => {
+          if (res.pictures.length !== 0) {
+            var profile_picture = res.pictures.filter(pic => {
+              return pic.profile_picture === 1;
+            });
+          }
+
+          this.setState({
+            user: res.data,
+            profile_picture: res.pictures.length === 0 ? [] : profile_picture,
+            pictures: res.pictures,
+            tags: res.tags
+          });
         })
-      )
-      .catch(err => {
-        ErrorToast.user.userNotFound();
-        this.props.history.replace("/");
-        console.log(err);
+        .catch(err => {
+          ErrorToast.user.userNotFound();
+          this.props.history.replace("/");
+          console.log(err);
+        });
+    } else {
+      if (this.props.userConnectedData.pictures.length !== 0) {
+        var profile_pic = this.props.userConnectedData.pictures.filter(pic => {
+          return pic.profile_picture === 1;
+        });
+      }
+
+      this.setState({
+        user: this.props.userConnectedData,
+        profile_picture:
+          this.props.userConnectedData.pictures.length === 0 ? [] : profile_pic,
+        pictures: this.props.userConnectedData.pictures,
+        tags: this.props.userConnectedData.tags
       });
+    }
   }
 }
 
