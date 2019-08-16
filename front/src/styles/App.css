@@ -391,7 +391,46 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 }
 
 .profile-background-image {
-  max-height: 300px;
+  max-height: 200px;
+}
+
+.profile-popscore {
+  position: relative;
+  top: 50px;
+  left: calc(100% - 100px);
+}
+
+.profile-like {
+  position: relative;
+  top: 20px;
+  left: calc(100% - 100px);
+}
+
+.popscore {
+  clear: both;
+  display: block;
+  border: solid 1px #d1d5db;
+  border-radius: 5px;
+  text-align: center;
+  width: 80px;
+  height: 25px;
+  color: black;
+  font-weight: 600;
+}
+
+.profile-status {
+  top: 3px;
+  left: 5px;
+  font-size: 20px;
+  position: relative;
+}
+
+.online-icon {
+  color: green;
+}
+
+.offline-icon {
+  color: red;
 }
 
 .controls {
@@ -918,7 +957,7 @@ button.btn-star-picture-main {
   }
 
   .profile-background-image {
-    max-height: 180px;
+    max-height: 100px;
   }
 
   .fixed-action-btn {
@@ -955,6 +994,26 @@ button.btn-star-picture-main {
 }
 
 @media screen and (max-width: 440px) {
+  .profile-popscore {
+    position: relative;
+    top: 35px;
+    width: 60px;
+    left: calc(100% - 70px);
+  }
+
+  .profile-like {
+    position: relative;
+    top: 5px;
+    width: 60px;
+    left: calc(100% - 70px);
+  }
+
+  .popscore {
+    width: 60px;
+    height: 25px;
+    color: black;
+  }
+
   .profile-picture-round {
     width: 150px !important ;
     height: 150px !important ;

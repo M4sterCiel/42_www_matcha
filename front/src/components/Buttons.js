@@ -64,4 +64,14 @@ class ProfileActionsButton extends Component {
   }
 }
 
-export { ProfileSettingsButton, ProfileActionsButton };
+class LikeButton extends Component {
+  render() {
+    return (
+      <Button tooltip="like this user" className="red">
+        Like
+      </Button>
+    );
+  }
+}
+
+export { ProfileSettingsButton, ProfileActionsButton, LikeButton };

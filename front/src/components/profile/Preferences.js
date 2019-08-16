@@ -7,7 +7,7 @@ class Preferences extends Component {
         <div className="card-content">
           <p className="profile-info-title">Preferences</p>
           <span className="profile-orientation">
-            <i class="material-icons prefix pink-icon">wc</i>{" "}
+            <i className="material-icons prefix pink-icon">wc</i>{" "}
             <span className="profile-text-icon">
               {this.props.user.sexual_orientation}
             </span>

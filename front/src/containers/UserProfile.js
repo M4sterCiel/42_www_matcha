@@ -4,7 +4,8 @@ import AuthService from "../services/AuthService";
 import NavBar from "../components/NavBar";
 import {
   ProfileSettingsButton,
-  ProfileActionsButton
+  ProfileActionsButton,
+  LikeButton
 } from "../components/Buttons";
 import ModalUserEditProfileInfo from "../components/modals/ModalUserEditProfileInfo";
 import ModalUserEditProfilePictures from "../components/modals/ModalUserEditProfilePictures";
@@ -14,6 +15,7 @@ import UserBio from "../components/profile/UserBio";
 import Interests from "../components/profile/Interests";
 import Preferences from "../components/profile/Preferences";
 import Pictures from "../components/profile/Pictures";
+import Popscore from "../components/profile/Popscore";
 import moment from "moment";
 import ErrorToast from "../services/ErrorToastService";
 import defaultProfileNoGender from "../assets/default-profile-no-gender.png";
@@ -65,6 +67,15 @@ class UserProfile extends Component {
                   </div>
                   <div className="card-content">
                     <div className="row">
+                      {this.props.userConnectedData.username !==
+                        this.state.user.username && (
+                        <div className="profile-like">
+                          <LikeButton />
+                        </div>
+                      )}
+                      <div className="profile-popscore">
+                        <Popscore popscore={this.state.user.pop_score} />
+                      </div>
                       <div className="col s4 profile-pic">
                         <img
                           className="circle responsive-img profile-picture-round"
@@ -83,7 +94,18 @@ class UserProfile extends Component {
                       <div className="profile-details-container">
                         <div className="profile-details">
                           <span className="profile-username">
-                            {this.state.user.username}
+                            {this.state.user.username}{" "}
+                            <span className="profile-status">
+                              {this.state.user.online === 1 ? (
+                                <i className="material-icons dp48 online-icon">
+                                  fiber_manual_record
+                                </i>
+                              ) : (
+                                <i className="material-icons dp48 offline-icon">
+                                  fiber_manual_record
+                                </i>
+                              )}
+                            </span>
                           </span>
                           <span className="profile-two-names">
                             {this.state.user.firstname}{" "}
@@ -107,7 +129,9 @@ class UserProfile extends Component {
                             )}
                           </span>
                           <span className="profile-location">
-                            <i class="material-icons prefix pink-icon">place</i>{" "}
+                            <i className="material-icons prefix pink-icon">
+                              place
+                            </i>{" "}
                             <span className="profile-text-icon">
                               {this.state.user.city === null ? (
                                 <span className="grey-message">
@@ -119,7 +143,9 @@ class UserProfile extends Component {
                             </span>
                           </span>{" "}
                           <span className="profile-birthdate">
-                            <i class="material-icons prefix pink-icon">cake</i>{" "}
+                            <i className="material-icons prefix pink-icon">
+                              cake
+                            </i>{" "}
                             <span className="profile-text-icon">
                               {this.state.user.birthdate === null ? (
                                 <span className="grey-message">
