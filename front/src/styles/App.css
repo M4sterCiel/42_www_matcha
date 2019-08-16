@@ -62,6 +62,10 @@ nav ul a {
   border-radius: 15px;
 }
 
+.profile-details {
+  margin-left: 300px;
+}
+
 nav {
   background-color: #ffb6d3 !important;
 }
@@ -161,6 +165,11 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   font-size: 12px;
   margin-top: -20px;
   margin-bottom: 30px;
+}
+
+.grey-message {
+  color: grey;
+  opacity: 0.5;
 }
 
 /* Sliders */
@@ -313,6 +322,56 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 
 .card {
   overflow: visible;
+}
+
+.profile-info-title {
+  font-size: 25px;
+  padding-bottom: 10px;
+  color: #ffb6d3;
+}
+
+.profile-username {
+  font-weight: 300;
+  font-size: 30px;
+  display: block;
+}
+
+.profile-two-names {
+  display: block;
+  line-height: 25px;
+}
+
+.profile-location,
+.profile-birthdate,
+.profile-orientation {
+  display: block;
+  line-height: 20px;
+  margin-top: 10px;
+}
+
+.slider-tall {
+  height: 740px !important;
+}
+
+.slides {
+  height: 700px !important;
+}
+
+.slider .indicators .indicator-item.active {
+  background-color: #ffb6d3 !important;
+}
+
+.profile-text-icon {
+  position: relative;
+  bottom: 5px;
+}
+
+.pink-icon {
+  color: #ffb6d3;
+}
+
+.profile-gender-icon {
+  height: 15px;
 }
 
 .profile-picture-round {
@@ -874,6 +933,25 @@ button.btn-star-picture-main {
     height: 200px !important;
     top: calc(50% - 100px) !important;
   }
+
+  .profile-details-container {
+    margin-bottom: 150px;
+  }
+
+  .profile-details {
+    margin-left: 0px;
+    position: relative;
+    top: 130px;
+    right: 30%;
+  }
+
+  .slider-tall {
+    height: 440px !important;
+  }
+
+  .slides {
+    height: 400px !important;
+  }
 }
 
 @media screen and (max-width: 440px) {
@@ -885,6 +963,31 @@ button.btn-star-picture-main {
   .picture-box {
     min-width: 250px;
     height: 250px;
+  }
+
+  .profile-details-container {
+    margin-bottom: 80px;
+  }
+
+  .profile-details {
+    margin-left: 0px;
+    position: relative;
+    top: 80px;
+    right: 30%;
+  }
+
+  .profile-location,
+  .profile-birthdate {
+    position: relative;
+    left: 33%;
+  }
+
+  .slider-tall {
+    height: 340px !important;
+  }
+
+  .slides {
+    height: 300px !important;
   }
 
   .js--image-preview {
@@ -907,6 +1010,14 @@ button.btn-star-picture-main {
 }
 
 @media screen and (max-width: 360px) {
+  .slider-tall {
+    height: 240px !important;
+  }
+
+  .slides {
+    height: 200px !important;
+  }
+
   .input-icons {
     display: none;
   }

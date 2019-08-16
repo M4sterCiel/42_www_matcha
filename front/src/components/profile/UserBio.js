@@ -5,8 +5,12 @@ class UserBio extends Component {
     return (
       <div className="card">
         <div className="card-content">
-          <h5>Bio</h5>
-          {this.props.bio}
+          <p className="profile-info-title">Bio</p>
+          {this.props.bio === null ? (
+            <span className="grey-message">No bio yet</span>
+          ) : (
+            this.props.bio
+          )}
         </div>
       </div>
     );

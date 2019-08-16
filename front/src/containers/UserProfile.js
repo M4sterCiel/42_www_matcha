@@ -11,6 +11,10 @@ import ModalUserEditProfilePictures from "../components/modals/ModalUserEditProf
 import ModalUserEditAccountSettings from "../components/modals/ModalUserEditAccountSettings";
 import ApiCall from "../services/ApiCall";
 import UserBio from "../components/profile/UserBio";
+import Interests from "../components/profile/Interests";
+import Preferences from "../components/profile/Preferences";
+import Pictures from "../components/profile/Pictures";
+import moment from "moment";
 import ErrorToast from "../services/ErrorToastService";
 import defaultProfileNoGender from "../assets/default-profile-no-gender.png";
 import defaultProfileMan from "../assets/default-profile-man.jpg";
@@ -18,6 +22,8 @@ import defaultProfileWoman from "../assets/default-profile-woman.jpg";
 import ProfileBackgroundMan from "../assets/man-profile-background.png";
 import ProfileBackgroundWoman from "../assets/woman-profile-background.png";
 import ProfileBackgroundManWoman from "../assets/man-woman-profile-background.png";
+import Male from "../assets/male.png";
+import Female from "../assets/female.png";
 
 class UserProfile extends Component {
   constructor(props) {
@@ -74,6 +80,62 @@ class UserProfile extends Component {
                           alt=""
                         />
                       </div>
+                      <div className="profile-details-container">
+                        <div className="profile-details">
+                          <span className="profile-username">
+                            {this.state.user.username}
+                          </span>
+                          <span className="profile-two-names">
+                            {this.state.user.firstname}{" "}
+                            {this.state.user.lastname}{" "}
+                            {this.state.user.gender === null ? (
+                              <span className="grey-message">
+                                (Gender not set)
+                              </span>
+                            ) : this.state.user.gender === "man" ? (
+                              <img
+                                src={Male}
+                                alt="male icon"
+                                className="profile-gender-icon"
+                              />
+                            ) : (
+                              <img
+                                src={Female}
+                                alt="female icon"
+                                className="profile-gender-icon"
+                              />
+                            )}
+                          </span>
+                          <span className="profile-location">
+                            <i class="material-icons prefix pink-icon">place</i>{" "}
+                            <span className="profile-text-icon">
+                              {this.state.user.city === null ? (
+                                <span className="grey-message">
+                                  No location yet
+                                </span>
+                              ) : (
+                                this.state.user.city
+                              )}
+                            </span>
+                          </span>{" "}
+                          <span className="profile-birthdate">
+                            <i class="material-icons prefix pink-icon">cake</i>{" "}
+                            <span className="profile-text-icon">
+                              {this.state.user.birthdate === null ? (
+                                <span className="grey-message">
+                                  No birthdate yet
+                                </span>
+                              ) : (
+                                moment().diff(
+                                  this.state.user.birthdate,
+                                  "years",
+                                  false
+                                ) + " years old"
+                              )}
+                            </span>
+                          </span>{" "}
+                        </div>
+                      </div>
                       <div className="col right controls ">
                         {this.state.user.id ===
                         this.props.userConnectedData.id ? (
@@ -83,9 +145,6 @@ class UserProfile extends Component {
                         )}
                       </div>
                     </div>
-                    <span className="card-title black-text">
-                      {this.state.user.username}
-                    </span>
                     {this.state.user.id === this.props.userConnectedData.id && (
                       <ModalUserEditProfileInfo />
                     )}
@@ -97,9 +156,10 @@ class UserProfile extends Component {
                     )}
                   </div>
                 </div>
-                {this.state.user.bio !== null && (
-                  <UserBio bio={this.state.user.bio} />
-                )}
+                <UserBio bio={this.state.user.bio} />
+                <Preferences user={this.state.user} />
+                <Interests tags={this.state.tags} />
+                <Pictures pictures={this.state.pictures} />
               </div>
             </div>
           </div>
