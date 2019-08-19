@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Button } from "react-materialize";
+import LikeNotif from "@material-ui/icons/ThumbUp";
 
 class ProfileSettingsButton extends Component {
   render() {
@@ -66,9 +67,13 @@ class ProfileActionsButton extends Component {
 
 class LikeButton extends Component {
   render() {
+    const iconStyle = { position: "relative", top: "5px" };
     return (
       <Button tooltip="like this user" className="red">
-        Like
+        Like{" "}
+        <span style={iconStyle}>
+          <LikeNotif />
+        </span>
       </Button>
     );
   }

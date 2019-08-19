@@ -5,7 +5,7 @@ import NoImage from "../../assets/no-image.jpg";
 class Pictures extends Component {
   render() {
     const NoSlide = (
-      <Slide image={<img src={NoImage} alt="no picture" />}>
+      <Slide image={<img src={NoImage} alt="no pic set" />}>
         <Caption>
           <h3>No picture yet</h3>
           <h5 className="light grey-text text-lighten-3">It's sad :(</h5>
@@ -14,7 +14,10 @@ class Pictures extends Component {
     );
 
     const Slides = this.props.pictures.map(picture => (
-      <Slide image={<img src={picture.url} alt="picture" />} />
+      <Slide
+        key={picture.id}
+        image={<img src={picture.url} alt={"picture " + picture.index} />}
+      />
     ));
 
     return (
