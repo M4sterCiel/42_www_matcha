@@ -5,7 +5,7 @@ var pool = mysql.createPool({
   connectionLimit: 10,
   host: "localhost",
   user: "root",
-  password: "logitech",
+  password: "azerty123",
   database: "matcha",
   port: "3390"
 });
