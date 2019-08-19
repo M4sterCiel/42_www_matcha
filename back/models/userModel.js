@@ -136,7 +136,7 @@ module.exports = {
   getNotification: async userID => {
     try {
       var result = await pool.query({
-        sql: "SELECT * FROM notification WHERE `user_id` = ? AND type != 2",
+        sql: "SELECT * FROM notification WHERE `user_id` = ? AND type != 2 ORDER BY date DESC",
         values: [userID]
       });
       //console.log(result);
@@ -144,5 +144,19 @@ module.exports = {
     } catch (err) {
       throw new Error(err);
     }
+  },
+
+  dismissNotif: async userID => {
+    try {
+      var result = await pool.query({
+        sql: "UPDATE notification SET `isRead`= 1 WHERE `user_id`= ?",
+        values: [userID]
+      });
+      return result.affectedRows;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 };
+
+

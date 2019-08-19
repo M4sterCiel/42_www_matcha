@@ -19,6 +19,9 @@ import Button from '@material-ui/core/Button';
 import LikeNotif from '@material-ui/icons/ThumbUp';
 import DislikeNotif from '@material-ui/icons/ThumbDown';
 import HotNotif from '@material-ui/icons/Whatshot';
+import Highlight_off from '@material-ui/icons/HighlightOff';
+import {connect} from "react-redux";
+
 
 const Auth = new AuthService();
 
@@ -28,6 +31,7 @@ class NavBar extends Component {
     this.state = {
       userID: '',
       socket: '',
+      listNotif: [],
       nbMessages: null,
       nbNotifications: null
     }
@@ -39,8 +43,9 @@ class NavBar extends Component {
 
    async componentDidMount() {
 
-    if (!localStorage.getItem('Token'))
+    if (!localStorage.getItem('Token')) {
       return;
+    }
     await this.setState({ userID: this.Auth.getConfirm()['id'] });
     
     await this.callMsgNotifApi();
@@ -50,6 +55,7 @@ class NavBar extends Component {
       transports: ['polling'],
       requestTimeout: 5000,
       upgrade: false,
+      'sync disconnect on unload': true,
       query: {
           userID: this.state.userID
         } 
@@ -80,11 +86,17 @@ class NavBar extends Component {
   }
   
   callMainNotifApi = async () => {
+    var counter = 0;
     await Axios.get('/users/notification/main/' + this.state.userID)
       .then(res => {
-        var tab = res.data.ret;
-        console.log(tab);
-        this.setState({ nbNotifications: null });
+        var tab = res.data.tab;
+        for(var i=0;i<tab.length;i++)
+        // eslint-disable-next-line
+          if (tab[i]['isRead'] == 0)
+            counter++;
+        this.setState({ listNotif: tab });
+        this.setState({ nbNotifications: counter });
+        //console.log(this.state.listNotif);
       })
       .catch(err => {
         console.log(err);
@@ -98,10 +110,11 @@ class NavBar extends Component {
 
   render() {
     const countMessages = this.state.nbMessages;
-    const countNotif = this.state.nbNotifications;
+    var countNotif = this.state.nbNotifications;
     const logout = this.handleLogout;
-    const removeNotif = this.removeNotif;
-    
+    var listNotif = this.state.listNotif;
+    const userID = this.state.userID;   
+    //callMainNotifApi() = this.state.callMainNotifApi; 
 
     const useStyles = makeStyles(theme => ({
       margin: {
@@ -113,7 +126,6 @@ class NavBar extends Component {
       },
     }));
 
-
     function LoggedInLinks() {
       const classes = useStyles();
 
@@ -121,8 +133,10 @@ class NavBar extends Component {
         right: false,
       });
 
-      
       const toggleDrawer = (side, open) => event => {
+        countNotif = 0;
+        Axios.post('/users/read-notification/'+userID);
+
         if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
           return;
         }
@@ -130,7 +144,7 @@ class NavBar extends Component {
         setState({ ...state, [side]: open });
       };
 
-      const sideList = side => (
+      const sideList = (side, listNotif) => (
         <div
           className={classes.list}
           role="presentation"
@@ -139,13 +153,20 @@ class NavBar extends Component {
         >
           <h5 style={{textAlign: 'center'}}>Notifications</h5>
           <List>
-            {[{data: ' just visited your profile!', type: 'visit', link: "/users/profile/", username: "ebechade"}, {data: ' just liked you back!', type: 'like_back', link: "/users/profile/", username: "lnicosia"}, {data: ' just liked your profile!', type: 'like', link: "/users/profile/", username: "willsmith"}, {data: ' just stopped liking your profile...', type: 'dislike', link: "/users/profile/", username: "brucewillis"}].map((text, index) => (
-              <NavLink to={text.link+text.username} key={index}>
+            {listNotif.length < 1 ?
+            <ListItem>
+              <ListItemIcon>
+                <Highlight_off />
+              </ListItemIcon>
+               <ListItemText primary={'You do not have any notification yet.'} style={{wordBreak: 'break-word', color: 'black'}} /> 
+               </ListItem> : ''}
+            {listNotif.map((text, index) => (
+              <NavLink to={'/users/profile/'+text.sender_username} key={index}>
               <ListItem button>
                 <ListItemIcon>
-                  {text.type === 'visit' ? <HotNotif /> : text.type === 'dislike' ? <DislikeNotif /> : <LikeNotif />}
+                  {text.type === 'visit' || text.type === 'like_back' ? <HotNotif /> : text.type === 'dislike' ? <DislikeNotif /> : <LikeNotif />}
                 </ListItemIcon>
-                <ListItemText primary={text.username+text.data} style={{wordBreak: 'break-word', color: 'black'}} />
+                <ListItemText primary={text.sender_username+' '+text.data} style={{wordBreak: 'break-word', color: 'black'}} />
               </ListItem>
               </NavLink>
             ))}
@@ -174,7 +195,7 @@ class NavBar extends Component {
             onClose={toggleDrawer('right', false)}
             onOpen={toggleDrawer('right', true) }
           >
-            {sideList('right')}
+            {sideList('right', listNotif)}
           </SwipeableDrawer>
           </li>
           <li>
@@ -249,10 +270,14 @@ class NavBar extends Component {
     Auth.logout();
     this.props.history.replace("/users/login");
   }
-
-  removeNotif = () => {
-    this.setState({ nbNotifications: null });
-  }
 }
+
+/* const mapStateToProps = state => {
+  return {
+    userConnectedData: state.user.data
+  };
+}; */
+
+//export default withRouter(connect(mapStateToProps, actionCreators)(NavBar));
 
 export default withRouter(NavBar);

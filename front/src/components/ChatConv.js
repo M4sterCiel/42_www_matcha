@@ -65,6 +65,7 @@ class ChatConv extends Component {
             transports: ['polling'],
             requestTimeout: 5000,
             upgrade: false,
+            'sync disconnect on unload': true,
             query: {
                 userID: this.state.userID,
                 matches: this.state.matches

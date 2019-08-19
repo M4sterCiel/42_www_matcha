@@ -15,6 +15,7 @@ exports.router = (() => {
   userRouter.route("/register").post(userController.createUser);
   userRouter.route('/delete-account').delete(userController.deleteUser);
   userRouter.route('/notification/main/:userID').get(userController.getMainNotification);
+  userRouter.route('/read-notification/:userID').post(userController.dismissNotif);
 
   return userRouter;
 })();

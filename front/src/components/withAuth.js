@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import AuthService from "../services/AuthService";
-//import io from 'socket.io-client';
 
 // HOC to wrap component and verify authentication
 export default function withAuth(AuthComponent) {
@@ -25,18 +24,6 @@ export default function withAuth(AuthComponent) {
             loaded: true
           });
 
-          /* if (this.state.socket !== '' || !this.state.socket.connected)
-          {
-            await this.setState({ socket: io({
-              transports: ['polling'], 
-              upgrade: false,
-              query: {
-                userID: confirm.id
-              }
-            })
-            }); 
-          } */
-        //console.log(this.state.socket);
         } catch (err) {
           console.log(err);
           Auth.logout();
@@ -45,11 +32,11 @@ export default function withAuth(AuthComponent) {
       }
     }
 
-    /* componentWillUnmount() {
+    componentWillUnmount() {
       if (this.state.socket)
         this.state.socket.close();
         //console.log('closing socket');
-    } */
+    }
 
     render() {
       if (this.state.loaded === true) {

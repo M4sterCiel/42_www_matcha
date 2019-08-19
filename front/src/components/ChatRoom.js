@@ -106,6 +106,7 @@ class Chat extends Component {
             transports: ['polling'],
             requestTimeout: 5000,
             upgrade: false,
+            'sync disconnect on unload': true,
             query: {
                 token: this.state.userToken,
                 userID: this.state.userID,

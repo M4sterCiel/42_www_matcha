@@ -157,6 +157,15 @@ module.exports = {
   getMainNotification: async (req, res, next) => {
     var userID = req.params['userID'];
     var ret = await userModel.getNotification(userID);
-    return res.status(200).json({ ret });
+    return res.status(200).json({ tab: ret });
+  },
+
+  dismissNotif: async (req, res, next) => {
+    var userID = req.params['userID'];
+    var result = await userModel.dismissNotif(userID);
+    if (result)
+      return res.status(200).json({ msg: "Notifications dismissed" });
+    else
+      return res.status(200).json({ error: "An error occurred and notifcations could not be dismissed" });
   }
 };
