@@ -20,7 +20,6 @@ import LikeNotif from "@material-ui/icons/ThumbUp";
 import DislikeNotif from "@material-ui/icons/ThumbDown";
 import HotNotif from "@material-ui/icons/Whatshot";
 import Highlight_off from "@material-ui/icons/HighlightOff";
-import { connect } from "react-redux";
 
 const Auth = new AuthService();
 
@@ -32,7 +31,8 @@ class NavBar extends Component {
       socket: "",
       listNotif: [],
       nbMessages: null,
-      nbNotifications: null
+      nbNotifications: null,
+      right: false
     };
     this.Auth = new AuthService();
     this.handleLogout = this.handleLogout.bind(this);
@@ -41,6 +41,7 @@ class NavBar extends Component {
   }
 
   async componentDidMount() {
+    console.log(this.state);
     if (!localStorage.getItem("Token")) {
       return;
     }
@@ -67,7 +68,6 @@ class NavBar extends Component {
     });
 
     this.state.socket.on("readMessage", data => {
-      // eslint-disable-next-line
       if (data == this.state.userID) this.callMsgNotifApi();
     });
   }
@@ -88,11 +88,8 @@ class NavBar extends Component {
       .then(res => {
         var tab = res.data.tab;
         for (var i = 0; i < tab.length; i++)
-          // eslint-disable-next-line
           if (tab[i]["isRead"] == 0) counter++;
-        this.setState({ listNotif: tab });
-        this.setState({ nbNotifications: counter });
-        //console.log(this.state.listNotif);
+        this.setState({ listNotif: tab, nbNotifications: counter });
       })
       .catch(err => {
         console.log(err);
@@ -104,12 +101,9 @@ class NavBar extends Component {
   }
 
   render() {
-    const countMessages = this.state.nbMessages;
-    var countNotif = this.state.nbNotifications;
     const logout = this.handleLogout;
     var listNotif = this.state.listNotif;
     const userID = this.state.userID;
-    //callMainNotifApi() = this.state.callMainNotifApi;
 
     const useStyles = makeStyles(theme => ({
       margin: {
@@ -121,16 +115,13 @@ class NavBar extends Component {
       }
     }));
 
-    function LoggedInLinks() {
+    const LoggedInLinks = () => {
       const classes = useStyles();
 
-      const [state, setState] = React.useState({
-        right: false
-      });
-
       const toggleDrawer = (side, open) => event => {
-        countNotif = 0;
-        Axios.post("/users/read-notification/" + userID);
+        Axios.post("/users/read-notification/" + userID).then(res => {
+          this.setState({ nbNotifications: null, [side]: open });
+        });
 
         if (
           event &&
@@ -139,8 +130,6 @@ class NavBar extends Component {
         ) {
           return;
         }
-
-        setState({ ...state, [side]: open });
       };
 
       const sideList = (side, listNotif) => (
@@ -195,8 +184,7 @@ class NavBar extends Component {
         <ul className="right hide-on-med-and-down">
           <li>
             <NavLink to={"/users/profile/" + Auth.getConfirm().username}>
-              {" "}
-              My profile{" "}
+              <i className="material-icons">person</i>
             </NavLink>
           </li>
           <li>
@@ -208,7 +196,7 @@ class NavBar extends Component {
             >
               <Badge
                 className={classes.margin}
-                badgeContent={countNotif}
+                badgeContent={this.state.nbNotifications}
                 color="secondary"
               >
                 <Notifications />
@@ -216,7 +204,7 @@ class NavBar extends Component {
             </Button>
             <SwipeableDrawer
               anchor="right"
-              open={state.right}
+              open={this.state.right}
               onClose={toggleDrawer("right", false)}
               onOpen={toggleDrawer("right", true)}
             >
@@ -227,7 +215,7 @@ class NavBar extends Component {
             <NavLink to="/chat/messages">
               <Badge
                 className={classes.margin}
-                badgeContent={countMessages}
+                badgeContent={this.state.nbMessages}
                 color="secondary"
               >
                 <MailIcon />
@@ -241,7 +229,7 @@ class NavBar extends Component {
           </li>
         </ul>
       );
-    }
+    };
 
     // Generates the links in the navbar for a logged out user
     function LoggedOutLinks() {
@@ -300,13 +288,5 @@ class NavBar extends Component {
     this.props.history.replace("/users/login");
   }
 }
-
-/* const mapStateToProps = state => {
-  return {
-    userConnectedData: state.user.data
-  };
-}; */
-
-//export default withRouter(connect(mapStateToProps, actionCreators)(NavBar));
 
 export default withRouter(NavBar);
