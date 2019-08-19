@@ -9,6 +9,8 @@ import { NavLink } from "react-router-dom";
 import Axios from "axios";
 import { BackgroundAdd } from "../components/Background";
 import ErrorToast from "../services/ErrorToastService";
+import * as actionCreators from "../actions/user-actions";
+import { connect } from "react-redux";
 
 class Login extends Component {
   constructor(props) {
@@ -129,8 +131,8 @@ class Login extends Component {
       loginError = "Please enter a valid Username/Email";
     } else if (this.state.login === "") {
       loginError = "Username/Email cannot be empty";
-    } else if (this.state.login.length > 20) {
-      loginError = "Username/Email must be less or equal to 20 chars";
+    } else if (this.state.login.length > 30) {
+      loginError = "Username/Email must be less or equal to 30 chars";
     }
 
     if (loginError) {
@@ -183,15 +185,25 @@ class Login extends Component {
       pwd: this.state.pwd
     })
       .then(res => {
-        //console.log(res.data);
         this.setState({ responseToPost: res.status });
         localStorage.setItem("Token", res.data["token"]);
+        this.props.getUserData(res.data["username"]);
         this.props.history.push("/");
       })
-      .catch((err)  => {
+      .catch(err => {
         ErrorToast.auth.userAlreadyLogged();
       });
   };
 }
 
-export default Login;
+const mapStateToProps = state => {
+  return {
+    userConnectedData: state.user.data,
+    userConnectedStatus: state.user.status
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  actionCreators
+)(Login);

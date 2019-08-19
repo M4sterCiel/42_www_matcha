@@ -12,7 +12,7 @@ class ReportUser extends Component {
     render() {
         return (
             <div className="App">
-                  <a className="btn-floating btn-small waves-effect waves-light red"><i class="material-icons"
+                  <a className="btn-floating btn-small waves-effect waves-light red"><i className="material-icons"
                   onClick={}
                   >report</i></a>
             </div>

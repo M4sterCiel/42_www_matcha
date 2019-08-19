@@ -6,22 +6,21 @@ import { withRouter, NavLink } from "react-router-dom";
 import logo from "../assets/logo-with-name.png";
 import io from "socket.io-client";
 import Axios from "axios";
-import Badge from '@material-ui/core/Badge';
-import MailIcon from '@material-ui/icons/Mail';
-import Notifications from '@material-ui/icons/Notifications';
-import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import Button from '@material-ui/core/Button';
-import LikeNotif from '@material-ui/icons/ThumbUp';
-import DislikeNotif from '@material-ui/icons/ThumbDown';
-import HotNotif from '@material-ui/icons/Whatshot';
-import Highlight_off from '@material-ui/icons/HighlightOff';
-import {connect} from "react-redux";
-
+import Badge from "@material-ui/core/Badge";
+import MailIcon from "@material-ui/icons/Mail";
+import Notifications from "@material-ui/icons/Notifications";
+import { makeStyles } from "@material-ui/core/styles";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+import Button from "@material-ui/core/Button";
+import LikeNotif from "@material-ui/icons/ThumbUp";
+import DislikeNotif from "@material-ui/icons/ThumbDown";
+import HotNotif from "@material-ui/icons/Whatshot";
+import Highlight_off from "@material-ui/icons/HighlightOff";
+import { connect } from "react-redux";
 
 const Auth = new AuthService();
 
@@ -29,83 +28,79 @@ class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userID: '',
-      socket: '',
+      userID: "",
+      socket: "",
       listNotif: [],
       nbMessages: null,
       nbNotifications: null
-    }
+    };
     this.Auth = new AuthService();
     this.handleLogout = this.handleLogout.bind(this);
     this.Auth.getConfirm = this.Auth.getConfirm.bind(this);
     this.Auth.loggedIn = this.Auth.loggedIn.bind(this);
   }
 
-   async componentDidMount() {
-
-    if (!localStorage.getItem('Token')) {
+  async componentDidMount() {
+    if (!localStorage.getItem("Token")) {
       return;
     }
-    await this.setState({ userID: this.Auth.getConfirm()['id'] });
-    
+    await this.setState({ userID: this.Auth.getConfirm()["id"] });
+
     await this.callMsgNotifApi();
     await this.callMainNotifApi();
 
-    await this.setState({ socket: io({ 
-      transports: ['polling'],
-      requestTimeout: 5000,
-      upgrade: false,
-      'sync disconnect on unload': true,
-      query: {
+    await this.setState({
+      socket: io({
+        transports: ["polling"],
+        requestTimeout: 50000,
+        upgrade: false,
+        "sync disconnect on unload": true,
+        query: {
           userID: this.state.userID
-        } 
+        }
       })
-      });
-    
-
-    this.state.socket.on('new message', data => {
-      if (data['userID_other'] === this.state.userID)
-        this.setState({ nbMessages: this.state.nbMessages + 1 })
     });
 
-    this.state.socket.on('readMessage', data => {
+    this.state.socket.on("new message", data => {
+      if (data["userID_other"] === this.state.userID)
+        this.setState({ nbMessages: this.state.nbMessages + 1 });
+    });
+
+    this.state.socket.on("readMessage", data => {
       // eslint-disable-next-line
-      if (data == this.state.userID)
-        this.callMsgNotifApi();
-    })
+      if (data == this.state.userID) this.callMsgNotifApi();
+    });
   }
 
   callMsgNotifApi = async () => {
-    await Axios.get('/chat/notification/messages/' + this.state.userID)
+    await Axios.get("/chat/notification/messages/" + this.state.userID)
       .then(res => {
-        this.setState({ nbMessages: res.data['notification'][0]['COUNT (*)'] });
+        this.setState({ nbMessages: res.data["notification"][0]["COUNT (*)"] });
       })
       .catch(err => {
         console.log(err);
-      })
-  }
-  
+      });
+  };
+
   callMainNotifApi = async () => {
     var counter = 0;
-    await Axios.get('/users/notification/main/' + this.state.userID)
+    await Axios.get("/users/notification/main/" + this.state.userID)
       .then(res => {
         var tab = res.data.tab;
-        for(var i=0;i<tab.length;i++)
-        // eslint-disable-next-line
-          if (tab[i]['isRead'] == 0)
-            counter++;
+        for (var i = 0; i < tab.length; i++)
+          // eslint-disable-next-line
+          if (tab[i]["isRead"] == 0) counter++;
         this.setState({ listNotif: tab });
         this.setState({ nbNotifications: counter });
         //console.log(this.state.listNotif);
       })
       .catch(err => {
         console.log(err);
-      })
-  }
+      });
+  };
 
   componentWillUnmount() {
-    if (this.state.socket !== '')
-      this.state.socket.close();
+    if (this.state.socket !== "") this.state.socket.close();
   }
 
   render() {
@@ -113,34 +108,38 @@ class NavBar extends Component {
     var countNotif = this.state.nbNotifications;
     const logout = this.handleLogout;
     var listNotif = this.state.listNotif;
-    const userID = this.state.userID;   
-    //callMainNotifApi() = this.state.callMainNotifApi; 
+    const userID = this.state.userID;
+    //callMainNotifApi() = this.state.callMainNotifApi;
 
     const useStyles = makeStyles(theme => ({
       margin: {
         margin: theme.spacing(2),
-        marginRight: theme.spacing(3),
+        marginRight: theme.spacing(3)
       },
       list: {
-        width: 320,
-      },
+        width: 320
+      }
     }));
 
     function LoggedInLinks() {
       const classes = useStyles();
 
       const [state, setState] = React.useState({
-        right: false,
+        right: false
       });
 
       const toggleDrawer = (side, open) => event => {
         countNotif = 0;
-        Axios.post('/users/read-notification/'+userID);
+        Axios.post("/users/read-notification/" + userID);
 
-        if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+        if (
+          event &&
+          event.type === "keydown" &&
+          (event.key === "Tab" || event.key === "Shift")
+        ) {
           return;
         }
-        
+
         setState({ ...state, [side]: open });
       };
 
@@ -151,29 +150,46 @@ class NavBar extends Component {
           onClick={toggleDrawer(side, false)}
           onKeyDown={toggleDrawer(side, false)}
         >
-          <h5 style={{textAlign: 'center'}}>Notifications</h5>
+          <h5 style={{ textAlign: "center" }}>Notifications</h5>
           <List>
-            {listNotif.length < 1 ?
-            <ListItem>
-              <ListItemIcon>
-                <Highlight_off />
-              </ListItemIcon>
-               <ListItemText primary={'You do not have any notification yet.'} style={{wordBreak: 'break-word', color: 'black'}} /> 
-               </ListItem> : ''}
-            {listNotif.map((text, index) => (
-              <NavLink to={'/users/profile/'+text.sender_username} key={index}>
-              <ListItem button>
+            {listNotif.length < 1 ? (
+              <ListItem>
                 <ListItemIcon>
-                  {text.type === 'visit' || text.type === 'like_back' ? <HotNotif /> : text.type === 'dislike' ? <DislikeNotif /> : <LikeNotif />}
+                  <Highlight_off />
                 </ListItemIcon>
-                <ListItemText primary={text.sender_username+' '+text.data} style={{wordBreak: 'break-word', color: 'black'}} />
+                <ListItemText
+                  primary={"You do not have any notification yet."}
+                  style={{ wordBreak: "break-word", color: "black" }}
+                />
               </ListItem>
+            ) : (
+              ""
+            )}
+            {listNotif.map((text, index) => (
+              <NavLink
+                to={"/users/profile/" + text.sender_username}
+                key={index}
+              >
+                <ListItem button>
+                  <ListItemIcon>
+                    {text.type === "visit" || text.type === "like_back" ? (
+                      <HotNotif />
+                    ) : text.type === "dislike" ? (
+                      <DislikeNotif />
+                    ) : (
+                      <LikeNotif />
+                    )}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={text.sender_username + " " + text.data}
+                    style={{ wordBreak: "break-word", color: "black" }}
+                  />
+                </ListItem>
               </NavLink>
             ))}
           </List>
         </div>
       );
-
 
       return (
         <ul className="right hide-on-med-and-down">
@@ -184,23 +200,36 @@ class NavBar extends Component {
             </NavLink>
           </li>
           <li>
-          <Button className="MuiButton-colorInherit" to="#" onClick={toggleDrawer('right', true)} style={{backgroundColor: 'none', borderRadius: '0px'}}>
-            <Badge className={classes.margin} badgeContent={countNotif} color="secondary">
+            <Button
+              className="MuiButton-colorInherit"
+              to="#"
+              onClick={toggleDrawer("right", true)}
+              style={{ backgroundColor: "none", borderRadius: "0px" }}
+            >
+              <Badge
+                className={classes.margin}
+                badgeContent={countNotif}
+                color="secondary"
+              >
                 <Notifications />
-            </Badge>
-          </Button>
-          <SwipeableDrawer
-            anchor="right"
-            open={state.right}
-            onClose={toggleDrawer('right', false)}
-            onOpen={toggleDrawer('right', true) }
-          >
-            {sideList('right', listNotif)}
-          </SwipeableDrawer>
+              </Badge>
+            </Button>
+            <SwipeableDrawer
+              anchor="right"
+              open={state.right}
+              onClose={toggleDrawer("right", false)}
+              onOpen={toggleDrawer("right", true)}
+            >
+              {sideList("right", listNotif)}
+            </SwipeableDrawer>
           </li>
           <li>
             <NavLink to="/chat/messages">
-              <Badge className={classes.margin} badgeContent={countMessages} color="secondary">
+              <Badge
+                className={classes.margin}
+                badgeContent={countMessages}
+                color="secondary"
+              >
                 <MailIcon />
               </Badge>
             </NavLink>
@@ -234,8 +263,8 @@ class NavBar extends Component {
       else return <LoggedOutLinks />;
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-      var elems = document.querySelectorAll('.sidenav');
+    document.addEventListener("DOMContentLoaded", function() {
+      var elems = document.querySelectorAll(".sidenav");
       M.Sidenav.init(elems);
     });
 

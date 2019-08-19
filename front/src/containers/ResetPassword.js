@@ -59,8 +59,7 @@ class ResetPassword extends Component {
                       required
                     />
                     <div
-                      id="password-message"
-                      className={this.state.pwd1VerifyBox}
+                      className={"password-message " + this.state.pwd1VerifyBox}
                     >
                       <h3 id="pwd1-verify-title">
                         Password must contain the following:
@@ -182,7 +181,6 @@ class ResetPassword extends Component {
     } else {
       this.setState({ pwdHasLowercase: false });
     }
-
     if (/[A-Z]/g.test(this.state.pwd1)) {
       this.setState({ pwdHasUppercase: true });
     } else {
@@ -193,13 +191,11 @@ class ResetPassword extends Component {
     } else {
       this.setState({ pwdHasNumber: false });
     }
-
-    if (this.state.pwd1.length >= 8) {
+    if (this.state.pwd1.length >= 8 && this.state.pwd1.length <= 30) {
       this.setState({ pwdHasMinLen: true });
     } else {
       this.setState({ pwdHasMinLen: false });
     }
-
     if (
       this.state.pwdHasLowercase &&
       this.state.pwdHasUppercase &&
@@ -247,7 +243,7 @@ class ResetPassword extends Component {
       this.props.history.push("/users/login");
     } else {
       let message = body.substr(10, body.length - 12);
-      ErrorToast.default.error(message);
+      ErrorToast.custom.error(message, 1000);
     }
   };
 }

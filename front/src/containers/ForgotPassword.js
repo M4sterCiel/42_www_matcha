@@ -89,8 +89,8 @@ class ForgotPassword extends Component {
       loginError = "Please enter a valid Username/Email";
     } else if (this.state.login === "") {
       loginError = "Username/Email cannot be empty";
-    } else if (this.state.login.length > 20) {
-      loginError = "Username/Email must be less or equal to 20 chars";
+    } else if (this.state.login.length > 30) {
+      loginError = "Username/Email must be less or equal to 30 chars";
     }
 
     if (loginError) {
@@ -124,7 +124,7 @@ class ForgotPassword extends Component {
       InfoToast.mail.resetPassword();
       this.props.history.push("/");
     } else {
-      ErrorToast.default.error(body.message);
+      ErrorToast.custom.error(body.message, 1000);
     }
   };
 }

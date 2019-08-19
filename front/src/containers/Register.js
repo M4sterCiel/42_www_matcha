@@ -9,7 +9,8 @@ import GeoPosition from "geolocator";
 import Axios from "axios";
 import { BackgroundAdd } from "../components/Background";
 import ErrorToast from "../services/ErrorToastService";
-import Materialize from "react-materialize";
+import InfoToast from "../services/InfoToastService";
+import ValidateInput from "../validation/ValidateInput";
 
 class Register extends Component {
   constructor(props) {
@@ -72,7 +73,7 @@ class Register extends Component {
                       onChange={e =>
                         this.setState({ lastname: e.target.value })
                       }
-                      onKeyUp={this.validateLastName}
+                      onKeyUp={this.handleLastnameKeyUp}
                       required
                     />
                     <div className="register-error">
@@ -92,7 +93,7 @@ class Register extends Component {
                       onChange={e =>
                         this.setState({ firstname: e.target.value })
                       }
-                      onKeyUp={this.validateFirstName}
+                      onKeyUp={this.handleFirstnameKeyUp}
                       required
                     />
                     <div className="register-error">
@@ -113,7 +114,7 @@ class Register extends Component {
                       onChange={e =>
                         this.setState({ username: e.target.value })
                       }
-                      onKeyUp={this.validateUsername}
+                      onKeyUp={this.handleUsernameKeyUp}
                       required
                     />
                     <div className="register-error">
@@ -131,7 +132,7 @@ class Register extends Component {
                       id="email-register"
                       value={this.state.mail}
                       onChange={e => this.setState({ email: e.target.value })}
-                      onKeyUp={this.validateEmail}
+                      onKeyUp={this.handleEmailKeyUp}
                       required
                     />
                     <div className="register-error">
@@ -160,8 +161,7 @@ class Register extends Component {
                       required
                     />
                     <div
-                      id="password-message"
-                      className={this.state.pwd1VerifyBox}
+                      className={"password-message " + this.state.pwd1VerifyBox}
                     >
                       <h3 id="pwd1-verify-title">
                         Password must contain the following:
@@ -271,8 +271,7 @@ class Register extends Component {
     };
     GeoPosition.locate(options, (err, location) => {
       console.log(err || location);
-      this.setState({ userLocation: location });
-      this.setState({ locationValid: true });
+      this.setState({ userLocation: location, locationValid: true });
     });
   };
 
@@ -288,8 +287,7 @@ class Register extends Component {
     };
     GeoPosition.locateByMobile(options, (err, location) => {
       console.log(err || location);
-      this.setState({ userLocation: location });
-      this.setState({ locationValid: true });
+      this.setState({ userLocation: location, locationValid: true });
     });
   };
 
@@ -308,75 +306,40 @@ class Register extends Component {
     );
   };
 
-  // Checking firstname format is valid
-  validateFirstName = () => {
-    let firstnameError = "";
-    let firstnameRegex = /^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*-?[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*$/;
+  handleFirstnameKeyUp = e => {
+    let result = ValidateInput.user.firstname(e.target.value);
 
-    if (/\s/.test(this.state.firstname)) {
-      firstnameError = "Firstname cannot contain spaces";
-      this.setState({ firstnameValid: false });
-    } else if (!this.state.firstname.match(firstnameRegex)) {
-      firstnameError = "Firstname is invalid";
-      this.setState({ firstnameValid: false });
-    }
-
-    this.setState({ firstnameError });
-    this.setState({ firstnameValid: true });
+    this.setState({
+      firstnameError: result.firstnameError,
+      firstnameValid: result.firstnameValid
+    });
   };
 
-  // Checking lastname format is valid
-  validateLastName = () => {
-    let lastnameError = "";
-    let lastnameRegex = /^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*-?[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]*$/;
+  handleLastnameKeyUp = e => {
+    let result = ValidateInput.user.lastname(e.target.value);
 
-    if (/\s/.test(this.state.lastname)) {
-      lastnameError = "Lastname cannot contain spaces";
-      this.setState({ lastnameValid: false });
-    } else if (!this.state.lastname.match(lastnameRegex)) {
-      lastnameError = "Lastname is invalid";
-      this.setState({ lastnameValid: false });
-    } else {
-      this.setState({ lastnameValid: true });
-    }
-
-    this.setState({ lastnameError });
+    this.setState({
+      lastnameError: result.lastnameError,
+      lastnameValid: result.lastnameValid
+    });
   };
 
-  // Checking username format is valid
-  validateUsername = () => {
-    let usernameError = "";
-    let usernameRegex = /^[a-zA-Z0-9]*-?[a-zA-Z0-9]*$/;
+  handleUsernameKeyUp = e => {
+    let result = ValidateInput.user.username(e.target.value);
 
-    if (/\s/.test(this.state.username)) {
-      usernameError = "Username cannot contain spaces";
-      this.setState({ usernameValid: false });
-    } else if (!this.state.username.match(usernameRegex)) {
-      usernameError = "Username is invalid (use letters and numbers)";
-      this.setState({ usernameValid: false });
-    } else {
-      this.setState({ usernameValid: true });
-    }
-
-    this.setState({ usernameError });
+    this.setState({
+      usernameError: result.usernameError,
+      usernameValid: result.usernameValid
+    });
   };
 
-  // Checking email format is valid
-  validateEmail = () => {
-    let emailError = "";
-    let emailRegex = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/;
+  handleEmailKeyUp = e => {
+    let result = ValidateInput.user.email(e.target.value);
 
-    if (/\s/.test(this.state.email)) {
-      emailError = "Email cannot contain spaces";
-      this.setState({ emailValid: false });
-    } else if (!this.state.email.match(emailRegex)) {
-      emailError = "Email is invalid (example@email.com)";
-      this.setState({ emailValid: false });
-    } else {
-      this.setState({ emailValid: true });
-    }
-
-    this.setState({ emailError });
+    this.setState({
+      emailError: result.emailError,
+      emailValid: result.emailValid
+    });
   };
 
   // Checking password format is valid
@@ -398,7 +361,7 @@ class Register extends Component {
       this.setState({ pwdHasNumber: false });
     }
 
-    if (this.state.pwd1.length >= 8) {
+    if (this.state.pwd1.length >= 8 && this.state.pwd1.length <= 30) {
       this.setState({ pwdHasMinLen: true });
     } else {
       this.setState({ pwdHasMinLen: false });
@@ -450,11 +413,10 @@ class Register extends Component {
     })
       .then(res => {
         this.setState({ responseToPost: res.data });
-        Materialize.toast({
-          html: "An email has been sent",
-          displayLength: 5000,
-          classes: "rounded confirm-toast"
-        });
+        InfoToast.custom.info(
+          "An email to validate your account has been sent",
+          3000
+        );
         this.props.history.push("/users/login");
       })
       .catch(err => {

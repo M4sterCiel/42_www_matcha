@@ -10,12 +10,41 @@ module.exports = {
       });
       if (result) return result;
     } catch (err) {
+      console.log(err);
+      throw new Error(err);
+    }
+  },
+
+  updateOne: async (id, field, data) => {
+    try {
+      var result = await pool.query({
+        sql: "UPDATE users SET ?? = ? WHERE `id` = ?",
+        values: [field, data, id]
+      });
+      if (result) return result;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
+  updateData: async (id, data) => {
+    try {
+      let update_set = Object.keys(data).map(value => {
+        if (data[value] == null) {
+          return ` ${value}  = NULL`;
+        } else return ` ${value}  = "${data[value]}"`;
+      });
+      var result = await pool.query({
+        sql: "UPDATE users SET " + update_set.join(" ,") + " WHERE `id` = ?",
+        values: [id]
+      });
+      if (result) return result;
+    } catch (err) {
       throw new Error(err);
     }
   },
 
   createOne: async data => {
-    //console.log(data);
     data[4] = passwordHash.generate(data[4], {
       algorithm: "sha512",
       saltLength: 10,
@@ -24,7 +53,7 @@ module.exports = {
     try {
       var result = await pool.query({
         sql:
-          "INSERT INTO users (lastname, firstname, username, mail, password, city, latitude, longitude, `key`) VALUES (?)",
+          "INSERT INTO users (lastname, firstname, username, mail, password, city, geo_lat, geo_long, `key`) VALUES (?)",
         values: [data]
       });
       return result.affectedRows;
@@ -38,6 +67,23 @@ module.exports = {
       var result = await pool.query({
         sql: "UPDATE users SET `key` = NULL, status = 1 WHERE `key` = ?",
         values: [data]
+      });
+      return result.affectedRows;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
+  updatePasswordWithId: async (pwd, id) => {
+    pwd = passwordHash.generate(pwd, {
+      algorithm: "sha512",
+      saltLength: 10,
+      iterations: 5
+    });
+    try {
+      var result = await pool.query({
+        sql: "UPDATE users SET `password` = ? WHERE `id` = ?",
+        values: [pwd, id]
       });
       return result.affectedRows;
     } catch (err) {
@@ -66,7 +112,7 @@ module.exports = {
     try {
       var result = await pool.query({
         sql: "UPDATE users SET `password` = ? WHERE `password_key` = ?",
-        values: [pwd, key, key]
+        values: [pwd, key]
       });
       try {
         var result2 = await pool.query({
@@ -82,27 +128,14 @@ module.exports = {
     }
   },
 
-  resetPasswordResetKey: async (key) => {
-    try {
-      var result = await pool.query({
-        sql: "UPDATE users SET `password_key`= NULL WHERE `password_key`= ?",
-        values: key
-      });
-      return result.affectedRows;
-    } catch (err) {
-      throw new Error(err);
-    }
-  },
-
-  deleteUser: async (userId) => {
+  deleteUser: async user_id => {
     try {
       var result = await pool.query({
         sql: "DELETE FROM users WHERE `id` = ?",
-        values: userId
+        values: user_id
       });
       return result.affectedRows;
-    }
-    catch (err) {
+    } catch (err) {
       throw new Error(err);
     }
   },
@@ -129,6 +162,7 @@ module.exports = {
       //console.log(result);
       if (result) return result;
     } catch (err) {
+      console.log("errreur =>>>>>>> ", err);
       throw new Error(err);
     }
   },
@@ -136,7 +170,8 @@ module.exports = {
   getNotification: async userID => {
     try {
       var result = await pool.query({
-        sql: "SELECT * FROM notification WHERE `user_id` = ? AND type != 2 ORDER BY date DESC",
+        sql:
+          "SELECT * FROM notification WHERE `user_id` = ? AND type != 2 ORDER BY date DESC",
         values: [userID]
       });
       //console.log(result);
@@ -158,5 +193,3 @@ module.exports = {
     }
   }
 };
-
-

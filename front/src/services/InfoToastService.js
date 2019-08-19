@@ -1,6 +1,15 @@
 import Materialize from "materialize-css";
 
 export default {
+  custom: {
+    info: (message, length) => {
+      Materialize.toast({
+        html: message,
+        displayLength: length,
+        classes: "rounded info-toast"
+      });
+    }
+  },
   mail: {
     resetPassword: () => {
       Materialize.toast({

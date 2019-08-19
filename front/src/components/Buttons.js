@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Button } from "react-materialize";
+import LikeNotif from "@material-ui/icons/ThumbUp";
 
 class ProfileSettingsButton extends Component {
   render() {
@@ -8,7 +9,7 @@ class ProfileSettingsButton extends Component {
         floating
         fab={{ direction: "left", hoverEnabled: false }}
         icon="settings"
-        className="blue"
+        className="blue pulse"
         large
       >
         <Button
@@ -20,15 +21,17 @@ class ProfileSettingsButton extends Component {
         />
         <Button
           floating
-          tooltip="add a photo"
+          tooltip="add/edit profile pictures"
           icon="add_a_photo"
-          className="blue"
+          className="blue modal-trigger"
+          href="#edit-pictures-modal"
         />
         <Button
           floating
-          tooltip="edit profile settings"
+          tooltip="edit account settings"
           icon="account_circle"
-          className="blue"
+          className="blue modal-trigger"
+          href="#edit-account-modal"
         />
       </Button>
     );
@@ -42,7 +45,7 @@ class ProfileActionsButton extends Component {
         floating
         fab={{ direction: "left", hoverEnabled: false }}
         icon="more_vert"
-        className="red"
+        className="red pulse"
         large
       >
         <Button
@@ -62,4 +65,18 @@ class ProfileActionsButton extends Component {
   }
 }
 
-export { ProfileSettingsButton, ProfileActionsButton };
+class LikeButton extends Component {
+  render() {
+    const iconStyle = { position: "relative", top: "5px" };
+    return (
+      <Button tooltip="like this user" className="red">
+        Like{" "}
+        <span style={iconStyle}>
+          <LikeNotif />
+        </span>
+      </Button>
+    );
+  }
+}
+
+export { ProfileSettingsButton, ProfileActionsButton, LikeButton };

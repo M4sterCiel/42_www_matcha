@@ -63,6 +63,10 @@ nav ul a {
   border-radius: 15px;
 }
 
+.profile-details {
+  margin-left: 300px;
+}
+
 nav {
   background-color: #ffb6d3 !important;
 }
@@ -127,25 +131,85 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 }
 
 .switch-field {
-  margin: 10px auto !important;
+  margin: 20px auto !important;
 }
 
-.two-fields-switch {
+.switch-two-fields {
   width: 145px;
 }
 
-.three-fields-switch {
+.switch-three-fields {
   width: 200px;
 }
 
-.modal-name-input {
-  margin: 10px auto;
-  width: 250px;
+.modal-input {
+  padding: 0px 10px;
+  margin-top: 30px;
 }
 
 .modal-name-input input {
   border-bottom-color: #ffb6d3;
   box-shadow: 0 1px 0 0 #ffb6d3;
+}
+
+.modal-input-btns {
+  margin-bottom: 20px;
+}
+
+.multiple-btns {
+  margin: 0px 10px;
+}
+
+.input-error-block {
+  color: #ff6666;
+  text-align: left;
+  font-size: 12px;
+  margin-top: -20px;
+  margin-bottom: 30px;
+}
+
+.grey-message {
+  color: grey;
+  opacity: 0.5;
+}
+
+/* Sliders */
+
+.MuiSlider-root {
+  color: #ffb6d3 !important;
+  height: 8px !important;
+}
+
+.MuiSlider-thumb {
+  height: 24px !important;
+  width: 24px !important;
+  background-color: #fff !important;
+  border: 2px solid currentColor !important;
+  margin-top: -8px !important;
+  margin-left: -12px !important;
+}
+
+.MuiSlider-valueLabel {
+  left: calc(-50% + 4px) !important;
+}
+
+.MuiSlider-track {
+  height: 8px !important;
+  border-radius: 4px;
+}
+
+.MuiSlider-rail {
+  height: 8px !important;
+  border-radius: 4px;
+}
+
+.slider-label {
+  margin-bottom: 15px;
+}
+
+.slider-container {
+  width: 95%;
+  margin: 10px auto;
 }
 
 /* Toasts messages */
@@ -203,7 +267,7 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   height: 50px;
 }
 
-#password-message {
+.password-message {
   background-color: #f1f1f1;
   color: #000;
   position: relative;
@@ -260,6 +324,63 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 .card {
   overflow: visible;
 }
+
+.profile-info-title {
+  font-size: 25px;
+  padding-bottom: 10px;
+  color: #ffb6d3;
+}
+
+.profile-username {
+  font-weight: 300;
+  font-size: 30px;
+  display: block;
+}
+
+.profile-two-names {
+  display: block;
+  line-height: 25px;
+}
+
+.profile-location,
+.profile-birthdate,
+.profile-orientation {
+  display: block;
+  line-height: 20px;
+  margin-top: 10px;
+}
+
+.slider-tall {
+  height: 740px !important;
+}
+
+.slides {
+  height: 700px !important;
+}
+
+.slider .indicators .indicator-item.active {
+  background-color: #ffb6d3 !important;
+}
+
+.profile-text-icon {
+  position: relative;
+  bottom: 5px;
+}
+
+.pink-icon {
+  color: #ffb6d3;
+}
+
+.profile-gender-icon {
+  height: 15px;
+}
+
+.profile-picture-round {
+  width: 250px !important ;
+  height: 250px !important ;
+  max-width: none !important ;
+}
+
 .profile-pic {
   margin-top: -6em;
   z-index: 1;
@@ -271,7 +392,46 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 }
 
 .profile-background-image {
-  max-height: 300px;
+  max-height: 200px;
+}
+
+.profile-popscore {
+  position: relative;
+  top: 50px;
+  left: calc(100% - 100px);
+}
+
+.profile-like {
+  position: relative;
+  top: 20px;
+  left: calc(100% - 100px);
+}
+
+.popscore {
+  clear: both;
+  display: block;
+  border: solid 1px #d1d5db;
+  border-radius: 5px;
+  text-align: center;
+  width: 80px;
+  height: 25px;
+  color: black;
+  font-weight: 600;
+}
+
+.profile-status {
+  top: 3px;
+  left: 5px;
+  font-size: 20px;
+  position: relative;
+}
+
+.online-icon {
+  color: green;
+}
+
+.offline-icon {
+  color: red;
 }
 
 .controls {
@@ -323,25 +483,25 @@ button:focus {
   max-width: 75%;
 }
 
-.chat-field{
-  background-color:#fff;
-  display:inline-block;
-  position:relative;
-  padding:5px;
-  margin-left:10px;
-  border:2px solid red;
-  border-top-right-radius:10px;
+.chat-field {
+  background-color: #fff;
+  display: inline-block;
+  position: relative;
+  padding: 5px;
+  margin-left: 10px;
+  border: 2px solid red;
+  border-top-right-radius: 10px;
   text-align: left;
   word-break: break-word;
 }
 
-.chat-field2{
-  background-color:#fff;
-  display:inline-block;
-  position:relative;
-  padding:5px;
-  margin-right:10px;
-  border:2px solid grey;
+.chat-field2 {
+  background-color: #fff;
+  display: inline-block;
+  position: relative;
+  padding: 5px;
+  margin-right: 10px;
+  border: 2px solid grey;
   border-top-left-radius: 10px;
   text-align: left;
   word-break: break-word;
@@ -372,9 +532,9 @@ button:focus {
 }
 
 .valign-wrapper .center-align .empty-box {
-    padding-top: 30%;
-    background-color: #a9a9a9;
-    margin-top: 1%;
+  padding-top: 30%;
+  background-color: #a9a9a9;
+  margin-top: 1%;
 }
 
 #chat-title {
@@ -388,18 +548,18 @@ button:focus {
   display: inherit !important;
 }
 
-.chat-message{
-  margin:0;
+.chat-message {
+  margin: 0;
   text-align: left;
 }
 
 #btn-chat-box {
   padding-top: 2%;
 }
-
+/* 
 .row {
   max-width: unset;
-}
+} */
 
 .chatbox-message {
   min-width: 320px;
@@ -414,33 +574,33 @@ button:focus {
   padding-bottom: 1%;
 }
 
-.example{
-  width:0;
-  height:0;
+.example {
+  width: 0;
+  height: 0;
   border-width: 10px 0px 10px 10px;
-  border-style:solid;
-  border-color:red transparent transparent transparent;
-  position:absolute;
-  top:-2px;
-  left:0;
-  transform:translate(-100%,0);
+  border-style: solid;
+  border-color: red transparent transparent transparent;
+  position: absolute;
+  top: -2px;
+  left: 0;
+  transform: translate(-100%, 0);
 }
 
-.example2{
-  width:0;
-  height:0;
+.example2 {
+  width: 0;
+  height: 0;
   border-width: 10px 10px 10px 0px;
-  border-style:solid;
-  border-color:grey transparent transparent transparent;
-  position:absolute;
-  top:-2px;
-  right:-20px;
-  transform:translate(-100%,0);
+  border-style: solid;
+  border-color: grey transparent transparent transparent;
+  position: absolute;
+  top: -2px;
+  right: -20px;
+  transform: translate(-100%, 0);
 }
 
 .msgpicture {
-  margin-top:-22px; 
-  margin-right:-10px;
+  margin-top: -22px;
+  margin-right: -10px;
 }
 
 .collection-item:hover {
@@ -450,7 +610,7 @@ button:focus {
   cursor: pointer;
 }
 
-.fixed-bottom-imput{
+.fixed-bottom-imput {
   position: absolute;
   bottom: 0;
   margin-top: 25px;
@@ -458,20 +618,20 @@ button:focus {
 }
 
 #green-circle {
-  background: rgb(66, 183, 42); 
-  border-radius: 50%; 
-  display: inline-block; 
-  height: 10px; 
-  margin-left: 4px; 
+  background: rgb(66, 183, 42);
+  border-radius: 50%;
+  display: inline-block;
+  height: 10px;
+  margin-left: 4px;
   width: 10px;
 }
 
 #grey-circle {
-  background: rgb(110, 114, 109); 
-  border-radius: 50%; 
-  display: inline-block; 
-  height: 10px; 
-  margin-left: 4px; 
+  background: rgb(110, 114, 109);
+  border-radius: 50%;
+  display: inline-block;
+  height: 10px;
+  margin-left: 4px;
   width: 10px;
 }
 
@@ -482,7 +642,7 @@ button:focus {
   width: 100%;
   max-width: 100% !important;
   margin: 0 auto;
-  padding: 0 .5rem;
+  padding: 0 0.5rem;
 }
 
 #messageView {
@@ -496,6 +656,10 @@ button:focus {
 
 .messagesRight {
   text-align: right;
+}
+
+.prefix.active {
+  color: #ffb6d3 !important;
 }
 
 .tooltip .tooltip-text {
@@ -577,9 +741,22 @@ button:focus {
 }
 
 .profile-fields-labels {
+  background-color: #ffb6d3;
+  text-align: center;
+  border-radius: 30px;
+  color: white;
   display: block;
-  padding: 10px 0px;
+  padding: 10px 0px 10px 0px;
+  margin: 10px 0px;
   font-weight: 900;
+}
+
+.left-label {
+  float: left !important;
+}
+
+.right-label {
+  float: right !important;
 }
 
 textarea.materialize-textarea:focus:not([readonly]) {
@@ -594,6 +771,112 @@ textarea.materialize-textarea:focus {
 
 textarea.materialize-textarea:focus:not([readonly]) + label {
   color: #9e9e9e !important;
+}
+
+label.active {
+  left: 0px !important;
+}
+
+input[type="text"]:not(.browser-default):focus:not([readonly]) + label {
+  color: #ffb6d3 !important;
+}
+
+input[type="email"]:not(.browser-default):focus:not([readonly]) + label {
+  color: #ffb6d3 !important;
+}
+
+input[type="password"]:not(.browser-default):focus:not([readonly]) + label {
+  color: #ffb6d3 !important;
+}
+
+textarea:not(.browser-default):focus:not([readonly]) + label {
+  color: #ffb6d3 !important;
+}
+
+.input-modal {
+  margin: 0px !important;
+}
+
+.edit-location-autoc-input {
+  width: calc(100% - 120px);
+}
+
+.location-container {
+  margin: 20px 0px;
+}
+
+.edit-email-input {
+  width: 90%;
+  margin: auto;
+}
+
+.edit-dropdown-background {
+  background-color: rgba(255, 233, 242, 0.3);
+  border-radius: 30px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.edit-email-text-input {
+  display: inline-block;
+  width: calc(100% - 100px);
+}
+
+.edit-email-container {
+  margin: 20px 0px;
+}
+
+.general-input-error {
+  color: #ff6666;
+  text-align: left;
+  font-size: 12px;
+  margin-top: -10px;
+  position: absolute;
+}
+
+.edit-password-message {
+  margin-left: 0px !important;
+}
+
+.notification-switch-box {
+  margin: 25px 0px;
+}
+
+.notification-switch-label {
+  display: inline-block;
+}
+
+.switch {
+  display: inline-block !important;
+  padding: 0px 10px;
+}
+
+.lever {
+  background-color: rgba(255, 182, 211, 0.5) !important;
+}
+
+.switch label input[type="checkbox"]:checked + .lever:after {
+  background-color: #ffb6d3 !important;
+}
+
+.delete-account-btn {
+  background-color: red !important;
+}
+
+/* Chat page */
+
+#messageView {
+  height: 400px;
+  overflow: hidden;
+  scroll-behavior: auto;
+}
+
+.messagesLeft {
+  text-align: left;
+}
+
+.messagesRight {
+  text-align: right;
 }
 
 /* Modals */
@@ -611,6 +894,17 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
   color: white;
 }
 
+.modal-intro {
+  margin-bottom: 20px;
+}
+
+.action-modal {
+  width: 600px;
+  height: 200px !important;
+  border-radius: 30px;
+  top: calc(50% - 100px) !important;
+}
+
 /* Date picker */
 
 .datepicker-date-display {
@@ -626,6 +920,213 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
   color: #ffb6d3 !important;
 }
 
+/* Interest Tags */
+
+.chips input {
+  display: none !important;
+}
+
+.chips {
+  display: inline-block;
+  border-bottom: none;
+}
+
+.chips-default-tags i {
+  display: none;
+}
+
+.chip {
+  background-color: #ffb6d3 !important;
+  cursor: pointer;
+}
+
+.chip-general {
+  margin: 0px !important;
+}
+
+.chip:focus {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.no-tags-message {
+  line-height: 32px;
+  color: grey;
+  opacity: 0.5;
+  margin: 20px 0px 23px 0px;
+}
+
+/* Edit profile pictures */
+
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+
+.edit-pictures-box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.picture-box {
+  display: block;
+  min-width: 300px;
+  height: 300px;
+  margin: 10px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden;
+}
+
+.upload-options {
+  position: relative;
+  height: 75px;
+  background-color: #ffb6d3;
+  cursor: pointer;
+  overflow: hidden;
+  text-align: center;
+  transition: background-color ease-in-out 150ms;
+}
+
+.upload-options:hover {
+  background-color: lighten(#ffb6d3, 10%);
+}
+
+.upload-options:hover i.material-icons {
+  color: white !important;
+}
+
+.upload-options input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.upload-options label {
+  color: white;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.upload-options:hover {
+  background-color: #ffe9f2;
+}
+
+.picture-edit-add-icon {
+  margin: auto;
+  font-size: 32px;
+}
+
+.upload-options span {
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.upload-options:hover i.material-icons {
+  color: lightgray;
+}
+
+.js--image-preview {
+  height: 225px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-image: url("");
+  background-color: white;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.js--image-preview:after {
+  content: "photo_size_select_actual";
+  font-family: "Material Icons";
+  position: relative;
+  font-size: 4.5em;
+  color: rgba(230, 230, 230, 1);
+  top: calc(50% - 3rem);
+  z-index: 0;
+}
+
+.js--image-preview.js--no-default::after {
+  display: none;
+}
+
+.drop {
+  display: block;
+  position: absolute;
+  background: transparentize(#ffb6d3, 0.8);
+  border-radius: 100%;
+  transform: scale(0);
+}
+
+.animate {
+  animation: ripple 0.4s linear;
+}
+
+@keyframes ripple {
+  100% {
+    opacity: 0;
+    transform: scale(2.5);
+  }
+}
+
+.btn-container-edit-picture {
+  display: none;
+}
+
+button.btn-star-picture {
+  position: absolute;
+  opacity: 0.5;
+  top: 10%;
+  right: 5%;
+}
+
+button.btn-delete-picture {
+  position: absolute;
+  opacity: 0.5;
+  top: 70%;
+  right: 5%;
+}
+
+.btn-star-picture:hover,
+.btn-delete-picture:hover {
+  opacity: 1 !important;
+}
+
+button.btn-star-picture-main {
+  position: absolute;
+  top: 10%;
+  right: 5%;
+}
+
+.placeholder-message-no-pic {
+  display: none;
+  position: absolute;
+  z-index: 50;
+  width: 100px;
+  height: 50px;
+  top: calc(50% - 25px);
+  left: calc(50% - 50px);
+}
+
 /* MEDIA QUERIES FOR RESPONSIVE */
 
 @media screen and (max-width: 1000px) {
@@ -639,6 +1140,11 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 }
 
 @media screen and (max-width: 640px) {
+  .profile-picture-round {
+    width: 200px !important ;
+    height: 200px !important ;
+  }
+
   #login-box {
     width: 90%;
   }
@@ -648,7 +1154,7 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
   }
 
   .profile-background-image {
-    max-height: 180px;
+    max-height: 100px;
   }
 
   .fixed-action-btn {
@@ -657,7 +1163,117 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
   }
 }
 
+@media screen and (max-width: 600px) {
+  .action-modal {
+    width: 420px;
+    height: 200px !important;
+    top: calc(50% - 100px) !important;
+  }
+
+  .profile-details-container {
+    margin-bottom: 150px;
+  }
+
+  .profile-details {
+    margin-left: 0px;
+    position: relative;
+    top: 130px;
+    right: 30%;
+  }
+
+  .slider-tall {
+    height: 440px !important;
+  }
+
+  .slides {
+    height: 400px !important;
+  }
+}
+
+@media screen and (max-width: 440px) {
+  .profile-popscore {
+    position: relative;
+    top: 35px;
+    width: 60px;
+    left: calc(100% - 70px);
+  }
+
+  .profile-like {
+    position: relative;
+    top: 5px;
+    width: 60px;
+    left: calc(100% - 70px);
+  }
+
+  .popscore {
+    width: 60px;
+    height: 25px;
+    color: black;
+  }
+
+  .profile-picture-round {
+    width: 150px !important ;
+    height: 150px !important ;
+  }
+
+  .picture-box {
+    min-width: 250px;
+    height: 250px;
+  }
+
+  .profile-details-container {
+    margin-bottom: 80px;
+  }
+
+  .profile-details {
+    margin-left: 0px;
+    position: relative;
+    top: 80px;
+    right: 30%;
+  }
+
+  .profile-location,
+  .profile-birthdate {
+    position: relative;
+    left: 33%;
+  }
+
+  .slider-tall {
+    height: 340px !important;
+  }
+
+  .slides {
+    height: 300px !important;
+  }
+
+  .js--image-preview {
+    height: 200px;
+  }
+
+  .upload-options {
+    height: 50px;
+  }
+
+  .edit-location-autoc-input {
+    width: 90%;
+  }
+
+  .action-modal {
+    width: 340px;
+    height: 220px !important;
+    top: calc(50% - 110px) !important;
+  }
+}
+
 @media screen and (max-width: 360px) {
+  .slider-tall {
+    height: 240px !important;
+  }
+
+  .slides {
+    height: 200px !important;
+  }
+
   .input-icons {
     display: none;
   }
@@ -676,7 +1292,26 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
     margin-left: 0px !important;
   }
 
-  #password-message {
+  .password-message {
     margin-left: 0px;
+  }
+
+  .picture-box {
+    min-width: 200px;
+    height: 200px;
+  }
+
+  .js--image-preview {
+    height: 150px;
+  }
+
+  .upload-options {
+    height: 50px;
+  }
+
+  .action-modal {
+    width: 300px;
+    height: 220px !important;
+    top: calc(50% - 110px) !important;
   }
 }

@@ -1,7 +1,8 @@
-var userModel     = require("../models/userModel");
-var pictureModel  = require("../models/pictureModel");
-var passwordHash  = require("password-hash");
-var sendmail      = require("../services/mailService");
+var userModel = require("../models/userModel");
+var pictureModel = require("../models/pictureModel");
+var tagModel = require("../models/tagModel");
+var passwordHash = require("password-hash");
+var sendmail = require("../services/mailService");
 
 module.exports = {
   getUser: async data => {
@@ -48,7 +49,8 @@ module.exports = {
   getUserIdFromUsername: async username => {
     try {
       var result = await userModel.findOne("username", username);
-      return result[0].id;
+      if (result != "") return result[0].id;
+      else return { error: "User not found" };
     } catch (err) {
       console.log(err);
       return { error: err };
@@ -65,6 +67,27 @@ module.exports = {
     }
   },
 
+  verifyPasswordWithId: async (pwd, id) => {
+    var result = await userModel.findOne("id", id);
+    if (result) {
+      var hashed = result[0]["password"];
+      if (passwordHash.verify(pwd, hashed))
+        return { status: "Password is valid" };
+      else {
+        return { status: "Password isn't valid" };
+      }
+    }
+  },
+
+  updatePasswordWithId: async (pwd, id) => {
+    var updated = await userModel.updatePasswordWithId(pwd, id);
+    if (updated !== "") {
+      return { status: "Password updated with success" };
+    } else {
+      return { status: "An error has occurred" };
+    }
+  },
+
   updatePasswordWithKey: async (pwd, key) => {
     var updated = await userModel.updatePasswordWithKey(pwd, key);
     if (updated) {
@@ -74,10 +97,10 @@ module.exports = {
     }
   },
 
-  getAllPictures: async id => {
+  getUserPictures: async id => {
     try {
       var result = await pictureModel.findOne("user_id", id);
-      return result[0];
+      return result;
     } catch (err) {
       console.log(err);
       return { error: err };
@@ -87,13 +110,30 @@ module.exports = {
   getProfilePicture: async id => {
     try {
       var result = await pictureModel.findProfile("user_id", id);
-      if (result[0] === undefined)
-      {
+      if (result[0] === undefined) {
         result = "default";
         return result;
-      }
-      else
-        return result[0]['base64'];
+      } else return result[0]["base64"];
+    } catch (err) {
+      console.log(err);
+      return { error: err };
+    }
+  },
+
+  getUserTags: async id => {
+    try {
+      var result = await tagModel.findOne(id);
+      return result;
+    } catch (err) {
+      console.log(err);
+      return { error: err };
+    }
+  },
+
+  getAllTags: async () => {
+    try {
+      var result = await tagModel.findAllTags();
+      return result;
     } catch (err) {
       console.log(err);
       return { error: err };

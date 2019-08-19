@@ -1,4 +1,12 @@
-import { GET_USER, USER_RECEIVED, ERROR } from "../actions/user-actions";
+import {
+  GET_USER,
+  USER_RECEIVED,
+  UPDATE_USER,
+  USER_UPDATED,
+  DELETE_USER,
+  USER_DELETED,
+  ERROR
+} from "../actions/user-actions";
 
 const initalState = {
   sendingRequest: false,
@@ -24,16 +32,54 @@ function userReducer(state = initalState, { type, payload }) {
         ...state,
         sendingRequest: false,
         requestReceived: true,
-        data: payload.data,
+        data: Object.assign(
+          payload.data,
+          { pictures: payload.pictures },
+          { tags: payload.tags },
+          { allTags: payload.allTags }
+        ),
         status: "User Received",
         statusClass: "received"
+      };
+    case UPDATE_USER:
+      return {
+        ...state,
+        sendingRequest: true,
+        requestReceived: false,
+        status: "Pending...",
+        statusClass: "pending"
+      };
+    case USER_UPDATED:
+      return {
+        ...state,
+        sendingRequest: false,
+        requestReceived: true,
+        dataSent: payload,
+        status: "User Updated",
+        statusClass: "updated"
+      };
+    case DELETE_USER:
+      return {
+        ...state,
+        sendingRequest: true,
+        requestReceived: false,
+        dataSent: payload,
+        status: "Pending...",
+        statusClass: "pending"
+      };
+    case USER_DELETED:
+      return {
+        sendingRequest: false,
+        requestReceived: true,
+        data: [],
+        status: "User Deleted",
+        statusClass: "deleted"
       };
     case ERROR:
       return {
         ...state,
         sendingRequest: false,
         requestReceived: false,
-        data: [],
         status: `${payload.message}`,
         statusClass: "error"
       };

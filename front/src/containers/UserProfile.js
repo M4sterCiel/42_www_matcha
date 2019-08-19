@@ -4,28 +4,43 @@ import AuthService from "../services/AuthService";
 import NavBar from "../components/NavBar";
 import {
   ProfileSettingsButton,
-  ProfileActionsButton
+  ProfileActionsButton,
+  LikeButton
 } from "../components/Buttons";
-import { ModalUserEditProfileInfo } from "../components/Modals";
+import ModalUserEditProfileInfo from "../components/modals/ModalUserEditProfileInfo";
+import ModalUserEditProfilePictures from "../components/modals/ModalUserEditProfilePictures";
+import ModalUserEditAccountSettings from "../components/modals/ModalUserEditAccountSettings";
 import ApiCall from "../services/ApiCall";
+import UserBio from "../components/profile/UserBio";
+import Interests from "../components/profile/Interests";
+import Preferences from "../components/profile/Preferences";
+import Pictures from "../components/profile/Pictures";
+import Popscore from "../components/profile/Popscore";
+import moment from "moment";
 import ErrorToast from "../services/ErrorToastService";
-import withAuth from "../components/withAuth";
+import defaultProfileNoGender from "../assets/default-profile-no-gender.png";
+import defaultProfileMan from "../assets/default-profile-man.jpg";
+import defaultProfileWoman from "../assets/default-profile-woman.jpg";
+import ProfileBackgroundMan from "../assets/man-profile-background.png";
+import ProfileBackgroundWoman from "../assets/woman-profile-background.png";
+import ProfileBackgroundManWoman from "../assets/man-woman-profile-background.png";
+import Male from "../assets/male.png";
+import Female from "../assets/female.png";
 
 class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.Auth = new AuthService();
-    this.handleData = this.handleData.bind(this);
-    this.handleGenderData = this.handleGenderData.bind(this);
-    this.handleSexOrientationData = this.handleSexOrientationData.bind(this);
     this.state = {
-      user: []
+      user: [],
+      profile_picture: [],
+      pictures: [],
+      tags: []
     };
   }
 
   render() {
     if (!this.state.user.id) return null;
-    //console.log(this.props);
     return (
       <div className="App">
         <NavBar />
@@ -37,18 +52,115 @@ class UserProfile extends Component {
                   <div className="card-image">
                     <img
                       className="profile-background-image"
-                      src=""
+                      src={
+                        this.state.user.sexual_orientation === "bi"
+                          ? ProfileBackgroundManWoman
+                          : (this.state.user.sexual_orientation === "hetero" &&
+                              this.state.user.gender === "man") ||
+                            (this.state.user.sexual_orientation === "homo" &&
+                              this.state.user.gender === "woman")
+                          ? ProfileBackgroundWoman
+                          : ProfileBackgroundMan
+                      }
                       alt=""
                     />
                   </div>
                   <div className="card-content">
                     <div className="row">
+                      {this.props.userConnectedData.username !==
+                        this.state.user.username && (
+                        <div className="profile-like">
+                          <LikeButton />
+                        </div>
+                      )}
+                      <div className="profile-popscore">
+                        <Popscore popscore={this.state.user.pop_score} />
+                      </div>
                       <div className="col s4 profile-pic">
                         <img
-                          className="circle responsive-img"
-                          src="https://lh3.googleusercontent.com/-W2XryVdi-lA/U6tSAh3SsbI/AAAAAAAAFGY/ZHJiUEcR_Zs/w480-h480/avatar%2Bmaterial%2Bdesign.png"
+                          className="circle responsive-img profile-picture-round"
+                          src={
+                            this.state.profile_picture.length !== 0
+                              ? this.state.profile_picture[0].url
+                              : this.state.user.gender === null
+                              ? defaultProfileNoGender
+                              : this.state.user.gender === "man"
+                              ? defaultProfileMan
+                              : defaultProfileWoman
+                          }
                           alt=""
                         />
+                      </div>
+                      <div className="profile-details-container">
+                        <div className="profile-details">
+                          <span className="profile-username">
+                            {this.state.user.username}{" "}
+                            <span className="profile-status">
+                              {this.state.user.online === 1 ? (
+                                <i className="material-icons dp48 online-icon">
+                                  fiber_manual_record
+                                </i>
+                              ) : (
+                                <i className="material-icons dp48 offline-icon">
+                                  fiber_manual_record
+                                </i>
+                              )}
+                            </span>
+                          </span>
+                          <span className="profile-two-names">
+                            {this.state.user.firstname}{" "}
+                            {this.state.user.lastname}{" "}
+                            {this.state.user.gender === null ? (
+                              <span className="grey-message">
+                                (Gender not set)
+                              </span>
+                            ) : this.state.user.gender === "man" ? (
+                              <img
+                                src={Male}
+                                alt="male icon"
+                                className="profile-gender-icon"
+                              />
+                            ) : (
+                              <img
+                                src={Female}
+                                alt="female icon"
+                                className="profile-gender-icon"
+                              />
+                            )}
+                          </span>
+                          <span className="profile-location">
+                            <i className="material-icons prefix pink-icon">
+                              place
+                            </i>{" "}
+                            <span className="profile-text-icon">
+                              {this.state.user.city === null ? (
+                                <span className="grey-message">
+                                  No location yet
+                                </span>
+                              ) : (
+                                this.state.user.city
+                              )}
+                            </span>
+                          </span>{" "}
+                          <span className="profile-birthdate">
+                            <i className="material-icons prefix pink-icon">
+                              cake
+                            </i>{" "}
+                            <span className="profile-text-icon">
+                              {this.state.user.birthdate === null ? (
+                                <span className="grey-message">
+                                  No birthdate yet
+                                </span>
+                              ) : (
+                                moment().diff(
+                                  this.state.user.birthdate,
+                                  "years",
+                                  false
+                                ) + " years old"
+                              )}
+                            </span>
+                          </span>{" "}
+                        </div>
                       </div>
                       <div className="col right controls ">
                         {this.state.user.id ===
@@ -59,12 +171,21 @@ class UserProfile extends Component {
                         )}
                       </div>
                     </div>
-                    <span className="card-title black-text">
-                      {this.state.user.firstname} {this.state.user.lastname}
-                    </span>
-                    <ModalUserEditProfileInfo userData={this.state.user} />
+                    {this.state.user.id === this.props.userConnectedData.id && (
+                      <ModalUserEditProfileInfo />
+                    )}
+                    {this.state.user.id === this.props.userConnectedData.id && (
+                      <ModalUserEditProfilePictures />
+                    )}
+                    {this.state.user.id === this.props.userConnectedData.id && (
+                      <ModalUserEditAccountSettings />
+                    )}
                   </div>
                 </div>
+                <UserBio bio={this.state.user.bio} />
+                <Preferences user={this.state.user} />
+                <Interests tags={this.state.tags} />
+                <Pictures pictures={this.state.pictures} />
               </div>
             </div>
           </div>
@@ -73,53 +194,60 @@ class UserProfile extends Component {
     );
   }
 
-  handleData(data) {
-    this.setState({
-      user: {
-        ...this.state.user,
-        firstname: data
-      }
-    });
-  }
-
-  handleGenderData(data) {
-    this.setState({
-      gender: data
-    });
-  }
-
-  handleSexOrientationData(data) {
-    this.setState({
-      sexOrientation: data
-    });
-  }
-
   componentDidUpdate() {
     let url = document.location.href;
     let username = url.split("/");
     username = username[username.length - 1];
 
-    if (
-      username !== this.state.user.username &&
-      this.state.user.username !== undefined
-    ) {
-      ApiCall.user
-        .getUserFromUsername(username)
-        .then(res =>
-          this.setState({
-            user: res
+    if (this.props.userConnectedData.username !== username) {
+      if (
+        username !== this.state.user.username &&
+        this.state.user.username !== undefined
+      ) {
+        ApiCall.user
+          .getUserFromUsername(username)
+          .then(res => {
+            if (res.pictures.length !== 0) {
+              var profile_picture = res.pictures.filter(pic => {
+                return pic.profile_picture === 1;
+              });
+            }
+
+            this.setState({
+              user: res.data,
+              profile_picture: res.pictures.length === 0 ? [] : profile_picture,
+              pictures: res.pictures,
+              tags: res.tags
+            });
           })
-        )
-        .catch(err => {
-          ErrorToast.user.userNotFound();
-          this.props.history.replace("/");
-          console.log(err);
+          .catch(err => {
+            ErrorToast.user.userNotFound();
+            this.props.history.replace("/");
+            console.log(err);
+          });
+      }
+    } else if (
+      this.state.user !== this.props.userConnectedData ||
+      this.state.pictures !== this.props.userConnectedData.pictures ||
+      this.state.tags !== this.props.userConnectedData.tags
+    ) {
+      if (this.props.userConnectedData.pictures.length !== 0) {
+        var profile_pic = this.props.userConnectedData.pictures.filter(pic => {
+          return pic.profile_picture === 1;
         });
+      }
+
+      this.setState({
+        user: this.props.userConnectedData,
+        profile_picture:
+          this.props.userConnectedData.pictures.length === 0 ? [] : profile_pic,
+        pictures: this.props.userConnectedData.pictures,
+        tags: this.props.userConnectedData.tags
+      });
     }
   }
 
   componentDidMount() {
-    //console.log(this.Auth.loggedIn());
     if (!this.Auth.loggedIn()) {
       ErrorToast.auth.pageRequiresLogin();
       this.props.history.replace("/users/login");
@@ -127,27 +255,52 @@ class UserProfile extends Component {
     let url = document.location.href;
     let username = url.split("/");
     username = username[username.length - 1];
-    ApiCall.user
-      .getUserFromUsername(username)
-      .then(res =>
-        this.setState({
-          user: res
+
+    if (this.props.userConnectedData.username !== username) {
+      ApiCall.user
+        .getUserFromUsername(username)
+        .then(res => {
+          if (res.pictures.length !== 0) {
+            var profile_picture = res.pictures.filter(pic => {
+              return pic.profile_picture === 1;
+            });
+          }
+
+          this.setState({
+            user: res.data,
+            profile_picture: res.pictures.length === 0 ? [] : profile_picture,
+            pictures: res.pictures,
+            tags: res.tags
+          });
         })
-      )
-      .catch(err => {
-        ErrorToast.user.userNotFound();
-        this.props.history.replace("/");
-        console.log(err);
+        .catch(err => {
+          ErrorToast.user.userNotFound();
+          this.props.history.replace("/");
+          console.log(err);
+        });
+    } else {
+      if (this.props.userConnectedData.pictures.length !== 0) {
+        var profile_pic = this.props.userConnectedData.pictures.filter(pic => {
+          return pic.profile_picture === 1;
+        });
+      }
+
+      this.setState({
+        user: this.props.userConnectedData,
+        profile_picture:
+          this.props.userConnectedData.pictures.length === 0 ? [] : profile_pic,
+        pictures: this.props.userConnectedData.pictures,
+        tags: this.props.userConnectedData.tags
       });
+    }
   }
 }
 
 const mapStateToProps = state => {
-  //console.log(state);
   return {
     userConnectedData: state.user.data,
     userConnectedStatus: state.user.status
   };
 };
 
-export default withAuth(connect(mapStateToProps)(UserProfile));
+export default connect(mapStateToProps)(UserProfile);
