@@ -5,6 +5,9 @@ import io from "socket.io-client";
 import AuthService from "../services/AuthService";
 import Axios from "axios";
 
+const CancelToken = Axios.CancelToken;
+let cancel;
+
 class ChatConv extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +35,10 @@ class ChatConv extends Component {
 
   async componentDidMount() {
     this.setState({ winSize: window.innerHeight - 160 });
-    await Axios.get("/chat/matches/" + this.Auth.getToken())
+    await Axios.get("/chat/matches/" + this.Auth.getToken(), { cancelToken: new CancelToken(function executor(c) {
+        cancel = c;
+      })
+    })
       .then(res => {
         //console.log(res.data['result']);
         //console.log(res.data['status']);
@@ -67,7 +73,7 @@ class ChatConv extends Component {
         //console.log(this.state.matches);
       })
       .catch(err => {
-        console.log(err);
+        //console.log(err);
       });
 
     await this.setState({
@@ -83,49 +89,52 @@ class ChatConv extends Component {
       })
     });
 
-    this.state.socket.on("online", data => {
-      var tab = this.state.matches;
-      for (var i = 0; i < tab.length; i++) {
-        //eslint-disable-next-line
-        if (tab[i]["userID"] == data["user_id"]) tab[i]["status"] = "Online";
-      }
-      this.setState({ matches: tab });
-    });
-
-    this.state.socket.on("offline", data => {
-      var tab = this.state.matches;
-      for (var i = 0; i < tab.length; i++) {
-        // eslint-disable-next-line
-        if (tab[i]["userID"] == data["user_id"]) tab[i]["status"] = "Offline";
-      }
-      this.setState({ matches: tab });
-    });
-
-    this.state.socket.on("new message", data => {
-      // eslint-disable-next-line
-      if (data["userID_other"] != this.state.userID) return;
-      var elem;
-      for (var i = 0; i < this.state.matches.length; i++) {
-        // eslint-disable-next-line
-        if (this.state.matches[i]["room_id"] == data["room_id"]) {
-          elem = document.getElementById(
-            "contactList-" + this.state.matches[i]["room_id"]
-          );
-          break;
+    if (this.state.socket)
+    {
+        this.state.socket.on("online", data => {
+        var tab = this.state.matches;
+        for (var i = 0; i < tab.length; i++) {
+            //eslint-disable-next-line
+            if (tab[i]["userID"] == data["user_id"]) tab[i]["status"] = "Online";
         }
-      }
-      this.sortContactList(data["room_id"]);
-      elem.style = "background-color: #ffcdd2;";
-    });
+        this.setState({ matches: tab });
+        });
 
-    this.callNotifApi();
+        this.state.socket.on("offline", data => {
+        var tab = this.state.matches;
+        for (var i = 0; i < tab.length; i++) {
+            // eslint-disable-next-line
+            if (tab[i]["userID"] == data["user_id"]) tab[i]["status"] = "Offline";
+        }
+        this.setState({ matches: tab });
+        });
 
-    this.state.socket.on("readMessage", (data, roomID) => {
-      // eslint-disable-next-line
-      if (data != this.state.userID) return;
-      document.getElementById("contactList-" + roomID).removeAttribute("style");
-    });
-  }
+        this.state.socket.on("new message", data => {
+        // eslint-disable-next-line
+        if (data["userID_other"] != this.state.userID) return;
+        var elem;
+        for (var i = 0; i < this.state.matches.length; i++) {
+            // eslint-disable-next-line
+            if (this.state.matches[i]["room_id"] == data["room_id"]) {
+            elem = document.getElementById(
+                "contactList-" + this.state.matches[i]["room_id"]
+            );
+            break;
+            }
+        }
+        this.sortContactList(data["room_id"]);
+        elem.style = "background-color: #ffcdd2;";
+        });
+
+        this.callNotifApi();
+
+        this.state.socket.on("readMessage", (data, roomID) => {
+        // eslint-disable-next-line
+        if (data != this.state.userID) return;
+        document.getElementById("contactList-" + roomID).removeAttribute("style");
+        });
+    }
+}
 
   contactList = props => {
     const value = props.value;
@@ -156,6 +165,7 @@ class ChatConv extends Component {
 
   componentWillUnmount() {
     if (this.state.socket !== "") this.state.socket.close();
+    cancel();
   }
 
   sortContactList = roomID => {
@@ -180,7 +190,10 @@ class ChatConv extends Component {
   };
 
   callNotifApi = async () => {
-    await Axios.get("/chat/notification/list/" + this.state.userID)
+    await Axios.get("/chat/notification/list/" + this.state.userID, { cancelToken: new CancelToken(function executor(c) {
+        cancel = c;
+      })
+    })
       .then(res => {
         var tab = res.data["notification"];
         for (var i = 0; i < tab.length; i++) {
@@ -189,7 +202,7 @@ class ChatConv extends Component {
         }
       })
       .catch(err => {
-        console.log(err);
+        //console.log(err);
       });
   };
 }

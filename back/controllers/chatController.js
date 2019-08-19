@@ -26,7 +26,8 @@ module.exports = {
         for (var i=0;i<result.length;i++) {
             status[i] = result[i]['user_1'] != userID ? result[i]['user_1'] : result[i]['user_2'];
         }
-        status = await userModel.getStatus(status);
+        if (status.length > 1)
+            status = await userModel.getStatus(status);
         //console.log({ status });
         return res.status(200).json({ result, status });
     },

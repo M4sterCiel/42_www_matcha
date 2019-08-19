@@ -23,6 +23,8 @@ import Highlight_off from "@material-ui/icons/HighlightOff";
 import { connect } from "react-redux";
 
 const Auth = new AuthService();
+const CancelToken = Axios.CancelToken;
+let cancel;
 
 class NavBar extends Component {
   constructor(props) {
@@ -61,30 +63,39 @@ class NavBar extends Component {
       })
     });
 
-    this.state.socket.on("new message", data => {
-      if (data["userID_other"] === this.state.userID)
-        this.setState({ nbMessages: this.state.nbMessages + 1 });
-    });
-
-    this.state.socket.on("readMessage", data => {
-      // eslint-disable-next-line
-      if (data == this.state.userID) this.callMsgNotifApi();
-    });
+    if (this.state.socket)
+    {
+      this.state.socket.on("new message", data => {
+        if (data["userID_other"] === this.state.userID)
+          this.setState({ nbMessages: this.state.nbMessages + 1 });
+      });
+    
+      this.state.socket.on("readMessage", data => {
+        // eslint-disable-next-line
+        if (data == this.state.userID) this.callMsgNotifApi();
+      });
+    }
   }
 
   callMsgNotifApi = async () => {
-    await Axios.get("/chat/notification/messages/" + this.state.userID)
+    await Axios.get("/chat/notification/messages/" + this.state.userID, { cancelToken: new CancelToken(function executor(c) {
+      cancel = c;
+    })
+  })
       .then(res => {
         this.setState({ nbMessages: res.data["notification"][0]["COUNT (*)"] });
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(error => {
+          //console.log(error);
+      })
   };
 
   callMainNotifApi = async () => {
     var counter = 0;
-    await Axios.get("/users/notification/main/" + this.state.userID)
+    await Axios.get("/users/notification/main/" + this.state.userID, { cancelToken: new CancelToken(function executor(c) {
+      cancel = c;
+    })
+  })
       .then(res => {
         var tab = res.data.tab;
         for (var i = 0; i < tab.length; i++)
@@ -95,12 +106,13 @@ class NavBar extends Component {
         //console.log(this.state.listNotif);
       })
       .catch(err => {
-        console.log(err);
-      });
+        //console.log(err);
+      })
   };
 
   componentWillUnmount() {
     if (this.state.socket !== "") this.state.socket.close();
+    cancel();
   }
 
   render() {
