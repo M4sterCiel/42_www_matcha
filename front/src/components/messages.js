@@ -33,6 +33,47 @@ class Messages extends Component {
     this.updateChat();
   }
 
+  render() {
+    return (
+        <div className="App">
+            <NavBar />
+            <div 
+            className="row left align"
+            style={{minWidth: 100 + '%'}}
+            >
+                <div className="col s3" style={{height: this.state.winSize}} >
+                    <ChatConv 
+                    roomToParent={this.handleRoomData}
+                     />
+                </div>
+                <div className="col s9">
+                    {this.state.room === null &&
+                    <div 
+                    className="valign-wrapper center-align empty-box"
+                    style={{
+                        paddingTop: 30 + '%',
+                        backgroundColor: '#a9a9a9',
+                        marginTop: 1 + '%',
+                        height: window.innerHeight - 100
+                    }}>
+                        {this.state.listMessages.length < 1 && <h5>Select a conversation.</h5>}
+                    </div>
+                    }
+                    {this.state.room !== null &&
+                    <ChatRoom 
+                    room_id={this.state.room} 
+                    listMessages={this.state.listMessages}
+                    username={this.state.username}
+                    userID_other={this.state.userID}
+                    />
+                    }
+                </div>
+            </div>
+        </div>
+    )
+}
+
+
   async componentDidMount() {
     if (this.state.room === null) return;
     await Axios.get("/chat/room/" + this.state.room, {
