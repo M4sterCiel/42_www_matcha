@@ -43,11 +43,11 @@ class NavBar extends Component {
   }
 
   async componentDidMount() {
-    //console.log(this.state);
+    console.log(this.state);
     if (!localStorage.getItem("Token")) {
       return;
     }
-    
+
     await this.setState({ userID: this.Auth.getConfirm()["id"] });
 
     await this.callMsgNotifApi();
@@ -65,13 +65,12 @@ class NavBar extends Component {
       })
     });
 
-    if (this.state.socket)
-    {
+    if (this.state.socket) {
       this.state.socket.on("new message", data => {
         if (data["userID_other"] === this.state.userID)
           this.setState({ nbMessages: this.state.nbMessages + 1 });
       });
-    
+
       this.state.socket.on("readMessage", data => {
         // eslint-disable-next-line
         if (data == this.state.userID) this.callMsgNotifApi();
@@ -80,37 +79,39 @@ class NavBar extends Component {
   }
 
   callMsgNotifApi = async () => {
-    await Axios.get("/chat/notification/messages/" + this.state.userID, { cancelToken: new CancelToken(function executor(c) {
-      cancel = c;
+    await Axios.get("/chat/notification/messages/" + this.state.userID, {
+      cancelToken: new CancelToken(function executor(c) {
+        cancel = c;
+      })
     })
-  })
       .then(res => {
         this.setState({ nbMessages: res.data["notification"][0]["COUNT (*)"] });
       })
       .catch(error => {
-          //console.log(error);
-      })
+        //console.log(error);
+      });
   };
 
   callMainNotifApi = async () => {
     var counter = 0;
-    await Axios.get("/users/notification/main/" + this.state.userID, { cancelToken: new CancelToken(function executor(c) {
-      cancel = c;
+    await Axios.get("/users/notification/main/" + this.state.userID, {
+      cancelToken: new CancelToken(function executor(c) {
+        cancel = c;
+      })
     })
-  })
       .then(res => {
         var tab = res.data.tab;
         for (var i = 0; i < tab.length; i++)
-          // eslint-disable-next-line
           if (tab[i]["isRead"] == 0) counter++;
-        this.setState({ 
+        this.setState({
           listNotif: tab,
-          nbNotifications: counter });
+          nbNotifications: counter
+        });
         //console.log(this.state.listNotif);
       })
       .catch(err => {
         //console.log(err);
-      })
+      });
   };
 
   componentWillUnmount() {

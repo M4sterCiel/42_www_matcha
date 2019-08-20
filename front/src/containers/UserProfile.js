@@ -26,7 +26,6 @@ import ProfileBackgroundWoman from "../assets/woman-profile-background.png";
 import ProfileBackgroundManWoman from "../assets/man-woman-profile-background.png";
 import Male from "../assets/male.png";
 import Female from "../assets/female.png";
-import { throws } from "assert";
 
 class UserProfile extends Component {
   constructor(props) {
