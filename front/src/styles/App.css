@@ -402,9 +402,9 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 }
 
 .profile-like {
-  position: relative;
-  top: 20px;
-  left: calc(100% - 100px);
+  position: absolute;
+  top: 220px;
+  left: calc(100% - 120px);
 }
 
 .popscore {
@@ -1145,16 +1145,32 @@ button.btn-star-picture-main {
     height: 200px !important ;
   }
 
+  .profile-background-image {
+    max-height: 100px;
+  }
+
+  .profile-details-container {
+    margin-bottom: 150px;
+  }
+
+  .profile-details {
+    margin-left: 0px;
+    position: relative;
+    top: 130px;
+    right: 30%;
+  }
+
+  .profile-like {
+    top: 120px;
+    left: calc(100% - 120px);
+  }
+
   #login-box {
     width: 90%;
   }
 
   .row .col.s6 {
     width: 100%;
-  }
-
-  .profile-background-image {
-    max-height: 100px;
   }
 
   .fixed-action-btn {
@@ -1170,17 +1186,6 @@ button.btn-star-picture-main {
     top: calc(50% - 100px) !important;
   }
 
-  .profile-details-container {
-    margin-bottom: 150px;
-  }
-
-  .profile-details {
-    margin-left: 0px;
-    position: relative;
-    top: 130px;
-    right: 30%;
-  }
-
   .slider-tall {
     height: 440px !important;
   }
@@ -1193,16 +1198,14 @@ button.btn-star-picture-main {
 @media screen and (max-width: 440px) {
   .profile-popscore {
     position: relative;
-    top: 35px;
+    top: 50px;
     width: 60px;
     left: calc(100% - 70px);
   }
 
   .profile-like {
-    position: relative;
-    top: 5px;
     width: 60px;
-    left: calc(100% - 70px);
+    left: calc(100% - 85px);
   }
 
   .popscore {
