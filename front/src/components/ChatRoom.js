@@ -3,7 +3,6 @@ import "../styles/App.css";
 import "materialize-css/dist/css/materialize.min.css";
 import io from "socket.io-client";
 import AuthService from "../services/AuthService";
-//import Axios from "axios";
 
 class Chat extends Component {
   constructor(props) {

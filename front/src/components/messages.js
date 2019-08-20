@@ -7,8 +7,10 @@ import Axios from "axios";
 import withAuth from "./withAuth";
 import ChatConv from './ChatConv';
 import ChatRoom from './ChatRoom';
-import NavBar from './NavBar';
+import NavBar from './NavBar2';
 
+const CancelToken = Axios.CancelToken;
+let cancel;
 
 class Messages extends Component {
     constructor(props) {
@@ -75,7 +77,10 @@ class Messages extends Component {
     async componentDidMount() {
         if (this.state.room === null)
             return;
-        await Axios.get('/chat/room/' + this.state.room)
+        await Axios.get('/chat/room/' + this.state.room, { cancelToken: new CancelToken(function executor(c) {
+            cancel = c;
+          })
+        })
             .then(res => {
                 const tab = [];
                 for (var i=0; i<res.data.result.length; i++)
@@ -95,7 +100,10 @@ class Messages extends Component {
     }
 
     updateChat = async () => {
-        await Axios.get('/chat/room/' + this.state.room)
+        await Axios.get('/chat/room/' + this.state.room, { cancelToken: new CancelToken(function executor(c) {
+            cancel = c;
+          })
+        })
             .then(res => {
                 const tab = [];
                 for (var i=0; i<res.data.result.length; i++)
@@ -112,7 +120,6 @@ class Messages extends Component {
             })
            // console.log(this.state.listMessages);
     }
-
 }
 
 export default withAuth(Messages);

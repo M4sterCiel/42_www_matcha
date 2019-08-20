@@ -24,8 +24,7 @@ class SelectLocation extends Component {
     this.initGeolocator();
     if (
       this.props.userConnectedData.geo_lat &&
-      this.props.userConnectedData.geo_long
-    ) {
+      this.props.userConnectedData.geo_long) {
       this.getCityFromLatLong(
         this.props.userConnectedData.geo_lat,
         this.props.userConnectedData.geo_long

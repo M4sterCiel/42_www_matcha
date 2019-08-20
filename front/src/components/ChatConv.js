@@ -165,7 +165,6 @@ class ChatConv extends Component {
 
   componentWillUnmount() {
     if (this.state.socket !== "") this.state.socket.close();
-    cancel();
   }
 
   sortContactList = roomID => {
