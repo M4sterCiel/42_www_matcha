@@ -251,7 +251,7 @@ class Register extends Component {
   }
 
   // Redirect user if already logged in
-  componentDidlMount() {
+  componentDidMount() {
 
     this._isMounted = true;
 
