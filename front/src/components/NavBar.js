@@ -36,6 +36,7 @@ class NavBar extends Component {
       nbNotifications: null,
       right: false
     };
+    this._isMounted = false;
     this.Auth = new AuthService();
     this.handleLogout = this.handleLogout.bind(this);
     this.Auth.getConfirm = this.Auth.getConfirm.bind(this);
@@ -43,17 +44,17 @@ class NavBar extends Component {
   }
 
   async componentDidMount() {
-    console.log(this.state);
+    //console.log(this.state);
     if (!localStorage.getItem("Token")) {
       return;
     }
+    this._isMounted = true;
+    this._isMounted && await this.setState({ userID: this.Auth.getConfirm()["id"] });
 
-    await this.setState({ userID: this.Auth.getConfirm()["id"] });
+    this._isMounted && await this.callMsgNotifApi();
+    this._isMounted && await this.callMainNotifApi();
 
-    await this.callMsgNotifApi();
-    await this.callMainNotifApi();
-
-    await this.setState({
+    this._isMounted && await this.setState({
       socket: io({
         transports: ["polling"],
         requestTimeout: 50000,
@@ -68,7 +69,7 @@ class NavBar extends Component {
     if (this.state.socket) {
       this.state.socket.on("new message", data => {
         if (data["userID_other"] === this.state.userID)
-          this.setState({ nbMessages: this.state.nbMessages + 1 });
+        this._isMounted && this.setState({ nbMessages: this.state.nbMessages + 1 });
       });
 
       this.state.socket.on("readMessage", data => {
@@ -85,7 +86,7 @@ class NavBar extends Component {
       })
     })
       .then(res => {
-        this.setState({ nbMessages: res.data["notification"][0]["COUNT (*)"] });
+        this._isMounted && this.setState({ nbMessages: res.data["notification"][0]["COUNT (*)"] });
       })
       .catch(error => {
         //console.log(error);
@@ -103,7 +104,7 @@ class NavBar extends Component {
         var tab = res.data.tab;
         for (var i = 0; i < tab.length; i++)
           if (tab[i]["isRead"] == 0) counter++;
-        this.setState({
+          this._isMounted && this.setState({
           listNotif: tab,
           nbNotifications: counter
         });
@@ -116,6 +117,7 @@ class NavBar extends Component {
 
   componentWillUnmount() {
     if (this.state.socket !== "") this.state.socket.close();
+    this._isMounted = false;
   }
 
   render() {

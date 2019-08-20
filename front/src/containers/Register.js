@@ -43,6 +43,7 @@ class Register extends Component {
       responseToPost: ""
     };
     this.Auth = new AuthService();
+    this._isMounted = false;
   }
 
   render() {
@@ -250,7 +251,10 @@ class Register extends Component {
   }
 
   // Redirect user if already logged in
-  componentWillMount() {
+  componentDidlMount() {
+
+    this._isMounted = true;
+
     BackgroundAdd();
     if (this.Auth.loggedIn()) {
       ErrorToast.auth.userAlreadyLogged();
@@ -271,7 +275,7 @@ class Register extends Component {
     };
     GeoPosition.locate(options, (err, location) => {
       console.log(err || location);
-      this.setState({ userLocation: location, locationValid: true });
+      this._isMounted && this.setState({ userLocation: location, locationValid: true });
     });
   };
 
@@ -287,7 +291,7 @@ class Register extends Component {
     };
     GeoPosition.locateByMobile(options, (err, location) => {
       console.log(err || location);
-      this.setState({ userLocation: location, locationValid: true });
+      this._isMounted && this.setState({ userLocation: location, locationValid: true });
     });
   };
 
@@ -309,7 +313,7 @@ class Register extends Component {
   handleFirstnameKeyUp = e => {
     let result = ValidateInput.user.firstname(e.target.value);
 
-    this.setState({
+    this._isMounted && this.setState({
       firstnameError: result.firstnameError,
       firstnameValid: result.firstnameValid
     });
@@ -318,7 +322,7 @@ class Register extends Component {
   handleLastnameKeyUp = e => {
     let result = ValidateInput.user.lastname(e.target.value);
 
-    this.setState({
+    this._isMounted && this.setState({
       lastnameError: result.lastnameError,
       lastnameValid: result.lastnameValid
     });
@@ -327,7 +331,7 @@ class Register extends Component {
   handleUsernameKeyUp = e => {
     let result = ValidateInput.user.username(e.target.value);
 
-    this.setState({
+    this._isMounted && this.setState({
       usernameError: result.usernameError,
       usernameValid: result.usernameValid
     });
@@ -336,7 +340,7 @@ class Register extends Component {
   handleEmailKeyUp = e => {
     let result = ValidateInput.user.email(e.target.value);
 
-    this.setState({
+    this._isMounted && this.setState({
       emailError: result.emailError,
       emailValid: result.emailValid
     });
@@ -345,26 +349,26 @@ class Register extends Component {
   // Checking password format is valid
   validatePwd = () => {
     if (/[a-z]/.test(this.state.pwd1)) {
-      this.setState({ pwdHasLowercase: true });
+      this._isMounted && this.setState({ pwdHasLowercase: true });
     } else {
-      this.setState({ pwdHasLowercase: false });
+      this._isMounted && this.setState({ pwdHasLowercase: false });
     }
 
     if (/[A-Z]/g.test(this.state.pwd1)) {
-      this.setState({ pwdHasUppercase: true });
+      this._isMounted && this.setState({ pwdHasUppercase: true });
     } else {
-      this.setState({ pwdHasUppercase: false });
+      this._isMounted && this.setState({ pwdHasUppercase: false });
     }
     if (/[0-9]/g.test(this.state.pwd1)) {
-      this.setState({ pwdHasNumber: true });
+      this._isMounted && this.setState({ pwdHasNumber: true });
     } else {
-      this.setState({ pwdHasNumber: false });
+      this._isMounted && this.setState({ pwdHasNumber: false });
     }
 
     if (this.state.pwd1.length >= 8 && this.state.pwd1.length <= 30) {
-      this.setState({ pwdHasMinLen: true });
+      this._isMounted && this.setState({ pwdHasMinLen: true });
     } else {
-      this.setState({ pwdHasMinLen: false });
+      this._isMounted && this.setState({ pwdHasMinLen: false });
     }
 
     if (
@@ -373,18 +377,18 @@ class Register extends Component {
       this.state.pwdHasNumber &&
       this.state.pwdHasMinLen
     ) {
-      this.setState({ pwd1Valid: true });
+      this._isMounted && this.setState({ pwd1Valid: true });
     } else {
-      this.setState({ pwd1Valid: false });
+      this._isMounted && this.setState({ pwd1Valid: false });
     }
   };
 
   // Checking passwords match
   validateRepeatPwd = () => {
     if (this.state.pwd1 === this.state.pwd2) {
-      this.setState({ pwd2Error: "" });
+      this._isMounted && this.setState({ pwd2Error: "" });
     } else if (this.state.pwd2 !== "") {
-      this.setState({ pwd2Error: "Passwords don't match" });
+      this._isMounted && this.setState({ pwd2Error: "Passwords don't match" });
     }
   };
 
@@ -412,7 +416,7 @@ class Register extends Component {
       location: this.state.userLocation
     })
       .then(res => {
-        this.setState({ responseToPost: res.data });
+        this._isMounted && this.setState({ responseToPost: res.data });
         InfoToast.custom.info(
           "An email to validate your account has been sent",
           3000
@@ -425,6 +429,10 @@ class Register extends Component {
         ErrorToast.custom.error(message);
       });
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 }
 
 export default Register;
