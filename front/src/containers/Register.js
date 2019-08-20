@@ -252,7 +252,6 @@ class Register extends Component {
 
   // Redirect user if already logged in
   componentDidMount() {
-
     this._isMounted = true;
 
     BackgroundAdd();
@@ -275,7 +274,8 @@ class Register extends Component {
     };
     GeoPosition.locate(options, (err, location) => {
       console.log(err || location);
-      this._isMounted && this.setState({ userLocation: location, locationValid: true });
+      this._isMounted &&
+        this.setState({ userLocation: location, locationValid: true });
     });
   };
 
@@ -291,7 +291,8 @@ class Register extends Component {
     };
     GeoPosition.locateByMobile(options, (err, location) => {
       console.log(err || location);
-      this._isMounted && this.setState({ userLocation: location, locationValid: true });
+      this._isMounted &&
+        this.setState({ userLocation: location, locationValid: true });
     });
   };
 
@@ -313,37 +314,41 @@ class Register extends Component {
   handleFirstnameKeyUp = e => {
     let result = ValidateInput.user.firstname(e.target.value);
 
-    this._isMounted && this.setState({
-      firstnameError: result.firstnameError,
-      firstnameValid: result.firstnameValid
-    });
+    this._isMounted &&
+      this.setState({
+        firstnameError: result.firstnameError,
+        firstnameValid: result.firstnameValid
+      });
   };
 
   handleLastnameKeyUp = e => {
     let result = ValidateInput.user.lastname(e.target.value);
 
-    this._isMounted && this.setState({
-      lastnameError: result.lastnameError,
-      lastnameValid: result.lastnameValid
-    });
+    this._isMounted &&
+      this.setState({
+        lastnameError: result.lastnameError,
+        lastnameValid: result.lastnameValid
+      });
   };
 
   handleUsernameKeyUp = e => {
     let result = ValidateInput.user.username(e.target.value);
 
-    this._isMounted && this.setState({
-      usernameError: result.usernameError,
-      usernameValid: result.usernameValid
-    });
+    this._isMounted &&
+      this.setState({
+        usernameError: result.usernameError,
+        usernameValid: result.usernameValid
+      });
   };
 
   handleEmailKeyUp = e => {
     let result = ValidateInput.user.email(e.target.value);
 
-    this._isMounted && this.setState({
-      emailError: result.emailError,
-      emailValid: result.emailValid
-    });
+    this._isMounted &&
+      this.setState({
+        emailError: result.emailError,
+        emailValid: result.emailValid
+      });
   };
 
   // Checking password format is valid
@@ -424,7 +429,7 @@ class Register extends Component {
         this.props.history.push("/users/login");
       })
       .catch(err => {
-        let message = err.response.data['error'];
+        let message = err.response.data["error"];
         //ErrorToast.default.error(message);
         ErrorToast.custom.error(message);
       });
