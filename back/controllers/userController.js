@@ -2,7 +2,6 @@ var UserService = require("../services/userService");
 var userModel = require("../models/userModel");
 var tagModel = require("../models/tagModel");
 var pictureModel = require("../models/pictureModel");
-var notifModel = require("../models/notifModel");
 var input = require("../services/inputService");
 var jwtUtils = require("../services/jwtService");
 
@@ -360,13 +359,13 @@ module.exports = {
 
   getMainNotification: async (req, res, next) => {
     var userID = req.params["userID"];
-    var ret = await notifModel.getNotification(userID);
+    var ret = await userModel.getNotification(userID);
     return res.status(200).json({ tab: ret });
   },
 
   dismissNotif: async (req, res, next) => {
     var userID = req.params["userID"];
-    var result = await notifModel.dismissNotif(userID);
+    var result = await userModel.dismissNotif(userID);
     if (result) return res.status(200).json({ msg: "Notifications dismissed" });
     else
       return res.status(200).json({
