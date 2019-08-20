@@ -115,6 +115,10 @@ class NavBar extends Component {
       });
   };
 
+  componentDidUpdate() {
+    if ((!localStorage.getItem("Token") || !this.Auth.isTokenExpired) && this.state.socket !== "")
+      this.state.socket.close();
+  }
   componentWillUnmount() {
     if (this.state.socket !== "") this.state.socket.close();
     this._isMounted = false;
@@ -140,7 +144,7 @@ class NavBar extends Component {
 
       const toggleDrawer = (side, open) => event => {
         Axios.post("/users/read-notification/" + userID).then(res => {
-          this.setState({ nbNotifications: null, [side]: open });
+          this._isMounted && this.setState({ nbNotifications: null, [side]: open });
         });
 
         if (

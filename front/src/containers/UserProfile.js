@@ -26,6 +26,7 @@ import ProfileBackgroundWoman from "../assets/woman-profile-background.png";
 import ProfileBackgroundManWoman from "../assets/man-woman-profile-background.png";
 import Male from "../assets/male.png";
 import Female from "../assets/female.png";
+import io from "socket.io-client";
 
 class UserProfile extends Component {
   constructor(props) {
@@ -35,7 +36,8 @@ class UserProfile extends Component {
       user: [],
       profile_picture: [],
       pictures: [],
-      tags: []
+      tags: [],
+      socket: ""
     };
     this._isMounted = false;
   }
@@ -203,11 +205,7 @@ class UserProfile extends Component {
     let username = url.split("/");
     username = username[username.length - 1];
 
-    if (
-      this.props.userConnectedData.username !== username &&
-      username !== "" &&
-      username !== undefined
-    ) {
+    if (this.props.userConnectedData.username !== username) {
       if (
         username !== this.state.user.username &&
         this.state.user.username !== undefined
@@ -221,14 +219,12 @@ class UserProfile extends Component {
               });
             }
 
-            this._isMounted &&
-              this.setState({
-                user: res.data,
-                profile_picture:
-                  res.pictures.length === 0 ? [] : profile_picture,
-                pictures: res.pictures,
-                tags: res.tags
-              });
+            this._isMounted && this.setState({
+              user: res.data,
+              profile_picture: res.pictures.length === 0 ? [] : profile_picture,
+              pictures: res.pictures,
+              tags: res.tags
+            });
           })
           .catch(err => {
             ErrorToast.user.userNotFound();
@@ -247,16 +243,13 @@ class UserProfile extends Component {
         });
       }
 
-      this._isMounted &&
-        this.setState({
-          user: this.props.userConnectedData,
-          profile_picture:
-            this.props.userConnectedData.pictures.length === 0
-              ? []
-              : profile_pic,
-          pictures: this.props.userConnectedData.pictures,
-          tags: this.props.userConnectedData.tags
-        });
+      this._isMounted && this.setState({
+        user: this.props.userConnectedData,
+        profile_picture:
+          this.props.userConnectedData.pictures.length === 0 ? [] : profile_pic,
+        pictures: this.props.userConnectedData.pictures,
+        tags: this.props.userConnectedData.tags
+      });
     }
   }
 
@@ -270,11 +263,24 @@ class UserProfile extends Component {
     let username = url.split("/");
     username = username[username.length - 1];
 
-    if (
-      this.props.userConnectedData.username !== username &&
-      username !== "" &&
-      username !== undefined
-    ) {
+    if (this.props.userConnectedData.username !== username) {
+      this._isMounted && this.setState({ 
+        socket: io({
+          transports: ["polling"],
+          requestTimeout: 50000,
+          upgrade: false,
+          "sync disconnect on unload": true,
+          query: {
+            userID: this.Auth.getConfirm()["id"]
+          }
+        })
+      });
+
+      /* this.state.socket.emit("sendNotif", {
+        type: 'visit',
+        
+      }) */
+
       ApiCall.user
         .getUserFromUsername(username)
         .then(res => {
@@ -284,13 +290,12 @@ class UserProfile extends Component {
             });
           }
 
-          this._isMounted &&
-            this.setState({
-              user: res.data,
-              profile_picture: res.pictures.length === 0 ? [] : profile_picture,
-              pictures: res.pictures,
-              tags: res.tags
-            });
+          this._isMounted && this.setState({
+            user: res.data,
+            profile_picture: res.pictures.length === 0 ? [] : profile_picture,
+            pictures: res.pictures,
+            tags: res.tags
+          });
         })
         .catch(err => {
           ErrorToast.user.userNotFound();
@@ -304,20 +309,18 @@ class UserProfile extends Component {
         });
       }
 
-      this._isMounted &&
-        this.setState({
-          user: this.props.userConnectedData,
-          profile_picture:
-            this.props.userConnectedData.pictures.length === 0
-              ? []
-              : profile_pic,
-          pictures: this.props.userConnectedData.pictures,
-          tags: this.props.userConnectedData.tags
-        });
+      this._isMounted && this.setState({
+        user: this.props.userConnectedData,
+        profile_picture:
+          this.props.userConnectedData.pictures.length === 0 ? [] : profile_pic,
+        pictures: this.props.userConnectedData.pictures,
+        tags: this.props.userConnectedData.tags
+      });
     }
   }
 
   componentWillUnmount() {
+    if (this.state.socket !== "") this.state.socket.close();
     this._isMounted = false;
   }
 }
