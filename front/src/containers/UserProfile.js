@@ -203,7 +203,6 @@ class UserProfile extends Component {
     let username = url.split("/");
     username = username[username.length - 1];
 
-    console.log("Username (didupdate): ", username);
     if (
       this.props.userConnectedData.username !== username &&
       username !== "" &&
