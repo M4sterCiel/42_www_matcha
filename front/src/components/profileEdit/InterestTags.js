@@ -12,27 +12,33 @@ class InterestTags extends Component {
       defaultTagsArray: []
     };
     this.chipDelete = this.chipDelete.bind(this);
+    this._isMounted = false;
   }
 
   componentDidMount() {
-    this.setState({
-      myTagsArray: this.props.userConnectedData.tags,
-      defaultTagsArray: this.props.userConnectedData.allTags
-    });
+    this._isMounted = true;
+    this._isMounted &&
+      this.setState({
+        myTagsArray: this.props.userConnectedData.tags,
+        defaultTagsArray: this.props.userConnectedData.allTags
+      });
   }
 
   componentDidUpdate() {
+    this._isMounted = true;
     if (this.state.myTagsArray !== this.props.userConnectedData.tags) {
-      this.setState({
-        myTagsArray: this.props.userConnectedData.tags
-      });
+      this._isMounted &&
+        this.setState({
+          myTagsArray: this.props.userConnectedData.tags
+        });
     }
   }
 
   createMyTags(tab) {
-    this.setState({
-      myTagsArray: tab
-    });
+    this._isMounted &&
+      this.setState({
+        myTagsArray: tab
+      });
   }
 
   chipDelete(tag_id) {
@@ -45,12 +51,13 @@ class InterestTags extends Component {
 
   chipSelectDefault(tag_id, value) {
     if (!this.state.myTagsArray.find(tag => tag.tag_id === tag_id)) {
-      this.setState({
-        myTagsArray: [
-          ...this.state.myTagsArray,
-          { tag_id: tag_id, value: value }
-        ]
-      });
+      this._isMounted &&
+        this.setState({
+          myTagsArray: [
+            ...this.state.myTagsArray,
+            { tag_id: tag_id, value: value }
+          ]
+        });
       this.props.createUserTag(
         this.props.userConnectedData.id,
         this.props.userConnectedData.username,
@@ -59,6 +66,10 @@ class InterestTags extends Component {
     } else {
       InfoToast.custom.info(`Tag ${value} has already been added`, 1500);
     }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {

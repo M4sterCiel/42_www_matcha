@@ -22,6 +22,7 @@ class Chat extends Component {
       usernameOther: "",
       userID_other: ""
     };
+    this._isMounted = false;
   }
 
   render() {
@@ -80,42 +81,47 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    this.setState({ winSize: window.innerHeight - 200 });
+    this._isMounted = true;
+    this._isMounted && this.setState({ winSize: window.innerHeight - 200 });
   }
 
   componentDidUpdate() {
+    this._isMounted = true;
     if (this.state.listMessages !== this.props.listMessages)
       this.initializeComponent();
   }
 
   initializeComponent = async () => {
     if (this.state.socket) this.state.socket.close();
-    await this.setState({
-      listMessages: this.props.listMessages,
-      room_id: this.props.room_id,
-      usernameOther: this.props.username,
-      userID_other: this.props.userID_other
-    });
+    this._isMounted &&
+      (await this.setState({
+        listMessages: this.props.listMessages,
+        room_id: this.props.room_id,
+        usernameOther: this.props.username,
+        userID_other: this.props.userID_other
+      }));
 
-    await this.setState({
-      userID: this.Auth.getIdViaToken(this.state.userToken),
-      userName: this.Auth.getUsernameViaToken(this.state.userToken)
-    });
+    this._isMounted &&
+      (await this.setState({
+        userID: this.Auth.getIdViaToken(this.state.userToken),
+        userName: this.Auth.getUsernameViaToken(this.state.userToken)
+      }));
 
-    await this.setState({
-      socket: io("/chat", {
-        transports: ["polling"],
-        requestTimeout: 50000,
-        upgrade: false,
-        "sync disconnect on unload": true,
-        query: {
-          token: this.state.userToken,
-          userID: this.state.userID,
-          userName: this.state.userName,
-          room_id: this.state.room_id
-        }
-      })
-    });
+    this._isMounted &&
+      (await this.setState({
+        socket: io("/chat", {
+          transports: ["polling"],
+          requestTimeout: 50000,
+          upgrade: false,
+          "sync disconnect on unload": true,
+          query: {
+            token: this.state.userToken,
+            userID: this.state.userID,
+            userName: this.state.userName,
+            room_id: this.state.room_id
+          }
+        })
+      }));
 
     this.state.socket.emit("readMessage", this.state.room_id);
 
@@ -128,9 +134,9 @@ class Chat extends Component {
         userID: data["userID"],
         date: ""
       });
-      this.setState({ listMessages: tab });
+      this._isMounted && this.setState({ listMessages: tab });
       //console.log(tab);
-      this.setState({ isRead: 1 });
+      this._isMounted && this.setState({ isRead: 1 });
       this.goToElement(tab.length);
     });
     //console.log(this.state.listMessages);
@@ -201,7 +207,8 @@ class Chat extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    await this.setState({ toSend: this.state.toSend.trim() });
+    this._isMounted &&
+      (await this.setState({ toSend: this.state.toSend.trim() }));
     if (this.state.toSend !== "") {
       var tab = this.state.listMessages;
       tab.push({
@@ -212,7 +219,7 @@ class Chat extends Component {
       });
 
       //console.log(this.state.room_id);
-      await this.setState({ listMessages: tab });
+      this._isMounted && (await this.setState({ listMessages: tab }));
       this.goToElement(tab.length);
       this.state.socket.emit(
         this.state.room_id,
@@ -220,10 +227,11 @@ class Chat extends Component {
         this.state.userID_other
       );
     }
-    this.setState({ toSend: "" });
+    this._isMounted && this.setState({ toSend: "" });
   };
 
   componentWillUnmount() {
+    this._isMounted = false;
     if (this.state.socket) this.state.socket.close();
   }
 }

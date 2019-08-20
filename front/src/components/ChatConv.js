@@ -37,13 +37,12 @@ class ChatConv extends Component {
   async componentDidMount() {
     this._isMounted = true;
     this._isMounted && this.setState({ winSize: window.innerHeight - 160 });
-    await Axios.get("/chat/matches/" + this.Auth.getToken(), { cancelToken: new CancelToken(function executor(c) {
+    await Axios.get("/chat/matches/" + this.Auth.getToken(), {
+      cancelToken: new CancelToken(function executor(c) {
         cancel = c;
       })
     })
       .then(res => {
-        //console.log(res.data['result']);
-        //console.log(res.data['status']);
         const tab = [];
         for (var i = 0; i < res.data["result"].length; i++)
           tab.push({
@@ -78,65 +77,67 @@ class ChatConv extends Component {
         //console.log(err);
       });
 
-    await this._isMounted && this.setState({
-      socket: io({
-        transports: ["polling"],
-        requestTimeout: 50000,
-        upgrade: false,
-        "sync disconnect on unload": true,
-        query: {
-          userID: this.state.userID,
-          matches: this.state.matches
-        }
-      })
-    });
+    (await this._isMounted) &&
+      this.setState({
+        socket: io({
+          transports: ["polling"],
+          requestTimeout: 50000,
+          upgrade: false,
+          "sync disconnect on unload": true,
+          query: {
+            userID: this.state.userID,
+            matches: this.state.matches
+          }
+        })
+      });
 
-    if (this.state.socket)
-    {
-        this.state.socket.on("online", data => {
+    if (this.state.socket) {
+      this.state.socket.on("online", data => {
         var tab = this.state.matches;
         for (var i = 0; i < tab.length; i++) {
-            //eslint-disable-next-line
-            if (tab[i]["userID"] == data["user_id"]) tab[i]["status"] = "Online";
+          //eslint-disable-next-line
+          if (tab[i]["userID"] == data["user_id"]) tab[i]["status"] = "Online";
         }
         this._isMounted && this.setState({ matches: tab });
-        });
+      });
 
-        this.state.socket.on("offline", data => {
+      this.state.socket.on("offline", data => {
         var tab = this.state.matches;
         for (var i = 0; i < tab.length; i++) {
-            // eslint-disable-next-line
-            if (tab[i]["userID"] == data["user_id"]) tab[i]["status"] = "Offline";
+          // eslint-disable-next-line
+          if (tab[i]["userID"] == data["user_id"]) tab[i]["status"] = "Offline";
         }
         this._isMounted && this.setState({ matches: tab });
-        });
+      });
 
-        this.state.socket.on("new message", data => {
+      this.state.socket.on("new message", data => {
         // eslint-disable-next-line
         if (data["userID_other"] != this.state.userID) return;
         var elem;
         for (var i = 0; i < this.state.matches.length; i++) {
-            // eslint-disable-next-line
-            if (this.state.matches[i]["room_id"] == data["room_id"]) {
+          // eslint-disable-next-line
+          if (this.state.matches[i]["room_id"] == data["room_id"]) {
             elem = document.getElementById(
-                "contactList-" + this.state.matches[i]["room_id"]
+              "contactList-" + this.state.matches[i]["room_id"]
             );
             break;
-            }
+          }
         }
         this.sortContactList(data["room_id"]);
         elem.style = "background-color: #ffcdd2;";
-        });
+      });
 
-        this.callNotifApi();
+      this.callNotifApi();
 
-        this.state.socket.on("readMessage", (data, roomID) => {
+      this.state.socket.on("readMessage", (data, roomID) => {
         // eslint-disable-next-line
         if (data != this.state.userID) return;
-        document.getElementById("contactList-" + roomID).removeAttribute("style");
-        });
+        document
+          .getElementById("contactList-" + roomID)
+          .removeAttribute("style");
+      });
     }
-}
+  }
 
   contactList = props => {
     const value = props.value;
@@ -192,7 +193,8 @@ class ChatConv extends Component {
   };
 
   callNotifApi = async () => {
-    await Axios.get("/chat/notification/list/" + this.state.userID, { cancelToken: new CancelToken(function executor(c) {
+    await Axios.get("/chat/notification/list/" + this.state.userID, {
+      cancelToken: new CancelToken(function executor(c) {
         cancel = c;
       })
     })

@@ -31,9 +31,11 @@ class EditProfilePictures extends Component {
         }
       ]
     };
+    this._isMounted = false;
   }
 
   componentDidMount() {
+    this._isMounted = true;
     var picture_1 = this.props.userConnectedData.pictures.filter(pic => {
       return pic.pic_index === 0;
     });
@@ -49,35 +51,36 @@ class EditProfilePictures extends Component {
     var picture_5 = this.props.userConnectedData.pictures.filter(pic => {
       return pic.pic_index === 4;
     });
-    this.setState({
-      pictures: [
-        {
-          profile_picture:
-            picture_1.length !== 0 ? picture_1[0].profile_picture : 0,
-          url: picture_1.length !== 0 ? picture_1[0].url : ""
-        },
-        {
-          profile_picture:
-            picture_2.length !== 0 ? picture_2[0].profile_picture : 0,
-          url: picture_2.length !== 0 ? picture_2[0].url : ""
-        },
-        {
-          profile_picture:
-            picture_3.length !== 0 ? picture_3[0].profile_picture : 0,
-          url: picture_3.length !== 0 ? picture_3[0].url : ""
-        },
-        {
-          profile_picture:
-            picture_4.length !== 0 ? picture_4[0].profile_picture : 0,
-          url: picture_4.length !== 0 ? picture_4[0].url : ""
-        },
-        {
-          profile_picture:
-            picture_5.length !== 0 ? picture_5[0].profile_picture : 0,
-          url: picture_5.length !== 0 ? picture_5[0].url : ""
-        }
-      ]
-    });
+    this._isMounted &&
+      this.setState({
+        pictures: [
+          {
+            profile_picture:
+              picture_1.length !== 0 ? picture_1[0].profile_picture : 0,
+            url: picture_1.length !== 0 ? picture_1[0].url : ""
+          },
+          {
+            profile_picture:
+              picture_2.length !== 0 ? picture_2[0].profile_picture : 0,
+            url: picture_2.length !== 0 ? picture_2[0].url : ""
+          },
+          {
+            profile_picture:
+              picture_3.length !== 0 ? picture_3[0].profile_picture : 0,
+            url: picture_3.length !== 0 ? picture_3[0].url : ""
+          },
+          {
+            profile_picture:
+              picture_4.length !== 0 ? picture_4[0].profile_picture : 0,
+            url: picture_4.length !== 0 ? picture_4[0].url : ""
+          },
+          {
+            profile_picture:
+              picture_5.length !== 0 ? picture_5[0].profile_picture : 0,
+            url: picture_5.length !== 0 ? picture_5[0].url : ""
+          }
+        ]
+      });
   }
 
   handlePictureSelect = (index, e) => {
@@ -142,9 +145,10 @@ class EditProfilePictures extends Component {
           profile_picture: pics[index].profile_picture
         }
       );
-      this.setState({
-        pictures: pics
-      });
+      this._isMounted &&
+        this.setState({
+          pictures: pics
+        });
     };
     reader.readAsDataURL(file);
     target.closest(".picture-box").querySelector(".image-upload").value = "";
@@ -165,9 +169,10 @@ class EditProfilePictures extends Component {
       this.props.userConnectedData.username,
       index
     );
-    this.setState({
-      pictures: pics
-    });
+    this._isMounted &&
+      this.setState({
+        pictures: pics
+      });
   };
 
   setNoPictureDefault = target => {
@@ -250,9 +255,10 @@ class EditProfilePictures extends Component {
       this.props.userConnectedData.username,
       index
     );
-    this.setState({
-      pictures: pics
-    });
+    this._isMounted &&
+      this.setState({
+        pictures: pics
+      });
     this.removeNoPictureDefault(
       e.target.closest(".picture-box").querySelector(".js--image-preview")
     );
@@ -332,6 +338,10 @@ class EditProfilePictures extends Component {
       </div>
     ));
     return <div className="edit-pictures-box">{pictureBoxes}</div>;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 }
 

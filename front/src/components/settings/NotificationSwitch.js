@@ -7,20 +7,28 @@ class NotificationSwitch extends Component {
     this.state = {
       status: false
     };
+    this._isMounted = false;
   }
 
   componentDidMount() {
-    this.setState({
-      status: this.props.notifications
-    });
+    this._isMounted = true;
+    this._isMounted &&
+      this.setState({
+        status: this.props.notifications
+      });
   }
 
   handleSwitch = () => {
-    this.setState({
-      status: !this.state.status
-    });
+    this._isMounted &&
+      this.setState({
+        status: !this.state.status
+      });
     this.props.notificationsToParent(!this.state.status);
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   render() {
     return (

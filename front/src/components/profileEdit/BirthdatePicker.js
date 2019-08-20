@@ -8,15 +8,19 @@ class BirthdatePicker extends Component {
     this.state = {
       birthdate: null
     };
+    this._isMounted = false;
   }
 
   componentDidMount() {
-    this.setState({
-      birthdate: this.props.birthdate
-    });
+    this._isMounted = true;
+    this._isMounted &&
+      this.setState({
+        birthdate: this.props.birthdate
+      });
   }
 
   componentDidUpdate() {
+    this._isMounted = true;
     if (
       this.state.birthdate !== this.props.birthdate &&
       this.props.birthdate !== false
@@ -31,10 +35,15 @@ class BirthdatePicker extends Component {
     this.props.birthdateToParent(
       document.querySelector(".birthdate-picker-modal").value
     );
-    this.setState({
-      birthdate: document.querySelector(".birthdate-picker-modal").value
-    });
+    this._isMounted &&
+      this.setState({
+        birthdate: document.querySelector(".birthdate-picker-modal").value
+      });
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   render() {
     return (

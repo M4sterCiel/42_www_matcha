@@ -18,25 +18,30 @@ class SelectLocation extends Component {
       editLocationActive: false
     };
     this.citiesJSON = cities["France"];
+    this._isMounted = false;
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.initGeolocator();
     if (
       this.props.userConnectedData.geo_lat &&
-      this.props.userConnectedData.geo_long) {
+      this.props.userConnectedData.geo_long
+    ) {
       this.getCityFromLatLong(
         this.props.userConnectedData.geo_lat,
         this.props.userConnectedData.geo_long
       );
-      this.setState({
-        lat: this.props.userConnectedData.geo_lat,
-        long: this.props.userConnectedData.geo_long
-      });
+      this._isMounted &&
+        this.setState({
+          lat: this.props.userConnectedData.geo_lat,
+          long: this.props.userConnectedData.geo_long
+        });
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
+    this._isMounted = true;
     if (
       prevState.city !== undefined &&
       prevState.city !== "" &&
@@ -78,13 +83,14 @@ class SelectLocation extends Component {
     };
     GeoPosition.locate(options, (err, location) => {
       console.log(err || location);
-      this.setState({
-        userLocation: location,
-        city: location.address.city,
-        lat: location.coords.latitude,
-        long: location.coords.longitude,
-        locationValid: true
-      });
+      this._isMounted &&
+        this.setState({
+          userLocation: location,
+          city: location.address.city,
+          lat: location.coords.latitude,
+          long: location.coords.longitude,
+          locationValid: true
+        });
     });
   };
 
@@ -100,13 +106,14 @@ class SelectLocation extends Component {
     };
     GeoPosition.locateByMobile(options, (err, location) => {
       console.log(err || location);
-      this.setState({
-        userLocation: location,
-        city: location.address.city,
-        lat: location.coords.latitude,
-        long: location.coords.longitude,
-        locationValid: true
-      });
+      this._isMounted &&
+        this.setState({
+          userLocation: location,
+          city: location.address.city,
+          lat: location.coords.latitude,
+          long: location.coords.longitude,
+          locationValid: true
+        });
     });
   };
 
@@ -124,7 +131,8 @@ class SelectLocation extends Component {
     };
 
     GeoPosition.reverseGeocode(coords, (err, location) => {
-      if (location.address.city) this.setState({ city: location.address.city });
+      if (location.address.city)
+        this._isMounted && this.setState({ city: location.address.city });
       else
         ErrorToast.custom.error(
           "Couldn't get city from coordinates, please try again later...",
@@ -137,25 +145,28 @@ class SelectLocation extends Component {
     GeoPosition.geocode(city, (err, location) => {
       console.log(err || location);
       if (location !== null && location.coords.longitude !== null) {
-        this.setState({
-          city: city,
-          lat: location.coords.latitude,
-          long: location.coords.longitude
-        });
+        this._isMounted &&
+          this.setState({
+            city: city,
+            lat: location.coords.latitude,
+            long: location.coords.longitude
+          });
       }
     });
   };
 
   showEditLocation = () => {
-    this.setState({
-      editLocationActive: true
-    });
+    this._isMounted &&
+      this.setState({
+        editLocationActive: true
+      });
   };
 
   hideEditLocation = () => {
-    this.setState({
-      editLocationActive: false
-    });
+    this._isMounted &&
+      this.setState({
+        editLocationActive: false
+      });
   };
 
   switchEditLocation = () => {
@@ -192,6 +203,10 @@ class SelectLocation extends Component {
   handleAutocompleteChange = () => {
     document.querySelectorAll(".edit-location-submit")[0].disabled = true;
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   render() {
     return (

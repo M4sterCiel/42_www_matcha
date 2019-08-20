@@ -16,28 +16,33 @@ class EditEmailBox extends Component {
       emailValid: false,
       emailError: ""
     };
+    this._isMounted = false;
   }
 
   componentDidMount() {
-    this.setState({
-      id: this.props.user.id,
-      email: this.props.user.email
-    });
+    this._isMounted = true;
+    this._isMounted &&
+      this.setState({
+        id: this.props.user.id,
+        email: this.props.user.email
+      });
   }
 
   showEditEmail = () => {
-    this.setState({
-      editEmailActive: true
-    });
+    this._isMounted &&
+      this.setState({
+        editEmailActive: true
+      });
   };
 
   hideEditEmail = () => {
-    this.setState({
-      editEmailActive: false,
-      newEmail: "",
-      emailValid: false,
-      emailError: ""
-    });
+    this._isMounted &&
+      this.setState({
+        editEmailActive: false,
+        newEmail: "",
+        emailValid: false,
+        emailError: ""
+      });
   };
 
   switchEditEmail = () => {
@@ -48,10 +53,11 @@ class EditEmailBox extends Component {
   handleEmailKeyUp = e => {
     let result = ValidateInput.user.email(e.target.value);
 
-    this.setState({
-      emailError: result.emailError,
-      emailValid: result.emailValid
-    });
+    this._isMounted &&
+      this.setState({
+        emailError: result.emailError,
+        emailValid: result.emailValid
+      });
   };
 
   handleEmailSubmit = async e => {
@@ -59,9 +65,10 @@ class EditEmailBox extends Component {
     await ApiCall.user
       .updateUserField(this.state.id, "mail", this.state.newEmail)
       .then(res => {
-        this.setState({
-          email: this.state.newEmail
-        });
+        this._isMounted &&
+          this.setState({
+            email: this.state.newEmail
+          });
         InfoToast.custom.info("Updated", 1400);
         this.hideEditEmail();
       })
@@ -70,6 +77,10 @@ class EditEmailBox extends Component {
         ErrorToast.custom.error(message, 1400);
       });
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   render() {
     return (
@@ -88,7 +99,9 @@ class EditEmailBox extends Component {
             <div className="edit-email-text-input">
               <TextInput
                 label="New email"
-                onChange={e => this.setState({ newEmail: e.target.value })}
+                onChange={e =>
+                  this._isMounted && this.setState({ newEmail: e.target.value })
+                }
                 onKeyUp={this.handleEmailKeyUp}
               >
                 {" "}

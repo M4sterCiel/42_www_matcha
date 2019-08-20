@@ -10,24 +10,29 @@ class InputBio extends Component {
       bioValid: true,
       bioError: ""
     };
+    this._isMounted = false;
   }
 
   componentDidMount() {
+    this._isMounted = true;
     if (this.props.bio !== "") {
-      this.setState({
-        bio: this.props.bio
-      });
+      this._isMounted &&
+        this.setState({
+          bio: this.props.bio
+        });
     }
   }
 
   componentDidUpdate() {
+    this._isMounted = true;
     if (this.state.bio !== this.props.bio) {
       document.querySelector("textarea[name='bio']").value = this.props.bio;
-      this.setState({
-        bio: this.props.bio,
-        bioValid: true,
-        bioError: ""
-      });
+      this._isMounted &&
+        this.setState({
+          bio: this.props.bio,
+          bioValid: true,
+          bioError: ""
+        });
       document.querySelector(".character-counter").innerText = "0/140";
       this.props.validInput(true);
     }
@@ -36,14 +41,19 @@ class InputBio extends Component {
   handleChange = e => {
     let result = ValidateInput.user.bio(e.target.value);
 
-    this.setState({
-      bio: e.target.value,
-      bioValid: result.bioValid,
-      bioError: result.bioError
-    });
+    this._isMounted &&
+      this.setState({
+        bio: e.target.value,
+        bioValid: result.bioValid,
+        bioError: result.bioError
+      });
     this.props.bioToParent(e.target.value);
     this.props.validInput(result.bioValid);
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   render() {
     return (

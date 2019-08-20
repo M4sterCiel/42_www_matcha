@@ -8,21 +8,25 @@ class SelectGender extends Component {
     this.state = {
       gender: ""
     };
+    this._isMounted = false;
   }
 
   componentDidMount() {
+    this._isMounted = true;
     if (this.props.userConnectedData.gender !== null) {
-      this.setState({
-        gender: this.props.userConnectedData.gender
-      });
+      this._isMounted &&
+        this.setState({
+          gender: this.props.userConnectedData.gender
+        });
     }
   }
 
   handleChange = e => {
     if (e.target.value === "man" || e.target.value === "woman") {
-      this.setState({
-        gender: e.target.value
-      });
+      this._isMounted &&
+        this.setState({
+          gender: e.target.value
+        });
       this.props.updateUserData(
         this.props.userConnectedData.id,
         this.props.userConnectedData.username,
@@ -30,6 +34,10 @@ class SelectGender extends Component {
       );
     }
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   render() {
     return (

@@ -23,28 +23,31 @@ class ModalUserEditAccountSettings extends Component {
       commonInterestsRange: [1, 25],
       notifications: false
     };
+    this._isMounted = false;
   }
 
   componentDidMount() {
-    this.setState({
-      userId: this.props.userConnectedData.id,
-      email: this.props.userConnectedData.mail,
-      ageRange: [
-        this.props.userConnectedData.age_min,
-        this.props.userConnectedData.age_max
-      ],
-      distance: this.props.userConnectedData.distance_max,
-      popularityRange: [
-        this.props.userConnectedData.pop_min,
-        this.props.userConnectedData.pop_max
-      ],
-      commonInterestsRange: [
-        this.props.userConnectedData.tag_min,
-        this.props.userConnectedData.tag_max
-      ],
-      notifications:
-        this.props.userConnectedData.notifications_switch === 1 ? true : false
-    });
+    this._isMounted = true;
+    this._isMounted &&
+      this.setState({
+        userId: this.props.userConnectedData.id,
+        email: this.props.userConnectedData.mail,
+        ageRange: [
+          this.props.userConnectedData.age_min,
+          this.props.userConnectedData.age_max
+        ],
+        distance: this.props.userConnectedData.distance_max,
+        popularityRange: [
+          this.props.userConnectedData.pop_min,
+          this.props.userConnectedData.pop_max
+        ],
+        commonInterestsRange: [
+          this.props.userConnectedData.tag_min,
+          this.props.userConnectedData.tag_max
+        ],
+        notifications:
+          this.props.userConnectedData.notifications_switch === 1 ? true : false
+      });
   }
 
   handleAgeData = data => {
@@ -56,9 +59,10 @@ class ModalUserEditAccountSettings extends Component {
         age_max: data[1]
       }
     );
-    this.setState({
-      ageRange: data
-    });
+    this._isMounted &&
+      this.setState({
+        ageRange: data
+      });
   };
 
   handleDistanceData = data => {
@@ -69,9 +73,10 @@ class ModalUserEditAccountSettings extends Component {
         distance_max: data
       }
     );
-    this.setState({
-      distance: data
-    });
+    this._isMounted &&
+      this.setState({
+        distance: data
+      });
   };
 
   handlePopularityData = data => {
@@ -83,9 +88,10 @@ class ModalUserEditAccountSettings extends Component {
         pop_max: data[1]
       }
     );
-    this.setState({
-      popularityRange: data
-    });
+    this._isMounted &&
+      this.setState({
+        popularityRange: data
+      });
   };
 
   handleCommonInterestsData = data => {
@@ -97,15 +103,17 @@ class ModalUserEditAccountSettings extends Component {
         tag_max: data[1]
       }
     );
-    this.setState({
-      notifications: data === 1 ? true : false
-    });
+    this._isMounted &&
+      this.setState({
+        notifications: data === 1 ? true : false
+      });
   };
 
   handleEmailData = data => {
-    this.setState({
-      email: data
-    });
+    this._isMounted &&
+      this.setState({
+        email: data
+      });
   };
 
   handleNotificationsData = data => {
@@ -116,9 +124,10 @@ class ModalUserEditAccountSettings extends Component {
         notifications_switch: data === true ? 1 : 0
       }
     );
-    this.setState({
-      commonInterestsRange: data
-    });
+    this._isMounted &&
+      this.setState({
+        commonInterestsRange: data
+      });
   };
 
   render() {
@@ -168,6 +177,10 @@ class ModalUserEditAccountSettings extends Component {
         )}
       </div>
     );
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 }
 

@@ -25,6 +25,7 @@ class Login extends Component {
       responseToPost: ""
     };
     this.Auth = new AuthService();
+    this._isMounted = false;
   }
 
   render() {
@@ -111,6 +112,7 @@ class Login extends Component {
 
   // Redirect user if already logged in
   componentDidMount() {
+    this._isMounted = true;
     BackgroundAdd();
     if (this.Auth.loggedIn()) {
       ErrorToast.auth.userAlreadyLogged();
@@ -136,12 +138,12 @@ class Login extends Component {
     }
 
     if (loginError) {
-      this.setState({ loginValid: false });
+      this._isMounted && this.setState({ loginValid: false });
     } else if (this.state.login !== "") {
-      this.setState({ loginValid: true });
+      this._isMounted && this.setState({ loginValid: true });
     }
 
-    this.setState({ loginError });
+    this._isMounted && this.setState({ loginError });
   };
 
   // Checking password format is valid
@@ -155,12 +157,12 @@ class Login extends Component {
     }
 
     if (pwdError) {
-      this.setState({ pwdValid: false });
+      this._isMounted && this.setState({ pwdValid: false });
     } else if (this.state.pwd) {
-      this.setState({ pwdValid: true });
+      this._isMounted && this.setState({ pwdValid: true });
     }
 
-    this.setState({ pwdError });
+    this._isMounted && this.setState({ pwdError });
   };
 
   // On user input change, update states
@@ -169,11 +171,11 @@ class Login extends Component {
     const isPwd = e.target.name === "pwd";
 
     if (isLogin) {
-      this.setState({ login: e.target.value });
+      this._isMounted && this.setState({ login: e.target.value });
     }
 
     if (isPwd) {
-      this.setState({ pwd: e.target.value });
+      this._isMounted && this.setState({ pwd: e.target.value });
     }
   };
 
@@ -185,7 +187,7 @@ class Login extends Component {
       pwd: this.state.pwd
     })
       .then(res => {
-        this.setState({ responseToPost: res.status });
+        this._isMounted && this.setState({ responseToPost: res.status });
         localStorage.setItem("Token", res.data["token"]);
         this.props.getUserData(res.data["username"]);
         this.props.history.push("/");
@@ -194,6 +196,10 @@ class Login extends Component {
         ErrorToast.auth.userAlreadyLogged();
       });
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 }
 
 const mapStateToProps = state => {

@@ -8,13 +8,16 @@ class SelectSexOrientation extends Component {
     this.state = {
       sexOrientation: ""
     };
+    this._isMounted = false;
   }
 
   componentDidMount() {
+    this._isMounted = true;
     if (this.props.userConnectedData.sexual_orientation !== null) {
-      this.setState({
-        sexOrientation: this.props.userConnectedData.sexual_orientation
-      });
+      this._isMounted &&
+        this.setState({
+          sexOrientation: this.props.userConnectedData.sexual_orientation
+        });
     }
   }
 
@@ -24,9 +27,10 @@ class SelectSexOrientation extends Component {
       e.target.value === "homo" ||
       e.target.value === "hetero"
     ) {
-      this.setState({
-        sexOrientation: e.target.value
-      });
+      this._isMounted &&
+        this.setState({
+          sexOrientation: e.target.value
+        });
       this.props.updateUserData(
         this.props.userConnectedData.id,
         this.props.userConnectedData.username,
@@ -34,6 +38,10 @@ class SelectSexOrientation extends Component {
       );
     }
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   render() {
     return (

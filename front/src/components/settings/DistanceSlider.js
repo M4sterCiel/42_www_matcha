@@ -7,23 +7,31 @@ class DistanceSlider extends Component {
     this.state = {
       value: null
     };
+    this._isMounted = false;
   }
 
   componentDidMount() {
-    this.setState({
-      value: this.props.value
-    });
+    this._isMounted = true;
+    this._isMounted &&
+      this.setState({
+        value: this.props.value
+      });
   }
 
   handleChange = (e, newValue) => {
-    this.setState({
-      value: newValue
-    });
+    this._isMounted &&
+      this.setState({
+        value: newValue
+      });
   };
 
   handleChangeCommitted = (e, newValue) => {
     this.props.distanceToParent(newValue);
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   render() {
     return (

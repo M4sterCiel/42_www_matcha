@@ -8,12 +8,15 @@ class ModalUserCompleteProfile extends Component {
     this.state = {
       userData: []
     };
+    this._isMounted = false;
   }
 
   componentDidMount() {
-    this.setState({
-      userData: this.props.userData
-    });
+    this._isMounted = true;
+    this._isMounted &&
+      this.setState({
+        userData: this.props.userData
+      });
   }
 
   render() {
@@ -30,10 +33,10 @@ class ModalUserCompleteProfile extends Component {
       </Modal>
     );
   }
-}
 
-const mapStateToProps = state => {
-  return { state };
-};
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+}
 
 export default { ModalUserCompleteProfile };

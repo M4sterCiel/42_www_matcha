@@ -35,78 +35,88 @@ class ModalUserEditProfileInfo extends Component {
     this.isTwoNamesInputValid = this.isTwoNamesInputValid.bind(this);
     this.isBioInputValid = this.isBioInputValid.bind(this);
     this.resetMyDetails = this.resetMyDetails.bind(this);
+    this._isMounted = false;
   }
 
   componentDidMount() {
-    this.setState({
-      gender: this.props.userConnectedData.gender,
-      sexOrientation: this.props.userConnectedData.sexual_orientation,
-      firstname: this.props.userConnectedData.firstname,
-      lastname: this.props.userConnectedData.lastname,
-      bio:
-        this.props.userConnectedData.bio === null
-          ? ""
-          : this.props.userConnectedData.bio,
-      birthdate:
-        this.props.userConnectedData.birthdate !== null
-          ? moment(new Date(this.props.userConnectedData.birthdate)).format(
-              "MMM DD, YYYY"
-            )
-          : null,
-      geo_lat: this.props.userConnectedData.geo_lat,
-      geo_long: this.props.userConnectedData.geo_long,
-      username: this.props.userConnectedData.username
-    });
+    this._isMounted = true;
+    this._isMounted &&
+      this.setState({
+        gender: this.props.userConnectedData.gender,
+        sexOrientation: this.props.userConnectedData.sexual_orientation,
+        firstname: this.props.userConnectedData.firstname,
+        lastname: this.props.userConnectedData.lastname,
+        bio:
+          this.props.userConnectedData.bio === null
+            ? ""
+            : this.props.userConnectedData.bio,
+        birthdate:
+          this.props.userConnectedData.birthdate !== null
+            ? moment(new Date(this.props.userConnectedData.birthdate)).format(
+                "MMM DD, YYYY"
+              )
+            : null,
+        geo_lat: this.props.userConnectedData.geo_lat,
+        geo_long: this.props.userConnectedData.geo_long,
+        username: this.props.userConnectedData.username
+      });
   }
 
   handleFirstnameData(data) {
-    this.setState({
-      firstname: data
-    });
+    this._isMounted &&
+      this.setState({
+        firstname: data
+      });
   }
 
   handleLastnameData(data) {
-    this.setState({
-      lastname: data
-    });
+    this._isMounted &&
+      this.setState({
+        lastname: data
+      });
   }
 
   handleBioData(data) {
-    this.setState({
-      bio: data
-    });
+    this._isMounted &&
+      this.setState({
+        bio: data
+      });
   }
 
   handleBirthdateData(data) {
-    this.setState({
-      birthdate: data
-    });
+    this._isMounted &&
+      this.setState({
+        birthdate: data
+      });
   }
 
   isTwoNamesInputValid(data) {
-    this.setState({
-      isTwoNamesInputValid: data
-    });
+    this._isMounted &&
+      this.setState({
+        isTwoNamesInputValid: data
+      });
   }
 
   isBioInputValid(data) {
-    this.setState({
-      isBioInputValid: data
-    });
+    this._isMounted &&
+      this.setState({
+        isBioInputValid: data
+      });
   }
 
   resetMyDetails() {
-    this.setState({
-      firstname: this.props.userConnectedData.firstname,
-      lastname: this.props.userConnectedData.lastname,
-      bio: this.props.userConnectedData.bio,
-      birthdate:
-        this.props.userConnectedData.birthdate === null
-          ? null
-          : moment(new Date(this.props.userConnectedData.birthdate)).format(
-              "MMM DD, YYYY"
-            )
-    });
+    this._isMounted &&
+      this.setState({
+        firstname: this.props.userConnectedData.firstname,
+        lastname: this.props.userConnectedData.lastname,
+        bio: this.props.userConnectedData.bio,
+        birthdate:
+          this.props.userConnectedData.birthdate === null
+            ? null
+            : moment(new Date(this.props.userConnectedData.birthdate)).format(
+                "MMM DD, YYYY"
+              )
+      });
   }
 
   handleSubmitMyDetails = async e => {
@@ -202,6 +212,10 @@ class ModalUserEditProfileInfo extends Component {
         </Modal>
       </div>
     );
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 }
 

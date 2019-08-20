@@ -27,6 +27,7 @@ class ResetPassword extends Component {
       responseToPost: ""
     };
     this.Auth = new AuthService();
+    this._isMounted = false;
   }
 
   render() {
@@ -48,12 +49,17 @@ class ResetPassword extends Component {
                       name="pwd"
                       id="pwd-login"
                       value={this.state.pwd1}
-                      onChange={e => this.setState({ pwd1: e.target.value })}
+                      onChange={e =>
+                        this._isMounted &&
+                        this.setState({ pwd1: e.target.value })
+                      }
                       onKeyUp={this.handlePwdKeyUp}
                       onFocus={e =>
+                        this._isMounted &&
                         this.setState({ pwd1VerifyBox: "box-enabled" })
                       }
                       onBlur={e =>
+                        this._isMounted &&
                         this.setState({ pwd1VerifyBox: "box-disabled" })
                       }
                       required
@@ -108,7 +114,10 @@ class ResetPassword extends Component {
                       name="rep-pwd"
                       id="rep-pwd-login"
                       value={this.state.pwd2}
-                      onChange={e => this.setState({ pwd2: e.target.value })}
+                      onChange={e =>
+                        this._isMounted &&
+                        this.setState({ pwd2: e.target.value })
+                      }
                       onKeyUp={this.handlePwdKeyUp}
                       required
                     />
@@ -143,6 +152,7 @@ class ResetPassword extends Component {
 
   // Redirect user if already logged in
   componentDidMount() {
+    this._isMounted = true;
     if (this.Auth.loggedIn()) {
       ErrorToast.auth.userAlreadyLogged();
       this.props.history.replace("/");
@@ -151,8 +161,9 @@ class ResetPassword extends Component {
         .then(res => {
           var key = document.location.href;
           key = key.split("/");
-          this.setState({ status: res.message });
-          this.setState({ password_key: key[key.length - 1] });
+          this._isMounted && this.setState({ status: res.message });
+          this._isMounted &&
+            this.setState({ password_key: key[key.length - 1] });
         })
         .catch(err => {
           console.log(err);
@@ -177,24 +188,24 @@ class ResetPassword extends Component {
   // Checking password format is valid
   validatePwd = () => {
     if (/[a-z]/.test(this.state.pwd1)) {
-      this.setState({ pwdHasLowercase: true });
+      this._isMounted && this.setState({ pwdHasLowercase: true });
     } else {
-      this.setState({ pwdHasLowercase: false });
+      this._isMounted && this.setState({ pwdHasLowercase: false });
     }
     if (/[A-Z]/g.test(this.state.pwd1)) {
-      this.setState({ pwdHasUppercase: true });
+      this._isMounted && this.setState({ pwdHasUppercase: true });
     } else {
-      this.setState({ pwdHasUppercase: false });
+      this._isMounted && this.setState({ pwdHasUppercase: false });
     }
     if (/[0-9]/g.test(this.state.pwd1)) {
-      this.setState({ pwdHasNumber: true });
+      this._isMounted && this.setState({ pwdHasNumber: true });
     } else {
-      this.setState({ pwdHasNumber: false });
+      this._isMounted && this.setState({ pwdHasNumber: false });
     }
     if (this.state.pwd1.length >= 8 && this.state.pwd1.length <= 30) {
-      this.setState({ pwdHasMinLen: true });
+      this._isMounted && this.setState({ pwdHasMinLen: true });
     } else {
-      this.setState({ pwdHasMinLen: false });
+      this._isMounted && this.setState({ pwdHasMinLen: false });
     }
     if (
       this.state.pwdHasLowercase &&
@@ -202,18 +213,18 @@ class ResetPassword extends Component {
       this.state.pwdHasNumber &&
       this.state.pwdHasMinLen
     ) {
-      this.setState({ pwd1Valid: true });
+      this._isMounted && this.setState({ pwd1Valid: true });
     } else {
-      this.setState({ pwd1Valid: false });
+      this._isMounted && this.setState({ pwd1Valid: false });
     }
   };
 
   // Checking passwords match
   validateRepeatPwd = () => {
     if (this.state.pwd1 === this.state.pwd2) {
-      this.setState({ pwd2Error: "" });
+      this._isMounted && this.setState({ pwd2Error: "" });
     } else if (this.state.pwd2 !== "") {
-      this.setState({ pwd2Error: "Passwords don't match" });
+      this._isMounted && this.setState({ pwd2Error: "Passwords don't match" });
     }
   };
 
@@ -238,7 +249,7 @@ class ResetPassword extends Component {
 
     const body = await response.text();
     if (response.ok) {
-      this.setState({ responseToPost: body });
+      this._isMounted && this.setState({ responseToPost: body });
       InfoToast.auth.changedPassword();
       this.props.history.push("/users/login");
     } else {
@@ -246,6 +257,10 @@ class ResetPassword extends Component {
       ErrorToast.custom.error(message, 1000);
     }
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 }
 
 export default ResetPassword;

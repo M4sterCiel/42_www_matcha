@@ -7,23 +7,31 @@ class AgeSlider extends Component {
     this.state = {
       value: []
     };
+    this._isMounted = false;
   }
 
   componentDidMount() {
-    this.setState({
-      value: this.props.range
-    });
+    this._isMounted = true;
+    this._isMounted &&
+      this.setState({
+        value: this.props.range
+      });
   }
 
   handleChange = (e, newValue) => {
-    this.setState({
-      value: newValue
-    });
+    this._isMounted &&
+      this.setState({
+        value: newValue
+      });
   };
 
   handleChangeCommitted = (e, newValue) => {
     this.props.ageToParent(newValue);
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   render() {
     return (

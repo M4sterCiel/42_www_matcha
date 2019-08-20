@@ -18,6 +18,7 @@ class ForgotPassword extends Component {
       responseToPost: ""
     };
     this.Auth = new AuthService();
+    this._isMounted = false;
   }
 
   render() {
@@ -70,6 +71,7 @@ class ForgotPassword extends Component {
 
   // Redirect user if already logged in
   componentDidMount() {
+    this._isMounted = true;
     if (this.Auth.loggedIn()) {
       ErrorToast.auth.userAlreadyLogged();
       this.props.history.replace("/");
@@ -94,17 +96,17 @@ class ForgotPassword extends Component {
     }
 
     if (loginError) {
-      this.setState({ loginValid: false });
+      this._isMounted && this.setState({ loginValid: false });
     } else if (this.state.login !== "") {
-      this.setState({ loginValid: true });
+      this._isMounted && this.setState({ loginValid: true });
     }
 
-    this.setState({ loginError });
+    this._isMounted && this.setState({ loginError });
   };
 
   // On user input change, update states
   handleChange = e => {
-    this.setState({ login: e.target.value });
+    this._isMounted && this.setState({ login: e.target.value });
   };
 
   // On user button submit, execute this
@@ -120,13 +122,17 @@ class ForgotPassword extends Component {
 
     const body = await response.json();
     if (response.ok) {
-      this.setState({ responseToPost: body.status });
+      this._isMounted && this.setState({ responseToPost: body.status });
       InfoToast.mail.resetPassword();
       this.props.history.push("/");
     } else {
       ErrorToast.custom.error(body.message, 1000);
     }
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 }
 
 export default ForgotPassword;
