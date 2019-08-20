@@ -276,10 +276,10 @@ class UserProfile extends Component {
         })
       });
 
-      /* this.state.socket.emit("sendNotif", {
+      this.state.socket.emit("sendNotif", {
         type: 'visit',
-        
-      }) */
+        username: username
+      })
 
       ApiCall.user
         .getUserFromUsername(username)

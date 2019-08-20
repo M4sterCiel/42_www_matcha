@@ -46,6 +46,10 @@ var mainSocket = io.on("connection", async socket => {
     status: "Online"
   });
 
+  socket.on('sendNotif', (type, username) => {
+    console.log(type, username);
+  })
+
   socket.on("disconnect", reason => {
     //console.log(reason);
     for (var i = 0; i < onlineTab.length; i++) {
