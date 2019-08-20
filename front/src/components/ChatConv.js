@@ -20,6 +20,7 @@ class ChatConv extends Component {
       matches: [],
       displayChatbox: this.displayChatbox.bind(this)
     };
+    this._isMounted = false;
   }
 
   render() {
@@ -34,7 +35,8 @@ class ChatConv extends Component {
   }
 
   async componentDidMount() {
-    this.setState({ winSize: window.innerHeight - 160 });
+    this._isMounted = true;
+    this._isMounted && this.setState({ winSize: window.innerHeight - 160 });
     await Axios.get("/chat/matches/" + this.Auth.getToken(), { cancelToken: new CancelToken(function executor(c) {
         cancel = c;
       })
@@ -69,14 +71,14 @@ class ChatConv extends Component {
           }
           i++;
         }
-        this.setState({ matches: tab });
+        this._isMounted && this.setState({ matches: tab });
         //console.log(this.state.matches);
       })
       .catch(err => {
         //console.log(err);
       });
 
-    await this.setState({
+    await this._isMounted && this.setState({
       socket: io({
         transports: ["polling"],
         requestTimeout: 50000,
@@ -97,7 +99,7 @@ class ChatConv extends Component {
             //eslint-disable-next-line
             if (tab[i]["userID"] == data["user_id"]) tab[i]["status"] = "Online";
         }
-        this.setState({ matches: tab });
+        this._isMounted && this.setState({ matches: tab });
         });
 
         this.state.socket.on("offline", data => {
@@ -106,7 +108,7 @@ class ChatConv extends Component {
             // eslint-disable-next-line
             if (tab[i]["userID"] == data["user_id"]) tab[i]["status"] = "Offline";
         }
-        this.setState({ matches: tab });
+        this._isMounted && this.setState({ matches: tab });
         });
 
         this.state.socket.on("new message", data => {
@@ -165,6 +167,7 @@ class ChatConv extends Component {
 
   componentWillUnmount() {
     if (this.state.socket !== "") this.state.socket.close();
+    this._isMounted = false;
   }
 
   sortContactList = roomID => {
@@ -180,7 +183,7 @@ class ChatConv extends Component {
     var tab = this.state.matches;
     tab.splice(index, 1);
     tab.splice(0, 0, copy);
-    this.setState({ matches: tab });
+    this._isMounted && this.setState({ matches: tab });
   };
 
   displayChatbox = (roomId, username, userID) => {

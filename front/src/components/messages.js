@@ -22,10 +22,11 @@ class Messages extends Component {
       listMessages: []
     };
     this.handleRoomData = this.handleRoomData.bind(this);
+    this._isMounted = false;
   }
 
   async handleRoomData(room_id, username, userID) {
-    await this.setState({
+    await this._isMounted && this.setState({
       room: room_id,
       username: username,
       userID: userID
@@ -75,6 +76,9 @@ class Messages extends Component {
 
 
   async componentDidMount() {
+
+    this._isMounted = true;
+
     if (this.state.room === null) return;
     await Axios.get("/chat/room/" + this.state.room, {
       cancelToken: new CancelToken(function executor(c) {
@@ -90,7 +94,7 @@ class Messages extends Component {
             userID: res.data.result[i]["user_id"],
             date: res.data.result[i]["date"]
           });
-        this.setState({ listMessages: tab });
+          this._isMounted && this.setState({ listMessages: tab });
       })
       .catch(err => {
         console.log(err);
@@ -113,12 +117,16 @@ class Messages extends Component {
             userID: res.data.result[i]["user_id"],
             date: res.data.result[i]["date"]
           });
-        this.setState({ listMessages: tab });
+          this._isMounted && this.setState({ listMessages: tab });
       })
       .catch(err => {
         console.log(err);
       });
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 }
 
 export default withAuth(Messages);
