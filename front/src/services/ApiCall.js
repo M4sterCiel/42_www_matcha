@@ -30,6 +30,18 @@ export default {
       axios
         .post(`/users/delete/${user_id}`, { headers: headers })
         .then(res => res.data),
+    checkUserLikedByAndReverse: (user_id, username) =>
+      axios
+        .get(`/users/profile/${user_id}/liked_by/${username}`)
+        .then(res => res.data),
+    createUserLike: (user_id, by_id) =>
+      axios
+        .post(`/users/create/${user_id}/liked_by/${by_id}`)
+        .then(res => res.data),
+    deleteUserLike: (user_id, by_id) =>
+      axios
+        .post(`/users/delete/${user_id}/liked_by/${by_id}`)
+        .then(res => res.data),
     updateUserProfilePicture: (user_id, pic_index) =>
       axios
         .post(`/users/update/${user_id}/profile_picture`, {

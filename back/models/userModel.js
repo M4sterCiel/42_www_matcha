@@ -143,7 +143,8 @@ module.exports = {
   saveStatus: async (status, userID) => {
     try {
       var result = await pool.query({
-        sql: "UPDATE users SET `online`= ?, `last_connexion` = NOW() WHERE `id`= ?",
+        sql:
+          "UPDATE users SET `online`= ?, `last_connexion` = NOW() WHERE `id`= ?",
         values: [status, userID]
       });
       return result.affectedRows;

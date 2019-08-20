@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button } from "react-materialize";
-import LikeNotif from "@material-ui/icons/ThumbUp";
+import LikeIcon from "@material-ui/icons/ThumbUp";
+import DislikeIcon from "@material-ui/icons/ThumbDown";
 
 class ProfileSettingsButton extends Component {
   render() {
@@ -70,13 +71,47 @@ class LikeButton extends Component {
     const iconStyle = { position: "relative", top: "5px" };
     return (
       <Button tooltip="like this user" className="red">
-        Like{" "}
+        <span className="like-btn-text">Like</span>{" "}
         <span style={iconStyle}>
-          <LikeNotif />
+          <LikeIcon />
         </span>
       </Button>
     );
   }
 }
 
-export { ProfileSettingsButton, ProfileActionsButton, LikeButton };
+class LikeBackButton extends Component {
+  render() {
+    const iconStyle = { position: "relative", top: "5px" };
+    return (
+      <Button tooltip="like back this user" className="red">
+        <span className="like-btn-text">Like </span>back{" "}
+        <span style={iconStyle}>
+          <LikeIcon />
+        </span>
+      </Button>
+    );
+  }
+}
+
+class DislikeButton extends Component {
+  render() {
+    const iconStyle = { position: "relative", top: "5px" };
+    return (
+      <Button tooltip="dislike this user" className="red">
+        <span className="like-btn-text">Dislike </span>{" "}
+        <span style={iconStyle}>
+          <DislikeIcon />
+        </span>
+      </Button>
+    );
+  }
+}
+
+export {
+  ProfileSettingsButton,
+  ProfileActionsButton,
+  LikeButton,
+  LikeBackButton,
+  DislikeButton
+};
