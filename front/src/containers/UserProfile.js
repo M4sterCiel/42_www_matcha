@@ -37,6 +37,7 @@ class UserProfile extends Component {
       pictures: [],
       tags: []
     };
+    this._isMounted = false;
   }
 
   render() {
@@ -197,11 +198,17 @@ class UserProfile extends Component {
   }
 
   componentDidUpdate() {
+    this._isMounted = true;
     let url = document.location.href;
     let username = url.split("/");
     username = username[username.length - 1];
 
-    if (this.props.userConnectedData.username !== username) {
+    console.log("Username (didupdate): ", username);
+    if (
+      this.props.userConnectedData.username !== username &&
+      username !== "" &&
+      username !== undefined
+    ) {
       if (
         username !== this.state.user.username &&
         this.state.user.username !== undefined
@@ -215,12 +222,14 @@ class UserProfile extends Component {
               });
             }
 
-            this.setState({
-              user: res.data,
-              profile_picture: res.pictures.length === 0 ? [] : profile_picture,
-              pictures: res.pictures,
-              tags: res.tags
-            });
+            this._isMounted &&
+              this.setState({
+                user: res.data,
+                profile_picture:
+                  res.pictures.length === 0 ? [] : profile_picture,
+                pictures: res.pictures,
+                tags: res.tags
+              });
           })
           .catch(err => {
             ErrorToast.user.userNotFound();
@@ -239,17 +248,21 @@ class UserProfile extends Component {
         });
       }
 
-      this.setState({
-        user: this.props.userConnectedData,
-        profile_picture:
-          this.props.userConnectedData.pictures.length === 0 ? [] : profile_pic,
-        pictures: this.props.userConnectedData.pictures,
-        tags: this.props.userConnectedData.tags
-      });
+      this._isMounted &&
+        this.setState({
+          user: this.props.userConnectedData,
+          profile_picture:
+            this.props.userConnectedData.pictures.length === 0
+              ? []
+              : profile_pic,
+          pictures: this.props.userConnectedData.pictures,
+          tags: this.props.userConnectedData.tags
+        });
     }
   }
 
   componentDidMount() {
+    this._isMounted = true;
     if (!this.Auth.loggedIn()) {
       ErrorToast.auth.pageRequiresLogin();
       this.props.history.replace("/users/login");
@@ -258,7 +271,11 @@ class UserProfile extends Component {
     let username = url.split("/");
     username = username[username.length - 1];
 
-    if (this.props.userConnectedData.username !== username) {
+    if (
+      this.props.userConnectedData.username !== username &&
+      username !== "" &&
+      username !== undefined
+    ) {
       ApiCall.user
         .getUserFromUsername(username)
         .then(res => {
@@ -268,12 +285,13 @@ class UserProfile extends Component {
             });
           }
 
-          this.setState({
-            user: res.data,
-            profile_picture: res.pictures.length === 0 ? [] : profile_picture,
-            pictures: res.pictures,
-            tags: res.tags
-          });
+          this._isMounted &&
+            this.setState({
+              user: res.data,
+              profile_picture: res.pictures.length === 0 ? [] : profile_picture,
+              pictures: res.pictures,
+              tags: res.tags
+            });
         })
         .catch(err => {
           ErrorToast.user.userNotFound();
@@ -287,14 +305,21 @@ class UserProfile extends Component {
         });
       }
 
-      this.setState({
-        user: this.props.userConnectedData,
-        profile_picture:
-          this.props.userConnectedData.pictures.length === 0 ? [] : profile_pic,
-        pictures: this.props.userConnectedData.pictures,
-        tags: this.props.userConnectedData.tags
-      });
+      this._isMounted &&
+        this.setState({
+          user: this.props.userConnectedData,
+          profile_picture:
+            this.props.userConnectedData.pictures.length === 0
+              ? []
+              : profile_pic,
+          pictures: this.props.userConnectedData.pictures,
+          tags: this.props.userConnectedData.tags
+        });
     }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 }
 
