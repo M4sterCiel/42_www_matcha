@@ -233,7 +233,7 @@ class UserProfile extends Component {
         username !== this.state.user.username &&
         this.state.user.username !== undefined
       ) {
-        ApiCall.user
+        await ApiCall.user
           .getUserFromUsername(username)
           .then(res => {
             if (res.pictures.length !== 0) {
