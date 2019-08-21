@@ -16,7 +16,7 @@ module.exports = {
   deleteOne: async (user_id, by_id) => {
     try {
       var result = await pool.query({
-        sql: "DELETE FROM likes WHERE user_id = ? AND by_id = ?",
+        sql: "DELETE FROM likes WHERE user_id = ? AND sender_id = ?",
         values: [user_id, by_id]
       });
       return result.affectedRows;
@@ -27,6 +27,7 @@ module.exports = {
 
   checkUserLikedBy: async (user_id, by_id) => {
     try {
+      console.log(user_id, by_id);
       var result = await pool.query({
         sql: "SELECT * FROM likes WHERE `user_id` = ? AND sender_id = ?",
         values: [user_id, by_id]

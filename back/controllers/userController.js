@@ -375,7 +375,10 @@ module.exports = {
   },
 
   checkUserLikedByAndReverse: async (req, res, next) => {
+    console.log("Username: ", req.params.username);
     var by_id = await UserService.getUserIdFromUsername(req.params.username);
+    console.log("By id: ", by_id);
+    console.log("user_id: ", req.params["user_id"]);
     var ret = await likeModel.checkUserLikedBy(req.params["user_id"], by_id);
     var retRev = await likeModel.checkUserLikedBy(by_id, req.params["user_id"]);
     return res.status(200).json({ likedBy: ret, reverse: retRev });
@@ -413,15 +416,21 @@ module.exports = {
       });
     }
   },
-  
+
   manageNotif: async (type, username) => {
-    switch (type){
-      case 'visit':
-        console.log('Ca passe ici');
+    switch (type) {
+      case "visit":
+        console.log("Ca passe ici");
         break;
-      case 'like':
-      case 'dislike':
-      case 'like_back':
+      case "like":
+        console.log("like recu");
+        break;
+      case "dislike":
+        console.log("dislike recu");
+        break;
+      case "like_back":
+        console.log("like_back recu");
+        break;
     }
   }
 };

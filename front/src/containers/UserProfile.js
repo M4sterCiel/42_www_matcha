@@ -43,6 +43,10 @@ class UserProfile extends Component {
       likedByProfile: false,
       likesProfile: false
     };
+    this.setData = this.setData.bind(this);
+    this.handleLike = this.handleLike.bind(this);
+    this.handleLikeBack = this.handleLikeBack.bind(this);
+    this.handleDislike = this.handleDislike.bind(this);
     this._isMounted = false;
   }
 
@@ -78,15 +82,24 @@ class UserProfile extends Component {
                         this.state.user.username &&
                         this.state.pictures.length !== 0 &&
                         (this.state.likesProfile === true ? (
-                          <div className="profile-dislike">
+                          <div
+                            className="profile-dislike"
+                            onClick={e => this.handleDislike()}
+                          >
                             <DislikeButton />
                           </div>
                         ) : this.state.likedByProfile === true ? (
-                          <div className="profile-like-back">
+                          <div
+                            className="profile-like-back"
+                            onClick={e => this.handleLikeBack()}
+                          >
                             <LikeBackButton />
                           </div>
                         ) : (
-                          <div className="profile-like">
+                          <div
+                            className="profile-like"
+                            onClick={e => this.handleLike()}
+                          >
                             <LikeButton />
                           </div>
                         ))}
@@ -222,6 +235,51 @@ class UserProfile extends Component {
     );
   }
 
+  async componentDidMount() {
+    this._isMounted = true;
+    if (!this.Auth.loggedIn()) {
+      ErrorToast.auth.pageRequiresLogin();
+      this.props.history.replace("/users/login");
+    }
+    let url = document.location.href;
+    let username = url.split("/");
+    username = username[username.length - 1];
+
+    if (this.props.userConnectedData.username !== username) {
+      (await this._isMounted) &&
+        this.setState({
+          socket: io({
+            transports: ["polling"],
+            requestTimeout: 50000,
+            upgrade: false,
+            "sync disconnect on unload": true,
+            query: {
+              userID: this.Auth.getConfirm()["id"]
+            }
+          })
+        });
+
+      this.setData(username);
+    } else {
+      if (this.props.userConnectedData.pictures.length !== 0) {
+        var profile_pic = this.props.userConnectedData.pictures.filter(pic => {
+          return pic.profile_picture === 1;
+        });
+      }
+
+      this._isMounted &&
+        this.setState({
+          user: this.props.userConnectedData,
+          profile_picture:
+            this.props.userConnectedData.pictures.length === 0
+              ? []
+              : profile_pic,
+          pictures: this.props.userConnectedData.pictures,
+          tags: this.props.userConnectedData.tags
+        });
+    }
+  }
+
   async componentDidUpdate() {
     this._isMounted = true;
     let url = document.location.href;
@@ -233,49 +291,7 @@ class UserProfile extends Component {
         username !== this.state.user.username &&
         this.state.user.username !== undefined
       ) {
-        await ApiCall.user
-          .getUserFromUsername(username)
-          .then(res => {
-            if (res.pictures.length !== 0) {
-              var profile_picture = res.pictures.filter(pic => {
-                return pic.profile_picture === 1;
-              });
-            }
-
-            this._isMounted &&
-              this.setState({
-                user: res.data,
-                profile_picture:
-                  res.pictures.length === 0 ? [] : profile_picture,
-                pictures: res.pictures,
-                tags: res.tags
-              });
-
-              ApiCall.user
-            .checkUserLikedByAndReverse(
-              this.props.userConnectedData.id,
-              username
-            )
-            .then(res => {
-              console.log(res);
-              this._isMounted &&
-                this.setState({
-                  likedByProfile: res.likedBy,
-                  likesProfile: res.reverse
-                });
-            })
-            .catch(err => {
-              console.log(err);
-            });
-          })
-          .catch(err => {
-            ErrorToast.user.userNotFound();
-            this.props.history.replace("/");
-            console.log(err);
-          });
-
-          if (this.state.socket !== "")
-            this.state.socket.emit("sendNotif", 'visit', this.Auth.getConfirm()["id"], this.state.user['id']);
+        this.setData(username);
       }
     } else if (
       this.state.user !== this.props.userConnectedData ||
@@ -301,88 +317,106 @@ class UserProfile extends Component {
     }
   }
 
-  async componentDidMount() {
-    this._isMounted = true;
-    if (!this.Auth.loggedIn()) {
-      ErrorToast.auth.pageRequiresLogin();
-      this.props.history.replace("/users/login");
-    }
-    let url = document.location.href;
-    let username = url.split("/");
-    username = username[username.length - 1];
+  async setData(username) {
+    await ApiCall.user
+      .getUserFromUsername(username)
+      .then(res => {
+        if (res.pictures.length !== 0) {
+          var profile_picture = res.pictures.filter(pic => {
+            return pic.profile_picture === 1;
+          });
+        }
 
-    if (this.props.userConnectedData.username !== username) {
-      await this._isMounted && this.setState({ 
-        socket: io({
-          transports: ["polling"],
-          requestTimeout: 50000,
-          upgrade: false,
-          "sync disconnect on unload": true,
-          query: {
-            userID: this.Auth.getConfirm()["id"]
-          }
-        })
+        this._isMounted &&
+          this.setState({
+            user: res.data,
+            profile_picture: res.pictures.length === 0 ? [] : profile_picture,
+            pictures: res.pictures,
+            tags: res.tags
+          });
+
+        ApiCall.user
+          .checkUserLikedByAndReverse(this.Auth.getConfirm()["id"], username)
+          .then(res => {
+            console.log(res);
+            this._isMounted &&
+              this.setState({
+                likedByProfile: res.likedBy,
+                likesProfile: res.reverse
+              });
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      })
+      .catch(err => {
+        ErrorToast.user.userNotFound();
+        this.props.history.replace("/");
+        console.log(err);
+      });
+    this.state.socket.emit(
+      "sendNotif",
+      "visit",
+      this.Auth.getConfirm()["id"],
+      this.state.user["id"]
+    );
+  }
+
+  handleLike() {
+    ApiCall.user.createUserLike(
+      this.state.user.id,
+      this.Auth.getConfirm()["id"]
+    );
+
+    this._isMounted &&
+      this.setState({
+        likesProfile: true
       });
 
-      await ApiCall.user
-        .getUserFromUsername(username)
-        .then(res => {
-          if (res.pictures.length !== 0) {
-            var profile_picture = res.pictures.filter(pic => {
-              return pic.profile_picture === 1;
-            });
-          }
+    this.state.socket.emit(
+      "sendNotif",
+      "like",
+      this.Auth.getConfirm()["id"],
+      this.state.user["id"]
+    );
+  }
 
-          this._isMounted &&
-            this.setState({
-              user: res.data,
-              profile_picture: res.pictures.length === 0 ? [] : profile_picture,
-              pictures: res.pictures,
-              tags: res.tags
-            });
+  handleLikeBack() {
+    ApiCall.user.createUserLike(
+      this.state.user.id,
+      this.Auth.getConfirm()["id"]
+    );
 
-           ApiCall.user
-            .checkUserLikedByAndReverse(
-              this.props.userConnectedData.id,
-              username
-            )
-            .then(res => {
-              console.log(res);
-              this._isMounted &&
-                this.setState({
-                  likedByProfile: res.likedBy,
-                  likesProfile: res.reverse
-                });
-            })
-            .catch(err => {
-              console.log(err);
-            });
-        })
-        .catch(err => {
-          ErrorToast.user.userNotFound();
-          this.props.history.replace("/");
-          console.log(err);
-        });
-        this.state.socket.emit("sendNotif", 'visit', this.Auth.getConfirm()["id"], this.state.user['id']);
+    this._isMounted &&
+      this.setState({
+        likesProfile: true
+      });
 
-    } else {
-      if (this.props.userConnectedData.pictures.length !== 0) {
-        var profile_pic = this.props.userConnectedData.pictures.filter(pic => {
-          return pic.profile_picture === 1;
-        });
-      }
+    this.state.socket.emit(
+      "sendNotif",
+      "like_back",
+      this.Auth.getConfirm()["id"],
+      this.state.user["id"]
+    );
+  }
 
-      this._isMounted &&
-        this.setState({
-          user: this.props.userConnectedData,
-          profile_picture:
-            this.props.userConnectedData.pictures.length === 0
-              ? []
-              : profile_pic,
-          pictures: this.props.userConnectedData.pictures,
-          tags: this.props.userConnectedData.tags
-        });
-    }
+  handleDislike() {
+    ApiCall.user.deleteUserLike(
+      this.state.user.id,
+      this.Auth.getConfirm()["id"]
+    );
+
+    this._isMounted &&
+      this.setState({
+        likesProfile: false
+      });
+
+    this.state.socket.emit(
+      "sendNotif",
+      "dislike",
+      this.Auth.getConfirm()["id"],
+      this.state.user["id"]
+    );
   }
 
   componentWillUnmount() {

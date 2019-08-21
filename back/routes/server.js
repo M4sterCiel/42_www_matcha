@@ -47,11 +47,9 @@ var mainSocket = io.on("connection", async socket => {
     status: "Online"
   });
 
-  socket.on('sendNotif', (type, user_id, target_id) => {
+  socket.on("sendNotif", (type, user_id, target_id) => {
     userController.manageNotif(type, user_id, target_id);
-    console.log(user_id, target_id);
-    console.log(type);
-  })
+  });
 
   socket.on("disconnect", reason => {
     //console.log(reason);
