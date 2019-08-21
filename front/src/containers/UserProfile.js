@@ -250,6 +250,23 @@ class UserProfile extends Component {
                 pictures: res.pictures,
                 tags: res.tags
               });
+
+              ApiCall.user
+            .checkUserLikedByAndReverse(
+              this.props.userConnectedData.id,
+              username
+            )
+            .then(res => {
+              console.log(res);
+              this._isMounted &&
+                this.setState({
+                  likedByProfile: res.likedBy,
+                  likesProfile: res.reverse
+                });
+            })
+            .catch(err => {
+              console.log(err);
+            });
           })
           .catch(err => {
             ErrorToast.user.userNotFound();
