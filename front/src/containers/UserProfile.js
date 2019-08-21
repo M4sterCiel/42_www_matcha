@@ -324,12 +324,13 @@ class UserProfile extends Component {
               tags: res.tags
             });
 
-          ApiCall.user
+           ApiCall.user
             .checkUserLikedByAndReverse(
               this.props.userConnectedData.id,
               username
             )
             .then(res => {
+              console.log(res);
               this._isMounted &&
                 this.setState({
                   likedByProfile: res.likedBy,
