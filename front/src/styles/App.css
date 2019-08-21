@@ -350,7 +350,7 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   margin-top: 10px;
 }
 
-.slider-tall {
+.slider {
   height: 740px !important;
 }
 
@@ -405,6 +405,18 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   position: absolute;
   top: 220px;
   left: calc(100% - 120px);
+}
+
+.profile-dislike {
+  position: absolute;
+  top: 220px;
+  left: calc(100% - 145px);
+}
+
+.profile-like-back {
+  position: absolute;
+  top: 220px;
+  left: calc(100% - 165px);
 }
 
 .popscore {
@@ -663,12 +675,13 @@ button:focus {
 }
 
 .tooltip .tooltip-text {
+  font-size: 14px;
   visibility: hidden;
   width: 120px;
-  background-color: black;
+  background-color: #323232;
   color: #fff;
   text-align: center;
-  border-radius: 6px;
+  border-radius: 2px;
   padding: 5px 0;
   /* Position the tooltip */
   position: absolute;
@@ -1162,7 +1175,14 @@ button.btn-star-picture-main {
 
   .profile-like {
     top: 120px;
-    left: calc(100% - 120px);
+  }
+
+  .profile-dislike {
+    top: 120px;
+  }
+
+  .profile-like-back {
+    top: 120px;
   }
 
   #login-box {
@@ -1186,7 +1206,7 @@ button.btn-star-picture-main {
     top: calc(50% - 100px) !important;
   }
 
-  .slider-tall {
+  .slider {
     height: 440px !important;
   }
 
@@ -1203,9 +1223,19 @@ button.btn-star-picture-main {
     left: calc(100% - 70px);
   }
 
-  .profile-like {
+  .profile-like,
+  .profile-dislike {
     width: 60px;
-    left: calc(100% - 85px);
+    left: calc(100% - 80px);
+  }
+
+  .profile-like-back {
+    width: 108px;
+    left: calc(100% - 120px);
+  }
+
+  .like-btn-text {
+    display: none;
   }
 
   .popscore {
@@ -1241,7 +1271,7 @@ button.btn-star-picture-main {
     left: 33%;
   }
 
-  .slider-tall {
+  .slider {
     height: 340px !important;
   }
 
@@ -1269,7 +1299,7 @@ button.btn-star-picture-main {
 }
 
 @media screen and (max-width: 360px) {
-  .slider-tall {
+  .slider {
     height: 240px !important;
   }
 

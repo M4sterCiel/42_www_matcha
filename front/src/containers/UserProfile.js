@@ -5,7 +5,9 @@ import NavBar from "../components/NavBar";
 import {
   ProfileSettingsButton,
   ProfileActionsButton,
-  LikeButton
+  LikeButton,
+  LikeBackButton,
+  DislikeButton
 } from "../components/Buttons";
 import ModalUserEditProfileInfo from "../components/modals/ModalUserEditProfileInfo";
 import ModalUserEditProfilePictures from "../components/modals/ModalUserEditProfilePictures";
@@ -37,7 +39,9 @@ class UserProfile extends Component {
       profile_picture: [],
       pictures: [],
       tags: [],
-      socket: ""
+      socket: "",
+      likedByProfile: false,
+      likesProfile: false
     };
     this._isMounted = false;
   }
@@ -71,11 +75,21 @@ class UserProfile extends Component {
                   <div className="card-content">
                     <div className="row">
                       {this.props.userConnectedData.username !==
-                        this.state.user.username && (
-                        <div className="profile-like">
-                          <LikeButton />
-                        </div>
-                      )}
+                        this.state.user.username &&
+                        this.state.pictures.length !== 0 &&
+                        (this.state.likesProfile === true ? (
+                          <div className="profile-dislike">
+                            <DislikeButton />
+                          </div>
+                        ) : this.state.likedByProfile === true ? (
+                          <div className="profile-like-back">
+                            <LikeBackButton />
+                          </div>
+                        ) : (
+                          <div className="profile-like">
+                            <LikeButton />
+                          </div>
+                        ))}
                       <div className="profile-popscore">
                         <Popscore popscore={this.state.user.pop_score} />
                       </div>
@@ -106,9 +120,18 @@ class UserProfile extends Component {
                                   fiber_manual_record
                                 </i>
                               ) : (
-                                <i className="material-icons dp48 offline-icon">
-                                  fiber_manual_record
-                                </i>
+                                <span className="tooltip">
+                                  <i className="material-icons dp48 offline-icon">
+                                    fiber_manual_record
+                                  </i>{" "}
+                                  <span className="tooltip-text">
+                                    {this.state.user.last_connexion
+                                      ? moment(
+                                          this.state.user.last_connexion
+                                        ).fromNow()
+                                      : "never seen online"}
+                                  </span>
+                                </span>
                               )}
                             </span>
                           </span>
@@ -219,12 +242,14 @@ class UserProfile extends Component {
               });
             }
 
-            this._isMounted && this.setState({
-              user: res.data,
-              profile_picture: res.pictures.length === 0 ? [] : profile_picture,
-              pictures: res.pictures,
-              tags: res.tags
-            });
+            this._isMounted &&
+              this.setState({
+                user: res.data,
+                profile_picture:
+                  res.pictures.length === 0 ? [] : profile_picture,
+                pictures: res.pictures,
+                tags: res.tags
+              });
           })
           .catch(err => {
             ErrorToast.user.userNotFound();
@@ -243,13 +268,16 @@ class UserProfile extends Component {
         });
       }
 
-      this._isMounted && this.setState({
-        user: this.props.userConnectedData,
-        profile_picture:
-          this.props.userConnectedData.pictures.length === 0 ? [] : profile_pic,
-        pictures: this.props.userConnectedData.pictures,
-        tags: this.props.userConnectedData.tags
-      });
+      this._isMounted &&
+        this.setState({
+          user: this.props.userConnectedData,
+          profile_picture:
+            this.props.userConnectedData.pictures.length === 0
+              ? []
+              : profile_pic,
+          pictures: this.props.userConnectedData.pictures,
+          tags: this.props.userConnectedData.tags
+        });
     }
   }
 
@@ -290,12 +318,29 @@ class UserProfile extends Component {
             });
           }
 
-          this._isMounted && this.setState({
-            user: res.data,
-            profile_picture: res.pictures.length === 0 ? [] : profile_picture,
-            pictures: res.pictures,
-            tags: res.tags
-          });
+          this._isMounted &&
+            this.setState({
+              user: res.data,
+              profile_picture: res.pictures.length === 0 ? [] : profile_picture,
+              pictures: res.pictures,
+              tags: res.tags
+            });
+
+          ApiCall.user
+            .checkUserLikedByAndReverse(
+              this.props.userConnectedData.id,
+              username
+            )
+            .then(res => {
+              this._isMounted &&
+                this.setState({
+                  likedByProfile: res.likedBy,
+                  likesProfile: res.reverse
+                });
+            })
+            .catch(err => {
+              console.log(err);
+            });
         })
         .catch(err => {
           ErrorToast.user.userNotFound();
@@ -309,13 +354,16 @@ class UserProfile extends Component {
         });
       }
 
-      this._isMounted && this.setState({
-        user: this.props.userConnectedData,
-        profile_picture:
-          this.props.userConnectedData.pictures.length === 0 ? [] : profile_pic,
-        pictures: this.props.userConnectedData.pictures,
-        tags: this.props.userConnectedData.tags
-      });
+      this._isMounted &&
+        this.setState({
+          user: this.props.userConnectedData,
+          profile_picture:
+            this.props.userConnectedData.pictures.length === 0
+              ? []
+              : profile_pic,
+          pictures: this.props.userConnectedData.pictures,
+          tags: this.props.userConnectedData.tags
+        });
     }
   }
 

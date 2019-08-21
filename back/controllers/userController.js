@@ -2,6 +2,7 @@ var UserService = require("../services/userService");
 var userModel = require("../models/userModel");
 var tagModel = require("../models/tagModel");
 var pictureModel = require("../models/pictureModel");
+var likeModel = require("../models/likeModel");
 var input = require("../services/inputService");
 var jwtUtils = require("../services/jwtService");
 
@@ -371,5 +372,45 @@ module.exports = {
       return res.status(200).json({
         error: "An error occurred and notifcations could not be dismissed"
       });
+  },
+
+  checkUserLikedByAndReverse: async (req, res, next) => {
+    var by_id = await UserService.getUserIdFromUsername(req.params.username);
+    var ret = await likeModel.checkUserLikedBy(req.params["user_id"], by_id);
+    var retRev = await likeModel.checkUserLikedBy(by_id, req.params["user_id"]);
+    return res.status(200).json({ likedBy: ret, reverse: retRev });
+  },
+
+  deleteUserLike: async (req, res, next) => {
+    if (isNaN(req.params.user_id) || isNaN(req.params.by_id)) {
+      return res.status(400).json({ error: "Couldn't update like" });
+    }
+
+    var result = await likeModel.deleteOne(
+      req.params.user_id,
+      req.params.by_id
+    );
+
+    if (result.error) return res.status(401).json({ error: result.error });
+    else {
+      return res.status(200).json({
+        message: `User data updated`
+      });
+    }
+  },
+
+  createUserLike: async (req, res, next) => {
+    if (isNaN(req.params.user_id) || isNaN(req.params.by_id)) {
+      return res.status(400).json({ error: "Couldn't update like" });
+    }
+
+    var result = await likeModel.addOne(req.params.user_id, req.params.by_id);
+
+    if (result.error) return res.status(401).json({ error: result.error });
+    else {
+      return res.status(200).json({
+        message: `User data updated`
+      });
+    }
   }
 };

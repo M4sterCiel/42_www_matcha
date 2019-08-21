@@ -1,0 +1,1 @@
+var notifModel = require("../models/notifModel");

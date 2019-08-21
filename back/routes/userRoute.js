@@ -27,6 +27,15 @@ exports.router = (() => {
     .post(userController.updateUserProfilePicture);
   userRouter.route("/register/:key").get(userController.checkValidity);
   userRouter.route("/profile/:username").get(userController.getUserProfile);
+  userRouter
+    .route("/profile/:user_id/liked_by/:username")
+    .get(userController.checkUserLikedByAndReverse);
+  userRouter
+    .route("/delete/:user_id/liked_by/:by_id")
+    .post(userController.deleteUserLike);
+  userRouter
+    .route("/create/:user_id/liked_by/:by_id")
+    .post(userController.createUserLike);
   userRouter.route("/login").post(userController.login);
   userRouter.route("/forgot-password").post(userController.forgotPassword);
   userRouter

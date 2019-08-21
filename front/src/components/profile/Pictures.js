@@ -24,9 +24,7 @@ class Pictures extends Component {
       <div className="card">
         <div className="card-content">
           <p className="profile-info-title">Pictures</p>
-          <Slider className="slider-tall">
-            {this.props.pictures.length === 0 ? NoSlide : Slides}
-          </Slider>
+          <Slider>{this.props.pictures.length === 0 ? NoSlide : Slides}</Slider>
         </div>
       </div>
     );
