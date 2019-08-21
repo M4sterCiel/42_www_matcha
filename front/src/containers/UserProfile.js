@@ -41,7 +41,8 @@ class UserProfile extends Component {
       tags: [],
       socket: "",
       likedByProfile: false,
-      likesProfile: false
+      likesProfile: false,
+      isOpen: false
     };
     this.setData = this.setData.bind(this);
     this.handleLike = this.handleLike.bind(this);
