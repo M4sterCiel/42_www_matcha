@@ -412,5 +412,16 @@ module.exports = {
         message: `User data updated`
       });
     }
+  },
+  
+  manageNotif: async (type, username) => {
+    switch (type){
+      case 'visit':
+        console.log('Ca passe ici');
+        break;
+      case 'like':
+      case 'dislike':
+      case 'like_back':
+    }
   }
 };

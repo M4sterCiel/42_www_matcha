@@ -5,6 +5,7 @@ let bodyParser = require("body-parser");
 let userRoute = require("./userRoute");
 var chatRoute = require("./chatRoute");
 var chatController = require("../controllers/chatController");
+var userController = require("../controllers/userController");
 
 /* Listenning port */
 
@@ -46,8 +47,10 @@ var mainSocket = io.on("connection", async socket => {
     status: "Online"
   });
 
-  socket.on('sendNotif', (type, username) => {
-    console.log(type, username);
+  socket.on('sendNotif', (type, user_id, target_id) => {
+    userController.manageNotif(type, user_id, target_id);
+    console.log(user_id, target_id);
+    console.log(type);
   })
 
   socket.on("disconnect", reason => {

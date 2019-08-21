@@ -222,7 +222,7 @@ class UserProfile extends Component {
     );
   }
 
-  componentDidUpdate() {
+  async componentDidUpdate() {
     this._isMounted = true;
     let url = document.location.href;
     let username = url.split("/");
@@ -256,6 +256,9 @@ class UserProfile extends Component {
             this.props.history.replace("/");
             console.log(err);
           });
+
+          if (this.state.socket !== "")
+            this.state.socket.emit("sendNotif", 'visit', this.Auth.getConfirm()["id"], this.state.user['id']);
       }
     } else if (
       this.state.user !== this.props.userConnectedData ||
@@ -281,7 +284,7 @@ class UserProfile extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this._isMounted = true;
     if (!this.Auth.loggedIn()) {
       ErrorToast.auth.pageRequiresLogin();
@@ -292,7 +295,7 @@ class UserProfile extends Component {
     username = username[username.length - 1];
 
     if (this.props.userConnectedData.username !== username) {
-      this._isMounted && this.setState({ 
+      await this._isMounted && this.setState({ 
         socket: io({
           transports: ["polling"],
           requestTimeout: 50000,
@@ -304,12 +307,7 @@ class UserProfile extends Component {
         })
       });
 
-      this.state.socket.emit("sendNotif", {
-        type: 'visit',
-        username: username
-      })
-
-      ApiCall.user
+      await ApiCall.user
         .getUserFromUsername(username)
         .then(res => {
           if (res.pictures.length !== 0) {
@@ -347,6 +345,8 @@ class UserProfile extends Component {
           this.props.history.replace("/");
           console.log(err);
         });
+        this.state.socket.emit("sendNotif", 'visit', this.Auth.getConfirm()["id"], this.state.user['id']);
+
     } else {
       if (this.props.userConnectedData.pictures.length !== 0) {
         var profile_pic = this.props.userConnectedData.pictures.filter(pic => {
