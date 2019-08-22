@@ -6,7 +6,7 @@ var chatController = require("../controllers/chatController");
 module.exports = {
     visit: async (user_id, target_id, username) => {
         var visited = await notifModel.alreadyExists('visit', user_id, target_id);
-        if (!visited && (user_id != target_id))
+        if (!visited)
         {
           await notifModel.addOne([target_id, user_id, username, 3, "just visited your profile!"]);
           var score = await userModel.getUserScore(target_id);
