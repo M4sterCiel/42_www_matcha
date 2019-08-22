@@ -27,7 +27,6 @@ module.exports = {
 
   checkUserLikedBy: async (user_id, by_id) => {
     try {
-      console.log(user_id, by_id);
       var result = await pool.query({
         sql: "SELECT * FROM likes WHERE `user_id` = ? AND sender_id = ?",
         values: [user_id, by_id]

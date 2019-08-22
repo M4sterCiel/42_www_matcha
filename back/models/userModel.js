@@ -15,6 +15,19 @@ module.exports = {
     }
   },
 
+  getUsernameFromId: async user_id => {
+    try {
+      var result = await pool.query({
+        sql: "SELECT username FROM users WHERE id = ?",
+        values: [user_id]
+      });
+      if (result) return result;
+    } catch (err) {
+      console.log(err);
+      throw new Error(err);
+    }
+  },
+
   updateOne: async (id, field, data) => {
     try {
       var result = await pool.query({
@@ -187,6 +200,30 @@ module.exports = {
       var result = await pool.query({
         sql: "UPDATE notification SET `isRead`= 1 WHERE `user_id`= ?",
         values: [userID]
+      });
+      return result.affectedRows;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
+  increaseScore: async (score, target_id) => {
+    try {
+      var result = await pool.query({
+        sql: "UPDATE users SET pop_score = pop_score + ? WHERE `id`= ?",
+        values: [score, target_id]
+      });
+      return result.affectedRows;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
+  decreaseScore: async (score, target_id) => {
+    try {
+      var result = await pool.query({
+        sql: "UPDATE users SET pop_score = pop_score + ? WHERE `id`= ?",
+        values: [score, target_id]
       });
       return result.affectedRows;
     } catch (err) {

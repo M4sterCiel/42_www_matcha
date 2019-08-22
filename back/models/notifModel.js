@@ -2,6 +2,20 @@ var pool = require("../config/database");
 
 
 module.exports = {
+    addOne: async data => {
+        try {
+            await pool.query({
+              sql:
+                "INSERT INTO notification (user_id, sender_id, sender_username, type, data) VALUES (?)",
+              values: [data]
+            });
+            //console.log(result);
+            //if (result) return result;
+          } catch (err) {
+            throw new Error(err);
+          }
+    },
+
     getNotification: async userID => {
         try {
           var result = await pool.query({
@@ -35,8 +49,8 @@ module.exports = {
                 "SELECT * FROM notification WHERE `user_id` = ? AND `sender_id` = ? AND type = ?",
               values: [target_id, user_id, type]
             });
-            console.log(result);
-            if (result) return result;
+            //console.log(result);
+            return (result.length > 0 ? true : false)
           } catch (err) {
             throw new Error(err);
           }

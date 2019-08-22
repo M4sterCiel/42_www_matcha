@@ -3,8 +3,10 @@ var userModel = require("../models/userModel");
 var tagModel = require("../models/tagModel");
 var pictureModel = require("../models/pictureModel");
 var likeModel = require("../models/likeModel");
+var notifModel = require("../models/notifModel");
 var input = require("../services/inputService");
 var jwtUtils = require("../services/jwtService");
+var notifService = require('../services/notifService');
 
 module.exports = {
   login: async (req, res, next) => {
@@ -375,10 +377,7 @@ module.exports = {
   },
 
   checkUserLikedByAndReverse: async (req, res, next) => {
-    console.log("Username: ", req.params.username);
     var by_id = await UserService.getUserIdFromUsername(req.params.username);
-    console.log("By id: ", by_id);
-    console.log("user_id: ", req.params["user_id"]);
     var ret = await likeModel.checkUserLikedBy(req.params["user_id"], by_id);
     var retRev = await likeModel.checkUserLikedBy(by_id, req.params["user_id"]);
     return res.status(200).json({ likedBy: ret, reverse: retRev });
@@ -409,7 +408,8 @@ module.exports = {
 
     var result = await likeModel.addOne(req.params.user_id, req.params.by_id);
 
-    if (result.error) return res.status(401).json({ error: result.error });
+    if (result.error) 
+      return res.status(401).json({ error: result.error });
     else {
       return res.status(200).json({
         message: `User data updated`
@@ -417,10 +417,19 @@ module.exports = {
     }
   },
 
-  manageNotif: async (type, username) => {
+  manageNotif: async (type, user_id, target_id) => {
+    var sendNotif = false;
+    var username = await userModel.getUsernameFromId(user_id);
+    username = await username[0].username;
     switch (type) {
       case "visit":
-        console.log("Ca passe ici");
+        var visited = await notifModel.alreadyExists('visit', user_id, target_id);
+        if (!visited)
+        {
+          await notifModel.addOne([target_id, user_id, username, 3, "just visited your profile!"]);
+          await userModel.increaseScore(5, target_id);
+          sendNotif = true;
+        }
         break;
       case "like":
         console.log("like recu");
@@ -431,6 +440,7 @@ module.exports = {
       case "like_back":
         console.log("like_back recu");
         break;
-    }
+    };
+    return (sendNotif);
   }
 };

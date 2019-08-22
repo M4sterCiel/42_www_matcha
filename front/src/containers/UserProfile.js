@@ -246,7 +246,7 @@ class UserProfile extends Component {
     username = username[username.length - 1];
 
     if (this.props.userConnectedData.username !== username) {
-      (await this._isMounted) &&
+      await this._isMounted &&
         this.setState({
           socket: io({
             transports: ["polling"],
@@ -338,7 +338,7 @@ class UserProfile extends Component {
         ApiCall.user
           .checkUserLikedByAndReverse(this.Auth.getConfirm()["id"], username)
           .then(res => {
-            console.log(res);
+            //console.log(res);
             this._isMounted &&
               this.setState({
                 likedByProfile: res.likedBy,
@@ -354,12 +354,13 @@ class UserProfile extends Component {
         this.props.history.replace("/");
         console.log(err);
       });
-    this.state.socket.emit(
-      "sendNotif",
-      "visit",
-      this.Auth.getConfirm()["id"],
-      this.state.user["id"]
-    );
+    if (this.state.socket !== "")
+      this.state.socket.emit(
+        "sendNotif",
+        "visit",
+        this.Auth.getConfirm()["id"],
+        this.state.user["id"]
+      );
   }
 
   handleLike() {
@@ -373,12 +374,15 @@ class UserProfile extends Component {
         likesProfile: true
       });
 
-    this.state.socket.emit(
-      "sendNotif",
-      "like",
-      this.Auth.getConfirm()["id"],
-      this.state.user["id"]
-    );
+    if (this.state.socket !== "")
+    {
+      this.state.socket.emit(
+        "sendNotif",
+        "like",
+        this.Auth.getConfirm()["id"],
+        this.state.user["id"]
+      );
+    }
   }
 
   handleLikeBack() {
@@ -392,12 +396,15 @@ class UserProfile extends Component {
         likesProfile: true
       });
 
-    this.state.socket.emit(
-      "sendNotif",
-      "like_back",
-      this.Auth.getConfirm()["id"],
-      this.state.user["id"]
-    );
+    if (this.state.socket !== "")
+    {
+      this.state.socket.emit(
+        "sendNotif",
+        "like_back",
+        this.Auth.getConfirm()["id"],
+        this.state.user["id"]
+      );
+    }
   }
 
   handleDislike() {
@@ -411,12 +418,15 @@ class UserProfile extends Component {
         likesProfile: false
       });
 
-    this.state.socket.emit(
-      "sendNotif",
-      "dislike",
-      this.Auth.getConfirm()["id"],
-      this.state.user["id"]
-    );
+    if (this.state.socket !== "")
+    {
+      this.state.socket.emit(
+        "sendNotif",
+        "dislike",
+        this.Auth.getConfirm()["id"],
+        this.state.user["id"]
+      );
+    }
   }
 
   componentWillUnmount() {
