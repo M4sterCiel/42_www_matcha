@@ -339,7 +339,6 @@ class UserProfile extends Component {
         ApiCall.user
           .checkUserLikedByAndReverse(this.Auth.getConfirm()["id"], username)
           .then(res => {
-            console.log(res);
             this._isMounted &&
               this.setState({
                 likedByProfile: res.likedBy,

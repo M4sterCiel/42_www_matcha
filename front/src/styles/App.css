@@ -486,6 +486,79 @@ button:focus {
   background-color: inherit;
 }
 
+/* User card */
+
+.user-card {
+  width: 90% !important;
+}
+
+.user-card-image {
+  height: 250px !important;
+}
+
+.activator {
+  height: 100% !important;
+  object-fit: cover;
+}
+
+.card-action {
+  color: #ffb6d3 !important;
+  text-align: right;
+}
+
+.offset-user-card {
+  position: relative !important;
+  top: 5px !important;
+}
+
+.user-card-content {
+  padding: 18px 18px 0px 18px !important;
+}
+
+.user-card-details {
+  position: relative;
+  top: -20px;
+}
+
+.card-title {
+  margin-bottom: 2px !important;
+}
+
+.user-card-username {
+  font-size: 20px !important;
+}
+
+.user-card-like-btn {
+  position: relative;
+  top: -30px;
+  right: calc(-100% + 90px);
+}
+
+.user-card-names {
+  margin-bottom: 10px;
+}
+
+.user-card-bio-btn {
+  font-size: 30px;
+  position: relative !important;
+  top: 8px !important;
+  left: 8px !important;
+}
+
+.user-card-location,
+.user-card-birthdate,
+.user-card-orientation {
+  display: block;
+  line-height: 20px;
+  margin-top: 10px;
+}
+
+.user-card-interests {
+  margin-top: 15px;
+  height: 32px;
+  overflow: hidden;
+}
+
 /* Delete user component */
 
 .delete-btn {
@@ -1201,6 +1274,10 @@ button.btn-star-picture-main {
     right: 23px;
     bottom: 23px;
   }
+
+  .user-card-image {
+    height: 400px !important;
+  }
 }
 
 @media screen and (max-width: 600px) {
@@ -1300,6 +1377,10 @@ button.btn-star-picture-main {
     height: 220px !important;
     top: calc(50% - 110px) !important;
   }
+
+  .user-card-image {
+    height: 300px !important;
+  }
 }
 
 @media screen and (max-width: 360px) {
@@ -1350,5 +1431,9 @@ button.btn-star-picture-main {
     width: 300px;
     height: 220px !important;
     top: calc(50% - 110px) !important;
+  }
+
+  .user-card-image {
+    height: 230px !important;
   }
 }

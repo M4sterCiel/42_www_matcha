@@ -39,6 +39,13 @@ class HomeLogged extends Component {
             <div>
               <UserCard />
               <UserCard />
+              <UserCard />
+              <UserCard />
+              <UserCard />
+              <UserCard />
+              <UserCard />
+              <UserCard />
+              <UserCard />
             </div>
           )}
         </div>
