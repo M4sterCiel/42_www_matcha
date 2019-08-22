@@ -259,6 +259,23 @@ class UserProfile extends Component {
           })
         });
 
+        if (this.state.socket) {
+          this.state.socket.on('newNotif', id => {
+            if (id === this.Auth.getConfirm()["id"])
+              this.setData(username);
+          });
+          this.state.socket.on('online', data => {
+            // eslint-disable-next-line
+            if (data['user_id'] == this.state.user.id)
+              this.setData(username);
+          });
+          this.state.socket.on('offline', data => {
+            // eslint-disable-next-line
+            if (data['user_id'] == this.state.user.id)
+              this.setData(username);
+          });
+        }
+
       this.setData(username);
     } else {
       if (this.props.userConnectedData.pictures.length !== 0) {

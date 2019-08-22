@@ -16,6 +16,18 @@ module.exports = {
           }
     },
 
+    deleteOne: async (target_id, user_id, type) => {
+        try {
+            await pool.query({
+              sql:
+                "DELETE FROM notification WHERE user_id = ? AND sender_id = ? AND type = ?",
+              values: [target_id, user_id, type]
+            });
+          } catch (err) {
+            throw new Error(err);
+          }
+    },
+
     getNotification: async userID => {
         try {
           var result = await pool.query({

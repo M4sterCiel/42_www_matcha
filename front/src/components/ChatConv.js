@@ -63,15 +63,15 @@ class ChatConv extends Component {
         while (i < res.data["status"].length) {
           var k = 0;
           while (k < tab.length) {
-            if (tab[k]["userID"] === res.data["status"][i]["id"])
+            if (tab[k]["userID"] === res.data["status"][i]["id"]) {
               tab[k]["status"] =
                 res.data["status"][i]["online"] === 1 ? "Online" : "Offline";
+            }
             k++;
           }
           i++;
         }
         this._isMounted && this.setState({ matches: tab });
-        //console.log(this.state.matches);
       })
       .catch(err => {
         //console.log(err);

@@ -3,7 +3,6 @@ var userModel = require("../models/userModel");
 var tagModel = require("../models/tagModel");
 var pictureModel = require("../models/pictureModel");
 var likeModel = require("../models/likeModel");
-var notifModel = require("../models/notifModel");
 var input = require("../services/inputService");
 var jwtUtils = require("../services/jwtService");
 var notifService = require('../services/notifService');
@@ -423,22 +422,19 @@ module.exports = {
     username = await username[0].username;
     switch (type) {
       case "visit":
-        var visited = await notifModel.alreadyExists('visit', user_id, target_id);
-        if (!visited)
-        {
-          await notifModel.addOne([target_id, user_id, username, 3, "just visited your profile!"]);
-          await userModel.increaseScore(5, target_id);
-          sendNotif = true;
-        }
+        sendNotif = await notifService.visit(user_id, target_id, username);
         break;
       case "like":
-        console.log("like recu");
+        notifService.like(user_id, target_id, username);
+        sendNotif = true;
         break;
       case "dislike":
-        console.log("dislike recu");
+        await notifService.dislike(user_id, target_id, username);
+        sendNotif = true;
         break;
       case "like_back":
-        console.log("like_back recu");
+        await notifService.like_back(user_id, target_id, username);
+        sendNotif = true;
         break;
     };
     return (sendNotif);

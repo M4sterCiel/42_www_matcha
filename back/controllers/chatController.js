@@ -28,7 +28,7 @@ module.exports = {
           ? result[i]["user_1"]
           : result[i]["user_2"];
     }
-    if (status.length > 1) status = await userModel.getStatus(status);
+    if (status.length > 0) status = await userModel.getStatus(status);
     //console.log({ status });
     return res.status(200).json({ result, status });
   },
@@ -65,5 +65,13 @@ module.exports = {
     var userID = req.params.userID;
     var result = await chatModel.getListNotification(userID);
     return res.status(200).json({ notification: result });
+  },
+
+  createChatRoom: async (user_id, target_id, username) => {
+    var uniqid = (new Date().getTime() + Math.floor((Math.random()*10000)+1)).toString(16);
+    var username_1 = username;
+    var username_2 = await userModel.getUsernameFromId(target_id);
+    username_2 = username_2[0].username;
+    await chatModel.createChatRoom([uniqid, user_id, target_id, username_1, username_2]);
   }
 };

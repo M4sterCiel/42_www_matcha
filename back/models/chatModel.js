@@ -1,6 +1,17 @@
 var pool = require("../config/database");
 
 module.exports = {
+  createChatRoom: async data => {
+    try {
+      var result = await pool.query({
+        sql: "INSERT INTO matches (room_id, user_1, user_2, username_1, username_2) VALUES (?)",
+        values: [data]
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
   saveMessage: async data => {
     try {
       var result = await pool.query({
@@ -62,6 +73,20 @@ module.exports = {
       });
       //console.log(result);
       if (result) return result;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
+  alreadyExists: async (user_id, target_id) => {
+    try {
+      var result = await pool.query({
+        sql:
+          "SELECT * FROM matches WHERE `user_1` = ? AND `user_2`= ? OR `user_1` = ? AND `user_2` = ?",
+        values: [user_id, target_id, target_id, user_id]
+      });
+      if (result.length) return true;
+      else return false;
     } catch (err) {
       throw new Error(err);
     }

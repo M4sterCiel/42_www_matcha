@@ -49,10 +49,9 @@ var mainSocket = io.on("connection", async socket => {
 
   socket.on("sendNotif", async (type, user_id, target_id) => {
     var sendNotif = await userController.manageNotif(type, user_id, target_id);
-    if (sendNotif) 
+    if (sendNotif) {
       socket.broadcast.emit("newNotif", target_id);
-    else
-      console.log('doesn t send any notif');
+    }
   });
 
   socket.on("disconnect", reason => {

@@ -207,6 +207,18 @@ module.exports = {
     }
   },
 
+  getUserScore: async (target_id) => {
+    try {
+      var result = await pool.query({
+        sql: "SELECT pop_score FROM users WHERE id = ?",
+        values: [target_id]
+      });
+      return result;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
   increaseScore: async (score, target_id) => {
     try {
       var result = await pool.query({
@@ -222,8 +234,20 @@ module.exports = {
   decreaseScore: async (score, target_id) => {
     try {
       var result = await pool.query({
-        sql: "UPDATE users SET pop_score = pop_score + ? WHERE `id`= ?",
+        sql: "UPDATE users SET pop_score = pop_score - ? WHERE `id`= ?",
         values: [score, target_id]
+      });
+      return result.affectedRows;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
+  resetUserScore: async (target_id) => {
+    try {
+      var result = await pool.query({
+        sql: "UPDATE users SET pop_score = 0 WHERE `id`= ?",
+        values: [target_id]
       });
       return result.affectedRows;
     } catch (err) {
