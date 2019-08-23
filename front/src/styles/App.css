@@ -16,14 +16,6 @@ main {
 
 /* UI design */
 
-.home-background {
-  background-image: url("../assets/home-background.jpg");
-  height: 100%;
-  background-position-x: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 nav ul a {
   font-size: 16px;
 }
@@ -171,6 +163,24 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 .grey-message {
   color: grey;
   opacity: 0.5;
+}
+
+/* Homepage */
+
+.home-background {
+  background-image: url("../assets/home-background.jpg");
+  height: 100%;
+  background-position-x: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.suggestions-header {
+  background-color: #ffb6d3 !important;
+}
+
+.suggestions-header-links {
+  color: white !important;
 }
 
 /* Sliders */

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import UserCard from "../components/cards/UserCard";
 import CompleteProfile from "../components/home/CompleteProfile";
+import SuggestionsHeader from "../components/home/SuggestionsHeader";
 import ModalUserEditProfileInfo from "../components/modals/ModalUserEditProfileInfo";
 import ModalUserEditProfilePictures from "../components/modals/ModalUserEditProfilePictures";
 
@@ -36,7 +37,8 @@ class HomeLogged extends Component {
               )}
             </div>
           ) : (
-            <div>
+            <div className="home-suggestions-list" disabled={true}>
+              <SuggestionsHeader />
               <UserCard />
               <UserCard />
               <UserCard />
