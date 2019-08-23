@@ -85,7 +85,7 @@ class LikeBackButton extends Component {
     const iconStyle = { position: "relative", top: "5px" };
     return (
       <Button tooltip="like back this user" className="red">
-        <span className="like-btn-text">Like </span>back{" "}
+        <span className="like-btn-text">Like </span>Back{" "}
         <span style={iconStyle}>
           <LikeIcon />
         </span>

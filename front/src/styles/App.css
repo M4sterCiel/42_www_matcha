@@ -417,7 +417,7 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 .profile-like-back {
   position: absolute;
   top: 220px;
-  left: calc(100% - 165px);
+  left: calc(100% - 160px);
 }
 
 .popscore {
@@ -533,6 +533,18 @@ button:focus {
   position: relative;
   top: -30px;
   right: calc(-100% + 90px);
+}
+
+.user-card-dislike-btn {
+  position: relative;
+  top: -30px;
+  right: calc(-100% + 110px);
+}
+
+.user-card-like-back-btn {
+  position: relative;
+  top: -30px;
+  right: calc(-100% + 130px);
 }
 
 .user-card-names {
@@ -1230,6 +1242,23 @@ button.btn-star-picture-main {
   }
 }
 
+@media screen and (max-width: 800px) {
+  .user-card-like-btn {
+    width: 60px;
+    left: calc(100% - 65px);
+  }
+
+  .user-card-dislike-btn {
+    width: 30px;
+    left: calc(100% - 85px);
+  }
+
+  .user-card-like-back-btn {
+    width: 60px;
+    left: calc(100% - 70px);
+  }
+}
+
 @media screen and (max-width: 640px) {
   .profile-picture-round {
     width: 200px !important ;
@@ -1261,6 +1290,21 @@ button.btn-star-picture-main {
 
   .profile-like-back {
     top: 120px;
+  }
+
+  .user-card-like-btn {
+    width: auto;
+    left: calc(100% - 90px);
+  }
+
+  .user-card-dislike-btn {
+    width: auto;
+    left: calc(100% - 110px);
+  }
+
+  .user-card-like-back-btn {
+    width: auto;
+    left: calc(100% - 130px);
   }
 
   #login-box {
@@ -1305,19 +1349,19 @@ button.btn-star-picture-main {
     left: calc(100% - 70px);
   }
 
-  .profile-like,
+  .profile-like {
+    width: 60px;
+    left: calc(100% - 85px);
+  }
+
   .profile-dislike {
     width: 60px;
-    left: calc(100% - 80px);
+    left: calc(100% - 105px);
   }
 
   .profile-like-back {
     width: 108px;
-    left: calc(100% - 120px);
-  }
-
-  .like-btn-text {
-    display: none;
+    left: calc(100% - 135px);
   }
 
   .popscore {
@@ -1432,6 +1476,28 @@ button.btn-star-picture-main {
     width: 300px;
     height: 220px !important;
     top: calc(50% - 110px) !important;
+  }
+
+  .profile-like,
+  .profile-dislike {
+    left: calc(100% - 80px);
+  }
+
+  .profile-like-back {
+    left: calc(100% - 118px);
+  }
+
+  .like-btn-text {
+    display: none;
+  }
+
+  .user-card-like-btn,
+  .user-card-dislike-btn {
+    left: calc(100% - 55px);
+  }
+
+  .user-card-like-back-btn {
+    left: calc(100% - 95px);
   }
 
   .user-card-image {

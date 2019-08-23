@@ -127,19 +127,6 @@ class UserProfile extends Component {
                           className="circle responsive-img profile-picture-round"
                           style={profilePicStyle}
                         />
-                        {/*                         <img
-                          className="circle responsive-img profile-picture-round"
-                          src={
-                            this.state.profile_picture.length !== 0
-                              ? this.state.profile_picture[0].url
-                              : this.state.user.gender === null
-                              ? defaultProfileNoGender
-                              : this.state.user.gender === "man"
-                              ? defaultProfileMan
-                              : defaultProfileWoman
-                          }
-                          alt=""
-                        /> */}
                       </div>
                       <div className="profile-details-container">
                         <div className="profile-details">
