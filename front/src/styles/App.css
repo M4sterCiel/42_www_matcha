@@ -379,6 +379,7 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   width: 250px !important ;
   height: 250px !important ;
   max-width: none !important ;
+  display: inline-block !important;
 }
 
 .profile-pic {

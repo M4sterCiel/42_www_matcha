@@ -52,6 +52,21 @@ class UserProfile extends Component {
   }
 
   render() {
+    var profilePicStyle = {
+      backgroundImage: `url(${
+        this.state.profile_picture.length !== 0
+          ? this.state.profile_picture[0].url
+          : this.state.user.gender === null
+          ? defaultProfileNoGender
+          : this.state.user.gender === "man"
+          ? defaultProfileMan
+          : defaultProfileWoman
+      })`,
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center center",
+      backgroundSize: "cover"
+    };
+
     if (!this.state.user.id) return null;
     return (
       <div className="App">
@@ -108,7 +123,11 @@ class UserProfile extends Component {
                         <Popscore popscore={this.state.user.pop_score} />
                       </div>
                       <div className="col s4 profile-pic">
-                        <img
+                        <div
+                          className="circle responsive-img profile-picture-round"
+                          style={profilePicStyle}
+                        />
+                        {/*                         <img
                           className="circle responsive-img profile-picture-round"
                           src={
                             this.state.profile_picture.length !== 0
@@ -120,7 +139,7 @@ class UserProfile extends Component {
                               : defaultProfileWoman
                           }
                           alt=""
-                        />
+                        /> */}
                       </div>
                       <div className="profile-details-container">
                         <div className="profile-details">
