@@ -5,6 +5,8 @@ var chatController = require("../controllers/chatController");
 
 module.exports = {
     visit: async (user_id, target_id, username) => {
+        if (user_id == target_id)
+          return false;
         var visited = await notifModel.alreadyExists('visit', user_id, target_id);
         if (!visited)
         {
