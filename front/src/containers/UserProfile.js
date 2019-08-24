@@ -247,6 +247,7 @@ class UserProfile extends Component {
     if (!this.Auth.loggedIn()) {
       ErrorToast.auth.pageRequiresLogin();
       this.props.history.replace("/users/login");
+      return;
     }
     let url = document.location.href;
     let username = url.split("/");
