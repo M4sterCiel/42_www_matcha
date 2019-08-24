@@ -16,14 +16,6 @@ main {
 
 /* UI design */
 
-.home-background {
-  background-image: url("../assets/home-background.jpg");
-  height: 100%;
-  background-position-x: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 nav ul a {
   font-size: 16px;
 }
@@ -171,6 +163,24 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 .grey-message {
   color: grey;
   opacity: 0.5;
+}
+
+/* Homepage */
+
+.home-background {
+  background-image: url("../assets/home-background.jpg");
+  height: 100%;
+  background-position-x: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.suggestions-header {
+  background-color: #ffb6d3 !important;
+}
+
+.suggestions-header-links {
+  color: white !important;
 }
 
 /* Sliders */
@@ -379,6 +389,7 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   width: 250px !important ;
   height: 250px !important ;
   max-width: none !important ;
+  display: inline-block !important;
 }
 
 .profile-pic {
@@ -416,7 +427,7 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 .profile-like-back {
   position: absolute;
   top: 220px;
-  left: calc(100% - 165px);
+  left: calc(100% - 160px);
 }
 
 .popscore {
@@ -436,6 +447,10 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   left: 5px;
   font-size: 20px;
   position: relative;
+}
+
+.complete-profile-links {
+  color: #ffb6d3 !important;
 }
 
 .online-icon {
@@ -480,6 +495,91 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 
 button:focus {
   background-color: inherit;
+}
+
+/* User card */
+
+.user-card {
+  width: 90% !important;
+}
+
+.user-card-image {
+  height: 250px !important;
+}
+
+.activator {
+  height: 100% !important;
+  object-fit: cover;
+}
+
+.card-action {
+  color: #ffb6d3 !important;
+  text-align: right;
+}
+
+.offset-user-card {
+  position: relative !important;
+  top: 5px !important;
+}
+
+.user-card-content {
+  padding: 18px 18px 0px 18px !important;
+}
+
+.user-card-details {
+  position: relative;
+  top: -20px;
+}
+
+.card-title {
+  margin-bottom: 2px !important;
+}
+
+.user-card-username {
+  font-size: 20px !important;
+}
+
+.user-card-like-btn {
+  position: relative;
+  top: -30px;
+  right: calc(-100% + 90px);
+}
+
+.user-card-dislike-btn {
+  position: relative;
+  top: -30px;
+  right: calc(-100% + 110px);
+}
+
+.user-card-like-back-btn {
+  position: relative;
+  top: -30px;
+  right: calc(-100% + 130px);
+}
+
+.user-card-names {
+  margin-bottom: 10px;
+}
+
+.user-card-bio-btn {
+  font-size: 30px;
+  position: relative !important;
+  top: 8px !important;
+  left: 8px !important;
+}
+
+.user-card-location,
+.user-card-birthdate,
+.user-card-orientation {
+  display: block;
+  line-height: 20px;
+  margin-top: 10px;
+}
+
+.user-card-interests {
+  margin-top: 15px;
+  height: 32px;
+  overflow: hidden;
 }
 
 /* Delete user component */
@@ -1152,6 +1252,23 @@ button.btn-star-picture-main {
   }
 }
 
+@media screen and (max-width: 800px) {
+  .user-card-like-btn {
+    width: 60px;
+    left: calc(100% - 65px);
+  }
+
+  .user-card-dislike-btn {
+    width: 30px;
+    left: calc(100% - 85px);
+  }
+
+  .user-card-like-back-btn {
+    width: 60px;
+    left: calc(100% - 70px);
+  }
+}
+
 @media screen and (max-width: 640px) {
   .profile-picture-round {
     width: 200px !important ;
@@ -1185,6 +1302,21 @@ button.btn-star-picture-main {
     top: 120px;
   }
 
+  .user-card-like-btn {
+    width: auto;
+    left: calc(100% - 90px);
+  }
+
+  .user-card-dislike-btn {
+    width: auto;
+    left: calc(100% - 110px);
+  }
+
+  .user-card-like-back-btn {
+    width: auto;
+    left: calc(100% - 130px);
+  }
+
   #login-box {
     width: 90%;
   }
@@ -1196,6 +1328,10 @@ button.btn-star-picture-main {
   .fixed-action-btn {
     right: 23px;
     bottom: 23px;
+  }
+
+  .user-card-image {
+    height: 400px !important;
   }
 }
 
@@ -1223,19 +1359,19 @@ button.btn-star-picture-main {
     left: calc(100% - 70px);
   }
 
-  .profile-like,
+  .profile-like {
+    width: 60px;
+    left: calc(100% - 85px);
+  }
+
   .profile-dislike {
     width: 60px;
-    left: calc(100% - 80px);
+    left: calc(100% - 105px);
   }
 
   .profile-like-back {
     width: 108px;
-    left: calc(100% - 120px);
-  }
-
-  .like-btn-text {
-    display: none;
+    left: calc(100% - 135px);
   }
 
   .popscore {
@@ -1296,6 +1432,10 @@ button.btn-star-picture-main {
     height: 220px !important;
     top: calc(50% - 110px) !important;
   }
+
+  .user-card-image {
+    height: 300px !important;
+  }
 }
 
 @media screen and (max-width: 360px) {
@@ -1346,5 +1486,31 @@ button.btn-star-picture-main {
     width: 300px;
     height: 220px !important;
     top: calc(50% - 110px) !important;
+  }
+
+  .profile-like,
+  .profile-dislike {
+    left: calc(100% - 80px);
+  }
+
+  .profile-like-back {
+    left: calc(100% - 118px);
+  }
+
+  .like-btn-text {
+    display: none;
+  }
+
+  .user-card-like-btn,
+  .user-card-dislike-btn {
+    left: calc(100% - 55px);
+  }
+
+  .user-card-like-back-btn {
+    left: calc(100% - 95px);
+  }
+
+  .user-card-image {
+    height: 230px !important;
   }
 }

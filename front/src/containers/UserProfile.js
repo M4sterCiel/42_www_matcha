@@ -41,7 +41,8 @@ class UserProfile extends Component {
       tags: [],
       socket: "",
       likedByProfile: false,
-      likesProfile: false
+      likesProfile: false,
+      isOpen: false
     };
     this.setData = this.setData.bind(this);
     this.handleLike = this.handleLike.bind(this);
@@ -51,6 +52,21 @@ class UserProfile extends Component {
   }
 
   render() {
+    var profilePicStyle = {
+      backgroundImage: `url(${
+        this.state.profile_picture.length !== 0
+          ? this.state.profile_picture[0].url
+          : this.state.user.gender === null
+          ? defaultProfileNoGender
+          : this.state.user.gender === "man"
+          ? defaultProfileMan
+          : defaultProfileWoman
+      })`,
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center center",
+      backgroundSize: "cover"
+    };
+
     if (!this.state.user.id) return null;
     return (
       <div className="App">
@@ -107,18 +123,9 @@ class UserProfile extends Component {
                         <Popscore popscore={this.state.user.pop_score} />
                       </div>
                       <div className="col s4 profile-pic">
-                        <img
+                        <div
                           className="circle responsive-img profile-picture-round"
-                          src={
-                            this.state.profile_picture.length !== 0
-                              ? this.state.profile_picture[0].url
-                              : this.state.user.gender === null
-                              ? defaultProfileNoGender
-                              : this.state.user.gender === "man"
-                              ? defaultProfileMan
-                              : defaultProfileWoman
-                          }
-                          alt=""
+                          style={profilePicStyle}
                         />
                       </div>
                       <div className="profile-details-container">
@@ -246,7 +253,7 @@ class UserProfile extends Component {
     username = username[username.length - 1];
 
     if (this.props.userConnectedData.username !== username) {
-      await this._isMounted &&
+      (await this._isMounted) &&
         this.setState({
           socket: io({
             transports: ["polling"],
@@ -259,22 +266,19 @@ class UserProfile extends Component {
           })
         });
 
-        if (this.state.socket) {
-          this.state.socket.on('newNotif', id => {
-            if (id === this.Auth.getConfirm()["id"])
-              this.setData(username);
-          });
-          this.state.socket.on('online', data => {
-            // eslint-disable-next-line
-            if (data['user_id'] == this.state.user.id)
-              this.setData(username);
-          });
-          this.state.socket.on('offline', data => {
-            // eslint-disable-next-line
-            if (data['user_id'] == this.state.user.id)
-              this.setData(username);
-          });
-        }
+      if (this.state.socket) {
+        this.state.socket.on("newNotif", id => {
+          if (id === this.Auth.getConfirm()["id"]) this.setData(username);
+        });
+        this.state.socket.on("online", data => {
+          // eslint-disable-next-line
+          if (data["user_id"] == this.state.user.id) this.setData(username);
+        });
+        this.state.socket.on("offline", data => {
+          // eslint-disable-next-line
+          if (data["user_id"] == this.state.user.id) this.setData(username);
+        });
+      }
 
       this.setData(username);
     } else {
@@ -355,7 +359,6 @@ class UserProfile extends Component {
         ApiCall.user
           .checkUserLikedByAndReverse(this.Auth.getConfirm()["id"], username)
           .then(res => {
-            //console.log(res);
             this._isMounted &&
               this.setState({
                 likedByProfile: res.likedBy,
@@ -391,8 +394,7 @@ class UserProfile extends Component {
         likesProfile: true
       });
 
-    if (this.state.socket !== "")
-    {
+    if (this.state.socket !== "") {
       this.state.socket.emit(
         "sendNotif",
         "like",
@@ -413,8 +415,7 @@ class UserProfile extends Component {
         likesProfile: true
       });
 
-    if (this.state.socket !== "")
-    {
+    if (this.state.socket !== "") {
       this.state.socket.emit(
         "sendNotif",
         "like_back",
@@ -435,8 +436,7 @@ class UserProfile extends Component {
         likesProfile: false
       });
 
-    if (this.state.socket !== "")
-    {
+    if (this.state.socket !== "") {
       this.state.socket.emit(
         "sendNotif",
         "dislike",

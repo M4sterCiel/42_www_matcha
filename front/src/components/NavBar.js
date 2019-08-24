@@ -49,27 +49,30 @@ class NavBar extends Component {
       return;
     }
     this._isMounted = true;
-    this._isMounted && await this.setState({ userID: this.Auth.getConfirm()["id"] });
+    this._isMounted &&
+      (await this.setState({ userID: this.Auth.getConfirm()["id"] }));
 
-    this._isMounted && await this.callMsgNotifApi();
-    this._isMounted && await this.callMainNotifApi();
+    this._isMounted && (await this.callMsgNotifApi());
+    this._isMounted && (await this.callMainNotifApi());
 
-    this._isMounted && await this.setState({
-      socket: io({
-        transports: ["polling"],
-        requestTimeout: 50000,
-        upgrade: false,
-        "sync disconnect on unload": true,
-        query: {
-          userID: this.state.userID
-        }
-      })
-    });
+    this._isMounted &&
+      (await this.setState({
+        socket: io({
+          transports: ["polling"],
+          requestTimeout: 50000,
+          upgrade: false,
+          "sync disconnect on unload": true,
+          query: {
+            userID: this.state.userID
+          }
+        })
+      }));
 
     if (this.state.socket) {
       this.state.socket.on("new message", data => {
         if (data["userID_other"] === this.state.userID)
-        this._isMounted && this.setState({ nbMessages: this.state.nbMessages + 1 });
+          this._isMounted &&
+            this.setState({ nbMessages: this.state.nbMessages + 1 });
       });
 
       this.state.socket.on("readMessage", data => {
@@ -90,7 +93,10 @@ class NavBar extends Component {
       })
     })
       .then(res => {
-        this._isMounted && this.setState({ nbMessages: res.data["notification"][0]["COUNT (*)"] });
+        this._isMounted &&
+          this.setState({
+            nbMessages: res.data["notification"][0]["COUNT (*)"]
+          });
       })
       .catch(error => {
         //console.log(error);
@@ -108,10 +114,11 @@ class NavBar extends Component {
         var tab = res.data.tab;
         for (var i = 0; i < tab.length; i++)
           if (tab[i]["isRead"] == 0) counter++;
-          this._isMounted && this.setState({
-          listNotif: tab,
-          nbNotifications: counter
-        });
+        this._isMounted &&
+          this.setState({
+            listNotif: tab,
+            nbNotifications: counter
+          });
         //console.log(this.state.listNotif);
       })
       .catch(err => {
@@ -120,7 +127,10 @@ class NavBar extends Component {
   };
 
   componentDidUpdate() {
-    if ((!localStorage.getItem("Token") || !this.Auth.isTokenExpired) && this.state.socket !== "")
+    if (
+      (!localStorage.getItem("Token") || !this.Auth.isTokenExpired) &&
+      this.state.socket !== ""
+    )
       this.state.socket.close();
   }
   componentWillUnmount() {
@@ -148,7 +158,8 @@ class NavBar extends Component {
 
       const toggleDrawer = (side, open) => event => {
         Axios.post("/users/read-notification/" + userID).then(res => {
-          this._isMounted && this.setState({ nbNotifications: null, [side]: open });
+          this._isMounted &&
+            this.setState({ nbNotifications: null, [side]: open });
         });
 
         if (
@@ -212,7 +223,7 @@ class NavBar extends Component {
         <ul className="right hide-on-med-and-down">
           <li>
             <NavLink to={"/users/profile/" + Auth.getConfirm().username}>
-              <i className="material-icons">person</i>
+              {<i className="material-icons">person</i>}
             </NavLink>
           </li>
           <li>

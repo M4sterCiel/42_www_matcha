@@ -150,6 +150,10 @@ class ModalUserEditProfileInfo extends Component {
             You can edit and save the information that will be visibile on your
             profile
           </p>
+          <span className="profile-fields-labels">Gender</span>
+          {this.state.gender !== "" && <SelectGender />}
+          <span className="profile-fields-labels">Sexual Orientation</span>
+          {this.state.sexOrientation !== "" && <SelectSexOrientation />}
           <span className="profile-fields-labels">My details</span>
           <div className="modal-input">
             {this.state.firstname !== null && this.state.lastname !== null && (
@@ -203,10 +207,6 @@ class ModalUserEditProfileInfo extends Component {
           </div>
           <span className="profile-fields-labels">City</span>
           <SelectLocation />
-          <span className="profile-fields-labels">Gender</span>
-          {this.state.gender !== "" && <SelectGender />}
-          <span className="profile-fields-labels">Sexual Orientation</span>
-          {this.state.sexOrientation !== "" && <SelectSexOrientation />}
           <span className="profile-fields-labels">Interested in</span>
           <InterestTags />
         </Modal>
