@@ -84,7 +84,11 @@ class LikeBackButton extends Component {
   render() {
     const iconStyle = { position: "relative", top: "5px" };
     return (
-      <Button tooltip="like back this user" className="red">
+      <Button
+        tooltip="like back this user"
+        className="red modal-trigger"
+        href="#match-anim-modal"
+      >
         <span className="like-btn-text">Like </span>Back{" "}
         <span style={iconStyle}>
           <LikeIcon />

@@ -4,14 +4,14 @@ import NoImage from "../../assets/no-image.jpg";
 
 class Pictures extends Component {
   render() {
-    const NoSlide = (
+    /*     const NoSlide = (
       <Slide image={<img src={NoImage} alt="no pic set" />}>
         <Caption>
           <h3>No picture yet</h3>
           <h5 className="light grey-text text-lighten-3">It's sad :(</h5>
         </Caption>
       </Slide>
-    );
+    ); */
 
     const Slides = this.props.pictures.map(picture => (
       <Slide
@@ -24,7 +24,8 @@ class Pictures extends Component {
       <div className="card">
         <div className="card-content">
           <p className="profile-info-title">Pictures</p>
-          <Slider>{this.props.pictures.length === 0 ? NoSlide : Slides}</Slider>
+          {/*           <Slider>{this.props.pictures.length === 0 ? NoSlide : Slides}</Slider> */}
+          <Slider>{Slides}</Slider>
         </div>
       </div>
     );

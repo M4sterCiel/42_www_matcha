@@ -497,6 +497,14 @@ button:focus {
   background-color: inherit;
 }
 
+.modal-match-anim {
+  max-width: 500px;
+}
+
+.img-match-anim {
+  width: 250px;
+}
+
 /* User card */
 
 .user-card {
@@ -1439,6 +1447,10 @@ button.btn-star-picture-main {
 }
 
 @media screen and (max-width: 360px) {
+  .img-match-anim {
+    width: 160px;
+  }
+
   .slider {
     height: 240px !important;
   }

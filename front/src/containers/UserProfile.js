@@ -12,6 +12,7 @@ import {
 import ModalUserEditProfileInfo from "../components/modals/ModalUserEditProfileInfo";
 import ModalUserEditProfilePictures from "../components/modals/ModalUserEditProfilePictures";
 import ModalUserEditAccountSettings from "../components/modals/ModalUserEditAccountSettings";
+import ModalMatchAnim from "../components/modals/ModalMatchAnim";
 import ApiCall from "../services/ApiCall";
 import UserBio from "../components/profile/UserBio";
 import Interests from "../components/profile/Interests";
@@ -227,6 +228,9 @@ class UserProfile extends Component {
                     )}
                     {this.state.user.id === this.props.userConnectedData.id && (
                       <ModalUserEditAccountSettings />
+                    )}
+                    {this.state.user.id !== this.props.userConnectedData.id && (
+                      <ModalMatchAnim />
                     )}
                   </div>
                 </div>
