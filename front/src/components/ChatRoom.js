@@ -3,6 +3,7 @@ import "../styles/App.css";
 import "materialize-css/dist/css/materialize.min.css";
 import io from "socket.io-client";
 import AuthService from "../services/AuthService";
+import { NavLink } from "react-router-dom";
 
 class Chat extends Component {
   constructor(props) {
@@ -30,7 +31,13 @@ class Chat extends Component {
       <div>
         <div className="row main-chat-box" onMouseMove={this.handleMouseEvent}>
           <h5 id="chat-title">
-            {this.state.usernameOther + "'s conversation"}
+            <NavLink
+              className="message-link-profile"
+              to={"/users/profile/" + this.state.usernameOther}
+            >
+              {this.state.usernameOther}
+            </NavLink>
+            's conversation
           </h5>
           <hr className="grey" />
           <div
@@ -51,7 +58,7 @@ class Chat extends Component {
           </div>
         </div>
         <form className="fixed-bottom-imput" onSubmit={this.handleSubmit}>
-          <div className="col s9">
+          <div className="col s9 chat-message-box">
             <label htmlFor="msgToSend">Write your message</label>
             <input
               type="text"
@@ -65,13 +72,7 @@ class Chat extends Component {
             />
           </div>
           <div id="btn-chat-box" className="col s3 btn-chat-box">
-            <button
-              type="submit"
-              name="submit"
-              value="Send"
-              className="btn"
-              style={{ width: 35 + "%" }}
-            >
+            <button type="submit" name="submit" value="Send" className="btn">
               <i className="material-icons">send</i>
             </button>
           </div>
