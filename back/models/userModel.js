@@ -279,5 +279,35 @@ module.exports = {
     } catch (err) {
       throw new Error(err);
     }
+  },
+
+  checkUserIsReported: async (user_id, target_id) => {
+    try {
+      var result = await pool.query({
+        sql:
+          "SELECT * FROM report WHERE user_id = ? AND reporting_id = ?",
+        values: [target_id, user_id]
+      });
+      if (result.length > 0)
+        return true;
+      return false;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
+  blockUser: async (user_id, target_id) => {
+    try {
+      var result = await pool.query({
+        sql:
+          "INSERT INTO block (user_id, blocking_id) VALUES (?, ?)",
+        values: [target_id, user_id]
+      });
+      if (result.length > 0)
+        return true;
+      return false;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 };

@@ -56,6 +56,15 @@ exports.router = (() => {
   userRouter
     .route("/get-room-id/:user_id/:target_id")
     .get(userController.getUserRoomId);
+  userRouter
+    .route("/isreported/:user_id/:target_id")
+    .get(userController.checkUserIsReported);
+  userRouter
+    .route("/block/:user_id/:target_id")
+    .get(userController.blockUser);
+  userRouter
+    .route("/unblock/:user_id/:target_id")
+    .get(userController.unblockUser);
 
   return userRouter;
 })();

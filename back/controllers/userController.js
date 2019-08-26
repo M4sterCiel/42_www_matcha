@@ -454,7 +454,38 @@ module.exports = {
     var user_id = req.params.user_id;
     var target_id = req.params.target_id;
 
+    if (target_id == user_id)
+      return res.status(200).json({ room_id: null });
+
     var result = await userModel.getUserRoomId(target_id, user_id);
+
     return res.status(200).json({ room_id: result[0].room_id });
+  },
+
+  checkUserIsReported: async (req, res, next) => {
+    var user_id = req.params.user_id;
+    var target_id = req.params.target_id;
+
+    var result = await userModel.checkUserIsReported(user_id, target_id);
+    return res.status(200).json({ isReported: result });
+  },
+
+  blockUser: async (req, res, next) => {
+    var user_id = req.params.user_id;
+    var target_id = req.params.target_id;
+
+    var result = await userModel.blockUser(user_id, target_id);
+    return res.status(200).json({ isBlocked: result });
+  },
+
+  unblockUser: async (req, res, next) => {
+    var user_id = req.params.user_id;
+    var target_id = req.params.target_id;
+
+    await userModel.unblockUser(user_id, target_id);
+
+    if (result)
+      return res.status(200).json({ message: 'Successfully reported!' });
+    return res.status(200).json({ error: 'Impossible to block this user for now...' });
   }
 };

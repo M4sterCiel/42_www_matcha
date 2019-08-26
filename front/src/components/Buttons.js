@@ -42,12 +42,8 @@ class ProfileSettingsButton extends Component {
 }
 
 class ProfileActionsButton extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {  
-    console.log("props in button ",this.props);
+    console.log(this.props);
     return (
       <Button
         floating
@@ -56,21 +52,23 @@ class ProfileActionsButton extends Component {
         className="red pulse"
         large
       >
+        {!this.props.isReported ?
+        <Button
+        floating
+        tooltip="report this user"
+        icon="report"
+        className="red modal-trigger"
+        href="#report-user-modal"
+      /> : '' }
+      {!this.props.isBlocked ?
         <Button
           floating
-          tooltip="report this user"
-          icon="report"
-          className="red modal-trigger"
-          href="#report-user-modal"
-          user_id={this.props.user_id}
-          target_id={this.props.target_id}
-        />
-        <Button
-          floating
-          tooltip="block this user"
+          tooltip="Block this user"
           icon="block"
-          className="red"
+          className="red modal-trigger"
+          href="#block-user-modal"
         />
+        : ''}
       </Button>
     );
   }

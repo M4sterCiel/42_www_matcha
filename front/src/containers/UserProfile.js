@@ -13,6 +13,7 @@ import ModalUserEditProfileInfo from "../components/modals/ModalUserEditProfileI
 import ModalUserEditProfilePictures from "../components/modals/ModalUserEditProfilePictures";
 import ModalUserEditAccountSettings from "../components/modals/ModalUserEditAccountSettings";
 import ModalReportUser from "../components/modals/ModalReportUser";
+import ModalBlockUser from "../components/modals/ModalBlockUser";
 import ApiCall from "../services/ApiCall";
 import UserBio from "../components/profile/UserBio";
 import Interests from "../components/profile/Interests";
@@ -44,7 +45,9 @@ class UserProfile extends Component {
       socket: "",
       likedByProfile: false,
       likesProfile: false,
-      isOpen: false
+      isOpen: false,
+      isReported: false,
+      isBlocked: false
     };
     this.setData = this.setData.bind(this);
     this.handleLike = this.handleLike.bind(this);
@@ -217,9 +220,9 @@ class UserProfile extends Component {
                         this.props.userConnectedData.id ? (
                           <ProfileSettingsButton />
                         ) : (
-                          <ProfileActionsButton 
-                          user_id={this.Auth.getConfirm()["id"]}
-                          target_id={this.state.user.id} />
+                          <ProfileActionsButton
+                          isReported={this.state.isReported}
+                          isBlocked={this.state.isBlocked} />
                         )}
                       </div>
                     </div>
@@ -233,7 +236,18 @@ class UserProfile extends Component {
                       <ModalUserEditAccountSettings />
                     )}
                      {this.state.user.id !== this.props.userConnectedData.id && (
-                      <ModalReportUser />
+                      <ModalReportUser
+                      user_id={this.Auth.getConfirm()["id"]}
+                      target_id={this.state.user.id}
+                      isReported={this.handleIsReported}
+                     />
+                    )}
+                     {this.state.user.id !== this.props.userConnectedData.id && (
+                      <ModalBlockUser
+                      user_id={this.Auth.getConfirm()["id"]}
+                      target_id={this.state.user.id}
+                      isBlocked={this.handleIsReported}
+                     />
                     )}
                   </div>
                 </div>
@@ -388,6 +402,15 @@ class UserProfile extends Component {
             .catch(err => {
               console.log(err);
             });
+
+          ApiCall.user
+            .checkUserIsReported(this.Auth.getConfirm()["id"], this.state.user.id)
+            .then(res => {
+              this._isMounted &&
+              this.setState({
+                isReported: res.isReported
+              });
+            })
       })
       .catch(err => {
         ErrorToast.user.userNotFound();
@@ -401,6 +424,14 @@ class UserProfile extends Component {
         this.Auth.getConfirm()["id"],
         this.state.user["id"]
       );
+  }
+  
+  handleIsReported = () => {
+    this.setData(this.state.user.username);
+  }
+
+  handleIsBlocked = () => {
+    this.setData(this.state.user.username);
   }
 
   handleLike() {
