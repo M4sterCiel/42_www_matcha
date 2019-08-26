@@ -438,5 +438,23 @@ module.exports = {
         break;
     };
     return (sendNotif);
+  },
+
+  reportUser: async (req, res, next) => {
+    var user_id = req.params.user_id;
+    var target_id = req.params.target_id;
+
+    var result = await userModel.reportUser([target_id, user_id]);
+    if (result)
+      return res.status(200).json({ message: 'Successfully reported!'});
+    return res.status(500).json({ error: "Impossible to report this user for now" });
+  },
+
+  getUserRoomId: async (req, res, next) => {
+    var user_id = req.params.user_id;
+    var target_id = req.params.target_id;
+
+    var result = await userModel.getUserRoomId(target_id, user_id);
+    return res.status(200).json({ room_id: result[0].room_id });
   }
 };

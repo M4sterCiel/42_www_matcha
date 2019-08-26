@@ -13,7 +13,7 @@ module.exports = {
       },
       PRIVATE_KEY,
       {
-        expiresIn: "1h"
+        expiresIn: "24h"
       }
     );
     return jwt_token;
