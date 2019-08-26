@@ -73,5 +73,6 @@ module.exports = {
     var username_2 = await userModel.getUsernameFromId(target_id);
     username_2 = username_2[0].username;
     await chatModel.createChatRoom([uniqid, user_id, target_id, username_1, username_2]);
+    return (uniqid);
   }
 };

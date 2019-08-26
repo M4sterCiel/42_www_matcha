@@ -34,6 +34,10 @@ export default {
       axios
         .get(`/users/profile/${user_id}/liked_by/${username}`)
         .then(res => res.data),
+    checkUserIsReported: (user_id, target_id) => 
+      axios
+        .get(`/users/isreported/${user_id}/${target_id}`)
+        .then(res => res.data),
     createUserLike: (user_id, by_id) =>
       axios
         .post(`/users/create/${user_id}/liked_by/${by_id}`)
@@ -55,6 +59,10 @@ export default {
     updatePasswordWithId: (id, password) =>
       axios
         .post(`/users/update/${id}/password`, { password: password })
+        .then(res => res.data),
+    getUserRoomId: async (user_id, target_id) => 
+      await axios
+        .get(`/users/get-room-id/${user_id}/${target_id}`)
         .then(res => res.data)
-  }
+  },
 };

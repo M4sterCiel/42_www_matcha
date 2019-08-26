@@ -253,5 +253,31 @@ module.exports = {
     } catch (err) {
       throw new Error(err);
     }
+  },
+
+  reportUser: async data => {
+    try {
+      var result = await pool.query({
+        sql:
+          "INSERT INTO report (user_id, reporting_id) VALUES (?)",
+        values: [data]
+      });
+      return result.affectedRows;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
+  getUserRoomId: async (user_id, target_id) => {
+    try {
+      var result = await pool.query({
+        sql:
+          "SELECT room_id FROM matches WHERE user_1 = ? AND user_2 = ? OR user_1 = ? AND user_2 = ?",
+        values: [user_id, target_id, target_id, user_id]
+      });
+      return result;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 };

@@ -52,7 +52,8 @@ module.exports = {
         else
             await userModel.increaseScore((1000 - score), target_id);
          var exist = await chatModel.alreadyExists(user_id, target_id);
-        if (exist == false)
-            await chatController.createChatRoom(user_id, target_id, username);
+        if (exist == false) {
+              var room_id = await chatController.createChatRoom(user_id, target_id, username);
+        }
     }
 }

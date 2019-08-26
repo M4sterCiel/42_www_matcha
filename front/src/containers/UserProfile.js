@@ -12,6 +12,7 @@ import {
 import ModalUserEditProfileInfo from "../components/modals/ModalUserEditProfileInfo";
 import ModalUserEditProfilePictures from "../components/modals/ModalUserEditProfilePictures";
 import ModalUserEditAccountSettings from "../components/modals/ModalUserEditAccountSettings";
+import ModalReportUser from "../components/modals/ModalReportUser";
 import ApiCall from "../services/ApiCall";
 import UserBio from "../components/profile/UserBio";
 import Interests from "../components/profile/Interests";
@@ -39,6 +40,7 @@ class UserProfile extends Component {
       profile_picture: [],
       pictures: [],
       tags: [],
+      room_id: null,
       socket: "",
       likedByProfile: false,
       likesProfile: false,
@@ -215,7 +217,9 @@ class UserProfile extends Component {
                         this.props.userConnectedData.id ? (
                           <ProfileSettingsButton />
                         ) : (
-                          <ProfileActionsButton />
+                          <ProfileActionsButton 
+                          user_id={this.Auth.getConfirm()["id"]}
+                          target_id={this.state.user.id} />
                         )}
                       </div>
                     </div>
@@ -227,6 +231,9 @@ class UserProfile extends Component {
                     )}
                     {this.state.user.id === this.props.userConnectedData.id && (
                       <ModalUserEditAccountSettings />
+                    )}
+                     {this.state.user.id !== this.props.userConnectedData.id && (
+                      <ModalReportUser />
                     )}
                   </div>
                 </div>
@@ -369,6 +376,18 @@ class UserProfile extends Component {
           .catch(err => {
             console.log(err);
           });
+
+          ApiCall.user
+            .getUserRoomId(this.Auth.getConfirm()["id"], this.state.user.id)
+            .then(res => {
+              this._isMounted &&
+              this.setState({
+                room_id: res.room_id
+              });
+            })
+            .catch(err => {
+              console.log(err);
+            });
       })
       .catch(err => {
         ErrorToast.user.userNotFound();
