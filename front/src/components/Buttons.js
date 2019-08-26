@@ -46,18 +46,8 @@ class ProfileActionsButton extends Component {
     super(props);
   }
 
-  handleReport = () => {
-    axios.get("/users/report/" + this.props.user_id + "/" + this.props.target_id)
-      .then(res => {
-        console.log(res.data.message);
-        InfoToastService.custom.info(res.data.message, 3000);
-      })
-      .catch(err => {
-        console.log(err);
-      })
-  }  
-
   render() {  
+    console.log("props in button ",this.props);
     return (
       <Button
         floating
@@ -72,6 +62,8 @@ class ProfileActionsButton extends Component {
           icon="report"
           className="red modal-trigger"
           href="#report-user-modal"
+          user_id={this.props.user_id}
+          target_id={this.props.target_id}
         />
         <Button
           floating

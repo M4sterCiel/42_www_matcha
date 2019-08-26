@@ -218,7 +218,7 @@ class UserProfile extends Component {
                           <ProfileSettingsButton />
                         ) : (
                           <ProfileActionsButton 
-                          user_id={this.props.userConnectedData.id}
+                          user_id={this.Auth.getConfirm()["id"]}
                           target_id={this.state.user.id} />
                         )}
                       </div>
