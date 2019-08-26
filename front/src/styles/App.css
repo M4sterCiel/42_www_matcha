@@ -505,6 +505,21 @@ button:focus {
   width: 250px;
 }
 
+.icon-vert-align {
+  position: relative;
+  font-size: 30px;
+  top: 10px;
+}
+
+.profile-match-icon {
+  position: absolute;
+  width: 50px;
+  bottom: 30px;
+  left: calc(100% - 80px);
+  box-shadow: none !important;
+  opacity: 0.4;
+}
+
 /* User card */
 
 .user-card {

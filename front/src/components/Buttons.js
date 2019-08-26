@@ -46,8 +46,7 @@ class ProfileActionsButton extends Component {
     super(props);
   }
 
-  render() {  
-    console.log("props in button ",this.props);
+  render() {
     return (
       <Button
         floating
