@@ -14,6 +14,7 @@ import ModalUserEditProfilePictures from "../components/modals/ModalUserEditProf
 import ModalUserEditAccountSettings from "../components/modals/ModalUserEditAccountSettings";
 import ModalReportUser from "../components/modals/ModalReportUser";
 import ModalBlockUser from "../components/modals/ModalBlockUser";
+import ModalUnblockUser from "../components/modals/ModalUnblockUser";
 import ApiCall from "../services/ApiCall";
 import UserBio from "../components/profile/UserBio";
 import Interests from "../components/profile/Interests";
@@ -249,6 +250,13 @@ class UserProfile extends Component {
                       isBlocked={this.handleIsReported}
                      />
                     )}
+                     {this.state.user.id !== this.props.userConnectedData.id && (
+                      <ModalUnblockUser
+                      user_id={this.Auth.getConfirm()["id"]}
+                      target_id={this.state.user.id}
+                      isBlocked={this.handleIsBlocked}
+                     />
+                    )}
                   </div>
                 </div>
                 <UserBio bio={this.state.user.bio} />
@@ -411,6 +419,15 @@ class UserProfile extends Component {
                 isReported: res.isReported
               });
             })
+          
+            ApiCall.user
+            .checkUserIsBlocked(this.Auth.getConfirm()["id"], this.state.user.id)
+            .then(res => {
+              this._isMounted &&
+              this.setState({
+                isBlocked: res.isBlocked
+              });
+            })
       })
       .catch(err => {
         ErrorToast.user.userNotFound();
@@ -427,11 +444,25 @@ class UserProfile extends Component {
   }
   
   handleIsReported = () => {
-    this.setData(this.state.user.username);
+    ApiCall.user
+      .checkUserIsReported(this.Auth.getConfirm()["id"], this.state.user.id)
+      .then(res => {
+        this._isMounted &&
+        this.setState({
+          isReported: res.isReported
+        });
+      })
   }
 
-  handleIsBlocked = () => {
-    this.setData(this.state.user.username);
+  handleIsBlocked = async () => {
+    await ApiCall.user
+      .checkUserIsBlocked(this.Auth.getConfirm()["id"], this.state.user.id)
+      .then(res => {
+        this._isMounted &&
+        this.setState({
+          isBlocked: res.isBlocked
+        });
+      })
   }
 
   handleLike() {

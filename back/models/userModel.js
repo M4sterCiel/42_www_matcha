@@ -303,9 +303,39 @@ module.exports = {
           "INSERT INTO block (user_id, blocking_id) VALUES (?, ?)",
         values: [target_id, user_id]
       });
+      if (result.affectedRows > 0)
+        return true;
+      return false;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
+  checkUserIsBlocked: async (user_id, target_id) => {
+    try {
+      var result = await pool.query({
+        sql:
+          "SELECT * FROM block WHERE user_id = ? AND blocking_id = ?",
+        values: [target_id, user_id]
+      });
       if (result.length > 0)
         return true;
       return false;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
+  unblockUser: async (user_id, target_id) => {
+    try {
+      var result = await pool.query({
+        sql:
+          "DELETE FROM block WHERE user_id = ? AND blocking_id = ?",
+        values: [target_id, user_id]
+      });
+      if (result.affectedRows > 0)
+        return false;
+      return true;
     } catch (err) {
       throw new Error(err);
     }

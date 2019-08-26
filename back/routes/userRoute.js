@@ -65,6 +65,9 @@ exports.router = (() => {
   userRouter
     .route("/unblock/:user_id/:target_id")
     .get(userController.unblockUser);
+  userRouter
+    .route("/isblocked/:user_id/:target_id")
+    .get(userController.checkUserIsBlocked);
 
   return userRouter;
 })();
