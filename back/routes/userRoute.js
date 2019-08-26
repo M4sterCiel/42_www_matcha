@@ -52,6 +52,10 @@ exports.router = (() => {
     .route("/read-notification/:userID")
     .post(userController.dismissNotif);
   userRouter.route("/delete/:user_id").post(userController.deleteUser);
+  userRouter.route("/report/:user_id/:target_id").get(userController.reportUser);
+  userRouter
+    .route("/get-room-id/:user_id/:target_id")
+    .get(userController.getUserRoomId);
 
   return userRouter;
 })();

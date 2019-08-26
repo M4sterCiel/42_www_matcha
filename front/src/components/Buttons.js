@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Button } from "react-materialize";
 import LikeIcon from "@material-ui/icons/ThumbUp";
 import DislikeIcon from "@material-ui/icons/ThumbDown";
+import axios from "axios";
+import InfoToastService from "../services/InfoToastService";
 
 class ProfileSettingsButton extends Component {
   render() {
@@ -40,7 +42,12 @@ class ProfileSettingsButton extends Component {
 }
 
 class ProfileActionsButton extends Component {
-  render() {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {  
+    console.log("props in button ",this.props);
     return (
       <Button
         floating
@@ -53,7 +60,10 @@ class ProfileActionsButton extends Component {
           floating
           tooltip="report this user"
           icon="report"
-          className="red"
+          className="red modal-trigger"
+          href="#report-user-modal"
+          user_id={this.props.user_id}
+          target_id={this.props.target_id}
         />
         <Button
           floating
