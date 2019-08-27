@@ -415,18 +415,6 @@ class UserProfile extends Component {
           });
 
         ApiCall.user
-          .getUserRoomId(this.Auth.getConfirm()["id"], this.state.user.id)
-          .then(res => {
-            this._isMounted &&
-              this.setState({
-                room_id: res.room_id
-              });
-          })
-          .catch(err => {
-            console.log(err);
-          });
-
-        ApiCall.user
           .checkUserIsReported(this.Auth.getConfirm()["id"], this.state.user.id)
           .then(res => {
             this._isMounted &&
