@@ -97,7 +97,7 @@ nsp.on("connection", socket => {
     socket.broadcast.emit(room_id, { data, userID, userName });
     var isBlocked = await userModel.checkUserIsBlocked(userID, userID_other);
     console.log('isBlocked ', isBlocked);
-    if (!isBlocked)
+    /* if (!isBlocked) */
       mainSocket.emit("new message", { room_id, userID_other });
   });
 

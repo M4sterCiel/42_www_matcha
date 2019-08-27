@@ -1,4 +1,5 @@
 var jwtService = require("../services/jwtService");
+var userService = require('../services/userService');
 var chatModel = require("../models/chatModel");
 var matchModel = require("../models/matchModel");
 var userModel = require("../models/userModel");
@@ -30,17 +31,7 @@ module.exports = {
     }
     if (status.length > 0) status = await userModel.getStatus(status);
 
-    var blocked =  await userModel.getBlockedUsersFromMyId(userID);
-
-    if (result.length > 0) {
-      for (var i = 0; i < result.length; i++) {
-        for (var k = 0; k < blocked.length; k++) {
-          if (result[i]['user_1'] == blocked[k]['user_id'] || result[i]['user_2'] == blocked[k]['user_id'])
-            result.splice(i, 1);
-        }
-      }
-    }
-
+    result = await userService.extractBlockedUsers(result, userID);
     return res.status(200).json({ result, status });
   },
 

@@ -168,5 +168,29 @@ module.exports = {
       );
       return { status: "Reset password email sent with success" };
     }
+  },
+
+  extractBlockedUsers: async (tab, userID) => {
+    var blocked = await userModel.getBlockedUsersFromMyId(userID);
+
+    var result = [];
+    var i = 0;
+    while (i < tab.length)
+      result.push(tab[i++]);
+
+    var i = 0;
+    while (i < result.length) {
+      var k = 0;
+      while (k < blocked.length) {
+        if (result[i]["user_1"] == blocked[k]['user_id'] || result[i]["user_2"] == blocked[k]['user_id']) {
+          for (var j=0; j < tab.length; j++)
+            if (tab[j]['user_1'] == blocked[k]['user_id'] || tab[j]['user_2'] == blocked[k]['user_id'])
+              tab.splice(j, 1);
+        }
+        k++;
+      }
+      i++;
+    }
+    return tab;
   }
 };

@@ -318,6 +318,7 @@ module.exports = {
           "SELECT * FROM block WHERE user_id = ? AND blocking_id = ?",
         values: [target_id, user_id]
       });
+      console.log(result)
       if (result.length > 0)
         return true;
       return false;
@@ -345,7 +346,7 @@ module.exports = {
     try {
       var result = await pool.query({
         sql:
-          "SELECT user_id FROM block where blocking_id = ?",
+          "SELECT user_id FROM block WHERE blocking_id = ?",
         values: [user_id]
       });
       if (result)
