@@ -81,6 +81,10 @@ nav {
   background-color: #ffb6d3 !important;
 }
 
+.confirm-btn {
+  color: white !important;
+}
+
 .btn:hover {
   background-color: #ffe9f2 !important;
 }
@@ -1071,6 +1075,11 @@ textarea:not(.browser-default):focus:not([readonly]) + label {
   height: 200px !important;
   border-radius: 30px;
   top: calc(50% - 100px) !important;
+}
+
+.modal-sub-text {
+  font-size: 0.85em;
+  color: grey;
 }
 
 /* Date picker */

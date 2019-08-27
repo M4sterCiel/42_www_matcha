@@ -40,6 +40,7 @@ class DeleteAccountBtn extends Component {
             <Button
               waves="green"
               modal="confirm"
+              className="confirm-btn"
               onClick={this.deleteUser}
               flat
             >
