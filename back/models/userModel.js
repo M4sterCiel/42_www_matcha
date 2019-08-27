@@ -339,5 +339,19 @@ module.exports = {
     } catch (err) {
       throw new Error(err);
     }
+  },
+
+  getBlockedUsersFromMyId: async user_id => {
+    try {
+      var result = await pool.query({
+        sql:
+          "SELECT user_id FROM block where blocking_id = ?",
+        values: [user_id]
+      });
+      if (result)
+        return result;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 };

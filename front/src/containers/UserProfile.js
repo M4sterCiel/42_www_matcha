@@ -247,7 +247,7 @@ class UserProfile extends Component {
                       <ModalBlockUser
                       user_id={this.Auth.getConfirm()["id"]}
                       target_id={this.state.user.id}
-                      isBlocked={this.handleIsReported}
+                      isBlocked={this.handleIsBlocked}
                      />
                     )}
                      {this.state.user.id !== this.props.userConnectedData.id && (

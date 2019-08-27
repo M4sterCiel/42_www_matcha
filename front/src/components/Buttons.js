@@ -56,7 +56,7 @@ class ProfileActionsButton extends Component {
         icon="report"
         className="red modal-trigger"
         href="#report-user-modal"
-      /> : '' }
+      /> : "" }
       {!this.props.isBlocked ?
         <Button
           floating
@@ -70,10 +70,10 @@ class ProfileActionsButton extends Component {
         <Button
         floating
         tooltip="Unblock this user"
-        icon="block"
+        icon="check_circle"
         className="red modal-trigger"
         href="#unblock-user-modal" />
-        : ''}
+        : ""}
       </Button>
     );
   }
