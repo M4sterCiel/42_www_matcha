@@ -50,7 +50,8 @@ var mainSocket = io.on("connection", async socket => {
 
   socket.on("sendNotif", async (type, user_id, target_id) => {
     var sendNotif = await userController.manageNotif(type, user_id, target_id);
-    if (sendNotif) {
+    var isBlocked = await userModel.checkUserIsBlocked(user_id, target_id);
+    if (sendNotif && !isBlocked) {
       socket.broadcast.emit("newNotif", target_id);
     }
   });
@@ -95,9 +96,8 @@ nsp.on("connection", socket => {
       room_id
     );
     socket.broadcast.emit(room_id, { data, userID, userName });
-    var isBlocked = await userModel.checkUserIsBlocked(userID, userID_other);
-    console.log('isBlocked ', isBlocked);
-    /* if (!isBlocked) */
+    var isBlocked = await userModel.checkUserIsBlocked(userID_other, userID);
+    if (!isBlocked)
       mainSocket.emit("new message", { room_id, userID_other });
   });
 

@@ -59,13 +59,22 @@ module.exports = {
 
   getCountMsgNotification: async (req, res, next) => {
     var userID = req.params.userID;
-    var result = await chatModel.getCountNotification(userID);
+    var blocked = await userModel.getBlockedUsersFromMyId(userID);
+    var tab = [];
+    for (var i=0;i < blocked.length;i++)
+      tab.push(blocked[i]['user_id']);
+    var result = await chatModel.getCountNotification(userID, blocked.length > 0 ? tab : '');
+
     return res.status(200).json({ notification: result });
   },
 
   getListNotification: async (req, res, next) => {
     var userID = req.params.userID;
-    var result = await chatModel.getListNotification(userID);
+    var blocked = await userModel.getBlockedUsersFromMyId(userID);
+    var tab = [];
+    for (var i=0;i < blocked.length;i++)
+      tab.push(blocked[i]['user_id']);
+    var result = await chatModel.getListNotification(userID, blocked.length > 0 ? tab : '');
     return res.status(200).json({ notification: result });
   },
 

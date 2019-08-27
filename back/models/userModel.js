@@ -318,7 +318,6 @@ module.exports = {
           "SELECT * FROM block WHERE user_id = ? AND blocking_id = ?",
         values: [target_id, user_id]
       });
-      console.log(result)
       if (result.length > 0)
         return true;
       return false;

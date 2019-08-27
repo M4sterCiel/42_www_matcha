@@ -50,12 +50,12 @@ module.exports = {
     }
   },
 
-  getCountNotification: async userID => {
+  getCountNotification: async (userID, data) => {
     try {
       var result = await pool.query({
         sql:
-          "SELECT COUNT (*) FROM notification WHERE `user_id` = ? AND type = 2 AND `isRead` = 0",
-        values: [userID]
+          "SELECT COUNT (*) FROM notification WHERE `user_id` = ? AND type = 2 AND `isRead` = 0 AND NOT `sender_id` IN (?)",
+        values: [userID, data]
       });
       //console.log(result);
       if (result) return result;
@@ -64,12 +64,12 @@ module.exports = {
     }
   },
 
-  getListNotification: async userID => {
+  getListNotification: async (userID, data) => {
     try {
       var result = await pool.query({
         sql:
-          "SELECT * FROM notification WHERE `user_id` = ? AND type = 2 AND `isRead` = 0",
-        values: [userID]
+          "SELECT * FROM notification WHERE `user_id` = ? AND type = 2 AND `isRead` = 0 AND NOT `sender_id` IN (?)",
+        values: [userID, data]
       });
       //console.log(result);
       if (result) return result;
