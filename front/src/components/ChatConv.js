@@ -5,6 +5,9 @@ import io from "socket.io-client";
 import AuthService from "../services/AuthService";
 import Axios from "axios";
 
+import { makeStyles } from "@material-ui/core/styles";
+import Avatar from "@material-ui/core/Avatar";
+
 const CancelToken = Axios.CancelToken;
 let cancel;
 
@@ -27,7 +30,12 @@ class ChatConv extends Component {
     return (
       <ul className="collection with-header chatBox">
         <li className="collection-header">
-          <h5 style={{ textAlign: "center" }}>Chats</h5>
+          <h5 style={{ textAlign: "center" }} className="chat-conv-title-text">
+            Chats
+          </h5>
+          <i className="material-icons prefix pink-icon chat-conv-title-icon">
+            mail
+          </i>
         </li>
         <this.contactList value={this.state.matches} />
       </ul>
@@ -68,6 +76,18 @@ class ChatConv extends Component {
                 res.data["status"][i]["online"] === 1 ? "Online" : "Offline";
             }
             k++;
+          }
+          i++;
+        }
+
+        i = 0;
+        while (i < res.data["profile_pic"].length) {
+          var j = 0;
+          while (j < tab.length) {
+            if (tab[j]["userID"] === res.data["profile_pic"][i]["user_id"]) {
+              tab[j]["profile_pic"] = res.data["profile_pic"][i]["url"];
+            }
+            j++;
           }
           i++;
         }
@@ -148,9 +168,20 @@ class ChatConv extends Component {
         id={"contactList-" + e.room_id}
         onClick={() => this.displayChatbox(e.room_id, e.username, e.userID)}
       >
-        <i className="material-icons circle pink">person_pin</i>
-        <span className="title truncate">{e.username}</span>
-        <p>{e.status}</p>
+        {e.profile_pic === undefined ? (
+          <Avatar className="chat-user-letters">
+            {e.username[0] + e.username[1]}
+          </Avatar>
+        ) : (
+          /* <i className="material-icons circle pink">person_pin</i> */
+          <Avatar
+            alt={e.username}
+            src={e.profile_pic}
+            className="chat-user-avatar"
+          />
+        )}
+        <span className="title truncate chat-user-title">{e.username}</span>
+        <p className="chat-user-status">{e.status}</p>
         <a href="#!" className="secondary-content">
           <span
             id={e.status === "Online" ? "green-circle" : "grey-circle"}

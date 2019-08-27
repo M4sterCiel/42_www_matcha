@@ -8,7 +8,6 @@ module.exports = {
           "SELECT * FROM matches WHERE user_1 = ? OR user_2 = ? ORDER BY last_message DESC",
         values: [userID, userID]
       });
-      //console.log(result);
       if (result) return result;
     } catch (err) {
       throw new Error(err);

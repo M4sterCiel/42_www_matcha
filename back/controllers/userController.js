@@ -347,6 +347,28 @@ module.exports = {
     });
   },
 
+  getUserProfileFromUserId: async (req, res, next) => {
+    // Get user id from username
+    var userId = req.params.user_id;
+    if (userId.error) return res.status(401).json({ message: userId.error });
+
+    // Get data from db based on user access rights
+    var userData = await UserService.getUserData(userId);
+    var userPictures = await UserService.getUserPictures(userId);
+    var userTags = await UserService.getUserTags(userId);
+    var allTags = await UserService.getAllTags(userId);
+
+    if (userData.error)
+      return res.status(401).json({ message: userData.error });
+
+    return res.status(200).json({
+      data: userData,
+      pictures: userPictures,
+      tags: userTags,
+      allTags: allTags
+    });
+  },
+
   deleteUser: async (req, res, next) => {
     var authorization = req.body.headers.authorization;
     var userId = jwtUtils.getUserId(authorization);

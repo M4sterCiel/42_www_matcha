@@ -22,6 +22,7 @@ module.exports = {
     var userID = jwtService.verifyToken(req.params["token"])["id"];
     var result = await matchModel.getMatchList(userID);
     var status = [];
+    var profile_pic = [];
     for (var i = 0; i < result.length; i++) {
       status[i] =
         result[i]["user_1"] != userID
@@ -30,9 +31,17 @@ module.exports = {
     }
     if (status.length > 0) status = await userModel.getStatus(status);
 
-    var blocked =  await userModel.getBlockedUsersFromMyId(userID);
+    for (var i = 0; i < result.length; i++) {
+      profile_pic[i] =
+        result[i]["user_1"] != userID
+          ? result[i]["user_1"]
+          : result[i]["user_2"];
+    }
+    if (profile_pic.length > 0)
+      profile_pic = await userModel.getProfilePicture(profile_pic);
+    var blocked = await userModel.getBlockedUsersFromMyId(userID);
 
-    return res.status(200).json({ result, status });
+    return res.status(200).json({ result, status, profile_pic });
   },
 
   onlineStatus: async userID => {
@@ -70,11 +79,19 @@ module.exports = {
   },
 
   createChatRoom: async (user_id, target_id, username) => {
-    var uniqid = (new Date().getTime() + Math.floor((Math.random()*10000)+1)).toString(16);
+    var uniqid = (
+      new Date().getTime() + Math.floor(Math.random() * 10000 + 1)
+    ).toString(16);
     var username_1 = username;
     var username_2 = await userModel.getUsernameFromId(target_id);
     username_2 = username_2[0].username;
-    await chatModel.createChatRoom([uniqid, user_id, target_id, username_1, username_2]);
-    return (uniqid);
+    await chatModel.createChatRoom([
+      uniqid,
+      user_id,
+      target_id,
+      username_1,
+      username_2
+    ]);
+    return uniqid;
   }
 };

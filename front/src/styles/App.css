@@ -791,6 +791,27 @@ button:focus {
   padding: 0 0.5rem;
 }
 
+.chat-conv-title-icon {
+  display: none;
+  font-size: 35px;
+}
+
+.chat-user-avatar {
+  display: inline-block !important;
+  position: absolute !important;
+  left: 15px !important;
+  width: 45px !important;
+  height: 45px !important;
+}
+
+.chat-user-letters {
+  position: absolute !important;
+  left: 15px !important;
+  width: 45px !important;
+  height: 45px !important;
+  background-color: #ffb6d3 !important;
+}
+
 #messageView {
   height: 400px;
   overflow: hidden;
@@ -1311,9 +1332,16 @@ button.btn-star-picture-main {
   .chat-message-box {
     width: calc(100% - 140px) !important;
   }
-}
 
-@media screen and (max-width: 640px) {
+  .chat-conv-title-text {
+    display: none;
+  }
+
+  .chat-conv-title-icon {
+    display: block;
+    text-align: center;
+  }
+
   .profile-picture-round {
     width: 200px !important ;
     height: 200px !important ;
@@ -1376,6 +1404,23 @@ button.btn-star-picture-main {
 
   .user-card-image {
     height: 400px !important;
+  }
+
+  .chat-user-title {
+    display: none !important;
+  }
+  .chat-user-status {
+    display: none !important;
+  }
+
+  .chat-user-avatar,
+  .chat-user-letters {
+    left: calc(50% - 22px) !important;
+  }
+
+  .secondary-content {
+    left: calc(50% + 14px) !important;
+    right: 0px !important;
   }
 }
 
@@ -1480,6 +1525,27 @@ button.btn-star-picture-main {
   .user-card-image {
     height: 300px !important;
   }
+
+  .chat-conv-title-icon {
+    font-size: 25px;
+  }
+
+  .chat-user-avatar,
+  .chat-user-letters {
+    left: calc(50% - 15px) !important;
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  .collection.with-header,
+  .collection-item.avatar {
+    padding-left: 0px !important;
+  }
+
+  .secondary-content {
+    left: calc(50% + 5px) !important;
+    right: 0px !important;
+  }
 }
 
 @media screen and (max-width: 360px) {
@@ -1560,5 +1626,9 @@ button.btn-star-picture-main {
 
   .user-card-image {
     height: 230px !important;
+  }
+
+  .chat-conv-title-icon {
+    font-size: 18px;
   }
 }
