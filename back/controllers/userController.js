@@ -384,6 +384,15 @@ module.exports = {
   getMainNotification: async (req, res, next) => {
     var userID = req.params["userID"];
     var ret = await userModel.getNotification(userID);
+
+    var blocked =  await userModel.getBlockedUsersFromMyId(userID);
+
+    for (var i = 0; i < ret.length; i++) {
+      for (var k = 0; k < blocked.length; k++) {
+        if (ret[i]['sender_id'] == blocked[k]['user_id'])
+          ret.splice(i, 1);
+      }
+    }
     return res.status(200).json({ tab: ret });
   },
 

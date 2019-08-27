@@ -6,6 +6,7 @@ let userRoute = require("./userRoute");
 var chatRoute = require("./chatRoute");
 var chatController = require("../controllers/chatController");
 var userController = require("../controllers/userController");
+var userModel = require('../models/userModel');
 
 /* Listenning port */
 
@@ -49,7 +50,8 @@ var mainSocket = io.on("connection", async socket => {
 
   socket.on("sendNotif", async (type, user_id, target_id) => {
     var sendNotif = await userController.manageNotif(type, user_id, target_id);
-    if (sendNotif) {
+    var isBlocked = await userModel.checkUserIsBlocked(user_id, target_id);
+    if (sendNotif && !isBlocked) {
       socket.broadcast.emit("newNotif", target_id);
     }
   });
@@ -84,7 +86,7 @@ nsp.on("connection", socket => {
 
   socket.join(room_id);
 
-  socket.on(room_id, (data, userID_other) => {
+  socket.on(room_id, async (data, userID_other) => {
     chatController.saveMessage([data, userID, room_id]);
     chatController.saveNotification(
       userID_other,
@@ -94,7 +96,9 @@ nsp.on("connection", socket => {
       room_id
     );
     socket.broadcast.emit(room_id, { data, userID, userName });
-    mainSocket.emit("new message", { room_id, userID_other });
+    var isBlocked = await userModel.checkUserIsBlocked(userID_other, userID);
+    if (!isBlocked)
+      mainSocket.emit("new message", { room_id, userID_other });
   });
 
   socket.on("readMessage", data => {

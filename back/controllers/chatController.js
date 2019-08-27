@@ -1,4 +1,5 @@
 var jwtService = require("../services/jwtService");
+var userService = require("../services/userService");
 var chatModel = require("../models/chatModel");
 var matchModel = require("../models/matchModel");
 var userModel = require("../models/userModel");
@@ -31,6 +32,8 @@ module.exports = {
     }
     if (status.length > 0) status = await userModel.getStatus(status);
 
+    result = await userService.extractBlockedUsers(result, userID);
+
     for (var i = 0; i < result.length; i++) {
       profile_pic[i] =
         result[i]["user_1"] != userID
@@ -39,7 +42,6 @@ module.exports = {
     }
     if (profile_pic.length > 0)
       profile_pic = await userModel.getProfilePicture(profile_pic);
-    var blocked = await userModel.getBlockedUsersFromMyId(userID);
 
     return res.status(200).json({ result, status, profile_pic });
   },
@@ -68,13 +70,26 @@ module.exports = {
 
   getCountMsgNotification: async (req, res, next) => {
     var userID = req.params.userID;
-    var result = await chatModel.getCountNotification(userID);
+    var blocked = await userModel.getBlockedUsersFromMyId(userID);
+    var tab = [];
+    for (var i = 0; i < blocked.length; i++) tab.push(blocked[i]["user_id"]);
+    var result = await chatModel.getCountNotification(
+      userID,
+      blocked.length > 0 ? tab : ""
+    );
+
     return res.status(200).json({ notification: result });
   },
 
   getListNotification: async (req, res, next) => {
     var userID = req.params.userID;
-    var result = await chatModel.getListNotification(userID);
+    var blocked = await userModel.getBlockedUsersFromMyId(userID);
+    var tab = [];
+    for (var i = 0; i < blocked.length; i++) tab.push(blocked[i]["user_id"]);
+    var result = await chatModel.getListNotification(
+      userID,
+      blocked.length > 0 ? tab : ""
+    );
     return res.status(200).json({ notification: result });
   },
 
