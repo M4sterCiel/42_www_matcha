@@ -29,7 +29,9 @@ module.exports = {
           : result[i]["user_2"];
     }
     if (status.length > 0) status = await userModel.getStatus(status);
-    //console.log({ status });
+
+    var blocked =  await userModel.getBlockedUsersFromMyId(userID);
+
     return res.status(200).json({ result, status });
   },
 

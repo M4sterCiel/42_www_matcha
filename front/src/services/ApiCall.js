@@ -38,6 +38,10 @@ export default {
       axios
         .get(`/users/isreported/${user_id}/${target_id}`)
         .then(res => res.data),
+    checkUserIsBlocked: (user_id, target_id) => 
+      axios
+        .get(`/users/isblocked/${user_id}/${target_id}`)
+        .then(res => res.data),
     createUserLike: (user_id, by_id) =>
       axios
         .post(`/users/create/${user_id}/liked_by/${by_id}`)

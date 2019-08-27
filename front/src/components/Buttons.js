@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Button } from "react-materialize";
 import LikeIcon from "@material-ui/icons/ThumbUp";
 import DislikeIcon from "@material-ui/icons/ThumbDown";
-import axios from "axios";
-import InfoToastService from "../services/InfoToastService";
 
 class ProfileSettingsButton extends Component {
   render() {
@@ -42,10 +40,6 @@ class ProfileSettingsButton extends Component {
 }
 
 class ProfileActionsButton extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <Button
@@ -55,21 +49,39 @@ class ProfileActionsButton extends Component {
         className="red pulse"
         large
       >
-        <Button
-          floating
-          tooltip="report this user"
-          icon="report"
-          className="red modal-trigger"
-          href="#report-user-modal"
-          user_id={this.props.user_id}
-          target_id={this.props.target_id}
-        />
-        <Button
-          floating
-          tooltip="block this user"
-          icon="block"
-          className="red"
-        />
+        {!this.props.isReported ? (
+          <Button
+            floating
+            tooltip="report this user"
+            icon="report"
+            className="red modal-trigger"
+            href="#report-user-modal"
+          />
+        ) : (
+          ""
+        )}
+        {!this.props.isBlocked ? (
+          <Button
+            floating
+            tooltip="Block this user"
+            icon="block"
+            className="red modal-trigger"
+            href="#block-user-modal"
+          />
+        ) : (
+          ""
+        )}
+        {this.props.isBlocked ? (
+          <Button
+            floating
+            tooltip="Unblock this user"
+            icon="check_circle"
+            className="red modal-trigger"
+            href="#unblock-user-modal"
+          />
+        ) : (
+          ""
+        )}
       </Button>
     );
   }
