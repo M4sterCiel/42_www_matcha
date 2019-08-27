@@ -40,7 +40,7 @@ class ProfileSettingsButton extends Component {
 }
 
 class ProfileActionsButton extends Component {
-  render() {  
+  render() {
     return (
       <Button
         floating
@@ -49,31 +49,39 @@ class ProfileActionsButton extends Component {
         className="red pulse"
         large
       >
-        {!this.props.isReported ?
-        <Button
-        floating
-        tooltip="report this user"
-        icon="report"
-        className="red modal-trigger"
-        href="#report-user-modal"
-      /> : "" }
-      {!this.props.isBlocked ?
-        <Button
-          floating
-          tooltip="Block this user"
-          icon="block"
-          className="red modal-trigger"
-          href="#block-user-modal"
-        />
-        : ""}
-        {this.props.isBlocked ?
-        <Button
-        floating
-        tooltip="Unblock this user"
-        icon="check_circle"
-        className="red modal-trigger"
-        href="#unblock-user-modal" />
-        : ""}
+        {!this.props.isReported ? (
+          <Button
+            floating
+            tooltip="report this user"
+            icon="report"
+            className="red modal-trigger"
+            href="#report-user-modal"
+          />
+        ) : (
+          ""
+        )}
+        {!this.props.isBlocked ? (
+          <Button
+            floating
+            tooltip="Block this user"
+            icon="block"
+            className="red modal-trigger"
+            href="#block-user-modal"
+          />
+        ) : (
+          ""
+        )}
+        {this.props.isBlocked ? (
+          <Button
+            floating
+            tooltip="Unblock this user"
+            icon="check_circle"
+            className="red modal-trigger"
+            href="#unblock-user-modal"
+          />
+        ) : (
+          ""
+        )}
       </Button>
     );
   }
@@ -97,7 +105,11 @@ class LikeBackButton extends Component {
   render() {
     const iconStyle = { position: "relative", top: "5px" };
     return (
-      <Button tooltip="like back this user" className="red">
+      <Button
+        tooltip="like back this user"
+        className="red modal-trigger"
+        href="#match-anim-modal"
+      >
         <span className="like-btn-text">Like </span>Back{" "}
         <span style={iconStyle}>
           <LikeIcon />

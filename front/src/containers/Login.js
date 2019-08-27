@@ -193,7 +193,7 @@ class Login extends Component {
         this.props.history.push("/");
       })
       .catch(err => {
-        ErrorToast.auth.userAlreadyLogged();
+        ErrorToast.custom.error(err.response["data"]["message"], 1400);
       });
   };
 

@@ -5,7 +5,7 @@ var pictureModel = require("../models/pictureModel");
 var likeModel = require("../models/likeModel");
 var input = require("../services/inputService");
 var jwtUtils = require("../services/jwtService");
-var notifService = require('../services/notifService');
+var notifService = require("../services/notifService");
 
 module.exports = {
   login: async (req, res, next) => {
@@ -416,8 +416,7 @@ module.exports = {
 
     var result = await likeModel.addOne(req.params.user_id, req.params.by_id);
 
-    if (result.error) 
-      return res.status(401).json({ error: result.error });
+    if (result.error) return res.status(401).json({ error: result.error });
     else {
       return res.status(200).json({
         message: `User data updated`
@@ -445,8 +444,8 @@ module.exports = {
         await notifService.like_back(user_id, target_id, username);
         sendNotif = true;
         break;
-    };
-    return (sendNotif);
+    }
+    return sendNotif;
   },
 
   reportUser: async (req, res, next) => {
@@ -455,16 +454,17 @@ module.exports = {
 
     var result = await userModel.reportUser([target_id, user_id]);
     if (result)
-      return res.status(200).json({ message: 'Successfully reported!'});
-    return res.status(200).json({ message: "Impossible to report this user for now" });
+      return res.status(200).json({ message: "Successfully reported!" });
+    return res
+      .status(200)
+      .json({ message: "Impossible to report this user for now" });
   },
 
   getUserRoomId: async (req, res, next) => {
     var user_id = req.params.user_id;
     var target_id = req.params.target_id;
 
-    if (target_id == user_id)
-      return res.status(200).json({ room_id: null });
+    if (target_id == user_id) return res.status(200).json({ room_id: null });
 
     var result = await userModel.getUserRoomId(target_id, user_id);
 
@@ -485,8 +485,10 @@ module.exports = {
 
     var result = await userModel.blockUser(user_id, target_id);
     if (result)
-      return res.status(200).json({ message: 'Successfully blocked!' });
-    return res.status(200).json({ message: 'Impossible to block this user for now...' });
+      return res.status(200).json({ message: "Successfully blocked!" });
+    return res
+      .status(200)
+      .json({ message: "Impossible to block this user for now..." });
   },
 
   unblockUser: async (req, res, next) => {
@@ -495,8 +497,10 @@ module.exports = {
 
     var result = await userModel.unblockUser(user_id, target_id);
     if (!result)
-      return res.status(200).json({ message: 'Successfully unblocked!' });
-    return res.status(200).json({ message: 'Impossible to unblock this user for now...' });
+      return res.status(200).json({ message: "Successfully unblocked!" });
+    return res
+      .status(200)
+      .json({ message: "Impossible to unblock this user for now..." });
   },
 
   checkUserIsBlocked: async (req, res, next) => {

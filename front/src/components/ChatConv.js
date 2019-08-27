@@ -77,7 +77,7 @@ class ChatConv extends Component {
         //console.log(err);
       });
 
-    await this._isMounted &&
+    (await this._isMounted) &&
       this.setState({
         socket: io({
           transports: ["polling"],

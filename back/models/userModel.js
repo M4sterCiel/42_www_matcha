@@ -207,7 +207,7 @@ module.exports = {
     }
   },
 
-  getUserScore: async (target_id) => {
+  getUserScore: async target_id => {
     try {
       var result = await pool.query({
         sql: "SELECT pop_score FROM users WHERE id = ?",
@@ -243,7 +243,7 @@ module.exports = {
     }
   },
 
-  resetUserScore: async (target_id) => {
+  resetUserScore: async target_id => {
     try {
       var result = await pool.query({
         sql: "UPDATE users SET pop_score = 0 WHERE `id`= ?",

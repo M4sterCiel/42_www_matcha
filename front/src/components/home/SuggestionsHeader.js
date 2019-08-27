@@ -26,8 +26,7 @@ class CompleteProfile extends Component {
             </a>
           ]}
         >
-          All you need is Love and we found potential people you might be
-          interested in!
+          We found potential people you might be interested in!
         </Card>
       </Col>
     );

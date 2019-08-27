@@ -430,8 +430,7 @@ class Register extends Component {
       })
       .catch(err => {
         let message = err.response.data["error"];
-        //ErrorToast.default.error(message);
-        ErrorToast.custom.error(message);
+        ErrorToast.custom.error(message, 1400);
       });
   };
 

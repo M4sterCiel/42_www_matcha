@@ -497,6 +497,29 @@ button:focus {
   background-color: inherit;
 }
 
+.modal-match-anim {
+  max-width: 500px;
+}
+
+.img-match-anim {
+  width: 250px;
+}
+
+.icon-vert-align {
+  position: relative;
+  font-size: 30px;
+  top: 10px;
+}
+
+.profile-match-icon {
+  position: absolute;
+  width: 50px;
+  bottom: 30px;
+  left: calc(100% - 80px);
+  box-shadow: none !important;
+  opacity: 0.4;
+}
+
 /* User card */
 
 .user-card {
@@ -591,6 +614,14 @@ button:focus {
 
 /* Chat page */
 
+.main-chat-box {
+  max-width: 100% !important;
+}
+
+.right-align {
+  max-width: 100% !important;
+}
+
 .row .col.m8 {
   max-width: 75%;
 }
@@ -673,8 +704,11 @@ button:focus {
   max-width: unset;
 } */
 
+.message-link-profile {
+  color: #ffb6d3;
+}
+
 .chatbox-message {
-  min-width: 320px;
   overflow: auto;
 }
 
@@ -1161,7 +1195,7 @@ textarea:not(.browser-default):focus:not([readonly]) + label {
   width: 100%;
   position: relative;
   overflow: hidden;
-  background-image: url("");
+  background-image: url("../assets//default-profile-no-gender.png");
   background-color: white;
   background-position: center center;
   background-repeat: no-repeat;
@@ -1266,6 +1300,16 @@ button.btn-star-picture-main {
   .user-card-like-back-btn {
     width: 60px;
     left: calc(100% - 70px);
+  }
+}
+
+@media screen and (max-width: 640px) {
+  #btn-chat-box {
+    width: 80px !important;
+  }
+
+  .chat-message-box {
+    width: calc(100% - 140px) !important;
   }
 }
 
@@ -1439,6 +1483,10 @@ button.btn-star-picture-main {
 }
 
 @media screen and (max-width: 360px) {
+  .img-match-anim {
+    width: 160px;
+  }
+
   .slider {
     height: 240px !important;
   }

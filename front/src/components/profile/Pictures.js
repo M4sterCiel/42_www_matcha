@@ -1,16 +1,11 @@
 import React, { Component } from "react";
-import { Slider, Slide, Caption } from "react-materialize";
-import NoImage from "../../assets/no-image.jpg";
+import { Slider, Slide } from "react-materialize";
+import NoImage from "../../assets/no-image.jpeg";
 
 class Pictures extends Component {
   render() {
     const NoSlide = (
-      <Slide image={<img src={NoImage} alt="no pic set" />}>
-        <Caption>
-          <h3>No picture yet</h3>
-          <h5 className="light grey-text text-lighten-3">It's sad :(</h5>
-        </Caption>
-      </Slide>
+      <Slide image={<img src={NoImage} alt="no pic set" />}></Slide>
     );
 
     const Slides = this.props.pictures.map(picture => (
