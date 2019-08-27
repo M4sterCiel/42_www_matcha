@@ -32,6 +32,15 @@ module.exports = {
 
     var blocked =  await userModel.getBlockedUsersFromMyId(userID);
 
+    if (result.length > 0) {
+      for (var i = 0; i < result.length; i++) {
+        for (var k = 0; k < blocked.length; k++) {
+          if (result[i]['user_1'] == blocked[k]['user_id'] || result[i]['user_2'] == blocked[k]['user_id'])
+            result.splice(i, 1);
+        }
+      }
+    }
+
     return res.status(200).json({ result, status });
   },
 

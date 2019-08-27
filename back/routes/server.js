@@ -6,6 +6,7 @@ let userRoute = require("./userRoute");
 var chatRoute = require("./chatRoute");
 var chatController = require("../controllers/chatController");
 var userController = require("../controllers/userController");
+var userModel = require('../models/userModel');
 
 /* Listenning port */
 
@@ -84,7 +85,7 @@ nsp.on("connection", socket => {
 
   socket.join(room_id);
 
-  socket.on(room_id, (data, userID_other) => {
+  socket.on(room_id, async (data, userID_other) => {
     chatController.saveMessage([data, userID, room_id]);
     chatController.saveNotification(
       userID_other,
@@ -94,7 +95,10 @@ nsp.on("connection", socket => {
       room_id
     );
     socket.broadcast.emit(room_id, { data, userID, userName });
-    mainSocket.emit("new message", { room_id, userID_other });
+    var isBlocked = await userModel.checkUserIsBlocked(userID, userID_other);
+    console.log('isBlocked ', isBlocked);
+    if (!isBlocked)
+      mainSocket.emit("new message", { room_id, userID_other });
   });
 
   socket.on("readMessage", data => {
