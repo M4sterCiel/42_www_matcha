@@ -181,6 +181,20 @@ module.exports = {
     }
   },
 
+  getProfilePicture: async data => {
+    try {
+      var result = await pool.query({
+        sql:
+          "SELECT `user_id`, url FROM pictures WHERE `user_id` IN (?) AND profile_picture = 1",
+        values: [data]
+      });
+      if (result) return result;
+    } catch (err) {
+      console.log("errreur =>>>>>>> ", err);
+      throw new Error(err);
+    }
+  },
+
   getNotification: async userID => {
     try {
       var result = await pool.query({
@@ -258,8 +272,7 @@ module.exports = {
   reportUser: async data => {
     try {
       var result = await pool.query({
-        sql:
-          "INSERT INTO report (user_id, reporting_id) VALUES (?)",
+        sql: "INSERT INTO report (user_id, reporting_id) VALUES (?)",
         values: [data]
       });
       return result.affectedRows;
@@ -284,12 +297,10 @@ module.exports = {
   checkUserIsReported: async (user_id, target_id) => {
     try {
       var result = await pool.query({
-        sql:
-          "SELECT * FROM report WHERE user_id = ? AND reporting_id = ?",
+        sql: "SELECT * FROM report WHERE user_id = ? AND reporting_id = ?",
         values: [target_id, user_id]
       });
-      if (result.length > 0)
-        return true;
+      if (result.length > 0) return true;
       return false;
     } catch (err) {
       throw new Error(err);
@@ -299,12 +310,10 @@ module.exports = {
   blockUser: async (user_id, target_id) => {
     try {
       var result = await pool.query({
-        sql:
-          "INSERT INTO block (user_id, blocking_id) VALUES (?, ?)",
+        sql: "INSERT INTO block (user_id, blocking_id) VALUES (?, ?)",
         values: [target_id, user_id]
       });
-      if (result.affectedRows > 0)
-        return true;
+      if (result.affectedRows > 0) return true;
       return false;
     } catch (err) {
       throw new Error(err);
@@ -314,12 +323,10 @@ module.exports = {
   checkUserIsBlocked: async (user_id, target_id) => {
     try {
       var result = await pool.query({
-        sql:
-          "SELECT * FROM block WHERE user_id = ? AND blocking_id = ?",
+        sql: "SELECT * FROM block WHERE user_id = ? AND blocking_id = ?",
         values: [target_id, user_id]
       });
-      if (result.length > 0)
-        return true;
+      if (result.length > 0) return true;
       return false;
     } catch (err) {
       throw new Error(err);
@@ -329,12 +336,10 @@ module.exports = {
   unblockUser: async (user_id, target_id) => {
     try {
       var result = await pool.query({
-        sql:
-          "DELETE FROM block WHERE user_id = ? AND blocking_id = ?",
+        sql: "DELETE FROM block WHERE user_id = ? AND blocking_id = ?",
         values: [target_id, user_id]
       });
-      if (result.affectedRows > 0)
-        return false;
+      if (result.affectedRows > 0) return false;
       return true;
     } catch (err) {
       throw new Error(err);
@@ -344,12 +349,10 @@ module.exports = {
   getBlockedUsersFromMyId: async user_id => {
     try {
       var result = await pool.query({
-        sql:
-          "SELECT user_id FROM block WHERE blocking_id = ?",
+        sql: "SELECT user_id FROM block WHERE blocking_id = ?",
         values: [user_id]
       });
-      if (result)
-        return result;
+      if (result) return result;
     } catch (err) {
       throw new Error(err);
     }

@@ -4,6 +4,8 @@ export default {
   user: {
     getUserFromUsername: username =>
       axios.get(`/users/profile/${username}`).then(res => res.data),
+    getUserFromId: user_id =>
+      axios.get(`/users/profile/id/${user_id}`).then(res => res.data),
     updateUserField: (id, field, data) =>
       axios
         .post(`/users/update/${id}/custom/${field}`, { data: data })
@@ -34,11 +36,11 @@ export default {
       axios
         .get(`/users/profile/${user_id}/liked_by/${username}`)
         .then(res => res.data),
-    checkUserIsReported: (user_id, target_id) => 
+    checkUserIsReported: (user_id, target_id) =>
       axios
         .get(`/users/isreported/${user_id}/${target_id}`)
         .then(res => res.data),
-    checkUserIsBlocked: (user_id, target_id) => 
+    checkUserIsBlocked: (user_id, target_id) =>
       axios
         .get(`/users/isblocked/${user_id}/${target_id}`)
         .then(res => res.data),
@@ -64,9 +66,9 @@ export default {
       axios
         .post(`/users/update/${id}/password`, { password: password })
         .then(res => res.data),
-    getUserRoomId: async (user_id, target_id) => 
+    getUserRoomId: async (user_id, target_id) =>
       await axios
         .get(`/users/get-room-id/${user_id}/${target_id}`)
         .then(res => res.data)
-  },
+  }
 };
