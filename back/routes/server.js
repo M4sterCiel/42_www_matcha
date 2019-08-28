@@ -7,8 +7,7 @@ var chatRoute = require("./chatRoute");
 var chatController = require("../controllers/chatController");
 var userController = require("../controllers/userController");
 var userModel = require('../models/userModel');
-var request = require('request');
-
+var Seed = require('../config/seed');
 /* Listenning port */
 
 const PORT = 8080;
@@ -24,11 +23,7 @@ app.use("/users/", userRoute.router);
 app.use("/chat/", chatRoute.router);
 
 app.get('/seed', (req, res) => {
-  request('https://randomuser.me/api/?results=1&nat=fr', function(err, resp, body) {
-    body = JSON.parse(body);
-    console.log(body);
-    console.log(body.results[0]);
-})
+  Seed.getUserSeed();
   res.send({ message: "Database created succefully" });
 });
 app.get("/setup", (req, resp) => {

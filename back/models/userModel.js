@@ -75,6 +75,24 @@ module.exports = {
     }
   },
 
+  createFromSeed: async data => {
+    data[8] = passwordHash.generate(data[8], {
+      algorithm: "sha512",
+      saltLength: 10,
+      iterations: 5
+    });
+    try {
+      var result = await pool.query({
+        sql:
+          "INSERT INTO users (lastname, firstname, username, gender, sexual_orientation, mail, bio, birthdate, password, city, geo_lat, geo_long) VALUES (?)",
+        values: [data]
+      });
+      return result.insertId;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
   updateRegister: async data => {
     try {
       var result = await pool.query({

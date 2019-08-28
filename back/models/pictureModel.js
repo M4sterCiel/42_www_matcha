@@ -13,6 +13,18 @@ module.exports = {
     }
   },
 
+  createOne: async data => {
+    try {
+      var result = await pool.query({
+        sql: "INSERT INTO pictures (user_id, url, pic_index, profile_picture) VALUES (?)",
+        values: [data]
+      });
+      if (result) return result;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
   findProfile: async (field, data) => {
     try {
       var result = await pool.query({
