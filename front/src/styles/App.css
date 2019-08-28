@@ -1077,6 +1077,11 @@ textarea:not(.browser-default):focus:not([readonly]) + label {
   background-color: red !important;
 }
 
+.delete-account-div {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
 /* Chat page */
 
 #messageView {

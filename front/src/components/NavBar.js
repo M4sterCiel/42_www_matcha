@@ -79,8 +79,8 @@ class NavBar extends Component {
         // eslint-disable-next-line
         if (data == this.state.userID) this.callMsgNotifApi();
       });
-      
-      this.state.socket.on("newNotif", (id) => {
+
+      this.state.socket.on("newNotif", id => {
         if (id === this.state.userID) this.callMainNotifApi();
       });
     }

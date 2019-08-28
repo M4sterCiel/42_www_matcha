@@ -138,10 +138,10 @@ class FilterUsersButton extends Component {
     return (
       <Button
         tooltip="Filter the profiles"
-        className="filter-users-btn"
+        className="filter-users-btn modal-trigger"
         href="#filter-users-modal"
       >
-        <span className="filter-users-btn-txt modal-trigger">Filter</span>
+        <span className="filter-users-btn-txt">Filter</span>
         <Icon right>filter_list</Icon>
       </Button>
     );

@@ -5,6 +5,7 @@ import CompleteProfile from "../components/home/CompleteProfile";
 import SuggestionsHeader from "../components/home/SuggestionsHeader";
 import ModalUserEditProfileInfo from "../components/modals/ModalUserEditProfileInfo";
 import ModalUserEditProfilePictures from "../components/modals/ModalUserEditProfilePictures";
+import ModalUserListFilter from "../components/modals/ModalUserListFilter";
 import SortUserList from "../components/settings/SortUserList";
 import { FilterUsersButton } from "../components/Buttons";
 
@@ -56,6 +57,7 @@ class HomeLogged extends Component {
               <UserCard />
               <UserCard />
               <UserCard />
+              <ModalUserListFilter />
             </div>
           )}
         </div>

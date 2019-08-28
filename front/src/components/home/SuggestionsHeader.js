@@ -13,7 +13,7 @@ class SuggestionsHeader extends Component {
           actions={[
             <NavLink
               key={1}
-              className="modal-trigger suggestions-header-links"
+              className="suggestions-header-links"
               to={"/users/profile/" + this.props.username}
             >
               Check my profile
