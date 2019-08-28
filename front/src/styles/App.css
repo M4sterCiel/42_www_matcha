@@ -169,7 +169,21 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   opacity: 0.5;
 }
 
-/* Homepage */
+.link-icon {
+  position: relative;
+  left: 5px;
+  top: 5px;
+}
+
+.white-text {
+  color: white !important;
+}
+
+.kep-login-facebook.metro {
+  border-radius: 5px !important;
+}
+
+/* Homepage and Search */
 
 .home-background {
   background-image: url("../assets/home-background.jpg");
@@ -185,6 +199,30 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 
 .suggestions-header-links {
   color: white !important;
+}
+
+.user-list-settings {
+  display: block;
+  position: relative;
+  left: calc(100% - 220px) !important;
+}
+
+.select-dropdown {
+  color: #ffb6d3 !important;
+}
+
+.caret {
+  fill: #ffb6d3 !important;
+}
+
+.select-dropdown.dropdown-content li:hover {
+  background-color: rgba(255, 182, 211, 0.5) !important;
+}
+
+.filter-users-btn {
+  position: relative;
+  top: 20px;
+  left: -340px;
 }
 
 /* Sliders */
@@ -703,10 +741,6 @@ button:focus {
 #btn-chat-box {
   padding-top: 2%;
 }
-/* 
-.row {
-  max-width: unset;
-} */
 
 .message-link-profile {
   color: #ffb6d3;
@@ -714,6 +748,14 @@ button:focus {
 
 .chatbox-message {
   overflow: auto;
+}
+
+.chat-conv-title-text {
+  color: #ffb6d3;
+}
+
+.chat-user-title {
+  color: #ffb6d3;
 }
 
 .row .right-align {
@@ -1554,6 +1596,17 @@ button.btn-star-picture-main {
   .secondary-content {
     left: calc(50% + 5px) !important;
     right: 0px !important;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .filter-users-btn {
+    width: 50px !important;
+    left: -260px;
+  }
+
+  .filter-users-btn-txt {
+    display: none;
   }
 }
 

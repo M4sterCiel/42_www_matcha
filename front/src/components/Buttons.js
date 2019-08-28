@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "react-materialize";
+import { Button, Icon } from "react-materialize";
 import LikeIcon from "@material-ui/icons/ThumbUp";
 import DislikeIcon from "@material-ui/icons/ThumbDown";
 
@@ -133,10 +133,26 @@ class DislikeButton extends Component {
   }
 }
 
+class FilterUsersButton extends Component {
+  render() {
+    return (
+      <Button
+        tooltip="Filter the profiles"
+        className="filter-users-btn"
+        href="#filter-users-modal"
+      >
+        <span className="filter-users-btn-txt modal-trigger">Filter</span>
+        <Icon right>filter_list</Icon>
+      </Button>
+    );
+  }
+}
+
 export {
   ProfileSettingsButton,
   ProfileActionsButton,
   LikeButton,
   LikeBackButton,
-  DislikeButton
+  DislikeButton,
+  FilterUsersButton
 };

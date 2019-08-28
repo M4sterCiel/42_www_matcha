@@ -5,6 +5,8 @@ import CompleteProfile from "../components/home/CompleteProfile";
 import SuggestionsHeader from "../components/home/SuggestionsHeader";
 import ModalUserEditProfileInfo from "../components/modals/ModalUserEditProfileInfo";
 import ModalUserEditProfilePictures from "../components/modals/ModalUserEditProfilePictures";
+import SortUserList from "../components/settings/SortUserList";
+import { FilterUsersButton } from "../components/Buttons";
 
 class HomeLogged extends Component {
   render() {
@@ -38,7 +40,13 @@ class HomeLogged extends Component {
             </div>
           ) : (
             <div className="home-suggestions-list" disabled={true}>
-              <SuggestionsHeader />
+              <SuggestionsHeader
+                username={this.props.userConnectedData.username}
+              />
+              <div className="user-list-settings col s12">
+                <FilterUsersButton />
+                <SortUserList />
+              </div>
               <UserCard />
               <UserCard />
               <UserCard />
