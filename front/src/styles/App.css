@@ -196,6 +196,29 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   margin-top: -10px !important;
 }
 
+.mobile-menu-links {
+  color: #ffb6d3;
+}
+
+.mobile-menu-icons {
+  margin-right: 25px;
+}
+
+.mobile-menu-notif {
+  position: relative !important;
+  left: -20px !important;
+  color: #ffb6d3 !important;
+}
+
+.mobile-menu-message {
+  margin-left: -10px !important;
+}
+
+.mobile-menu-notif-text {
+  text-transform: capitalize !important;
+  font-size: 15px;
+}
+
 /* Homepage and Search */
 
 .home-background {
