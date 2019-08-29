@@ -84,7 +84,7 @@ module.exports = {
     try {
       var result = await pool.query({
         sql:
-          "INSERT INTO users (lastname, firstname, username, gender, sexual_orientation, mail, bio, birthdate, password, city, geo_lat, geo_long) VALUES (?)",
+          "INSERT INTO users (lastname, firstname, username, gender, sexual_orientation, mail, bio, birthdate, password, city, status) VALUES (?)",
         values: [data]
       });
       return result.insertId;
