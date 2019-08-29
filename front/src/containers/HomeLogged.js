@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import AuthService from "../services/AuthService";
 import UserCard from "../components/cards/UserCard";
 import CompleteProfile from "../components/home/CompleteProfile";
 import SuggestionsHeader from "../components/home/SuggestionsHeader";
@@ -16,9 +17,13 @@ class HomeLogged extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userID: '',
       socket: '',
-      userTab: []
+      userTab: [],
+      picturesTab: [],
+      tags: []
     }
+    this.Auth = new AuthService();
     this._isMounted = false;
   }
   render() {
@@ -53,15 +58,7 @@ class HomeLogged extends Component {
           ) : (
             <div className="home-suggestions-list" disabled={true}>
               <SuggestionsHeader />
-              <UserCard />
-              <UserCard />
-              <UserCard />
-              <UserCard />
-              <UserCard />
-              <UserCard />
-              <UserCard />
-              <UserCard />
-              <UserCard />
+              <this.userList value={this.state.userTab} />
             </div>
           )}
         </div>
@@ -71,6 +68,9 @@ class HomeLogged extends Component {
 
   async componentDidMount() {
     this._isMounted = true;
+    await this._isMounted && this.setState({
+      userID: this.Auth.getConfirm()['id']
+    })
     this._isMounted && this.setState({
       socket: io({
         transports: ["polling"],
@@ -78,7 +78,7 @@ class HomeLogged extends Component {
         upgrade: false,
         "sync disconnect on unload": true,
         query: {
-          userID: this.Auth.getConfirm()["id"]
+          userID: this.state.userID
         }
       })
     });
@@ -91,16 +91,32 @@ class HomeLogged extends Component {
       .then(res => {
         this._isMounted &&
           this.setState({
-            userTab: res.data
+            userTab: res.data.list,
+            picturesTab: res.data.pictures,
+            allTags: res.data.allTags,
+            tags: res.data.tags
           });
       })
       .catch(error => {
-        //console.log(error);
+        console.log(error);
       });
   }
 
   componentWillUnmount() {
     this._isMounted = false;
+  }
+
+
+  userList = (props) => {
+    const value = props.value;
+    const users = value.map((e, index )=> (
+      <UserCard intel={e} pictures={this.state.picturesTab} allTags={this.state.allTags} tags={this.state.tags} key={index}/>
+    ));
+    return (
+      <ul>
+        {users}
+      </ul>
+    );
   }
 }
 

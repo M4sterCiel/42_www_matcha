@@ -104,5 +104,17 @@ module.exports = {
     } catch (err) {
       throw new Error(err);
     }
+  },
+
+  getPicturesList: async data => {
+    try {
+      var result = await pool.query({
+        sql: "SELECT * FROM pictures WHERE user_id IN (?) AND profile_picture = 1",
+        values: [data]
+      });
+      if (result) return result;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 };

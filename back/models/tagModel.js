@@ -59,5 +59,17 @@ module.exports = {
     } catch (err) {
       throw new Error(err);
     }
+  },
+
+  getAllUserTags: async id => {
+    try {
+      var result = await pool.query({
+        sql: "SELECT * FROM user_tags WHERE user_id = ?",
+        values: [id]
+      });
+      if (result) return result;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 };

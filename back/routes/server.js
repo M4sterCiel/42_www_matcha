@@ -4,6 +4,7 @@ var io = require("socket.io").listen(http);
 let bodyParser = require("body-parser");
 let userRoute = require("./userRoute");
 var chatRoute = require("./chatRoute");
+var mainRoute = require("../routes/mainRoute");
 var chatController = require("../controllers/chatController");
 var userController = require("../controllers/userController");
 var userModel = require('../models/userModel');
@@ -21,6 +22,7 @@ app.use(bodyParser.json({ limit: "10mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 app.use("/users/", userRoute.router);
 app.use("/chat/", chatRoute.router);
+app.use("/main/", mainRoute.router);
 
 app.get('/seed', (req, res) => {
   Seed.getUserSeed();

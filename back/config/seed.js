@@ -16,7 +16,7 @@ module.exports = {
           };
         var geocoder = NodeGeocoder(options);
 
-        await request('https://randomuser.me/api/?results=1&nat=fr&inc=gender,name,location,email,login,dob', function(err, resp, body) {
+        await request('https://randomuser.me/api/?results=500&nat=fr&inc=gender,name,location,email,login,dob', function(err, resp, body) {
         body = JSON.parse(body);
         body.results.forEach(async element => {
             var randomSexuality = randomInt(1, 3);
@@ -51,7 +51,7 @@ module.exports = {
             var tags = [];
             var randomTag;
             for (var i=0;i<8;i++) {
-                randomTag = randomInt(1, 17);
+                randomTag = randomInt(1, 16);
                 if (!tags.includes(randomTag)) {
                     tags.push(randomTag);
                     await tagModel.addOne(uid, randomTag);
