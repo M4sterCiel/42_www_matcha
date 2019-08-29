@@ -5,8 +5,22 @@ import CompleteProfile from "../components/home/CompleteProfile";
 import SuggestionsHeader from "../components/home/SuggestionsHeader";
 import ModalUserEditProfileInfo from "../components/modals/ModalUserEditProfileInfo";
 import ModalUserEditProfilePictures from "../components/modals/ModalUserEditProfilePictures";
+import Axios from "axios";
+import io from "socket.io-client";
+
+
+const CancelToken = Axios.CancelToken;
+let cancel;
 
 class HomeLogged extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      socket: '',
+      userTab: []
+    }
+    this._isMounted = false;
+  }
   render() {
     return (
       <div className="App">
@@ -53,6 +67,40 @@ class HomeLogged extends Component {
         </div>
       </div>
     );
+  }
+
+  async componentDidMount() {
+    this._isMounted = true;
+    this._isMounted && this.setState({
+      socket: io({
+        transports: ["polling"],
+        requestTimeout: 50000,
+        upgrade: false,
+        "sync disconnect on unload": true,
+        query: {
+          userID: this.Auth.getConfirm()["id"]
+        }
+      })
+    });
+
+    await Axios.get("/main/list/" + this.state.userID, {
+      cancelToken: new CancelToken(function executor(c) {
+        cancel = c;
+      })
+    })
+      .then(res => {
+        this._isMounted &&
+          this.setState({
+            userTab: res.data
+          });
+      })
+      .catch(error => {
+        //console.log(error);
+      });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 }
 
