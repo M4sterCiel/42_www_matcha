@@ -183,6 +183,19 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   border-radius: 5px !important;
 }
 
+.notif-icons {
+  color: #ffb6d3 !important;
+}
+
+/* Mobile Menu */
+
+.mobile-menu-btn {
+  height: 100% !important;
+  color: white !important;
+  display: none !important;
+  margin-top: -10px !important;
+}
+
 /* Homepage and Search */
 
 .home-background {
@@ -1360,6 +1373,10 @@ button.btn-star-picture-main {
 
   .home-background {
     background-image: url("../assets/home-background-mobile.jpg");
+  }
+
+  .mobile-menu-btn {
+    display: inline-block !important;
   }
 }
 

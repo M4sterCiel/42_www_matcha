@@ -19,7 +19,9 @@ import Button from "@material-ui/core/Button";
 import LikeNotif from "@material-ui/icons/ThumbUp";
 import DislikeNotif from "@material-ui/icons/ThumbDown";
 import HotNotif from "@material-ui/icons/Whatshot";
-import Highlight_off from "@material-ui/icons/HighlightOff";
+import HighlightOff from "@material-ui/icons/HighlightOff";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
+import Divider from "@material-ui/core/Divider";
 
 const Auth = new AuthService();
 const CancelToken = Axios.CancelToken;
@@ -34,7 +36,8 @@ class NavBar extends Component {
       listNotif: [],
       nbMessages: null,
       nbNotifications: null,
-      right: false
+      right: false,
+      left: false
     };
     this._isMounted = false;
     this.Auth = new AuthService();
@@ -178,12 +181,14 @@ class NavBar extends Component {
           onClick={toggleDrawer(side, false)}
           onKeyDown={toggleDrawer(side, false)}
         >
-          <h5 style={{ textAlign: "center" }}>Notifications</h5>
+          <h5 style={{ textAlign: "center", color: "#ffb6d3" }}>
+            Notifications
+          </h5>
           <List>
             {listNotif.length < 1 ? (
               <ListItem>
                 <ListItemIcon>
-                  <Highlight_off />
+                  <HighlightOff />
                 </ListItemIcon>
                 <ListItemText
                   primary={"You do not have any notification yet."}
@@ -201,11 +206,11 @@ class NavBar extends Component {
                 <ListItem button>
                   <ListItemIcon>
                     {text.type === "visit" || text.type === "like_back" ? (
-                      <HotNotif />
+                      <HotNotif className="notif-icons" />
                     ) : text.type === "dislike" ? (
-                      <DislikeNotif />
+                      <DislikeNotif className="notif-icons" />
                     ) : (
-                      <LikeNotif />
+                      <LikeNotif className="notif-icons" />
                     )}
                   </ListItemIcon>
                   <ListItemText
@@ -284,9 +289,81 @@ class NavBar extends Component {
       );
     }
 
+    const MobileLoggedInLinks = () => {
+      const toggleMenu = (menu, open) => event => {
+        if (
+          event &&
+          event.type === "keydown" &&
+          (event.key === "Tab" || event.key === "Shift")
+        ) {
+          return;
+        }
+
+        this._isMounted && this.setState({ [menu]: open });
+      };
+
+      const classes = useStyles();
+
+      const fullList = menu => (
+        <div
+          className={classes.fullList}
+          role="presentation"
+          onClick={toggleMenu(menu, false)}
+          onKeyDown={toggleMenu(menu, false)}
+        >
+          <List>
+            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+              <ListItem button key={text}>
+                <ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          <List>
+            {["All mail", "Trash", "Spam"].map((text, index) => (
+              <ListItem button key={text}>
+                <ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List>
+        </div>
+      );
+
+      return (
+        <div>
+          <Button
+            className="mobile-menu-btn"
+            onClick={toggleMenu("left", true)}
+          >
+            <i className="material-icons">menu</i>
+          </Button>
+          <SwipeableDrawer
+            anchor="left"
+            open={this.state.left}
+            onClose={toggleMenu("left", false)}
+            onOpen={toggleMenu("left", true)}
+          >
+            {fullList("left")}
+          </SwipeableDrawer>
+        </div>
+      );
+    };
+
     // Generates the links in the navbar for a logged in user
     function NavLinks() {
-      if (Auth.loggedIn()) return <LoggedInLinks />;
+      if (Auth.loggedIn())
+        return (
+          <div>
+            <LoggedInLinks />
+            <MobileLoggedInLinks />
+          </div>
+        );
       else return <LoggedOutLinks />;
     }
 
@@ -302,9 +379,6 @@ class NavBar extends Component {
             <NavLink to="/" className="brand-logo">
               <img className="header-logo" src={logo} alt="" />
             </NavLink>
-            <a href="#" data-target="mobile-demo" className="sidenav-trigger">
-              <i className="material-icons">menu</i>
-            </a>
             <NavLinks />
           </div>
         </nav>
