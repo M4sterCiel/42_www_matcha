@@ -110,7 +110,7 @@ class HomeLogged extends Component {
   userList = (props) => {
     const value = props.value;
     const users = value.map((e, index )=> (
-      <UserCard intel={e} pictures={this.state.picturesTab} allTags={this.state.allTags} tags={this.state.tags} key={index}/>
+      <UserCard intel={e} pictures={this.state.picturesTab} allTags={this.state.allTags} tags={this.state.tags} uid={this.state.userID} key={index}/>
     ));
     return (
       <ul>

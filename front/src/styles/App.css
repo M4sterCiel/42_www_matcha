@@ -110,6 +110,11 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   box-shadow: 0 1px 0 0 #ffb6d3;
 }
 
+.profile-link {
+  margin-right: 0px !important;
+  color: #ffb6d3 !important;
+}
+
 .input-icons {
   color: #9e9e9e;
 }

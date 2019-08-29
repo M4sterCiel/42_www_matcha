@@ -6,6 +6,7 @@ import Female from "../../assets/female.png";
 import InterestTagsOnly from "../profile/InterestTagsOnly";
 import moment from "moment";
 import { NavLink } from "react-router-dom";
+import ApiCall from "../../services/ApiCall";
 
 class UserCard extends Component {
   constructor(props) {
@@ -16,7 +17,9 @@ class UserCard extends Component {
       ],
       age: '',
       picture: '',
-      taggs: []
+      taggs: [],
+      likesProfile: false,
+      likedByProfile: false
     };
     this._isMounted = false;
   }
@@ -55,6 +58,31 @@ class UserCard extends Component {
       tab[i]['value'] = tab[i]['tag_id'] === 17 ? 'movies' : this.state.tags[tab[i]['tag_id']];
     }
     await this._isMounted && this.setState({ taggs: tab });
+
+    ApiCall.user
+      .checkUserLikedByAndReverse(this.props.uid, this.props.intel.username)
+      .then(res => {
+        this._isMounted &&
+              this.setState({
+                likedByProfile: res.likedBy,
+                likesProfile: res.reverse
+              });
+          })
+          .catch(err => {
+            console.log(err);
+          });
+  }
+
+  handleLike = () => {
+    
+  }
+  
+  handleDislike = () => {
+
+  }
+  
+  handleLikeBack = () => {
+
   }
 
   render() {
@@ -70,11 +98,31 @@ class UserCard extends Component {
           <div className="card-content user-card-content">
             <div className="user-card-below-picture">
               <Popscore popscore={this.props.intel.pop_score} />
-              {
-                <div className="user-card-like-btn">
+              {(this.state.likesProfile === true ? (
+                <div
+                  className="user-card-dislike-btn"
+                >
+                  <DislikeButton />
+                </div>
+              ) : this.state.likedByProfile === true ? (
+                <div
+                  className="user-card-like-back-btn"
+                  onClick={e => this.handleLikeBack()}
+                >
+                  <LikeBackButton />
+                </div>
+              ) : (
+                <div
+                  className="user-card-like-btn"
+                >
                   <LikeButton />
                 </div>
-              }
+              ))}
+              
+                {/* <div className="user-card-like-btn">
+                  <LikeButton />
+                </div> */}
+              
               {/*               <div className="user-card-dislike-btn">
                 <DislikeButton />
               </div> */}
@@ -139,7 +187,7 @@ class UserCard extends Component {
             </div>
           </div>
           <div className="card-action">
-            <NavLink to={'/users/profile/'+this.props.intel.username}>SEE PROFILE</NavLink></div>
+            <NavLink className="profile-link" to={'/users/profile/'+this.props.intel.username}>SEE PROFILE</NavLink></div>
           <div className="card-reveal">
             <span className="card-title grey-text text-darken-4">
               Bio<i className="material-icons right">close</i>

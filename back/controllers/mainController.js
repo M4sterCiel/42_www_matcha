@@ -1,6 +1,7 @@
 const userModel = require("../models/userModel");
 const pictureModel = require("../models/pictureModel");
 const tagModel = require("../models/tagModel");
+const likeModel = require("../models/likeModel");
 
 
 module.exports = {
