@@ -680,12 +680,29 @@ button:focus {
   display: block;
   line-height: 20px;
   margin-top: 10px;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
 }
 
 .user-card-interests {
   margin-top: 15px;
   height: 32px;
   overflow: hidden;
+}
+
+.user-card-username-text,
+.user-card-names-text {
+  display: inline-block;
+  width: auto;
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
+
+.user-card-names-text {
+  margin-right: 3px;
 }
 
 /* Delete user component */
@@ -1406,6 +1423,10 @@ button.btn-star-picture-main {
   .mobile-menu-btn {
     display: inline-block !important;
   }
+
+  .user-card-names-text {
+    max-width: 140px;
+  }
 }
 
 @media screen and (max-width: 800px) {
@@ -1422,6 +1443,24 @@ button.btn-star-picture-main {
   .user-card-like-back-btn {
     width: 60px;
     left: calc(100% - 70px);
+  }
+
+  .user-card-username-text {
+    max-width: 160px;
+  }
+
+  .user-card-names-text {
+    max-width: 110px;
+  }
+}
+
+@media screen and (max-width: 740px) {
+  .user-card-username-text {
+    max-width: 130px;
+  }
+
+  .user-card-names-text {
+    max-width: 90px;
   }
 }
 
