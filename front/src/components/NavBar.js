@@ -9,6 +9,7 @@ import Axios from "axios";
 import Badge from "@material-ui/core/Badge";
 import MailIcon from "@material-ui/icons/Mail";
 import Notifications from "@material-ui/icons/Notifications";
+import Menu from "@material-ui/icons/Menu";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -375,8 +376,16 @@ class NavBar extends Component {
             className="mobile-menu-btn"
             onClick={toggleMenu("left", true)}
           >
-            <i className="material-icons">menu</i>
+            {/*  <i className="material-icons">menu</i> */}
+            <Badge
+              className={classes.margin}
+              badgeContent={this.state.nbNotifications + this.state.nbMessages}
+              color="secondary"
+            >
+              <Menu />
+            </Badge>
           </Button>
+
           <SwipeableDrawer
             anchor="left"
             open={this.state.left}
