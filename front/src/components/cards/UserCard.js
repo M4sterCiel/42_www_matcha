@@ -74,15 +74,40 @@ class UserCard extends Component {
   }
 
   handleLike = () => {
-    
+    this._isMounted && this.setState({
+      likesProfile: true
+    })
+    ApiCall.user.createUserLike(
+      this.props.intel.id,
+      this.props.uid
+    );
+    this.props.func(this.props.intel.id, 'like');
   }
   
   handleDislike = () => {
-
+    this._isMounted && this.setState({
+      likesProfile: false
+    })
+    ApiCall.user.deleteUserLike(
+      this.props.intel.id,
+      this.props.uid
+    );
+    this.props.func(this.props.intel.id, 'dislike');
   }
   
   handleLikeBack = () => {
+    this._isMounted && this.setState({
+      likesProfile: true
+    });
+    ApiCall.user.createUserLike(
+      this.props.intel.id,
+      this.props.uid
+    );
+    this.props.func(this.props.intel.id, 'like_back');
+  }
 
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {
@@ -101,6 +126,7 @@ class UserCard extends Component {
               {(this.state.likesProfile === true ? (
                 <div
                   className="user-card-dislike-btn"
+                  onClick={e => this.handleDislike()}
                 >
                   <DislikeButton />
                 </div>
@@ -114,6 +140,7 @@ class UserCard extends Component {
               ) : (
                 <div
                   className="user-card-like-btn"
+                  onClick={e => this.handleLike()}
                 >
                   <LikeButton />
                 </div>

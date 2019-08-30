@@ -104,13 +104,26 @@ class HomeLogged extends Component {
 
   componentWillUnmount() {
     this._isMounted = false;
+    if (this.state.socket !== "")
+      this.state.socket.close();
+  }
+
+  sendNotif = (target_id, type) => {
+    if (this.state.socket !== "") {
+      this.state.socket.emit(
+        "sendNotif",
+        type,
+        this.state.userID,
+        target_id
+      );
+    }
   }
 
 
   userList = (props) => {
     const value = props.value;
     const users = value.map((e, index )=> (
-      <UserCard intel={e} pictures={this.state.picturesTab} allTags={this.state.allTags} tags={this.state.tags} uid={this.state.userID} key={index}/>
+      <UserCard intel={e} pictures={this.state.picturesTab} allTags={this.state.allTags} tags={this.state.tags} uid={this.state.userID} func={this.sendNotif} key={index}/>
     ));
     return (
       <ul>

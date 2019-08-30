@@ -22,6 +22,7 @@ module.exports = {
     
     like: async (user_id, target_id, username) => {
         await notifModel.deleteOne(target_id, user_id, 4);
+        await notifModel.deleteOne(target_id, user_id, 1);
         await notifModel.addOne([target_id, user_id, username, 1, "just liked your profile!"]);
         var score = await userModel.getUserScore(target_id);
         score = score[0].pop_score;
