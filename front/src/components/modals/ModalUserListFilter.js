@@ -1,37 +1,131 @@
-import { Modal } from "react-materialize";
 import React, { Component } from "react";
+import { Modal } from "react-materialize";
+import AgeSlider from "../settings/AgeSlider";
+import DistanceSlider from "../settings/DistanceSlider";
+import PopularitySlider from "../settings/PopularitySlider";
+import { connect } from "react-redux";
 
 class ModalUserListFilter extends Component {
   constructor(props) {
     super(props);
     this.state = {
       userId: null,
-      email: "",
       ageRange: [18, 99],
       distance: 5,
       popularityRange: [0, 1000],
       commonInterestsRange: [1, 25],
-      notifications: false
+      userTags: [],
+      allTags: []
     };
     this._isMounted = false;
   }
 
+  componentDidMount() {
+    this._isMounted = true;
+    this._isMounted &&
+      this.setState({
+        userId: this.props.userConnectedData.id,
+        ageRange: [
+          this.props.userConnectedData.age_min,
+          this.props.userConnectedData.age_max
+        ],
+        distance: this.props.userConnectedData.distance_max,
+        popularityRange: [
+          this.props.userConnectedData.pop_min,
+          this.props.userConnectedData.pop_max
+        ],
+        userTags: this.props.userConnectedData.tags,
+        allTags: this.props.userConnectedData.allTags
+      });
+  }
+
+  componentDidUpdate() {
+    this._isMounted = true;
+
+    if (this.state.userId !== this.props.userConnectedData.id) {
+      this._isMounted &&
+        this.setState({
+          userId: this.props.userConnectedData.id,
+          ageRange: [
+            this.props.userConnectedData.age_min,
+            this.props.userConnectedData.age_max
+          ],
+          distance: this.props.userConnectedData.distance_max,
+          popularityRange: [
+            this.props.userConnectedData.pop_min,
+            this.props.userConnectedData.pop_max
+          ],
+          userTags: this.props.userConnectedData.tags,
+          allTags: this.props.userConnectedData.allTags
+        });
+    }
+  }
+
+  handleAgeData = data => {
+    this._isMounted &&
+      this.setState({
+        ageRange: data
+      });
+  };
+
+  handleDistanceData = data => {
+    this._isMounted &&
+      this.setState({
+        distance: data
+      });
+  };
+
+  handlePopularityData = data => {
+    this._isMounted &&
+      this.setState({
+        popularityRange: data
+      });
+  };
+
   render() {
     return (
-      <Modal
-        id="filter-users-modal"
-        className="modals"
-        header="Filter settings"
-        fixedFooter
-        trigger={false}
-      >
-        <p className="modal-intro">
-          You can edit your filter settings to improve your profile suggestions
-        </p>
-        <span className="profile-fields-labels">Filter settings</span>
-      </Modal>
+      <div>
+        {this.state.userId === this.props.userConnectedData.id && (
+          <Modal
+            id="filter-users-modal"
+            className="modals"
+            header="Filter settings"
+            fixedFooter
+            trigger={false}
+          >
+            <p className="modal-intro">
+              You can edit your filter settings to improve your profile
+              suggestions
+            </p>
+            <span className="profile-fields-labels">Filter settings</span>
+            <AgeSlider
+              range={this.state.ageRange}
+              ageToParent={this.handleAgeData}
+            />
+            <DistanceSlider
+              value={this.state.distance}
+              distanceToParent={this.handleDistanceData}
+            />
+            <PopularitySlider
+              range={this.state.popularityRange}
+              popularityToParent={this.handlePopularityData}
+            />
+          </Modal>
+        )}
+      </div>
     );
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 }
 
-export default ModalUserListFilter;
+const mapStateToProps = state => {
+  return {
+    userConnectedData: state.user.data,
+    userConnectedStatus: state.user.status
+  };
+};
+
+export default connect(mapStateToProps)(ModalUserListFilter);
