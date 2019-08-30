@@ -30,7 +30,7 @@ class ModalBlockUser extends Component {
         <Modal
           id="block-user-modal"
           className="modals"
-          header="Block user"
+          header="Block this user"
           trigger={false}
           actions={[
             <Button modal="close" flat>

@@ -63,7 +63,7 @@ class ProfileActionsButton extends Component {
         {!this.props.isBlocked ? (
           <Button
             floating
-            tooltip="Block this user"
+            tooltip="block this user"
             icon="block"
             className="red modal-trigger"
             href="#block-user-modal"

@@ -6,6 +6,7 @@ import CompleteProfile from "../components/home/CompleteProfile";
 import SuggestionsHeader from "../components/home/SuggestionsHeader";
 import ModalUserEditProfileInfo from "../components/modals/ModalUserEditProfileInfo";
 import ModalUserEditProfilePictures from "../components/modals/ModalUserEditProfilePictures";
+import ModalMatchAnim from "../components/modals/ModalMatchAnim";
 import Axios from "axios";
 import io from "socket.io-client";
 import ModalUserListFilter from "../components/modals/ModalUserListFilter";
@@ -68,6 +69,7 @@ class HomeLogged extends Component {
               </div>
               <this.userList value={this.state.userTab} />
               <ModalUserListFilter />
+              <ModalMatchAnim />
             </div>
           )}
         </div>
