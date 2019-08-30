@@ -23,7 +23,7 @@ class DeleteAccountBtn extends Component {
 
   render() {
     return (
-      <div>
+      <div className="delete-account-div">
         <Modal
           header="Delete account"
           fixedFooter

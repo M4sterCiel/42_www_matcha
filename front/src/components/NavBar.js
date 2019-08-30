@@ -19,7 +19,8 @@ import Button from "@material-ui/core/Button";
 import LikeNotif from "@material-ui/icons/ThumbUp";
 import DislikeNotif from "@material-ui/icons/ThumbDown";
 import HotNotif from "@material-ui/icons/Whatshot";
-import Highlight_off from "@material-ui/icons/HighlightOff";
+import HighlightOff from "@material-ui/icons/HighlightOff";
+import Divider from "@material-ui/core/Divider";
 
 const Auth = new AuthService();
 const CancelToken = Axios.CancelToken;
@@ -34,7 +35,8 @@ class NavBar extends Component {
       listNotif: [],
       nbMessages: null,
       nbNotifications: null,
-      right: false
+      right: false,
+      left: false
     };
     this._isMounted = false;
     this.Auth = new AuthService();
@@ -44,11 +46,10 @@ class NavBar extends Component {
   }
 
   async componentDidMount() {
-    //console.log(this.state);
+    this._isMounted = true;
     if (!localStorage.getItem("Token")) {
       return;
     }
-    this._isMounted = true;
     this._isMounted &&
       (await this.setState({ userID: this.Auth.getConfirm()["id"] }));
 
@@ -79,8 +80,8 @@ class NavBar extends Component {
         // eslint-disable-next-line
         if (data == this.state.userID) this.callMsgNotifApi();
       });
-      
-      this.state.socket.on("newNotif", (id) => {
+
+      this.state.socket.on("newNotif", id => {
         if (id === this.state.userID) this.callMainNotifApi();
       });
     }
@@ -153,23 +154,23 @@ class NavBar extends Component {
       }
     }));
 
+    const toggleDrawer = (side, open) => event => {
+      Axios.post("/users/read-notification/" + userID).then(res => {
+        this._isMounted &&
+          this.setState({ nbNotifications: null, [side]: open });
+      });
+
+      if (
+        event &&
+        event.type === "keydown" &&
+        (event.key === "Tab" || event.key === "Shift")
+      ) {
+        return;
+      }
+    };
+
     const LoggedInLinks = () => {
       const classes = useStyles();
-
-      const toggleDrawer = (side, open) => event => {
-        Axios.post("/users/read-notification/" + userID).then(res => {
-          this._isMounted &&
-            this.setState({ nbNotifications: null, [side]: open });
-        });
-
-        if (
-          event &&
-          event.type === "keydown" &&
-          (event.key === "Tab" || event.key === "Shift")
-        ) {
-          return;
-        }
-      };
 
       const sideList = (side, listNotif) => (
         <div
@@ -178,12 +179,14 @@ class NavBar extends Component {
           onClick={toggleDrawer(side, false)}
           onKeyDown={toggleDrawer(side, false)}
         >
-          <h5 style={{ textAlign: "center" }}>Notifications</h5>
+          <h5 style={{ textAlign: "center", color: "#ffb6d3" }}>
+            Notifications
+          </h5>
           <List>
             {listNotif.length < 1 ? (
               <ListItem>
                 <ListItemIcon>
-                  <Highlight_off />
+                  <HighlightOff />
                 </ListItemIcon>
                 <ListItemText
                   primary={"You do not have any notification yet."}
@@ -201,11 +204,11 @@ class NavBar extends Component {
                 <ListItem button>
                   <ListItemIcon>
                     {text.type === "visit" || text.type === "like_back" ? (
-                      <HotNotif />
+                      <HotNotif className="notif-icons" />
                     ) : text.type === "dislike" ? (
-                      <DislikeNotif />
+                      <DislikeNotif className="notif-icons" />
                     ) : (
-                      <LikeNotif />
+                      <LikeNotif className="notif-icons" />
                     )}
                   </ListItemIcon>
                   <ListItemText
@@ -284,10 +287,188 @@ class NavBar extends Component {
       );
     }
 
+    const MobileLoggedInLinks = () => {
+      const toggleMenu = (menu, open) => event => {
+        if (
+          event &&
+          event.type === "keydown" &&
+          (event.key === "Tab" || event.key === "Shift")
+        ) {
+          return;
+        }
+
+        this._isMounted && this.setState({ [menu]: open });
+      };
+
+      const classes = useStyles();
+
+      const MobileMenuLogged = menu => (
+        <div
+          className={classes.list}
+          role="presentation"
+          onClick={toggleMenu(menu, false)}
+          onKeyDown={toggleMenu(menu, false)}
+        >
+          <h5 style={{ textAlign: "center", color: "#ffb6d3" }}>Menu</h5>
+          <List>
+            <ListItem>
+              <NavLink
+                className="mobile-menu-links"
+                to={"/users/profile/" + this.Auth.getConfirm()["username"]}
+              >
+                <i className="material-icons link-icon mobile-menu-icons">
+                  person
+                </i>
+                <span className="mobile-menu-notif-text">My profile</span>
+              </NavLink>
+            </ListItem>
+            <ListItem>
+              <Button
+                className="MuiButton-colorInherit mobile-menu-notif"
+                to="#"
+                onClick={toggleDrawer("right", true)}
+                style={{ backgroundColor: "none", borderRadius: "0px" }}
+              >
+                <Badge
+                  className={classes.margin}
+                  badgeContent={this.state.nbNotifications}
+                  color="secondary"
+                >
+                  <Notifications />
+                </Badge>{" "}
+                <span className="mobile-menu-notif-text">Notifications</span>
+              </Button>
+            </ListItem>
+          </List>
+          <Divider />
+          <List>
+            <ListItem>
+              <NavLink
+                to="/chat/messages"
+                className="mobile-menu-links mobile-menu-message"
+              >
+                <Badge
+                  className={classes.margin}
+                  badgeContent={this.state.nbMessages}
+                  color="secondary"
+                >
+                  <MailIcon />
+                </Badge>
+                <span className="mobile-menu-notif-text">Messages</span>
+              </NavLink>
+            </ListItem>
+          </List>
+          <Divider />
+          <List>
+            <ListItem>
+              <NavLink className="mobile-menu-links" onClick={logout} to="#">
+                <span className="mobile-menu-notif-text">Log out</span>
+              </NavLink>
+            </ListItem>
+          </List>
+        </div>
+      );
+
+      return (
+        <div>
+          <Button
+            className="mobile-menu-btn"
+            onClick={toggleMenu("left", true)}
+          >
+            <i className="material-icons">menu</i>
+          </Button>
+          <SwipeableDrawer
+            anchor="left"
+            open={this.state.left}
+            onClose={toggleMenu("left", false)}
+            onOpen={toggleMenu("left", true)}
+          >
+            {MobileMenuLogged("left")}
+          </SwipeableDrawer>
+        </div>
+      );
+    };
+
+    const MobileLoggedOutLinks = () => {
+      const toggleMenu = (menu, open) => event => {
+        if (
+          event &&
+          event.type === "keydown" &&
+          (event.key === "Tab" || event.key === "Shift")
+        ) {
+          return;
+        }
+
+        this._isMounted && this.setState({ [menu]: open });
+      };
+
+      const classes = useStyles();
+
+      const MobileMenuLoggedOut = menu => (
+        <div
+          className={classes.list}
+          role="presentation"
+          onClick={toggleMenu(menu, false)}
+          onKeyDown={toggleMenu(menu, false)}
+        >
+          <h5 style={{ textAlign: "center", color: "#ffb6d3" }}>Menu</h5>
+          <List>
+            <ListItem>
+              <NavLink className="mobile-menu-links" to="/users/login">
+                <i className="material-icons link-icon mobile-menu-icons">
+                  account_box
+                </i>
+                <span className="mobile-menu-notif-text">Log in</span>
+              </NavLink>
+            </ListItem>
+            <ListItem>
+              <NavLink className="mobile-menu-links" to="/users/register">
+                <i className="material-icons link-icon mobile-menu-icons">
+                  person_add
+                </i>
+                <span className="mobile-menu-notif-text">Register</span>
+              </NavLink>
+            </ListItem>
+          </List>
+        </div>
+      );
+
+      return (
+        <div>
+          <Button
+            className="mobile-menu-btn"
+            onClick={toggleMenu("left", true)}
+          >
+            <i className="material-icons">menu</i>
+          </Button>
+          <SwipeableDrawer
+            anchor="left"
+            open={this.state.left}
+            onClose={toggleMenu("left", false)}
+            onOpen={toggleMenu("left", true)}
+          >
+            {MobileMenuLoggedOut("left")}
+          </SwipeableDrawer>
+        </div>
+      );
+    };
+
     // Generates the links in the navbar for a logged in user
     function NavLinks() {
-      if (Auth.loggedIn()) return <LoggedInLinks />;
-      else return <LoggedOutLinks />;
+      if (Auth.loggedIn())
+        return (
+          <div>
+            <LoggedInLinks />
+            <MobileLoggedInLinks />
+          </div>
+        );
+      else
+        return (
+          <div>
+            <LoggedOutLinks />
+            <MobileLoggedOutLinks />
+          </div>
+        );
     }
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -302,21 +483,9 @@ class NavBar extends Component {
             <NavLink to="/" className="brand-logo">
               <img className="header-logo" src={logo} alt="" />
             </NavLink>
-            <a href="#" data-target="mobile-demo" className="sidenav-trigger">
-              <i className="material-icons">menu</i>
-            </a>
             <NavLinks />
           </div>
         </nav>
-
-        <ul className="sidenav" id="mobile-demo">
-          <li>
-            <a href="/users/register">Register</a>
-          </li>
-          <li>
-            <a href="/users/login">Login</a>
-          </li>
-        </ul>
       </div>
     );
   }

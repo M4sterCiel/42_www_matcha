@@ -5,7 +5,6 @@ import PopularitySlider from "../settings/PopularitySlider";
 import InterestsSlider from "../settings/InterestsSlider";
 import EditEmailBox from "../settings/EditEmailBox";
 import EditPasswordBox from "../settings/EditPasswordBox";
-import NotificationSwitch from "../settings/NotificationSwitch";
 import DeleteAccountBtn from "../settings/DeleteAccountBtn";
 import { Modal } from "react-materialize";
 import * as actionCreators from "../../actions/user-actions";
@@ -20,8 +19,7 @@ class ModalUserEditAccountSettings extends Component {
       ageRange: [18, 99],
       distance: 5,
       popularityRange: [0, 1000],
-      commonInterestsRange: [1, 25],
-      notifications: false
+      commonInterestsRange: [1, 25]
     };
     this._isMounted = false;
   }
@@ -44,9 +42,7 @@ class ModalUserEditAccountSettings extends Component {
         commonInterestsRange: [
           this.props.userConnectedData.tag_min,
           this.props.userConnectedData.tag_max
-        ],
-        notifications:
-          this.props.userConnectedData.notifications_switch === 1 ? true : false
+        ]
       });
   }
 
@@ -103,30 +99,12 @@ class ModalUserEditAccountSettings extends Component {
         tag_max: data[1]
       }
     );
-    this._isMounted &&
-      this.setState({
-        notifications: data === 1 ? true : false
-      });
   };
 
   handleEmailData = data => {
     this._isMounted &&
       this.setState({
         email: data
-      });
-  };
-
-  handleNotificationsData = data => {
-    this.props.updateUserData(
-      this.props.userConnectedData.id,
-      this.props.userConnectedData.username,
-      {
-        notifications_switch: data === true ? 1 : 0
-      }
-    );
-    this._isMounted &&
-      this.setState({
-        commonInterestsRange: data
       });
   };
 
@@ -168,10 +146,6 @@ class ModalUserEditAccountSettings extends Component {
               emailToParent={this.handleEmailData}
             />
             <EditPasswordBox userId={this.state.userId} />
-            <NotificationSwitch
-              notifications={this.state.notifications}
-              notificationsToParent={this.handleNotificationsData}
-            />
             <DeleteAccountBtn />
           </Modal>
         )}
