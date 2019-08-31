@@ -386,5 +386,29 @@ module.exports = {
     } catch (err) {
       throw new Error(err);
     }
+  },
+
+  getSuggestions: async (g1, g2, or1, or2) => {
+    try {
+      var result = await pool.query({
+        sql: "SELECT id, username, firstname, lastname, gender, online, pop_score, sexual_orientation, city, bio, birthdate, geo_lat, geo_long, last_connexion, pop_max FROM users WHERE (gender = ? OR gender = ?) AND (sexual_orientation = ? OR sexual_orientation = ?);",
+        values: [g1, g2, or1, or2]
+      });
+      if (result) return result;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+ 
+  getSuggestionsIfBi: async (g1, g2) => {
+    try {
+      var result = await pool.query({
+        sql: "SELECT id, username, firstname, lastname, gender, online, pop_score, sexual_orientation, city, bio, birthdate, geo_lat, geo_long, last_connexion, pop_max FROM users WHERE (sexual_orientation = 1) OR (sexual_orientation = 3 AND gender = ?) OR (sexual_orientation = 2 AND gender = ?);",
+        values: [g1, g2]
+      });
+      if (result) return result;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 };

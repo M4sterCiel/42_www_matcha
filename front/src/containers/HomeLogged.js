@@ -13,6 +13,7 @@ import ModalUserListFilter from "../components/modals/ModalUserListFilter";
 import SortUserList from "../components/settings/SortUserList";
 import { FilterUsersButton } from "../components/Buttons";
 
+
 const CancelToken = Axios.CancelToken;
 let cancel;
 
@@ -20,12 +21,12 @@ class HomeLogged extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userID: "",
-      socket: "",
+      userID: '',
+      socket: '',
       userTab: [],
       picturesTab: [],
       tags: []
-    };
+    }
     this.Auth = new AuthService();
     this._isMounted = false;
   }
@@ -77,26 +78,25 @@ class HomeLogged extends Component {
     );
   }
 
+
   async componentDidMount() {
     this._isMounted = true;
-    (await this._isMounted) &&
-      this.setState({
-        userID: this.Auth.getConfirm()["id"]
-      });
-    this._isMounted &&
-      this.setState({
-        socket: io({
-          transports: ["polling"],
-          requestTimeout: 50000,
-          upgrade: false,
-          "sync disconnect on unload": true,
-          query: {
-            userID: this.state.userID
-          }
-        })
-      });
+    await this._isMounted && this.setState({
+      userID: this.Auth.getConfirm()['id']
+    })
+    this._isMounted && this.setState({
+      socket: io({
+        transports: ["polling"],
+        requestTimeout: 50000,
+        upgrade: false,
+        "sync disconnect on unload": true,
+        query: {
+          userID: this.state.userID
+        }
+      })
+    });
 
-    await Axios.get("/main/list/" + this.state.userID, {
+    /* await Axios.get("/main/list/" + this.state.userID, {
       cancelToken: new CancelToken(function executor(c) {
         cancel = c;
       })
@@ -112,35 +112,56 @@ class HomeLogged extends Component {
       })
       .catch(error => {
         console.log(error);
+      }); */
+    
+      await Axios.get("/main/suggestions/"+ this.state.userID, {
+        cancelToken: new CancelToken(function executor(c) {
+          cancel = c;
+        })
+      })
+      .then(res => {
+        this._isMounted && this.setState({
+          userTab: res.data.list,
+          picturesTab: res.data.pictures,
+          allTags: res.data.allTags,
+          tags: res.data.tags
+        })
+      })
+      .catch(error => {
+        console.log(error);
       });
+      console.log(this.state.tags);
   }
 
   componentWillUnmount() {
     this._isMounted = false;
-    if (this.state.socket !== "") this.state.socket.close();
+    if (this.state.socket !== "")
+      this.state.socket.close();
   }
 
   sendNotif = (target_id, type) => {
     if (this.state.socket !== "") {
-      this.state.socket.emit("sendNotif", type, this.state.userID, target_id);
+      this.state.socket.emit(
+        "sendNotif",
+        type,
+        this.state.userID,
+        target_id
+      );
     }
-  };
+  }
 
-  userList = props => {
+
+  userList = (props) => {
     const value = props.value;
-    const users = value.map((e, index) => (
-      <UserCard
-        intel={e}
-        pictures={this.state.picturesTab}
-        allTags={this.state.allTags}
-        tags={this.state.tags}
-        uid={this.state.userID}
-        func={this.sendNotif}
-        key={index}
-      />
+    const users = value.map((e, index )=> (
+      <UserCard intel={e} pictures={this.state.picturesTab} allTags={this.state.allTags} tags={this.state.tags} uid={this.state.userID} func={this.sendNotif} key={index}/>
     ));
-    return <ul>{users}</ul>;
-  };
+    return (
+      <ul>
+        {users}
+      </ul>
+    );
+  }
 }
 
 const mapStateToProps = state => {

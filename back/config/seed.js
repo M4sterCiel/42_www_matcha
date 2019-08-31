@@ -16,7 +16,7 @@ module.exports = {
           };
         var geocoder = NodeGeocoder(options);
 
-        await request('https://randomuser.me/api/?results=500&nat=fr&inc=gender,name,location,email,login,dob', function(err, resp, body) {
+        await request('https://randomuser.me/api/?results=10&nat=fr&inc=gender,name,location,email,login,dob', function(err, resp, body) {
         body = JSON.parse(body);
         body.results.forEach(async element => {
             var randomSexuality = randomInt(1, 3);
@@ -44,21 +44,22 @@ module.exports = {
                         geo_long: res[0].longitude
                     });
                 });
-            await request(`https://source.unsplash.com/random/?${element.gender}`, async (err, resp, body) => {
-            url = resp.request.uri.href;
-            await pictureModel.createOne([uid, url, 0, 1]);
+            await request(`https://source.unsplash.com/random/640x480?${element.gender}`, async (err, resp, body) => {
+                url = resp.request.uri.href;
+                await pictureModel.createOne([uid, url, 0, 1]);
+                await userModel.updateOne(uid, "profile_picture", url);
 
-            var tags = [];
-            var randomTag;
-            for (var i=0;i<8;i++) {
-                randomTag = randomInt(1, 16);
-                if (!tags.includes(randomTag)) {
-                    tags.push(randomTag);
-                    await tagModel.addOne(uid, randomTag);
-                }
-            };
+                var tags = [];
+                var randomTag;
+                for (var i=0;i<8;i++) {
+                    randomTag = randomInt(1, 16);
+                    if (!tags.includes(randomTag)) {
+                        tags.push(randomTag);
+                        await tagModel.addOne(uid, randomTag);
+                    }
+                };
+                });
             });
-        });
         })
         console.log("Database has been populated!");
     }
