@@ -167,7 +167,7 @@ class UserCard extends Component {
                   {this.props.intel.username}{" "}
                 </span>
                 {this.props.intel.online === 1 ? (
-                  <i className="material-icons dp48 online-icon offset-user-card">
+                  <i className="material-icons dp48 online-icon">
                     fiber_manual_record
                   </i>
                 ) : (

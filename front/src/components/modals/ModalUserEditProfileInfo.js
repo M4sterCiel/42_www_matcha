@@ -131,7 +131,9 @@ class ModalUserEditProfileInfo extends Component {
         birthdate:
           this.state.birthdate === null
             ? null
-            : (moment(new Date(this.state.birthdate)).format()).substr(0, 10)
+            : moment(new Date(this.state.birthdate))
+                .format()
+                .substr(0, 10)
       }
     );
   };
