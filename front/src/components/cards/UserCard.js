@@ -48,14 +48,6 @@ class UserCard extends Component {
           moment().diff(this.props.intel.birthdate, "years", false) +
           " years old"
       });
-    await this.props.pictures.forEach(element => {
-      if (element.user_id === this.props.intel.id) {
-        this._isMounted &&
-          this.setState({
-            picture: element.url
-          });
-      }
-    });
 
     var tab = [];
     await this.props.tags.forEach(element => {
@@ -129,8 +121,8 @@ class UserCard extends Component {
             <img
               className="activator"
               src={
-                this.state.picture
-                  ? this.state.picture
+                this.props.intel.profile_picture
+                  ? this.props.intel.profile_picture
                   : "https://static.independent.co.uk/s3fs-public/thumbnails/image/2017/12/04/12/jean-claude-van-johnson.jpg"
               }
             />

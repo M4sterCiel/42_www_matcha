@@ -16,7 +16,7 @@ module.exports = {
           };
         var geocoder = NodeGeocoder(options);
 
-        await request('https://randomuser.me/api/?results=10&nat=fr&inc=gender,name,location,email,login,dob', function(err, resp, body) {
+        await request('https://randomuser.me/api/?results=1000&nat=fr&inc=gender,name,location,email,login,dob', function(err, resp, body) {
         body = JSON.parse(body);
         body.results.forEach(async element => {
             var randomSexuality = randomInt(1, 3);

@@ -24,7 +24,6 @@ class HomeLogged extends Component {
       userID: '',
       socket: '',
       userTab: [],
-      picturesTab: [],
       tags: []
     }
     this.Auth = new AuthService();
@@ -122,7 +121,6 @@ class HomeLogged extends Component {
       .then(res => {
         this._isMounted && this.setState({
           userTab: res.data.list,
-          picturesTab: res.data.pictures,
           allTags: res.data.allTags,
           tags: res.data.tags
         })
@@ -130,7 +128,7 @@ class HomeLogged extends Component {
       .catch(error => {
         console.log(error);
       });
-      console.log(this.state.tags);
+      console.log(this.state.tags.length);
   }
 
   componentWillUnmount() {

@@ -28,6 +28,7 @@ module.exports = {
         var user =  await userModel.findOne('id', req.params.uid);
         var gender = user[0].gender;
         var orientation = user[0].sexual_orientation;
+        var range = suggestionService.getDistanceCoord(user[0].geo_lat, user[0].geo_long, 100);
         var list;
 
         switch (orientation) {
@@ -35,24 +36,25 @@ module.exports = {
                 list = await userModel.getSuggestions(
                     gender == "man" ? 2 : 1,
                     gender == "man" ? 2 : 1,
-                    1, 3, user.id
+                    1, 3, range
                 );
                 break;
             case 'homo':
                 list = await userModel.getSuggestions(
                     gender == "man" ? 1 : 2,
                     gender == "man" ? 1 : 2,
-                    1, 2, user.id
+                    1, 2, range
                 );
                 break;
             case 'bi':
                 list = await userModel.getSuggestionsIfBi(
                     gender == "man" ? 1 : 2,
                     gender == "man" ? 2 : 1,
-                    user.id
+                    range
                 );
                 break;
         }
+        list.include
         list = await suggestionService.getScoredList(list, user[0]);
         var idList = [];
         list.forEach(element => {
@@ -67,7 +69,6 @@ module.exports = {
             });
         });
         var allTags = await tagModel.findAllTags();
-        var pictures = await pictureModel.getPicturesList(idList);
-        return res.status(200).json({ list, pictures, tags, allTags });
+        return res.status(200).json({ list, tags, allTags });
     }
 }

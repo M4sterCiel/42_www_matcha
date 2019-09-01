@@ -1,6 +1,17 @@
 const tagModel = require("../models/tagModel");
 
 module.exports = {
+    getDistanceCoord: (latitude, longitude, rayon) => {
+        var offSetLat = rayon / 111.110;
+        var OneLongitudeDegree = 111.110 * Math.cos(latitude * Math.PI / 180);
+        var offSetLong = rayon / OneLongitudeDegree;
+        var MaxLatitude = latitude + offSetLat;
+        var MinLatitude = latitude - offSetLat;
+        var MaxLongitude = longitude + offSetLong;
+        var MinLongitude = longitude - offSetLong;
+        return ([MinLatitude, MaxLatitude, MinLongitude, MaxLongitude]);
+    },
+
     getMutualTags: async (user_id, target_id) => {
         var user_tags = await tagModel.getAllUserTags(user_id);
         var target_tags = await tagModel.getAllUserTags(target_id);
