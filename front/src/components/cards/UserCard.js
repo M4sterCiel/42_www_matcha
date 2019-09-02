@@ -9,6 +9,7 @@ import { NavLink } from "react-router-dom";
 import ApiCall from "../../services/ApiCall";
 import ManPicture from "../../assets/default-profile-man.jpg";
 import WomanPicture from "../../assets/default-profile-woman.jpg";
+import NoGender from "../../assets/default-profile-no-gender.png"
 
 class UserCard extends Component {
   constructor(props) {
@@ -50,8 +51,6 @@ class UserCard extends Component {
           moment().diff(this.props.intel.birthdate, "years", false) +
           " years old"
       });
-      if (this.props.intel.username === 'lazysnake265')
-        console.log(this.props.tags);
     var tab = [];
     await this.props.tags.forEach(element => {
       if (element.id === this.props.intel.id) {
@@ -126,7 +125,7 @@ class UserCard extends Component {
               src={
                 this.props.intel.profile_pictures_url
                   ? this.props.intel.profile_pictures_url
-                  : this.props.intel.gender === "man" ? ManPicture : WomanPicture
+                  : this.props.intel.gender === "man" ? ManPicture : this.props.intel.gender === "woman" ? WomanPicture : NoGender
               }
             />
           </div>
