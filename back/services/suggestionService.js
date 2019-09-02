@@ -1,4 +1,5 @@
 const tagModel = require("../models/tagModel");
+const moment = require("moment");
 
 module.exports = {
     getDistanceCoord: (latitude, longitude, rayon) => {
@@ -88,21 +89,9 @@ module.exports = {
             score[i].pop_max = count;
             //console.log(count);
         };
-        var tmp;
-        var i = 0;
-        while (i < score.length) {
-          var k = 0;
-          while (k < score.length) {
-            if (score[i].pop_max > score[k].pop_max)
-                {
-                    tmp = score[i];
-                    score[i] = score[k];
-                    score[k] = tmp;
-                }
-                k++;
-          }
-          i++;
-        }
-        return (score/* .slice(0,12) */);
+        score.sort((a, b) => {
+            return b.pop_max - a.pop_max;
+        })
+        return (score);
     }
 }

@@ -7,6 +7,8 @@ import InterestTagsOnly from "../profile/InterestTagsOnly";
 import moment from "moment";
 import { NavLink } from "react-router-dom";
 import ApiCall from "../../services/ApiCall";
+import ManPicture from "../../assets/default-profile-man.jpg";
+import WomanPicture from "../../assets/default-profile-woman.jpg";
 
 class UserCard extends Component {
   constructor(props) {
@@ -48,7 +50,8 @@ class UserCard extends Component {
           moment().diff(this.props.intel.birthdate, "years", false) +
           " years old"
       });
-
+      if (this.props.intel.username === 'lazysnake265')
+        console.log(this.props.tags);
     var tab = [];
     await this.props.tags.forEach(element => {
       if (element.id === this.props.intel.id) {
@@ -121,9 +124,9 @@ class UserCard extends Component {
             <img
               className="activator"
               src={
-                this.props.intel.profile_picture
-                  ? this.props.intel.profile_picture
-                  : "https://static.independent.co.uk/s3fs-public/thumbnails/image/2017/12/04/12/jean-claude-van-johnson.jpg"
+                this.props.intel.profile_pictures_url
+                  ? this.props.intel.profile_pictures_url
+                  : this.props.intel.gender === "man" ? ManPicture : WomanPicture
               }
             />
           </div>

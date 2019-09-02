@@ -391,7 +391,7 @@ module.exports = {
   getSuggestions: async (g1, g2, or1, or2, range) => {
     try {
       var result = await pool.query({
-        sql: "SELECT id, username, firstname, lastname, gender, online, pop_score, sexual_orientation, city, profile_picture, bio, birthdate, geo_lat, geo_long, last_connexion, pop_max FROM users WHERE (gender = ? OR gender = ?) AND (sexual_orientation = ? OR sexual_orientation = ?) AND (geo_lat BETWEEN ? AND ?) AND (geo_long BETWEEN ? AND ?);",
+        sql: "SELECT id, username, firstname, lastname, gender, online, pop_score, sexual_orientation, city, profile_pictures_url, bio, birthdate, geo_lat, geo_long, last_connexion, pop_max FROM users WHERE (gender = ? OR gender = ?) AND (sexual_orientation = ? OR sexual_orientation = ?) AND (geo_lat BETWEEN ? AND ?) AND (geo_long BETWEEN ? AND ?);",
         values: [g1, g2, or1, or2, range[0], range[1], range[2], range[3]]
       });
       if (result) return result;
@@ -403,7 +403,7 @@ module.exports = {
   getSuggestionsIfBi: async (g1, g2, range) => {
     try {
       var result = await pool.query({
-        sql: "SELECT id, username, firstname, lastname, gender, online, pop_score, sexual_orientation, city, profile_picture, bio, birthdate, geo_lat, geo_long, last_connexion, pop_max FROM users WHERE (sexual_orientation = 1) OR (sexual_orientation = 3 AND gender = ?) OR (sexual_orientation = 2 AND gender = ?) AND (geo_lat BETWEEN ? AND ?) AND (geo_long BETWEEN ? AND ?) LIMIT 250;",
+        sql: "SELECT id, username, firstname, lastname, gender, online, pop_score, sexual_orientation, city, profile_pictures_url, bio, birthdate, geo_lat, geo_long, last_connexion, pop_max FROM users WHERE (sexual_orientation = 1 OR (sexual_orientation = 3 AND gender = ?) OR (sexual_orientation = 2 AND gender = ?)) AND (geo_lat BETWEEN ? AND ?) AND (geo_long BETWEEN ? AND ?);",
         values: [g1, g2, range[0], range[1], range[2], range[3]]
       });
       if (result) return result;

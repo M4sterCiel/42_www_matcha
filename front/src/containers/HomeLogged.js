@@ -12,6 +12,7 @@ import io from "socket.io-client";
 import ModalUserListFilter from "../components/modals/ModalUserListFilter";
 import SortUserList from "../components/settings/SortUserList";
 import { FilterUsersButton } from "../components/Buttons";
+import { textAlign } from "@material-ui/system";
 
 
 const CancelToken = Axios.CancelToken;
@@ -24,10 +25,12 @@ class HomeLogged extends Component {
       userID: '',
       socket: '',
       userTab: [],
-      tags: []
+      tags: [],
+      page: 12
     }
     this.Auth = new AuthService();
     this._isMounted = false;
+    this.infiniteScroll = this.infiniteScroll.bind(this);
   }
   render() {
     return (
@@ -67,7 +70,7 @@ class HomeLogged extends Component {
                 <FilterUsersButton />
                 <SortUserList />
               </div>
-              <this.userList value={this.state.userTab} />
+              <this.userList value={this.state.userTab.slice(0, this.state.page)} />
               <ModalUserListFilter />
               <ModalMatchAnim />
             </div>
@@ -76,7 +79,6 @@ class HomeLogged extends Component {
       </div>
     );
   }
-
 
   async componentDidMount() {
     this._isMounted = true;
@@ -95,44 +97,29 @@ class HomeLogged extends Component {
       })
     });
 
-    /* await Axios.get("/main/list/" + this.state.userID, {
+    await Axios.get("/main/suggestions/"+ this.state.userID, {
       cancelToken: new CancelToken(function executor(c) {
         cancel = c;
       })
     })
-      .then(res => {
-        this._isMounted &&
-          this.setState({
-            userTab: res.data.list,
-            picturesTab: res.data.pictures,
-            allTags: res.data.allTags,
-            tags: res.data.tags
-          });
+    .then(res => {
+      if (res.data.list[0].id === this.state.userID)
+        res.data.list.splice(0, 1);
+      this._isMounted && this.setState({
+        userTab: res.data.list,
+        allTags: res.data.allTags,
+        tags: res.data.tags
       })
-      .catch(error => {
-        console.log(error);
-      }); */
-    
-      await Axios.get("/main/suggestions/"+ this.state.userID, {
-        cancelToken: new CancelToken(function executor(c) {
-          cancel = c;
-        })
-      })
-      .then(res => {
-        this._isMounted && this.setState({
-          userTab: res.data.list,
-          allTags: res.data.allTags,
-          tags: res.data.tags
-        })
-      })
-      .catch(error => {
-        console.log(error);
-      });
-      console.log(this.state.tags.length);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+    window.addEventListener('scroll', this.infiniteScroll);
   }
 
   componentWillUnmount() {
     this._isMounted = false;
+    window.removeEventListener('scroll', this.infiniteScroll);
     if (this.state.socket !== "")
       this.state.socket.close();
   }
@@ -159,8 +146,19 @@ class HomeLogged extends Component {
         {users}
       </ul>
     );
+  };
+
+  infiniteScroll = () => {
+    if (window.pageYOffset >= document.documentElement.offsetHeight - document.documentElement.clientHeight - 50)
+      this._isMounted && this.setState({
+        page: this.state.page+12
+      })
+
   }
 }
+
+
+
 
 const mapStateToProps = state => {
   return {
@@ -168,5 +166,6 @@ const mapStateToProps = state => {
     userConnectedStatus: state.user.status
   };
 };
+
 
 export default connect(mapStateToProps)(HomeLogged);

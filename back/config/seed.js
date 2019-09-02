@@ -47,7 +47,7 @@ module.exports = {
             await request(`https://source.unsplash.com/random/640x480?${element.gender}`, async (err, resp, body) => {
                 url = resp.request.uri.href;
                 await pictureModel.createOne([uid, url, 0, 1]);
-                await userModel.updateOne(uid, "profile_picture", url);
+                await userModel.updateOne(uid, "profile_pictures_url", url);
 
                 var tags = [];
                 var randomTag;
