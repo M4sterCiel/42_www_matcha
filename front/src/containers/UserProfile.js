@@ -104,6 +104,7 @@ class UserProfile extends Component {
                       {this.props.userConnectedData.username !==
                         this.state.user.username &&
                         this.state.pictures.length !== 0 &&
+                        this.state.isBlocked !== true &&
                         (this.state.likesProfile === true ? (
                           <div
                             className="profile-dislike"
