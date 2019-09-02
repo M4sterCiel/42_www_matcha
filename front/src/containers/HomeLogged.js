@@ -149,7 +149,7 @@ class HomeLogged extends Component {
   };
 
   infiniteScroll = () => {
-    if (window.pageYOffset >= document.documentElement.offsetHeight - document.documentElement.clientHeight - 50)
+    if (window.pageYOffset >= document.documentElement.offsetHeight - document.documentElement.clientHeight - 250)
       this._isMounted && this.setState({
         page: this.state.page+12
       })
