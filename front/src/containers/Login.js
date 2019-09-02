@@ -38,6 +38,7 @@ class Login extends Component {
         <NavBar />
         <div className="row">
           <div className="col a12 m6" id="login-box">
+            <div className="login-header">Only a few clicks away from Love</div>
             <div className="card-panel center">
               <i className="medium material-icons">account_box</i>
               <span className="title-page">Log in</span>

@@ -412,6 +412,13 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   font-size: 12px;
 }
 
+.login-header {
+  font-size: 40px;
+  text-align: center;
+  color: #ffb6d3;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
 /* Profile */
 
 .card {
