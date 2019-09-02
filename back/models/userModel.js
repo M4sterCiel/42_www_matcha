@@ -379,7 +379,8 @@ module.exports = {
   getList: async () => {
     try {
       var result = await pool.query({
-        sql: "SELECT id, username, firstname, lastname, gender, online, pop_score, sexual_orientation, city, bio, birthdate, last_connexion FROM users WHERE id > 13270 LIMIT 12",
+        sql:
+          "SELECT id, username, firstname, lastname, gender, online, pop_score, sexual_orientation, city, bio, birthdate, last_connexion FROM users WHERE id > 13270 LIMIT 12",
         values: []
       });
       if (result) return result;

@@ -7,7 +7,6 @@ var input = require("../services/inputService");
 var jwtUtils = require("../services/jwtService");
 var notifService = require("../services/notifService");
 
-
 module.exports = {
   login: async (req, res, next) => {
     var user = await UserService.getUser({
@@ -177,7 +176,8 @@ module.exports = {
 
     var result = await pictureModel.updateUserProfilePicture(
       req.params.user_id,
-      req.body.pic_index
+      req.body.pic_index,
+      req.body.pic_url
     );
 
     if (result.error) return res.status(401).json({ error: result.error });
@@ -386,12 +386,11 @@ module.exports = {
     var userID = req.params["userID"];
     var ret = await userModel.getNotification(userID);
 
-    var blocked =  await userModel.getBlockedUsersFromMyId(userID);
+    var blocked = await userModel.getBlockedUsersFromMyId(userID);
 
     for (var i = 0; i < ret.length; i++) {
       for (var k = 0; k < blocked.length; k++) {
-        if (ret[i]['sender_id'] == blocked[k]['user_id'])
-          ret.splice(i, 1);
+        if (ret[i]["sender_id"] == blocked[k]["user_id"]) ret.splice(i, 1);
       }
     }
     return res.status(200).json({ tab: ret });

@@ -167,7 +167,8 @@ class EditProfilePictures extends Component {
     this.props.updateUserProfilePicture(
       this.props.userConnectedData.id,
       this.props.userConnectedData.username,
-      index
+      index,
+      pics[index].url
     );
     this._isMounted &&
       this.setState({
