@@ -21,18 +21,18 @@ class SelectLocation extends Component {
     this._isMounted = false;
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this._isMounted = true;
-    this.initGeolocator();
+    await this.initGeolocator();
     if (
       this.props.userConnectedData.geo_lat &&
       this.props.userConnectedData.geo_long
     ) {
-      this.getCityFromLatLong(
+      await this.getCityFromLatLong(
         this.props.userConnectedData.geo_lat,
         this.props.userConnectedData.geo_long
       );
-      this._isMounted &&
+      (await this._isMounted) &&
         this.setState({
           lat: this.props.userConnectedData.geo_lat,
           long: this.props.userConnectedData.geo_long
@@ -131,7 +131,7 @@ class SelectLocation extends Component {
     };
 
     GeoPosition.reverseGeocode(coords, (err, location) => {
-      if (location.address.city)
+      if (location !== null)
         this._isMounted && this.setState({ city: location.address.city });
       else
         ErrorToast.custom.error(

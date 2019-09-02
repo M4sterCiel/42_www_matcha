@@ -278,7 +278,9 @@ class UserProfile extends Component {
                 <UserBio bio={this.state.user.bio} />
                 <Preferences user={this.state.user} />
                 <Interests tags={this.state.tags} />
-                <Pictures pictures={this.state.pictures} />
+                {this.state.pictures !== undefined && (
+                  <Pictures pictures={this.state.pictures} />
+                )}
               </div>
             </div>
           </div>
