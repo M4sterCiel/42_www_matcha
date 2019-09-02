@@ -62,8 +62,6 @@ class ModalUserListFilter extends Component {
           userTags: this.props.userConnectedData.tags,
           allTags: this.props.userConnectedData.allTags
         });
-      console.log(this.props.userConnectedData);
-      console.log(this.state);
     }
   }
 
@@ -95,7 +93,7 @@ class ModalUserListFilter extends Component {
           <Modal
             id="filter-users-modal"
             className="modals"
-            header="Filter settings"
+            header="Filter profiles"
             fixedFooter
             trigger={false}
           >
@@ -116,7 +114,15 @@ class ModalUserListFilter extends Component {
               range={this.state.popularityRange}
               popularityToParent={this.handlePopularityData}
             />
-            {/*             <InterestTagsDumb tags={this.state.userTags} /> */}
+            {this.props.userConnectedData.tags !== undefined && (
+              <div>
+                <span className="profile-fields-labels">Filter interests</span>
+                <InterestTagsDumb
+                  tags={this.state.userTags}
+                  allTags={this.state.allTags}
+                />
+              </div>
+            )}
           </Modal>
         )}
       </div>

@@ -14,23 +14,11 @@ class InterestTagsDumb extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    console.log(this.props);
     this._isMounted &&
       this.setState({
         myTagsArray: this.props.tags,
         defaultTagsArray: this.props.allTags
       });
-  }
-
-  componentDidUpdate() {
-    this._isMounted = true;
-    if (this.state.myTagsArray !== this.props.tags) {
-      console.log(this.props);
-      this._isMounted &&
-        this.setState({
-          myTagsArray: this.props.tags
-        });
-    }
   }
 
   componentWillUnmount() {
@@ -51,6 +39,21 @@ class InterestTagsDumb extends Component {
     }
   }
 
+  chipDelete(tag_id) {
+    let tagsTab = this.state.myTagsArray;
+
+    for (var i = 0; i < tagsTab.length; i++) {
+      if (tagsTab[i].tag_id === tag_id) {
+        tagsTab.splice(i, 1);
+      }
+    }
+
+    this._isMounted &&
+      this.setState({
+        myTagsArray: tagsTab
+      });
+  }
+
   render() {
     function tagToArray(tagValue) {
       return [
@@ -64,7 +67,8 @@ class InterestTagsDumb extends Component {
       <Chip
         key={tagEl.tag_id}
         options={{
-          data: tagToArray(tagEl.value)
+          data: tagToArray(tagEl.value),
+          onChipDelete: () => this.chipDelete(tagEl.tag_id)
         }}
         className="my-tags-chip chip-general"
       />
@@ -87,7 +91,7 @@ class InterestTagsDumb extends Component {
     return (
       <div className="tags-component">
         <div>
-          <p>Already interested in</p>
+          <p>Selected interests</p>
           {tags.length ? tags : emptyTags}
         </div>
         <div className="chips-default-tags">
