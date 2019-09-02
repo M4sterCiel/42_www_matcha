@@ -53,8 +53,8 @@ module.exports = {
                     range, user[0].id
                 );
                 break;
-        }
-
+        }        
+        
         list = await suggestionService.getScoredList(list, user[0]);
         var idList = [];
         await list.forEach(element => {
