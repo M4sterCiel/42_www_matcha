@@ -16,6 +16,7 @@ import { FilterUsersButton } from "../components/Buttons";
 const CancelToken = Axios.CancelToken;
 // eslint-disable-next-line
 let cancel;
+var stop = 0;
 
 class HomeLogged extends Component {
   constructor(props) {
@@ -83,16 +84,18 @@ class HomeLogged extends Component {
     );
   }
 
-  handleFilterData = data => {
-    this._isMounted &&
+  handleFilterData = async data => {
+    await this._isMounted &&
       this.setState({
         filterData: data
       });
-      console.log(this.state.filterData);
+      if (data.length !== 0) 
+        this.updateTab();
   };
 
   async componentDidMount() {
     this._isMounted = true;
+
     (await this._isMounted) &&
       this.setState({
         userID: this.Auth.getConfirm()["id"]
@@ -119,7 +122,6 @@ class HomeLogged extends Component {
         this._isMounted &&
           this.setState({
             userTab: res.data.list,
-            defaultTab: res.data.list,
             allTags: res.data.allTags,
             tags: res.data.tags
           });
@@ -127,13 +129,56 @@ class HomeLogged extends Component {
       .catch(error => {
         console.log(error);
       });
+      this._isMounted && this.setState({
+        defaultTab: this.state.userTab.copyWithin(0)
+      })
     window.addEventListener("scroll", this.infiniteScroll);
+  }
+
+  componentDidUpdate() {
+/*     if (this.state.filterData.length && !stop) {
+      console.log(this.state.filterData.length);
+      this.updateTab()
+      stop = 1;
+    } */
+    if (this.props.userConnectedData.tags !== undefined && this.state.filterData.length !== 0 && this.state.defaultTab.length !== 0 && !stop) {
+      console.log(this.props.userConnectedData);
+      console.log(this.state.filterData);
+      this.updateTab()
+      stop = 1;
+    }
+   // console.log(this.state.filterData);
   }
 
   componentWillUnmount() {
     this._isMounted = false;
     window.removeEventListener("scroll", this.infiniteScroll);
     if (this.state.socket !== "") this.state.socket.close();
+  }
+
+  updateTab = () => {
+    console.log("updatetab: ", this.state.filterData);
+    var tab = this.state.defaultTab.copyWithin(0);
+    var copy = [];
+    console.log(this.state.defaultTab);
+
+    for (var i=0;i<tab.length;i++) {
+      var keep = 1;
+      if (tab[i].birthdate > this.state.filterData.ageRange[1])
+        keep = 0;
+      if (tab[i].birthdate < this.state.filterData.ageRange[0])
+        keep = 0;
+      if (!(tab[i].geo_lat <= this.state.filterData.distance + 0.8))
+        keep = 0;
+      if (!(tab[i].pop_score >= this.state.filterData.popularityRange[0] && tab[i].pop_score <= this.state.filterData.popularityRange[1]))
+        keep = 0;
+      if (keep === 1)
+        copy.push(tab[i]);
+    }
+    console.log(copy);
+    this.setState({
+      userTab: copy
+    });
   }
 
   sendNotif = (target_id, type) => {

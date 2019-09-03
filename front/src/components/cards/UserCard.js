@@ -46,12 +46,6 @@ class UserCard extends Component {
 
   async componentDidMount() {
     this._isMounted = true;
-    this._isMounted &&
-      this.setState({
-        age:
-          moment().diff(this.props.intel.birthdate, "years", false) +
-          " years old"
-      });
     var tab = [];
     await this.props.tags.forEach(element => {
       if (element.id === this.props.intel.id) {
@@ -232,7 +226,7 @@ class UserCard extends Component {
                 <i className="material-icons prefix pink-icon">cake</i>{" "}
                 <span className="profile-text-icon">
                   {this.props.intel.birthdate !== null ? (
-                    this.state.age
+                    this.props.intel.birthdate + ' years old'
                   ) : (
                     <span className="grey-message">No birthdate yet</span>
                   )}
