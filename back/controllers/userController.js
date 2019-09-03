@@ -534,7 +534,7 @@ module.exports = {
   },
 
   getUserProfilePicture: async (req, res, next) => {
-    var picture = await pictureModel.findProfile('user_id', req.params.user_id);
+    var picture = await pictureModel.findProfile("user_id", req.params.user_id);
     return res.status(200).json({ picture: picture[0].url });
   }
 };
