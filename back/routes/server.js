@@ -46,8 +46,8 @@ var mainSocket = io.on("connection", async socket => {
   });
 
   chatController.onlineStatus(socket.handshake.query["userID"]);
-  console.log("%d socket(s) online", onlineTab.length);
-  console.log({ onlineTab });
+  /* console.log("%d socket(s) online", onlineTab.length);
+  console.log({ onlineTab }); */
 
   socket.broadcast.emit("online", {
     user_id: socket.handshake.query["userID"],
@@ -76,8 +76,8 @@ var mainSocket = io.on("connection", async socket => {
         status: "Offline"
       });
       chatController.offlineStatus(socket.handshake.query["userID"]);
-      console.log("%d socket(s) online", onlineTab.length);
-      console.log({ onlineTab });
+      /* console.log("%d socket(s) online", onlineTab.length);
+      console.log({ onlineTab }); */
     }
   });
 });
