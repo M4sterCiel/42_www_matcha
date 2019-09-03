@@ -32,7 +32,7 @@ module.exports = {
         sql: "SELECT * FROM ?? WHERE ?? = ? AND profile_picture = 1",
         values: ["pictures", field, data]
       });
-      if (result) return result;
+      if (result.length) return result;
     } catch (err) {
       throw new Error(err);
     }
