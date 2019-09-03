@@ -13,7 +13,6 @@ import ModalUserListFilter from "../components/modals/ModalUserListFilter";
 import SortUserList from "../components/settings/SortUserList";
 import { FilterUsersButton } from "../components/Buttons";
 
-
 const CancelToken = Axios.CancelToken;
 // eslint-disable-next-line
 let cancel;
@@ -22,12 +21,14 @@ class HomeLogged extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userID: '',
-      socket: '',
+      userID: "",
+      socket: "",
+      defaultTab: [],
       userTab: [],
       tags: [],
+      filterData: [],
       page: 12
-    }
+    };
     this.Auth = new AuthService();
     this._isMounted = false;
     this.infiniteScroll = this.infiniteScroll.bind(this);
@@ -70,8 +71,10 @@ class HomeLogged extends Component {
                 <FilterUsersButton />
                 <SortUserList />
               </div>
-              <this.userList value={this.state.userTab.slice(0, this.state.page)} />
-              <ModalUserListFilter />
+              <this.userList
+                value={this.state.userTab.slice(0, this.state.page)}
+              />
+              <ModalUserListFilter filterDataToParent={this.handleFilterData} />
               <ModalMatchAnim />
             </div>
           )}
@@ -80,79 +83,92 @@ class HomeLogged extends Component {
     );
   }
 
+  handleFilterData = data => {
+    this._isMounted &&
+      this.setState({
+        filterData: data
+      });
+      console.log(this.state.filterData);
+  };
+
   async componentDidMount() {
     this._isMounted = true;
-    await this._isMounted && this.setState({
-      userID: this.Auth.getConfirm()['id']
-    })
-    this._isMounted && this.setState({
-      socket: io({
-        transports: ["polling"],
-        requestTimeout: 50000,
-        upgrade: false,
-        "sync disconnect on unload": true,
-        query: {
-          userID: this.state.userID
-        }
-      })
-    });
+    (await this._isMounted) &&
+      this.setState({
+        userID: this.Auth.getConfirm()["id"]
+      });
+    this._isMounted &&
+      this.setState({
+        socket: io({
+          transports: ["polling"],
+          requestTimeout: 50000,
+          upgrade: false,
+          "sync disconnect on unload": true,
+          query: {
+            userID: this.state.userID
+          }
+        })
+      });
 
-    await Axios.get("/main/suggestions/"+ this.state.userID, {
+    await Axios.get("/main/suggestions/" + this.state.userID, {
       cancelToken: new CancelToken(function executor(c) {
         cancel = c;
       })
     })
-    .then(res => {
-      //console.log(res.data.list);
-      this._isMounted && this.setState({
-        userTab: res.data.list,
-        allTags: res.data.allTags,
-        tags: res.data.tags
+      .then(res => {
+        this._isMounted &&
+          this.setState({
+            userTab: res.data.list,
+            defaultTab: res.data.list,
+            allTags: res.data.allTags,
+            tags: res.data.tags
+          });
       })
-    })
-    .catch(error => {
-      console.log(error);
-    });
-    window.addEventListener('scroll', this.infiniteScroll);
+      .catch(error => {
+        console.log(error);
+      });
+    window.addEventListener("scroll", this.infiniteScroll);
   }
 
   componentWillUnmount() {
     this._isMounted = false;
-    window.removeEventListener('scroll', this.infiniteScroll);
-    if (this.state.socket !== "")
-      this.state.socket.close();
+    window.removeEventListener("scroll", this.infiniteScroll);
+    if (this.state.socket !== "") this.state.socket.close();
   }
 
   sendNotif = (target_id, type) => {
     if (this.state.socket !== "") {
-      this.state.socket.emit(
-        "sendNotif",
-        type,
-        this.state.userID,
-        target_id
-      );
+      this.state.socket.emit("sendNotif", type, this.state.userID, target_id);
     }
-  }
+  };
 
-  userList = (props) => {
+  userList = props => {
     const value = props.value;
-    const users = value.map((e, index )=> (
-      <UserCard intel={e} allTags={this.state.allTags} tags={this.state.tags} uid={this.state.userID} func={this.sendNotif} key={index}/>
+    const users = value.map((e, index) => (
+      <UserCard
+        intel={e}
+        allTags={this.state.allTags}
+        tags={this.state.tags}
+        uid={this.state.userID}
+        func={this.sendNotif}
+        key={index}
+      />
     ));
-    return (
-      <ul>
-        {users}
-      </ul>
-    );
+    return <ul>{users}</ul>;
   };
 
   infiniteScroll = () => {
-    if (window.pageYOffset >= document.documentElement.offsetHeight - document.documentElement.clientHeight - 420)
-      this._isMounted && this.setState({
-        page: this.state.page+12
-      })
-
-  }
+    if (
+      window.pageYOffset >=
+      document.documentElement.offsetHeight -
+        document.documentElement.clientHeight -
+        420
+    )
+      this._isMounted &&
+        this.setState({
+          page: this.state.page + 12
+        });
+  };
 }
 
 const mapStateToProps = state => {
@@ -161,6 +177,5 @@ const mapStateToProps = state => {
     userConnectedStatus: state.user.status
   };
 };
-
 
 export default connect(mapStateToProps)(HomeLogged);
