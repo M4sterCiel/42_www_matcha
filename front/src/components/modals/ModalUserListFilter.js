@@ -14,7 +14,6 @@ class ModalUserListFilter extends Component {
       ageRange: [18, 99],
       distance: 5,
       popularityRange: [0, 1000],
-      commonInterestsRange: [1, 25],
       userTags: [],
       allTags: []
     };
@@ -62,6 +61,18 @@ class ModalUserListFilter extends Component {
           userTags: this.props.userConnectedData.tags,
           allTags: this.props.userConnectedData.allTags
         });
+      this.props.filterDataToParent({
+        ageRange: [
+          this.props.userConnectedData.age_min,
+          this.props.userConnectedData.age_max
+        ],
+        distance: this.props.userConnectedData.distance_max,
+        popularityRange: [
+          this.props.userConnectedData.pop_min,
+          this.props.userConnectedData.pop_max
+        ],
+        userTags: this.props.userConnectedData.tags
+      });
     }
   }
 
@@ -70,6 +81,12 @@ class ModalUserListFilter extends Component {
       this.setState({
         ageRange: data
       });
+    this.props.filterDataToParent({
+      ageRange: data,
+      distance: this.state.distance,
+      popularityRange: this.state.popularityRange,
+      userTags: this.state.userTags
+    });
   };
 
   handleDistanceData = data => {
@@ -77,6 +94,12 @@ class ModalUserListFilter extends Component {
       this.setState({
         distance: data
       });
+    this.props.filterDataToParent({
+      ageRange: this.state.ageRange,
+      distance: data,
+      popularityRange: this.state.popularityRange,
+      userTags: this.state.userTags
+    });
   };
 
   handlePopularityData = data => {
@@ -84,6 +107,25 @@ class ModalUserListFilter extends Component {
       this.setState({
         popularityRange: data
       });
+    this.props.filterDataToParent({
+      ageRange: this.state.ageRange,
+      distance: this.state.distance,
+      popularityRange: data,
+      userTags: this.state.userTags
+    });
+  };
+
+  handleInterestsData = data => {
+    this._isMounted &&
+      this.setState({
+        userTags: data
+      });
+    this.props.filterDataToParent({
+      ageRange: this.state.ageRange,
+      distance: this.state.distance,
+      popularityRange: this.state.popularityRange,
+      userTags: data
+    });
   };
 
   render() {
@@ -120,6 +162,7 @@ class ModalUserListFilter extends Component {
                 <InterestTagsDumb
                   tags={this.state.userTags}
                   allTags={this.state.allTags}
+                  interestsToParent={this.handleInterestsData}
                 />
               </div>
             )}

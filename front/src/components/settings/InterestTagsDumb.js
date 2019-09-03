@@ -27,6 +27,10 @@ class InterestTagsDumb extends Component {
 
   chipSelectDefault(tag_id, value) {
     if (!this.state.myTagsArray.find(tag => tag.tag_id === tag_id)) {
+      this.props.interestsToParent([
+        ...this.state.myTagsArray,
+        { tag_id: tag_id, value: value }
+      ]);
       this._isMounted &&
         this.setState({
           myTagsArray: [
@@ -52,6 +56,8 @@ class InterestTagsDumb extends Component {
       this.setState({
         myTagsArray: tagsTab
       });
+
+    this.props.interestsToParent([tagsTab]);
   }
 
   render() {

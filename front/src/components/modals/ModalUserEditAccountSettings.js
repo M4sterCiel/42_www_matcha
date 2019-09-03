@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import AgeSlider from "../settings/AgeSlider";
 import DistanceSlider from "../settings/DistanceSlider";
 import PopularitySlider from "../settings/PopularitySlider";
-import InterestsSlider from "../settings/InterestsSlider";
 import EditEmailBox from "../settings/EditEmailBox";
 import EditPasswordBox from "../settings/EditPasswordBox";
 import DeleteAccountBtn from "../settings/DeleteAccountBtn";
@@ -18,8 +17,7 @@ class ModalUserEditAccountSettings extends Component {
       email: "",
       ageRange: [18, 99],
       distance: 5,
-      popularityRange: [0, 1000],
-      commonInterestsRange: [1, 25]
+      popularityRange: [0, 1000]
     };
     this._isMounted = false;
   }
@@ -38,10 +36,6 @@ class ModalUserEditAccountSettings extends Component {
         popularityRange: [
           this.props.userConnectedData.pop_min,
           this.props.userConnectedData.pop_max
-        ],
-        commonInterestsRange: [
-          this.props.userConnectedData.tag_min,
-          this.props.userConnectedData.tag_max
         ]
       });
   }
@@ -90,17 +84,6 @@ class ModalUserEditAccountSettings extends Component {
       });
   };
 
-  handleCommonInterestsData = data => {
-    this.props.updateUserData(
-      this.props.userConnectedData.id,
-      this.props.userConnectedData.username,
-      {
-        tag_min: data[0],
-        tag_max: data[1]
-      }
-    );
-  };
-
   handleEmailData = data => {
     this._isMounted &&
       this.setState({
@@ -135,10 +118,6 @@ class ModalUserEditAccountSettings extends Component {
             <PopularitySlider
               range={this.state.popularityRange}
               popularityToParent={this.handlePopularityData}
-            />
-            <InterestsSlider
-              range={this.state.commonInterestsRange}
-              commonInterestsToParent={this.handleCommonInterestsData}
             />
             <span className="profile-fields-labels">Account settings</span>
             <EditEmailBox
