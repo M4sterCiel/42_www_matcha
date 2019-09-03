@@ -415,8 +415,25 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 .login-header {
   font-size: 40px;
   text-align: center;
-  color: #ffb6d3;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  color: black;
+  text-shadow: -1px 0 #ffb6d3, 0 1px #ffb6d3, 1px 0 #ffb6d3, 0 -1px #ffb6d3;
+  margin-top: -20px;
+  margin-bottom: 40px;
+  background-color: rgba(243, 241, 239, 0.5);
+  border-radius: 20px;
+}
+
+.logo-header-love {
+  color: #e91e63;
+  text-transform: uppercase;
+}
+
+.login-logo {
+  margin-top: 10px !important;
+  margin: auto;
+  display: block;
+  width: 80px;
+  opacity: 0.8;
 }
 
 /* Profile */
