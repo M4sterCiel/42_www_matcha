@@ -12,10 +12,10 @@ import io from "socket.io-client";
 import ModalUserListFilter from "../components/modals/ModalUserListFilter";
 import SortUserList from "../components/settings/SortUserList";
 import { FilterUsersButton } from "../components/Buttons";
-import { textAlign } from "@material-ui/system";
 
 
 const CancelToken = Axios.CancelToken;
+// eslint-disable-next-line
 let cancel;
 
 class HomeLogged extends Component {
@@ -135,11 +135,10 @@ class HomeLogged extends Component {
     }
   }
 
-
   userList = (props) => {
     const value = props.value;
     const users = value.map((e, index )=> (
-      <UserCard intel={e} pictures={this.state.picturesTab} allTags={this.state.allTags} tags={this.state.tags} uid={this.state.userID} func={this.sendNotif} key={index}/>
+      <UserCard intel={e} allTags={this.state.allTags} tags={this.state.tags} uid={this.state.userID} func={this.sendNotif} key={index}/>
     ));
     return (
       <ul>
@@ -149,16 +148,13 @@ class HomeLogged extends Component {
   };
 
   infiniteScroll = () => {
-    if (window.pageYOffset >= document.documentElement.offsetHeight - document.documentElement.clientHeight - 250)
+    if (window.pageYOffset >= document.documentElement.offsetHeight - document.documentElement.clientHeight - 420)
       this._isMounted && this.setState({
         page: this.state.page+12
       })
 
   }
 }
-
-
-
 
 const mapStateToProps = state => {
   return {

@@ -166,12 +166,14 @@ class Chat extends Component {
       // eslint-disable-next-line
       <div
         className={
+          // eslint-disable-next-line
           this.state.userID == e.userID ? "row right-align" : "row left-align"
         }
         key={e.id}
       >
         <div
           className={
+            // eslint-disable-next-line
             this.state.userID == e.userID
               ? "col s12 m8 l6 right"
               : "col s12 m8 l6 left"
@@ -180,6 +182,7 @@ class Chat extends Component {
           <div className="row valign-wrapper">
             <div
               className={
+                // eslint-disable-next-line
                 this.state.userID == e.userID
                   ? "chat-field2 grey"
                   : "chat-field red"
@@ -191,6 +194,7 @@ class Chat extends Component {
               <div
                 id={"id-msg" + e.id}
                 className={
+                  // eslint-disable-next-line
                   this.state.userID == e.userID ? "example2" : "example"
                 }
               />

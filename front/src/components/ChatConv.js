@@ -4,11 +4,10 @@ import "materialize-css/dist/css/materialize.min.css";
 import io from "socket.io-client";
 import AuthService from "../services/AuthService";
 import Axios from "axios";
-
-import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 
 const CancelToken = Axios.CancelToken;
+// eslint-disable-next-line
 let cancel;
 
 class ChatConv extends Component {

@@ -25,6 +25,7 @@ import Divider from "@material-ui/core/Divider";
 
 const Auth = new AuthService();
 const CancelToken = Axios.CancelToken;
+// eslint-disable-next-line
 let cancel;
 
 class NavBar extends Component {
@@ -115,6 +116,7 @@ class NavBar extends Component {
       .then(res => {
         var tab = res.data.tab;
         for (var i = 0; i < tab.length; i++)
+        // eslint-disable-next-line
           if (tab[i]["isRead"] == 0) counter++;
         this._isMounted &&
           this.setState({

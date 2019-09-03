@@ -9,6 +9,7 @@ import ChatRoom from "./ChatRoom";
 import NavBar from "./NavBar";
 
 const CancelToken = Axios.CancelToken;
+// eslint-disable-next-line
 let cancel;
 
 class Messages extends Component {

@@ -10,6 +10,7 @@ import ApiCall from "../../services/ApiCall";
 import ManPicture from "../../assets/default-profile-man.jpg";
 import WomanPicture from "../../assets/default-profile-woman.jpg";
 import NoGender from "../../assets/default-profile-no-gender.png"
+import Axios from "axios";
 
 class UserCard extends Component {
   constructor(props) {
@@ -82,6 +83,17 @@ class UserCard extends Component {
       .catch(err => {
         console.log(err);
       });
+
+      await Axios.get('/users/profile-picture/'+this.props.intel.id)
+        .then(res => {
+          this._isMounted &&
+          this.setState({
+            picture: res.data.picture
+          });
+        })
+        .catch(err => {
+
+        })
   }
 
   handleLike = () => {
@@ -123,10 +135,11 @@ class UserCard extends Component {
             <img
               className="activator"
               src={
-                this.props.intel.profile_pictures_url
-                  ? this.props.intel.profile_pictures_url
+                this.state.picture
+                  ? this.state.picture
                   : this.props.intel.gender === "man" ? ManPicture : this.props.intel.gender === "woman" ? WomanPicture : NoGender
               }
+              alt='Profile'
             />
           </div>
           <div className="card-content user-card-content">

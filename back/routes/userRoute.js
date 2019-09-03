@@ -71,5 +71,8 @@ exports.router = (() => {
   userRouter
     .route("/isblocked/:user_id/:target_id")
     .get(userController.checkUserIsBlocked);
+  userRouter
+    .route("/profile-picture/:user_id")
+    .get(userController.getUserProfilePicture);
   return userRouter;
 })();

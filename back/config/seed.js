@@ -18,7 +18,48 @@ module.exports = {
 
         await request('https://randomuser.me/api/?results=1000&nat=fr&inc=gender,name,location,email,login,dob', function(err, resp, body) {
         body = JSON.parse(body);
-        body.results.forEach(async element => {
+        for (var k=0;k<body.results.length;k++) {
+            var randomSexuality = randomInt(1, 3);
+            var randomPopScore = randomInt(50, 999);
+            var bio = "This a sample of a bio =)";
+            var uid = userModel.createFromSeed([
+                body.results[k].name.last.charAt(0).toUpperCase()+body.results[k].name.last.substring(1),
+                body.results[k].name.first.charAt(0).toUpperCase()+body.results[k].name.first.substring(1),
+                body.results[k].login.username,
+                body.results[k].gender == 'male' ? 'man' : 'woman',
+                randomSexuality,
+                body.results[k].email,
+                bio,
+                body.results[k].dob.date.substr(0, 10),
+                'Toto1234',
+                body.results[k].location.city.charAt(0).toUpperCase()+body.results[k].location.city.substring(1),
+                randomPopScore,
+                1,
+                moment().format().substr(0, 10)
+            ])
+            geocoder.geocode(body.results[k].location.city.charAt(0).toUpperCase()+body.results[k].location.city.substring(1))
+                .then(res => {
+                    userModel.updateData(uid, {
+                        geo_lat: res[0].latitude,
+                        geo_long: res[0].longitude
+                    });
+                });
+            request(`https://source.unsplash.com/random/640x480?${body.results[k].gender}`, async (err, resp, body) => {
+                url = resp.request.uri.href;
+                pictureModel.createOne([uid, url, 0, 1]);
+                userModel.updateOne(uid, "profile_picture_url", url);
+                });
+            var tags = [];
+            var randomTag;
+            for (var i=0;i<8;i++) {
+                randomTag = randomInt(1, 16);
+                if (!tags.includes(randomTag)) {
+                    tags.push(randomTag);
+                    tagModel.addOne(uid, randomTag);
+                }
+            };
+        }
+        /* body.results.forEach(async element => {
             var randomSexuality = randomInt(1, 3);
             var randomPopScore = randomInt(50, 999);
             var bio = "This a sample of a bio =)";
@@ -47,19 +88,18 @@ module.exports = {
             await request(`https://source.unsplash.com/random/640x480?${element.gender}`, async (err, resp, body) => {
                 url = resp.request.uri.href;
                 await pictureModel.createOne([uid, url, 0, 1]);
-                await userModel.updateOne(uid, "profile_pictures_url", url);
-
-                var tags = [];
-                var randomTag;
-                for (var i=0;i<8;i++) {
-                    randomTag = randomInt(1, 16);
-                    if (!tags.includes(randomTag)) {
-                        tags.push(randomTag);
-                        await tagModel.addOne(uid, randomTag);
-                    }
-                };
+                await userModel.updateOne(uid, "profile_picture_url", url);
                 });
-            });
+            var tags = [];
+            var randomTag;
+            for (var i=0;i<8;i++) {
+                randomTag = randomInt(1, 16);
+                if (!tags.includes(randomTag)) {
+                    tags.push(randomTag);
+                    await tagModel.addOne(uid, randomTag);
+                }
+            };
+            }); */
         })
         console.log("Database has been populated!");
     }
