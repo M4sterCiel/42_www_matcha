@@ -10,7 +10,7 @@ import Axios from "axios";
 import { BackgroundAdd } from "../components/Background";
 import ErrorToast from "../services/ErrorToastService";
 import * as actionCreators from "../actions/user-actions";
-import Logo from "../assets/logo.png";
+import Logo from "../assets/heart-anim.gif";
 import { connect } from "react-redux";
 
 class Login extends Component {
@@ -37,12 +37,19 @@ class Login extends Component {
     return (
       <div className="App">
         <NavBar />
-        <div className="row">
+        <div className="row login-register-page">
           <div className="col a12 m6" id="login-box">
             <div className="login-header">
-              <img className="login-logo" src={Logo} alt="Logo on login"></img>
               Only a few clicks away from{" "}
-              <span className="logo-header-love">Love</span>
+              <span className="logo-header-love">
+                L
+                <img
+                  className="login-love-logo"
+                  src={Logo}
+                  alt="Logo on login"
+                />
+                ve
+              </span>
             </div>
             <div className="card-panel center">
               <i className="medium material-icons">account_box</i>

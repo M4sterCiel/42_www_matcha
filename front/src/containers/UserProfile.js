@@ -101,9 +101,11 @@ class UserProfile extends Component {
                   </div>
                   <div className="card-content">
                     <div className="row">
-                      {this.props.userConnectedData.username !==
-                        this.state.user.username &&
+                      {this.props.userConnectedData.id !== undefined &&
+                        this.props.userConnectedData.username !==
+                          this.state.user.username &&
                         this.state.pictures.length !== 0 &&
+                        this.props.userConnectedData.pictures.length !== 0 &&
                         this.state.isBlocked !== true &&
                         (this.state.likesProfile === true ? (
                           <div
