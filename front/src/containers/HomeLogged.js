@@ -103,6 +103,7 @@ class HomeLogged extends Component {
       })
     })
     .then(res => {
+      //console.log(res.data.list);
       this._isMounted && this.setState({
         userTab: res.data.list,
         allTags: res.data.allTags,

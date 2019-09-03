@@ -59,17 +59,8 @@ module.exports = {
         var d = R * Math.acos(Math.cos(latitude1) * Math.cos(latitude2) *
                 Math.cos(longitude2 - longitude1) + Math.sin(latitude1) *
                          Math.sin(latitude2));
-        if (d < 10)
-            return 25;
-        if (d < 25)
-            return 20;
-        if (d < 50)
-            return 15;
-        if (d < 100)
-            return 10;
-        if (d < 250)
-            return 5;
-        return 0;
+        
+        return d;
     },
 
     getScoredList: async (listData, user) => {
@@ -78,7 +69,17 @@ module.exports = {
         for (var i=0;i<listData.length;i++) {
             var count = 0;
             count += listData[i].sexual_orientation == user.sexual_orientation ? 40 : 25;
-            count += await module.exports.getDistanceScore(user.geo_lat, user.geo_long, listData[i].geo_lat, listData[i].geo_long);
+            score[i].geo_lat = await module.exports.getDistanceScore(user.geo_lat, user.geo_long, listData[i].geo_lat, listData[i].geo_long);
+            if (score[i].geo_lat < 10)
+                count += 25;
+            else if (score[i].geo_lat < 25)
+                count += 20;
+            else if (score[i].geo_lat < 50)
+                count += 15;
+            else if (score[i].geo_lat < 100)
+                count += 10;
+            else if (score[i].geo_lat < 250)
+                count += 5;
             count += await module.exports.getMutualTags(user.id, listData[i].id);
             if (listData[i].pop_score >= (user.pop_score-50) && listData[i].pop_score <= (user.pop_score+50))
                 count += 15;
@@ -87,7 +88,7 @@ module.exports = {
             else if (listData[i].pop_score >= (user.pop_score-250) && listData[i].pop_score <= (user.pop_score+250))
                 count += 5;
             score[i].pop_max = count;
-            //console.log(count);
+            score[i].birthdate = moment().diff(listData[i].birthdate, "years", false);
         };
         score.sort((a, b) => {
             return b.pop_max - a.pop_max;
