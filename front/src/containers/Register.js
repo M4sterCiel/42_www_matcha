@@ -10,6 +10,7 @@ import Axios from "axios";
 import { BackgroundAdd } from "../components/Background";
 import ErrorToast from "../services/ErrorToastService";
 import InfoToast from "../services/InfoToastService";
+import Logo from "../assets/heart-anim.gif";
 import ValidateInput from "../validation/ValidateInput";
 
 class Register extends Component {
@@ -55,8 +56,20 @@ class Register extends Component {
         ) : (
           ""
         )}
-        <div className="row">
+        <div className="row login-register-page">
           <div className="col a12 m6" id="login-box">
+            <div className="login-header">
+              Register cause all you need is{" "}
+              <span className="logo-header-love">
+                L
+                <img
+                  className="login-love-logo"
+                  src={Logo}
+                  alt="Logo on login"
+                />
+                ve
+              </span>
+            </div>
             <div className="card-panel center">
               <i className="medium material-icons">person_add</i>
               <span className="title-page">Register</span>

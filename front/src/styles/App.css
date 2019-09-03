@@ -416,7 +416,36 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   font-size: 40px;
   text-align: center;
   color: #ffb6d3;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  text-shadow: -1px 0 rgba(0, 0, 0, 0.5), 0 1px rgba(0, 0, 0, 0.5),
+    1px 0 rgba(0, 0, 0, 0.5), 0 -1px rgba(0, 0, 0, 0.5);
+  margin-top: 5px;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+  background-color: rgba(243, 241, 239, 0.1);
+  border-radius: 20px;
+  line-height: 10px;
+}
+
+.logo-header-love {
+  font-size: 50px;
+  color: #e91e63;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.login-love-logo {
+  margin: auto;
+  display: inline-block;
+  width: 85px;
+  opacity: 0.9;
+  position: relative;
+  top: 22px;
+  margin-left: -20px;
+  margin-right: -16px;
+}
+
+.login-register-page {
+  min-height: 1000px;
 }
 
 /* Profile */
