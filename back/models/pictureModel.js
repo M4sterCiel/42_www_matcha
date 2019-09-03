@@ -16,7 +16,8 @@ module.exports = {
   createOne: async data => {
     try {
       var result = await pool.query({
-        sql: "INSERT INTO pictures (user_id, url, pic_index, profile_picture) VALUES (?)",
+        sql:
+          "INSERT INTO pictures (user_id, url, pic_index, profile_picture) VALUES (?)",
         values: [data]
       });
       if (result) return result;
@@ -43,6 +44,19 @@ module.exports = {
         sql: "DELETE FROM pictures WHERE user_id = ? AND pic_index = ?",
         values: [id, pic_index]
       });
+
+      var userPictureRemaining = await pool.query({
+        sql: "SELECT * FROM pictures WHERE user_id = ?",
+        values: [id]
+      });
+
+      if (userPictureRemaining.length === 0) {
+        removeLastUserPictureFromUserTable = await pool.query({
+          sql: "UPDATE users SET profile_picture_url = ? WHERE id = ?",
+          values: ["", id]
+        });
+      }
+
       if (result) return result;
     } catch (err) {
       throw new Error(err);
@@ -62,12 +76,26 @@ module.exports = {
             "UPDATE pictures SET url = ?, profile_picture = ? WHERE user_id = ? AND pic_index = ?",
           values: [data.url, data.profile_picture, id, data.pic_index]
         });
+
+        if (data.profile_picture === 1) {
+          await pool.query({
+            sql: "UPDATE users SET profile_picture_url = ? WHERE id = ?",
+            values: [data.url, id]
+          });
+        }
       } else {
         var result = await pool.query({
           sql:
             "INSERT INTO pictures(user_id, url, pic_index, profile_picture) VALUES (?, ?, ?, ?)",
           values: [id, data.url, data.pic_index, data.profile_picture]
         });
+
+        if (data.profile_picture === 1) {
+          await pool.query({
+            sql: "UPDATE users SET profile_picture_url = ? WHERE id = ?",
+            values: [data.url, id]
+          });
+        }
       }
       if (result) return result;
     } catch (err) {
@@ -75,7 +103,7 @@ module.exports = {
     }
   },
 
-  updateUserProfilePicture: async (id, pic_index) => {
+  updateUserProfilePicture: async (id, pic_index, pic_url) => {
     try {
       await pool.query({
         sql:
@@ -88,7 +116,13 @@ module.exports = {
           "UPDATE pictures SET profile_picture = 1 WHERE user_id = ? AND pic_index = ?",
         values: [id, pic_index]
       });
-      if (result) return result;
+
+      var result2 = await pool.query({
+        sql: "UPDATE users SET profile_picture_url = ? WHERE id = ?",
+        values: [pic_url, id]
+      });
+
+      if (result && result2) return result;
     } catch (err) {
       throw new Error(err);
     }
@@ -109,7 +143,8 @@ module.exports = {
   getPicturesList: async data => {
     try {
       var result = await pool.query({
-        sql: "SELECT * FROM pictures WHERE user_id IN (?) AND profile_picture = 1",
+        sql:
+          "SELECT * FROM pictures WHERE user_id IN (?) AND profile_picture = 1",
         values: [data]
       });
       if (result) return result;

@@ -104,6 +104,7 @@ class UserProfile extends Component {
                       {this.props.userConnectedData.username !==
                         this.state.user.username &&
                         this.state.pictures.length !== 0 &&
+                        this.state.isBlocked !== true &&
                         (this.state.likesProfile === true ? (
                           <div
                             className="profile-dislike"
@@ -277,7 +278,9 @@ class UserProfile extends Component {
                 <UserBio bio={this.state.user.bio} />
                 <Preferences user={this.state.user} />
                 <Interests tags={this.state.tags} />
-                <Pictures pictures={this.state.pictures} />
+                {this.state.pictures !== undefined && (
+                  <Pictures pictures={this.state.pictures} />
+                )}
               </div>
             </div>
           </div>

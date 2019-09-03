@@ -52,10 +52,11 @@ export default {
       axios
         .post(`/users/delete/${user_id}/liked_by/${by_id}`)
         .then(res => res.data),
-    updateUserProfilePicture: (user_id, pic_index) =>
+    updateUserProfilePicture: (user_id, pic_index, pic_url) =>
       axios
         .post(`/users/update/${user_id}/profile_picture`, {
-          pic_index: pic_index
+          pic_index: pic_index,
+          pic_url: pic_url
         })
         .then(res => res.data),
     verifyPasswordWithId: (id, password) =>

@@ -3,6 +3,7 @@ import { Modal } from "react-materialize";
 import AgeSlider from "../settings/AgeSlider";
 import DistanceSlider from "../settings/DistanceSlider";
 import PopularitySlider from "../settings/PopularitySlider";
+import InterestTagsDumb from "../settings/InterestTagsDumb";
 import { connect } from "react-redux";
 
 class ModalUserListFilter extends Component {
@@ -42,7 +43,10 @@ class ModalUserListFilter extends Component {
   componentDidUpdate() {
     this._isMounted = true;
 
-    if (this.state.userId !== this.props.userConnectedData.id) {
+    if (
+      this.state.userId !== this.props.userConnectedData.id &&
+      this.state.allTags !== this.props.userConnectedData.allTags
+    ) {
       this._isMounted &&
         this.setState({
           userId: this.props.userConnectedData.id,
@@ -89,7 +93,7 @@ class ModalUserListFilter extends Component {
           <Modal
             id="filter-users-modal"
             className="modals"
-            header="Filter settings"
+            header="Filter profiles"
             fixedFooter
             trigger={false}
           >
@@ -110,6 +114,15 @@ class ModalUserListFilter extends Component {
               range={this.state.popularityRange}
               popularityToParent={this.handlePopularityData}
             />
+            {this.props.userConnectedData.tags !== undefined && (
+              <div>
+                <span className="profile-fields-labels">Filter interests</span>
+                <InterestTagsDumb
+                  tags={this.state.userTags}
+                  allTags={this.state.allTags}
+                />
+              </div>
+            )}
           </Modal>
         )}
       </div>

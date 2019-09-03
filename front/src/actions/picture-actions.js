@@ -71,11 +71,16 @@ export const updateUserPicture = (user_id, username, data) => {
   };
 };
 
-export const updateUserProfilePicture = (user_id, username, pic_index) => {
+export const updateUserProfilePicture = (
+  user_id,
+  username,
+  pic_index,
+  pic_url
+) => {
   return dispatch => {
     dispatch({ type: "UPDATE_PROFILE_PICTURE" });
     ApiCall.user
-      .updateUserProfilePicture(user_id, pic_index)
+      .updateUserProfilePicture(user_id, pic_index, pic_url)
       .then(response => {
         dispatch({
           type: "PROFILE_PICTURE_UPDATED",
