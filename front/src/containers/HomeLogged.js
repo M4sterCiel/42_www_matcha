@@ -103,8 +103,6 @@ class HomeLogged extends Component {
       })
     })
     .then(res => {
-      if (res.data.list[0].id === this.state.userID)
-        res.data.list.splice(0, 1);
       this._isMounted && this.setState({
         userTab: res.data.list,
         allTags: res.data.allTags,
