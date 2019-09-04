@@ -185,7 +185,6 @@ module.exports = {
   },
 
   getStatus: async data => {
-    console.log(data);
     try {
       var result = await pool.query({
         sql: "SELECT `id`, online FROM users WHERE `id` IN (?)",

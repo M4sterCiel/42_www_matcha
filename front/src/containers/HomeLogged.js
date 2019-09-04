@@ -25,6 +25,7 @@ class HomeLogged extends Component {
       socket: "",
       defaultTab: [],
       userTab: [],
+      defaultSorted: [],
       tags: [],
       filterData: [],
       sortValue: "0",
@@ -34,6 +35,7 @@ class HomeLogged extends Component {
     this._isMounted = false;
     this.infiniteScroll = this.infiniteScroll.bind(this);
   }
+  
   render() {
     return (
       <div className="App">
@@ -89,7 +91,68 @@ class HomeLogged extends Component {
       this.setState({
         sortValue: data
       });
-    console.log(data);
+    switch (data) {
+      case '0':
+        this.updateTab();
+        break;
+      case '1':
+        this.setState({
+          userTab: this.state.userTab.sort((a, b) => {
+            return a.birthdate - b.birthdate;
+          })
+        });
+        break;
+      case '2':
+        this.setState({
+          userTab: this.state.userTab.sort((a, b) => {
+            return b.birthdate - a.birthdate;
+          })
+        });
+        break;
+      case '3':
+        this.setState({
+          userTab: this.state.userTab.sort((a, b) => {
+            return a.geo_lat - b.geo_lat;
+          })
+        });
+        break;
+      case '4':
+        this.setState({
+          userTab: this.state.userTab.sort((a, b) => {
+            return b.geo_lat - a.geo_lat;
+          })
+        });
+        break;
+      case '5':
+        this.setState({
+          userTab: this.state.userTab.sort((a, b) => {
+            return a.pop_score - b.pop_score;
+          })
+        });
+        break;
+      case '6':
+        this.setState({
+          userTab: this.state.userTab.sort((a, b) => {
+            return b.pop_score - a.pop_score;
+          })
+        });
+        break;
+      case '7':
+        this.setState({
+          userTab: this.state.userTab.sort((a, b) => {
+            return b.birthdate - a.birthdate;
+          })
+        });
+        break;
+      case '8':
+        this.setState({
+          userTab: this.state.userTab.sort((a, b) => {
+            return b.birthdate - a.birthdate;
+          })
+        });
+        break;
+      default:
+    }
   };
 
   handleFilterData = async data => {
@@ -97,7 +160,13 @@ class HomeLogged extends Component {
       this.setState({
         filterData: data
       });
-    if (data.length !== 0) this.updateTab();
+    if (data.length !== 0) {
+      this.updateTab();
+      this.handleSortValue(this.state.sortValue);
+      this.setState({
+        page: 12
+      });
+    }
   };
 
   async componentDidMount() {
@@ -195,7 +264,8 @@ class HomeLogged extends Component {
       if (keep === 1) copy.push(tab[i]);
     }
     this.setState({
-      userTab: copy
+      userTab: copy,
+      defaultSorted: copy
     });
   };
 
