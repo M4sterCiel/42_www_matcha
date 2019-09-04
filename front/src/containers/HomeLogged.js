@@ -34,6 +34,7 @@ class HomeLogged extends Component {
     this._isMounted = false;
     this.infiniteScroll = this.infiniteScroll.bind(this);
   }
+  
   render() {
     return (
       <div className="App">
@@ -89,8 +90,7 @@ class HomeLogged extends Component {
       this.setState({
         filterData: data
       });
-      if (data.length !== 0) 
-        this.updateTab();
+    this.updateTab();
   };
 
   async componentDidMount() {
@@ -136,12 +136,7 @@ class HomeLogged extends Component {
   }
 
   componentDidUpdate() {
-/*     if (this.state.filterData.length && !stop) {
-      console.log(this.state.filterData.length);
-      this.updateTab()
-      stop = 1;
-    } */
-    if (this.props.userConnectedData.tags !== undefined && this.state.filterData.length !== 0 && this.state.defaultTab.length !== 0 && !stop) {
+    if (this.props.userConnectedData.tags && this.state.filterData.length !== 0 && this.state.defaultTab.length !== 0 && !stop) {
       console.log(this.props.userConnectedData);
       console.log(this.state.filterData);
       this.updateTab()
@@ -157,10 +152,8 @@ class HomeLogged extends Component {
   }
 
   updateTab = () => {
-    console.log("updatetab: ", this.state.filterData);
     var tab = this.state.defaultTab.copyWithin(0);
     var copy = [];
-    console.log(this.state.defaultTab);
 
     for (var i=0;i<tab.length;i++) {
       var keep = 1;
@@ -175,7 +168,6 @@ class HomeLogged extends Component {
       if (keep === 1)
         copy.push(tab[i]);
     }
-    console.log(copy);
     this.setState({
       userTab: copy
     });
