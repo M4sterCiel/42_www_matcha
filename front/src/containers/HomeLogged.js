@@ -94,9 +94,8 @@ class HomeLogged extends Component {
       });
     switch (data) {
       case '0':
-        this.setState({
-          userTab: this.state.defaultSorted ? this.state.defaultSorted : this.state.defaultTab
-        });
+        console.log('je passe');
+        this.updateTab();
         break;
       case '1':
         this.setState({
