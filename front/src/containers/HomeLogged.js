@@ -12,6 +12,8 @@ import io from "socket.io-client";
 import ModalUserListFilter from "../components/modals/ModalUserListFilter";
 import SortUserList from "../components/settings/SortUserList";
 import { FilterUsersButton } from "../components/Buttons";
+import HeartLoading from "../assets/heart-loading.gif";
+import HeartBroken from "../assets/heart-broken.gif";
 
 const CancelToken = Axios.CancelToken;
 // eslint-disable-next-line
@@ -25,6 +27,7 @@ class HomeLogged extends Component {
       socket: "",
       defaultTab: [],
       userTab: [],
+      isLoading: true,
       tags: [],
       filterData: [],
       sortValue: "0",
@@ -72,9 +75,20 @@ class HomeLogged extends Component {
                 <FilterUsersButton />
                 <SortUserList sortValueToParent={this.handleSortValue} />
               </div>
-              <this.userList
-                value={this.state.userTab.slice(0, this.state.page)}
-              />
+              {!this.state.isLoading ? (
+                <this.userList
+                  value={this.state.userTab.slice(0, this.state.page)}
+                />
+              ) : (
+                <div className="userlist-loading">
+                  <img
+                    className="userlist-loading-img"
+                    src={HeartLoading}
+                    alt="Loading anim"
+                  />
+                  <div className="userlist-loading-text">Loading...</div>
+                </div>
+              )}
               <ModalUserListFilter filterDataToParent={this.handleFilterData} />
               <ModalMatchAnim />
             </div>
@@ -172,7 +186,8 @@ class HomeLogged extends Component {
       if (keep === 1) copy.push(tab[i]);
     }
     this.setState({
-      userTab: copy
+      userTab: copy,
+      isLoading: false
     });
   };
 
@@ -207,17 +222,30 @@ class HomeLogged extends Component {
 
   userList = props => {
     const value = props.value;
-    const users = value.map((e, index) => (
-      <UserCard
-        intel={e}
-        allTags={this.state.allTags}
-        tags={this.state.tags}
-        uid={this.state.userID}
-        func={this.sendNotif}
-        key={index}
-      />
-    ));
-    return <ul>{users}</ul>;
+    if (props.value.length !== 0) {
+      const users = value.map((e, index) => (
+        <UserCard
+          intel={e}
+          allTags={this.state.allTags}
+          tags={this.state.tags}
+          uid={this.state.userID}
+          func={this.sendNotif}
+          key={index}
+        />
+      ));
+      return <ul>{users}</ul>;
+    } else {
+      return (
+        <div className="userlist-no-result">
+          <img
+            className="userlist-no-result-img"
+            src={HeartBroken}
+            alt="No result anim"
+          />
+          <div className="userlist-no-result-text">No result</div>
+        </div>
+      );
+    }
   };
 
   infiniteScroll = () => {

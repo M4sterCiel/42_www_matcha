@@ -639,6 +639,39 @@ button:focus {
   opacity: 0.4;
 }
 
+/* User list */
+
+.userlist-loading {
+  width: 100%;
+  margin: auto;
+}
+
+.userlist-loading-img {
+  margin-left: calc(50% - 210px);
+}
+
+.userlist-loading-text {
+  text-align: center;
+  margin-top: -80px;
+  color: #ffb6d3;
+}
+
+.userlist-no-result {
+  width: 100%;
+  margin: auto;
+}
+
+.userlist-no-result-img {
+  width: 280px;
+  margin-left: calc(50% - 140px);
+}
+
+.userlist-no-result-text {
+  text-align: center;
+  margin-top: -80px;
+  color: #ffb6d3;
+}
+
 /* User card */
 
 .user-card {
