@@ -94,7 +94,6 @@ class HomeLogged extends Component {
       });
     switch (data) {
       case '0':
-        console.log('je passe');
         this.updateTab();
         break;
       case '1':
@@ -162,7 +161,13 @@ class HomeLogged extends Component {
       this.setState({
         filterData: data
       });
-    if (data.length !== 0) this.updateTab();
+    if (data.length !== 0) {
+      this.updateTab();
+      this.handleSortValue(this.state.sortValue);
+      this.setState({
+        page: 12
+      });
+    }
   };
 
   async componentDidMount() {
