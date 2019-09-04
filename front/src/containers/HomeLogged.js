@@ -16,7 +16,6 @@ import { FilterUsersButton } from "../components/Buttons";
 const CancelToken = Axios.CancelToken;
 // eslint-disable-next-line
 let cancel;
-var stop = 0;
 
 class HomeLogged extends Component {
   constructor(props) {
@@ -141,27 +140,10 @@ class HomeLogged extends Component {
       this.setState({
         defaultTab: this.state.userTab.copyWithin(0)
       });
-    window.addEventListener("scroll", this.infiniteScroll);
-  }
-
-  componentDidUpdate() {
-    /*     if (this.state.filterData.length && !stop) {
-      console.log(this.state.filterData.length);
-      this.updateTab()
-      stop = 1;
-    } */
-    if (
-      this.props.userConnectedData.tags !== undefined &&
-      this.state.filterData.length !== 0 &&
-      this.state.defaultTab.length !== 0 &&
-      !stop
-    ) {
-      console.log(this.props.userConnectedData);
-      console.log(this.state.filterData);
-      this.updateTab();
-      stop = 1;
+    if (this.state.defaultTab.length) {
+      this.initTab();
     }
-    // console.log(this.state.filterData);
+    window.addEventListener("scroll", this.infiniteScroll);
   }
 
   componentWillUnmount() {
@@ -170,11 +152,33 @@ class HomeLogged extends Component {
     if (this.state.socket !== "") this.state.socket.close();
   }
 
-  updateTab = () => {
-    console.log("updatetab: ", this.state.filterData);
+  initTab = () => {
     var tab = this.state.defaultTab.copyWithin(0);
     var copy = [];
-    console.log(this.state.defaultTab);
+
+    for (var i = 0; i < tab.length; i++) {
+      var keep = 1;
+      if (tab[i].birthdate > this.props.userConnectedData.age_max) keep = 0;
+      if (tab[i].birthdate < this.props.userConnectedData.age_min) keep = 0;
+      if (!(tab[i].geo_lat <= this.props.userConnectedData.distance_max + 0.8))
+        keep = 0;
+      if (
+        !(
+          tab[i].pop_score >= this.props.userConnectedData.pop_min &&
+          tab[i].pop_score <= this.props.userConnectedData.pop_max
+        )
+      )
+        keep = 0;
+      if (keep === 1) copy.push(tab[i]);
+    }
+    this.setState({
+      userTab: copy
+    });
+  };
+
+  updateTab = () => {
+    var tab = this.state.defaultTab.copyWithin(0);
+    var copy = [];
 
     for (var i = 0; i < tab.length; i++) {
       var keep = 1;
@@ -190,7 +194,6 @@ class HomeLogged extends Component {
         keep = 0;
       if (keep === 1) copy.push(tab[i]);
     }
-    console.log(copy);
     this.setState({
       userTab: copy
     });
