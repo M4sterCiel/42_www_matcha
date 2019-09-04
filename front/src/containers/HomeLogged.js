@@ -26,8 +26,10 @@ class HomeLogged extends Component {
       socket: "",
       defaultTab: [],
       userTab: [],
+      defaultSorted: [],
       tags: [],
       filterData: [],
+      sortValue: "0",
       page: 12
     };
     this.Auth = new AuthService();
@@ -71,7 +73,7 @@ class HomeLogged extends Component {
               />
               <div className="user-list-settings col s12">
                 <FilterUsersButton />
-                <SortUserList />
+                <SortUserList sortValueToParent={this.handleSortValue} />
               </div>
               <this.userList
                 value={this.state.userTab.slice(0, this.state.page)}
@@ -85,12 +87,83 @@ class HomeLogged extends Component {
     );
   }
 
+  handleSortValue = async data => {
+    (await this._isMounted) &&
+      this.setState({
+        sortValue: data
+      });
+    switch (data) {
+      case '0':
+        this.setState({
+          userTab: this.state.defaultSorted ? this.state.defaultSorted : this.state.defaultTab
+        });
+        break;
+      case '1':
+        this.setState({
+          userTab: this.state.userTab.sort((a, b) => {
+            return a.birthdate - b.birthdate;
+          })
+        });
+        break;
+      case '2':
+        this.setState({
+          userTab: this.state.userTab.sort((a, b) => {
+            return b.birthdate - a.birthdate;
+          })
+        });
+        break;
+      case '3':
+        this.setState({
+          userTab: this.state.userTab.sort((a, b) => {
+            return a.geo_lat - b.geo_lat;
+          })
+        });
+        break;
+      case '4':
+        this.setState({
+          userTab: this.state.userTab.sort((a, b) => {
+            return b.geo_lat - a.geo_lat;
+          })
+        });
+        break;
+      case '5':
+        this.setState({
+          userTab: this.state.userTab.sort((a, b) => {
+            return a.pop_score - b.pop_score;
+          })
+        });
+        break;
+      case '6':
+        this.setState({
+          userTab: this.state.userTab.sort((a, b) => {
+            return b.pop_score - a.pop_score;
+          })
+        });
+        break;
+      case '7':
+        this.setState({
+          userTab: this.state.userTab.sort((a, b) => {
+            return b.birthdate - a.birthdate;
+          })
+        });
+        break;
+      case '8':
+        this.setState({
+          userTab: this.state.userTab.sort((a, b) => {
+            return b.birthdate - a.birthdate;
+          })
+        });
+        break;
+      default:
+    }
+  };
+
   handleFilterData = async data => {
-    await this._isMounted &&
+    (await this._isMounted) &&
       this.setState({
         filterData: data
       });
-    this.updateTab();
+    if (data.length !== 0) this.updateTab();
   };
 
   async componentDidMount() {
@@ -129,20 +202,31 @@ class HomeLogged extends Component {
       .catch(error => {
         console.log(error);
       });
-      this._isMounted && this.setState({
+    this._isMounted &&
+      this.setState({
         defaultTab: this.state.userTab.copyWithin(0)
-      })
+      });
     window.addEventListener("scroll", this.infiniteScroll);
   }
 
   componentDidUpdate() {
-    if (this.props.userConnectedData.tags && this.state.filterData.length !== 0 && this.state.defaultTab.length !== 0 && !stop) {
-      console.log(this.props.userConnectedData);
-      console.log(this.state.filterData);
+    /*     if (this.state.filterData.length && !stop) {
+      console.log(this.state.filterData.length);
       this.updateTab()
       stop = 1;
+    } */
+    if (
+      this.props.userConnectedData.tags !== undefined &&
+      this.state.filterData.length !== 0 &&
+      this.state.defaultTab.length !== 0 &&
+      !stop
+    ) {
+      console.log(this.props.userConnectedData);
+      console.log(this.state.filterData);
+      this.updateTab();
+      stop = 1;
     }
-   // console.log(this.state.filterData);
+    // console.log(this.state.filterData);
   }
 
   componentWillUnmount() {
@@ -155,23 +239,25 @@ class HomeLogged extends Component {
     var tab = this.state.defaultTab.copyWithin(0);
     var copy = [];
 
-    for (var i=0;i<tab.length;i++) {
+    for (var i = 0; i < tab.length; i++) {
       var keep = 1;
-      if (tab[i].birthdate > this.state.filterData.ageRange[1])
+      if (tab[i].birthdate > this.state.filterData.ageRange[1]) keep = 0;
+      if (tab[i].birthdate < this.state.filterData.ageRange[0]) keep = 0;
+      if (!(tab[i].geo_lat <= this.state.filterData.distance + 0.8)) keep = 0;
+      if (
+        !(
+          tab[i].pop_score >= this.state.filterData.popularityRange[0] &&
+          tab[i].pop_score <= this.state.filterData.popularityRange[1]
+        )
+      )
         keep = 0;
-      if (tab[i].birthdate < this.state.filterData.ageRange[0])
-        keep = 0;
-      if (!(tab[i].geo_lat <= this.state.filterData.distance + 0.8))
-        keep = 0;
-      if (!(tab[i].pop_score >= this.state.filterData.popularityRange[0] && tab[i].pop_score <= this.state.filterData.popularityRange[1]))
-        keep = 0;
-      if (keep === 1)
-        copy.push(tab[i]);
+      if (keep === 1) copy.push(tab[i]);
     }
     this.setState({
-      userTab: copy
+      userTab: copy,
+      defaultSorted: copy
     });
-  }
+  };
 
   sendNotif = (target_id, type) => {
     if (this.state.socket !== "") {
