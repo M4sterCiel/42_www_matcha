@@ -74,5 +74,14 @@ exports.router = (() => {
   userRouter
     .route("/profile-picture/:user_id")
     .get(userController.getUserProfilePicture);
+  userRouter
+    .route("/profiles-visited/:user_id")
+    .get(userController.getUserProfilesVisitedId);
+  userRouter
+    .route("/profiles-liked/:user_id")
+    .get(userController.getUserProfilesLikedId);
+  userRouter
+    .route("/profiles-blocked/:user_id")
+    .get(userController.getUserProfilesBlockedId);
   return userRouter;
 })();

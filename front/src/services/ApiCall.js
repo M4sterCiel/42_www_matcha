@@ -70,6 +70,16 @@ export default {
     getUserRoomId: async (user_id, target_id) =>
       await axios
         .get(`/users/get-room-id/${user_id}/${target_id}`)
+        .then(res => res.data),
+    getUserProfilesVisited: async user_id =>
+      await axios
+        .get(`/users/profiles-visited/${user_id}`)
+        .then(res => res.data),
+    getUserProfilesLiked: async user_id =>
+      await axios.get(`/users/profiles-liked/${user_id}`).then(res => res.data),
+    getUserProfilesBlocked: async user_id =>
+      await axios
+        .get(`/users/profiles-blocked/${user_id}`)
         .then(res => res.data)
   }
 };

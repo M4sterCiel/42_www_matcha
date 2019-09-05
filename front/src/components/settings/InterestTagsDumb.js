@@ -16,7 +16,7 @@ class InterestTagsDumb extends Component {
     this._isMounted = true;
     this._isMounted &&
       this.setState({
-        myTagsArray: this.props.tags,
+        myTagsArray: [...this.props.tags],
         defaultTagsArray: this.props.allTags
       });
   }

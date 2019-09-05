@@ -16,6 +16,7 @@ import ModalReportUser from "../components/modals/ModalReportUser";
 import ModalMatchAnim from "../components/modals/ModalMatchAnim";
 import ModalBlockUser from "../components/modals/ModalBlockUser";
 import ModalUnblockUser from "../components/modals/ModalUnblockUser";
+import ModalUserSupervise from "../components/modals/ModalUserSupervise";
 import ApiCall from "../services/ApiCall";
 import UserBio from "../components/profile/UserBio";
 import Interests from "../components/profile/Interests";
@@ -250,6 +251,9 @@ class UserProfile extends Component {
                     )}
                     {this.state.user.id === this.props.userConnectedData.id && (
                       <ModalUserEditAccountSettings />
+                    )}
+                    {this.state.user.id === this.props.userConnectedData.id && (
+                      <ModalUserSupervise />
                     )}
                     {this.state.user.id !== this.props.userConnectedData.id && (
                       <ModalReportUser
