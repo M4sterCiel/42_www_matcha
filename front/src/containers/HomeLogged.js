@@ -152,16 +152,45 @@ class HomeLogged extends Component {
         });
         break;
       case "7":
+        var tags = [];
+        this.state.filterData.userTags.forEach(element => {
+          tags.push(element.tag_id);
+        });
         this.setState({
           userTab: this.state.userTab.sort((a, b) => {
-            return b.birthdate - a.birthdate;
+            var countA = 0;
+            for(var i=0;i<a.tags.length;i++) {
+              if (tags.includes(a.tags[i]))
+                countA++;
+            }
+            var countB = 0;
+            for(var k=0;k<b.tags.length;k++) {
+              if (tags.includes(b.tags[k]))
+                countB++;
+            }
+            return countA - countB;
           })
         });
         break;
       case "8":
+        tags = [];
+        this.state.filterData.userTags.forEach(element => {
+          tags.push(element.tag_id);
+        });
         this.setState({
           userTab: this.state.userTab.sort((a, b) => {
-            return b.birthdate - a.birthdate;
+            
+            var countA = 0;
+            for(var i=0;i<a.tags.length;i++) {
+              if (tags.includes(a.tags[i]))
+                countA++;
+            }
+            var countB = 0;
+            for(var k=0;k<b.tags.length;k++) {
+              if (tags.includes(b.tags[k]))
+                countB++;
+            }
+            return countB - countA;
           })
         });
         break;
@@ -175,7 +204,7 @@ class HomeLogged extends Component {
         filterData: data
       });
     if (data.length !== 0) {
-      console.log(data);
+      //console.log(data);
       this.updateTab();
       this.handleSortValue(this.state.sortValue);
       this.setState({
@@ -264,22 +293,9 @@ class HomeLogged extends Component {
     var copy = [];
     var tags = [];
     
-    if (this.state.filterData.userTags.length === 1) {
-      await this.state.filterData.userTags.forEach(element => {
-        //console.log(element);
-        for (var g=0;g<element.length;g++) {
-          console.log(element[g].tag_id);
-          tags.push(element[g].tag_id);
-        }
+    await this.state.filterData.userTags.forEach(element => {
+        tags.push(element.tag_id);
       });
-    }
-    else {
-      await this.state.filterData.userTags.forEach(element => {
-          tags.push(element.tag_id);
-        });
-    }
-    console.log(this.state.filterData.userTags);
-    console.log(tags);
 
     for (var i = 0; i < tab.length; i++) {
       var keep = 1;
@@ -294,17 +310,17 @@ class HomeLogged extends Component {
       )
         keep = 0;
       var count = 0;
-      for (var k=0;k<tags.length;k++) {
-        for (var j=0;j<tab[i].tags.length;j++) {
-          if (tags[k] === tab[i].tags[j])
-            count++;
-        }
+      var newT = [];
+      for (var k=0;k<tab[i].tags.length;k++) 
+        newT.push(tab[i].tags[k]);
+      for (var g=0;g<newT.length;g++) {
+        if (tags.includes(newT[g]))
+          count++;
       }
-      //console.log('count >>>> ', count);
       if (count !== tags.length)
         keep = 0; 
       if (keep === 1) copy.push(tab[i]);
-    }
+      }
     this.setState({
       userTab: copy,
       defaultSorted: copy

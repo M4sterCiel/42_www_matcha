@@ -38,6 +38,7 @@ class UserCard extends Component {
       age: "",
       picture: "",
       taggs: [],
+      copyTags: '',
       likesProfile: false,
       likedByProfile: false
     };
@@ -56,7 +57,10 @@ class UserCard extends Component {
     for (var i = 0; i < tab.length; i++) {
       tab[i]["value"] = this.state.tags[tab[i]["tag_id"]];
     }
-    (await this._isMounted) && this.setState({ taggs: tab });
+    (await this._isMounted) && this.setState({ 
+      taggs: tab,
+      copyTags: this.props.intel.tags
+    });
 
     ApiCall.user
       .checkUserLikedByAndReverse(this.props.uid, this.props.intel.username)
@@ -108,6 +112,24 @@ class UserCard extends Component {
     this.props.func(this.props.intel.id, "like_back");
   };
 
+  async componentDidUpdate() {
+    if (this.props.intel.tags !== this.state.copyTags){
+      var tab = [];
+    await this.props.intel.tags.forEach(element => {
+      tab.push({
+        tag_id: element,
+        value: ""
+      });
+    });
+    for (var i = 0; i < tab.length; i++) {
+      tab[i]["value"] = this.state.tags[tab[i]["tag_id"]];
+    }
+    (await this._isMounted) && this.setState({ 
+      taggs: tab,
+      copyTags: this.props.intel.tags
+    });
+    }
+  }
   componentWillUnmount() {
     this._isMounted = false;
   }
