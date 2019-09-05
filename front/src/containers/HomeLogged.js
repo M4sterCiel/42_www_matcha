@@ -175,6 +175,7 @@ class HomeLogged extends Component {
         filterData: data
       });
     if (data.length !== 0) {
+      console.log(data);
       this.updateTab();
       this.handleSortValue(this.state.sortValue);
       this.setState({

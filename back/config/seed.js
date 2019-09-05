@@ -9,20 +9,21 @@ const moment = require('moment');
 module.exports = {
     getUserSeed: async() => {
         var options = {
-            provider: 'google',
-            apiKey: "AIzaSyCrQGnPtopWTSK9joyPAxlEGcl535KlQQQ",
+            provider: 'opencage',
+            apiKey: "e1541592ab124e8fad5bfc5b647d646e",
             httpAdapter: 'https', 
             formatter: null 
           };
         var geocoder = NodeGeocoder(options);
 
-        await request('https://randomuser.me/api/?results=1000&nat=fr&inc=gender,name,location,email,login,dob', function(err, resp, body) {
+        await request('https://randomuser.me/api/?results=1&nat=fr&inc=gender,name,location,email,login,dob', async (err, resp, body) => {
         body = JSON.parse(body);
+        console.log(body.results[0].location);
         for (var k=0;k<body.results.length;k++) {
             var randomSexuality = randomInt(1, 3);
             var randomPopScore = randomInt(50, 999);
             var bio = "This a sample of a bio =)";
-            var uid = userModel.createFromSeed([
+            var uid = await userModel.createFromSeed([
                 body.results[k].name.last.charAt(0).toUpperCase()+body.results[k].name.last.substring(1),
                 body.results[k].name.first.charAt(0).toUpperCase()+body.results[k].name.first.substring(1),
                 body.results[k].login.username,
@@ -37,18 +38,22 @@ module.exports = {
                 1,
                 moment().format().substr(0, 10)
             ])
-            geocoder.geocode(body.results[k].location.city.charAt(0).toUpperCase()+body.results[k].location.city.substring(1))
+            /* geocoder.geocode(body.results[k].location.city.charAt(0).toUpperCase()+body.results[k].location.city.substring(1))
                 .then(res => {
+                    //console.log(res);
                     userModel.updateData(uid, {
                         geo_lat: res[0].latitude,
                         geo_long: res[0].longitude
                     });
-                });
+                })
+                .catch(err => {
+                    console.log(err);
+                }) */
             request(`https://source.unsplash.com/random/640x480?${body.results[k].gender}`, async (err, resp, body) => {
                 url = resp.request.uri.href;
                 pictureModel.createOne([uid, url, 0, 1]);
                 userModel.updateOne(uid, "profile_picture_url", url);
-                });
+                })
             var tags = [];
             var randomTag;
             for (var i=0;i<8;i++) {
