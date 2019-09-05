@@ -170,7 +170,7 @@ class HomeLogged extends Component {
   };
 
   handleFilterData = async data => {
-    (await this._isMounted) &&
+    await this._isMounted &&
       this.setState({
         filterData: data
       });
@@ -212,9 +212,7 @@ class HomeLogged extends Component {
       .then(res => {
         this._isMounted &&
           this.setState({
-            userTab: res.data.list,
-            allTags: res.data.allTags,
-            tags: res.data.tags
+            userTab: res.data.list
           });
       })
       .catch(error => {
@@ -261,9 +259,27 @@ class HomeLogged extends Component {
     });
   };
 
-  updateTab = () => {
+  updateTab = async () => {
     var tab = this.state.defaultTab.copyWithin(0);
     var copy = [];
+    var tags = [];
+    
+    if (this.state.filterData.userTags.length === 1) {
+      await this.state.filterData.userTags.forEach(element => {
+        //console.log(element);
+        for (var g=0;g<element.length;g++) {
+          console.log(element[g].tag_id);
+          tags.push(element[g].tag_id);
+        }
+      });
+    }
+    else {
+      await this.state.filterData.userTags.forEach(element => {
+          tags.push(element.tag_id);
+        });
+    }
+    console.log(this.state.filterData.userTags);
+    console.log(tags);
 
     for (var i = 0; i < tab.length; i++) {
       var keep = 1;
@@ -277,6 +293,16 @@ class HomeLogged extends Component {
         )
       )
         keep = 0;
+      var count = 0;
+      for (var k=0;k<tags.length;k++) {
+        for (var j=0;j<tab[i].tags.length;j++) {
+          if (tags[k] === tab[i].tags[j])
+            count++;
+        }
+      }
+      //console.log('count >>>> ', count);
+      if (count !== tags.length)
+        keep = 0; 
       if (keep === 1) copy.push(tab[i]);
     }
     this.setState({
@@ -297,8 +323,6 @@ class HomeLogged extends Component {
       const users = value.map((e, index) => (
         <UserCard
           intel={e}
-          allTags={this.state.allTags}
-          tags={this.state.tags}
           uid={this.state.userID}
           func={this.sendNotif}
           key={index}

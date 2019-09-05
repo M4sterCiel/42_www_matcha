@@ -61,15 +61,7 @@ module.exports = {
             idList.push(element.id);
         });
 
-        var tags = [];
-        for (var i=0;i<idList.length;i++) {
-            var result = await tagModel.getAllUserTags(idList[i]);
-            await tags.push({
-                id: idList[i],
-                tags: result
-            });
-        }
-        var allTags = await tagModel.findAllTags();
-        return res.status(200).json({ list, tags, allTags });
+/*         var allTags = await tagModel.findAllTags();
+ */        return res.status(200).json({ list });
     }
 }

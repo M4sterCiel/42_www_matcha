@@ -89,6 +89,13 @@ module.exports = {
                 count += 5;
             score[i].pop_max = count;
             score[i].birthdate = moment().diff(listData[i].birthdate, "years", false);
+            var tags = [];
+            var result = await tagModel.getAllUserTags(listData[i].id);
+            result.forEach(element => {
+                tags.push(element.tag_id);
+            });
+            //await tags.push(result);
+            score[i].tags = tags;
         };
         score.sort((a, b) => {
             return b.pop_max - a.pop_max;

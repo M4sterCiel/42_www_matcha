@@ -47,21 +47,14 @@ class UserCard extends Component {
   async componentDidMount() {
     this._isMounted = true;
     var tab = [];
-    await this.props.tags.forEach(element => {
-      if (element.id === this.props.intel.id) {
-        var length = element.tags.length;
-        var i = 0;
-        while (i < length) {
-          tab.push({
-            tag_id: element.tags[i++].tag_id,
-            value: ""
-          });
-        }
-      }
+    await this.props.intel.tags.forEach(element => {
+      tab.push({
+        tag_id: element,
+        value: ""
+      });
     });
     for (var i = 0; i < tab.length; i++) {
-      tab[i]["value"] =
-        tab[i]["tag_id"] === 17 ? "movies" : this.state.tags[tab[i]["tag_id"]];
+      tab[i]["value"] = this.state.tags[tab[i]["tag_id"]];
     }
     (await this._isMounted) && this.setState({ taggs: tab });
 
