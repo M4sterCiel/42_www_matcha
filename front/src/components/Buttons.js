@@ -34,6 +34,13 @@ class ProfileSettingsButton extends Component {
           className="blue modal-trigger"
           href="#edit-account-modal"
         />
+        <Button
+          floating
+          tooltip="manage profiles"
+          icon="supervised_user_circle"
+          className="blue modal-trigger"
+          href="#user-supervise-modal"
+        />
       </Button>
     );
   }

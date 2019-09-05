@@ -3,6 +3,7 @@ var userModel = require("../models/userModel");
 var tagModel = require("../models/tagModel");
 var pictureModel = require("../models/pictureModel");
 var likeModel = require("../models/likeModel");
+var notifModel = require("../models/notifModel");
 var input = require("../services/inputService");
 var jwtUtils = require("../services/jwtService");
 var notifService = require("../services/notifService");
@@ -539,5 +540,38 @@ module.exports = {
     return res
       .status(200)
       .json({ picture: picture ? picture[0].url : picture });
+  },
+
+  getUserProfilesVisitedId: async (req, res, next) => {
+    var user_id = req.params.user_id;
+    var profilesVisited = await notifModel.getUserProfilesVisitedId(user_id);
+
+    if (profilesVisited.error)
+      return res.status(401).json({ error: profilesVisited.error });
+    if (!profilesVisited) profilesVisited = null;
+
+    return res.status(200).json({ profiles_visited: profilesVisited });
+  },
+
+  getUserProfilesLikedId: async (req, res, next) => {
+    var user_id = req.params.user_id;
+    var profilesLiked = await likeModel.getUserProfilesLikedId(user_id);
+
+    if (profilesLiked.error)
+      return res.status(401).json({ error: profilesLiked.error });
+    if (!profilesLiked) profilesLiked = null;
+
+    return res.status(200).json({ profiles_Liked: profilesLiked });
+  },
+
+  getUserProfilesBlockedId: async (req, res, next) => {
+    var user_id = req.params.user_id;
+    var profilesBlocked = await userModel.getBlockedUsersFromMyId(user_id);
+
+    if (profilesBlocked.error)
+      return res.status(401).json({ error: profilesBlocked.error });
+    if (!profilesBlocked) profilesBlocked = null;
+
+    return res.status(200).json({ profiles_Blocked: profilesBlocked });
   }
 };

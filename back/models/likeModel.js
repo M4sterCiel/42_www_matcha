@@ -39,5 +39,18 @@ module.exports = {
     } catch (err) {
       throw new Error(err);
     }
+  },
+
+  getUserProfilesLikedId: async userId => {
+    try {
+      var result = await pool.query({
+        sql:
+          "SELECT `user_id` FROM likes WHERE `sender_id` = ? ORDER BY `id` ASC",
+        values: [userId]
+      });
+      if (result) return result;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 };
