@@ -57,7 +57,7 @@ class InterestTagsDumb extends Component {
         myTagsArray: tagsTab
       });
 
-    this.props.interestsToParent([tagsTab]);
+    this.props.interestsToParent(tagsTab);
   }
 
   render() {
