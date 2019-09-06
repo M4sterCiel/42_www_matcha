@@ -2,6 +2,7 @@ const userModel = require("../models/userModel");
 const pictureModel = require("../models/pictureModel");
 const tagModel = require("../models/tagModel");
 const mainService = require("../services/mainService");
+const moment = require("moment");
 
 module.exports = {
   getSuggestions: async (req, res, next) => {
@@ -64,7 +65,7 @@ module.exports = {
     var ageMax = mainService.ageToBirthdate(req.body.ageMax);
     var popMin = req.body.popMin;
     var popMax = req.body.popMax;
-    var tags = req.body.tags;
+    var userTags = await tagModel.getAllUserTags(uid);
 
     var range = mainService.getRadiusDistanceCoord(
       user[0].geo_lat,
@@ -82,11 +83,12 @@ module.exports = {
       popMax,
       uid
     );
-    console.log(list.length);
+    //console.log(list.length);
 
     var listData = list.copyWithin(0);
 
     for (var i = 0; i < listData.length; i++) {
+      list[i].birthdate = moment().diff(listData[i].birthdate, "years", false);
       var tags = [];
       var result = await tagModel.getAllUserTags(listData[i].id);
       result.forEach(element => {
@@ -94,6 +96,8 @@ module.exports = {
       });
       list[i].tags = tags;
     }
+
+    list = await mainService.sortWithTags(list, userTags);
 
     return res.status(200).json({ list: list });
   }

@@ -108,9 +108,16 @@ class HomeLogged extends Component {
     switch (data) {
       case "0":
         this.setState({
-          userTab: this.state.defaultTab
+          userTab: this.state.userTab.sort((a, b) => {
+            return b.pop_max - a.pop_max;
+          })
         });
         break;
+      /* this.setState({
+          userTab: this.state.defaultTab
+        });
+        this.updateTab();
+        break; */
       case "1":
         this.setState({
           userTab: this.state.userTab.sort((a, b) => {
@@ -249,7 +256,8 @@ class HomeLogged extends Component {
         this._isMounted &&
           this.setState({
             userTab: res.data.list,
-            defaultTab: res.data.list
+            defaultTab: res.data.list,
+            defaultSorted: res.data.list
           });
       })
       .catch(error => {
@@ -301,10 +309,10 @@ class HomeLogged extends Component {
       this.state.filterData.userTags.forEach(element => {
         tags.push(element.tag_id);
       });
-    else if (this.props.userConnectedData.tags)
+    /* else if (this.props.userConnectedData.tags)
       this.props.userConnectedData.tags.forEach(element => {
         tags.push(element.tag_id);
-      });
+      }); */
 
     for (var i = 0; i < tab.length; i++) {
       var keep = 1;

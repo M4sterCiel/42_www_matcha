@@ -123,5 +123,23 @@ module.exports = {
     var newAge = moment(tmp).format("YYYY");
 
     return newAge;
+  },
+
+  sortWithTags: (dataList, tagsList) => {
+    var tags = [];
+    tagsList.forEach(element => {
+      tags.push(element.tag_id);
+    });
+    console.log(tags);
+    var sortedList = [];
+    for (var i = 0; i < dataList.length; i++) {
+      var count = 0;
+      for (var k = 0; k < dataList[i].tags.length; k++) {
+        if (tags.includes(dataList[i].tags[k])) count++;
+      }
+      if (count == tags.length) sortedList.push(dataList[i]);
+    }
+
+    return sortedList;
   }
 };
