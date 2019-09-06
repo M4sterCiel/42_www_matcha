@@ -107,7 +107,9 @@ class HomeLogged extends Component {
       });
     switch (data) {
       case "0":
-        this.updateTab();
+        this.setState({
+          userTab: this.state.defaultTab
+        });
         break;
       case "1":
         this.setState({
@@ -153,20 +155,23 @@ class HomeLogged extends Component {
         break;
       case "7":
         var tags = [];
-        this.state.filterData.userTags.forEach(element => {
-          tags.push(element.tag_id);
-        });
+        if (this.state.filterData.userTags)
+          this.state.filterData.userTags.forEach(element => {
+            tags.push(element.tag_id);
+          });
+        else if (this.props.userConnectedData.tags)
+          this.props.userConnectedData.tags.forEach(element => {
+            tags.push(element.tag_id);
+          });
         this.setState({
           userTab: this.state.userTab.sort((a, b) => {
             var countA = 0;
-            for(var i=0;i<a.tags.length;i++) {
-              if (tags.includes(a.tags[i]))
-                countA++;
+            for (var i = 0; i < a.tags.length; i++) {
+              if (tags.includes(a.tags[i])) countA++;
             }
             var countB = 0;
-            for(var k=0;k<b.tags.length;k++) {
-              if (tags.includes(b.tags[k]))
-                countB++;
+            for (var k = 0; k < b.tags.length; k++) {
+              if (tags.includes(b.tags[k])) countB++;
             }
             return countA - countB;
           })
@@ -174,21 +179,23 @@ class HomeLogged extends Component {
         break;
       case "8":
         tags = [];
-        this.state.filterData.userTags.forEach(element => {
-          tags.push(element.tag_id);
-        });
+        if (this.state.filterData.userTags)
+          this.state.filterData.userTags.forEach(element => {
+            tags.push(element.tag_id);
+          });
+        else if (this.props.userConnectedData.tags)
+          this.props.userConnectedData.tags.forEach(element => {
+            tags.push(element.tag_id);
+          });
         this.setState({
           userTab: this.state.userTab.sort((a, b) => {
-            
             var countA = 0;
-            for(var i=0;i<a.tags.length;i++) {
-              if (tags.includes(a.tags[i]))
-                countA++;
+            for (var i = 0; i < a.tags.length; i++) {
+              if (tags.includes(a.tags[i])) countA++;
             }
             var countB = 0;
-            for(var k=0;k<b.tags.length;k++) {
-              if (tags.includes(b.tags[k]))
-                countB++;
+            for (var k = 0; k < b.tags.length; k++) {
+              if (tags.includes(b.tags[k])) countB++;
             }
             return countB - countA;
           })
@@ -199,7 +206,7 @@ class HomeLogged extends Component {
   };
 
   handleFilterData = async data => {
-    await this._isMounted &&
+    (await this._isMounted) &&
       this.setState({
         filterData: data
       });
@@ -241,15 +248,12 @@ class HomeLogged extends Component {
       .then(res => {
         this._isMounted &&
           this.setState({
-            userTab: res.data.list
+            userTab: res.data.list,
+            defaultTab: res.data.list
           });
       })
       .catch(error => {
         console.log(error);
-      });
-    this._isMounted &&
-      this.setState({
-        defaultTab: this.state.userTab.copyWithin(0)
       });
     if (this.state.defaultTab.length) {
       this.initTab();
@@ -292,8 +296,13 @@ class HomeLogged extends Component {
     var tab = this.state.defaultTab.copyWithin(0);
     var copy = [];
     var tags = [];
-    
-    await this.state.filterData.userTags.forEach(element => {
+
+    if (this.state.filterData.userTags)
+      this.state.filterData.userTags.forEach(element => {
+        tags.push(element.tag_id);
+      });
+    else if (this.props.userConnectedData.tags)
+      this.props.userConnectedData.tags.forEach(element => {
         tags.push(element.tag_id);
       });
 
@@ -311,16 +320,13 @@ class HomeLogged extends Component {
         keep = 0;
       var count = 0;
       var newT = [];
-      for (var k=0;k<tab[i].tags.length;k++) 
-        newT.push(tab[i].tags[k]);
-      for (var g=0;g<newT.length;g++) {
-        if (tags.includes(newT[g]))
-          count++;
+      for (var k = 0; k < tab[i].tags.length; k++) newT.push(tab[i].tags[k]);
+      for (var g = 0; g < newT.length; g++) {
+        if (tags.includes(newT[g])) count++;
       }
-      if (count !== tags.length)
-        keep = 0; 
+      if (count !== tags.length) keep = 0;
       if (keep === 1) copy.push(tab[i]);
-      }
+    }
     this.setState({
       userTab: copy,
       defaultSorted: copy

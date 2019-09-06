@@ -211,7 +211,7 @@ module.exports = {
         .json({ message: "Successfully reached password reset" });
     } else
       return res
-        .status(500)
+        .status(401)
         .json({ message: "password reset key isn't valid" });
   },
 
