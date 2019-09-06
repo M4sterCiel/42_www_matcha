@@ -116,7 +116,7 @@ class NavBar extends Component {
       .then(res => {
         var tab = res.data.tab;
         for (var i = 0; i < tab.length; i++)
-        // eslint-disable-next-line
+          // eslint-disable-next-line
           if (tab[i]["isRead"] == 0) counter++;
         this._isMounted &&
           this.setState({
@@ -228,6 +228,11 @@ class NavBar extends Component {
       return (
         <ul className="right hide-on-med-and-down">
           <li>
+            <NavLink to={"/main/search/"}>
+              {<i className="material-icons">search</i>}
+            </NavLink>
+          </li>
+          <li>
             <NavLink to={"/users/profile/" + Auth.getConfirm().username}>
               {<i className="material-icons">person</i>}
             </NavLink>
@@ -314,6 +319,14 @@ class NavBar extends Component {
         >
           <h5 style={{ textAlign: "center", color: "#ffb6d3" }}>Menu</h5>
           <List>
+            <ListItem>
+              <NavLink to={"/main/search/"} className="mobile-menu-links">
+                <i className="material-icons link-icon mobile-menu-icons">
+                  search
+                </i>
+                <span className="mobile-menu-notif-text">Search</span>
+              </NavLink>
+            </ListItem>
             <ListItem>
               <NavLink
                 className="mobile-menu-links"
