@@ -83,5 +83,8 @@ exports.router = (() => {
   userRouter
     .route("/profiles-blocked/:user_id")
     .get(userController.getUserProfilesBlockedId);
+  userRouter
+    .route("/profile/:user_id/list-profile")
+    .get(userController.getUserListProfileDataFromId);
   return userRouter;
 })();

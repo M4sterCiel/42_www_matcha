@@ -80,6 +80,8 @@ export default {
     getUserProfilesBlocked: async user_id =>
       await axios
         .get(`/users/profiles-blocked/${user_id}`)
-        .then(res => res.data)
+        .then(res => res.data),
+    getUserListProfileDataFromId: async id =>
+      await axios.get(`/users/profile/${id}/list-profile`).then(res => res.data)
   }
 };

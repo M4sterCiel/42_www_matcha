@@ -561,7 +561,7 @@ module.exports = {
       return res.status(401).json({ error: profilesLiked.error });
     if (!profilesLiked) profilesLiked = null;
 
-    return res.status(200).json({ profiles_Liked: profilesLiked });
+    return res.status(200).json({ profiles_liked: profilesLiked });
   },
 
   getUserProfilesBlockedId: async (req, res, next) => {
@@ -572,6 +572,16 @@ module.exports = {
       return res.status(401).json({ error: profilesBlocked.error });
     if (!profilesBlocked) profilesBlocked = null;
 
-    return res.status(200).json({ profiles_Blocked: profilesBlocked });
+    return res.status(200).json({ profiles_blocked: profilesBlocked });
+  },
+
+  getUserListProfileDataFromId: async (req, res, next) => {
+    var userId = req.params.user_id;
+
+    var result = await userModel.getListProfileDataFromId(userId);
+
+    if (result.error) return res.status(401).json({ error: result.error });
+
+    return res.status(200).json({ data: result });
   }
 };

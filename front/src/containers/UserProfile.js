@@ -253,7 +253,9 @@ class UserProfile extends Component {
                       <ModalUserEditAccountSettings />
                     )}
                     {this.state.user.id === this.props.userConnectedData.id && (
-                      <ModalUserSupervise />
+                      <ModalUserSupervise
+                        user_id={this.props.userConnectedData.id}
+                      />
                     )}
                     {this.state.user.id !== this.props.userConnectedData.id && (
                       <ModalReportUser
