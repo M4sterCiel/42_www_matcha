@@ -34,7 +34,7 @@ class ModalUserListFilter extends Component {
           this.props.userConnectedData.pop_min,
           this.props.userConnectedData.pop_max
         ],
-        userTags: this.props.userConnectedData.tags,
+        /* userTags: this.props.userConnectedData.tags, */
         allTags: this.props.userConnectedData.allTags
       });
   }
@@ -58,7 +58,7 @@ class ModalUserListFilter extends Component {
             this.props.userConnectedData.pop_min,
             this.props.userConnectedData.pop_max
           ],
-          userTags: this.props.userConnectedData.tags,
+          /* userTags: this.props.userConnectedData.tags, */
           allTags: this.props.userConnectedData.allTags
         });
       this.props.filterDataToParent({

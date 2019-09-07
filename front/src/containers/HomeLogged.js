@@ -113,11 +113,6 @@ class HomeLogged extends Component {
           })
         });
         break;
-      /* this.setState({
-          userTab: this.state.defaultTab
-        });
-        this.updateTab();
-        break; */
       case "1":
         this.setState({
           userTab: this.state.userTab.sort((a, b) => {
