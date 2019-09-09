@@ -31,10 +31,6 @@ class ViewProfilesList extends Component {
     );
 
   render() {
-    if (!this.props.users[0]) {
-      return <div>cc</div>;
-    }
-
     return (
       <div>
         <Row>

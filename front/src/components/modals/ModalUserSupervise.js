@@ -17,13 +17,14 @@ class ModalUserSupervise extends Component {
 
   async componentDidMount() {
     this._isMounted = true;
+    var profilesVisitedTab = [];
+    var profilesLikedTab = [];
+    var profilesBlockedTab = [];
 
     await ApiCall.user
       .getUserProfilesVisited(this.props.user_id)
       .then(async res => {
         if (res.length !== 0) {
-          var profilesVisitedTab = [];
-
           await res.profiles_visited.forEach(async (elem, index) => {
             await profilesVisitedTab.push(elem);
             await ApiCall.user
@@ -37,10 +38,7 @@ class ModalUserSupervise extends Component {
                   );
                 }
               });
-            return 0;
           });
-          (await this._isMounted) &&
-            this.setState({ profilesVisited: profilesVisitedTab });
         }
       });
 
@@ -48,8 +46,6 @@ class ModalUserSupervise extends Component {
       .getUserProfilesLiked(this.props.user_id)
       .then(async res => {
         if (res.length !== 0) {
-          var profilesLikedTab = [];
-
           await res.profiles_liked.forEach(async (elem, index) => {
             await profilesLikedTab.push(elem);
             await ApiCall.user
@@ -63,10 +59,7 @@ class ModalUserSupervise extends Component {
                   );
                 }
               });
-            return 0;
           });
-          (await this._isMounted) &&
-            this.setState({ profilesLiked: profilesLikedTab });
         }
       });
 
@@ -74,14 +67,11 @@ class ModalUserSupervise extends Component {
       .getUserProfilesBlocked(this.props.user_id)
       .then(async res => {
         if (res.length !== 0) {
-          var profilesBlockedTab = [];
-
           await res.profiles_blocked.forEach(async (elem, index) => {
             await profilesBlockedTab.push(elem);
             await ApiCall.user
               .getUserListProfileDataFromId(elem.user_id)
               .then(async res => {
-                console.log("res", res.data);
                 if (res.data.length !== 0) {
                   profilesBlockedTab[index] = await Object.assign(
                     {},
@@ -89,18 +79,17 @@ class ModalUserSupervise extends Component {
                     res.data[0]
                   );
                 }
-              })
-              .catch(e => console.log("e", e));
-            return 0;
+              });
           });
-          (await this._isMounted) &&
-            this.setState({ profilesBlocked: profilesBlockedTab });
         }
       });
 
     (await this._isMounted) &&
       this.setState({
-        user_id: this.props.user_id
+        user_id: this.props.user_id,
+        profilesVisited: profilesVisitedTab,
+        profilesLiked: profilesLikedTab,
+        profilesBlocked: profilesBlockedTab
       });
   }
 
