@@ -5,7 +5,9 @@ import Axios from "axios";
 import NavBar from "../components/NavBar";
 import UserCard from "../components/cards/UserCard";
 import SortUserList from "../components/settings/SortUserList";
-import { FilterUsersButton } from "../components/Buttons";
+import { FilterUsersButton, SearchButton } from "../components/Buttons";
+import SearchCriteria from "../components/search/SearchCriteria";
+import { Card } from "react-materialize";
 import HeartBroken from "../assets/heart-broken.gif";
 import io from "socket.io-client";
 
@@ -20,6 +22,7 @@ class Search extends Component {
       isLoading: true,
       tags: [],
       filterData: [],
+      searchData: [],
       sortValue: "0",
       page: 12
     };
@@ -32,6 +35,20 @@ class Search extends Component {
     return (
       <div className="App">
         <NavBar />
+        <div className="row">
+          {this.props.userConnectedData.allTags !== undefined && (
+            <div className="search-top">
+              <h1 className="search-title">
+                Search<i className="material-icons icon-text">search</i>
+              </h1>{" "}
+              <SearchCriteria
+                searchDataToParent={this.handleSearchData}
+                allTags={this.props.userConnectedData.allTags}
+              />
+              <SearchButton onClick={e => this.handleSearch()} />
+            </div>
+          )}
+        </div>
       </div>
     );
   }
@@ -58,29 +75,39 @@ class Search extends Component {
     window.addEventListener("scroll", this.infiniteScroll);
   }
 
-  /*   handleSearch = async event => {
+  handleSearchData = async data => {
+    (await this._isMounted) &&
+      this.setState({
+        searchData: data
+      });
+    console.log(data);
+  };
+
+  handleSearch = async e => {
     e.preventDefault();
-      await Axios.post('/main/search',{
-        uid: this.state.userID,
-        ageMin: //corresponding data
-        ageMax: //corresponding data
-        popMin: //corresponding data
-        popMax: //corresponding data
-        distMax: //corresponding data
-        gender: //corresponding data
-        sexOrient: //corresponding data
-        tags: //corresponding data, expects a tab like [3, 5, 9, 11] no key/value
-      }).then(res => {
+    await Axios.post("/main/search", {
+      uid: this.state.userID,
+      ageMin: this.state.filterData.ageRange[0],
+      ageMax: this.state.filterData.ageRange[1],
+      popMin: this.state.filterData.popularityRange[0],
+      popMax: this.state.filterData.popularityRange[1],
+      distMax: this.state.filterData.distance,
+      gender: this.state.filterData.gender,
+      sexOrient: this.state.filterData.sexOrientation,
+      tags: Object.keys(this.state.filterData.tags)
+    })
+      .then(res => {
         this._isMounted &&
-        this.setState({
-          userTab: res.data.list,
-          defaultTab: res.data.list,
-          defaultSorted: res.data.list
-        });
-      }).catch(err => {
-          console.log(err);
+          this.setState({
+            userTab: res.data.list,
+            defaultTab: res.data.list,
+            defaultSorted: res.data.list
+          });
       })
-  }; */
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   handleSortValue = async data => {
     (await this._isMounted) &&

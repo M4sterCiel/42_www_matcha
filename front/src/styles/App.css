@@ -266,6 +266,54 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
   left: -340px;
 }
 
+.search-top {
+  margin-top: 20px !important;
+  max-width: inherit;
+  padding: 0px 100px;
+  margin: auto;
+  border: solid #ffb6d3 1px;
+  border-radius: 30px;
+}
+
+.search-title {
+  text-align: center;
+  color: #ffb6d3;
+}
+
+.search-criteria {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.icon-text {
+  font-size: 60px;
+  color: #ffb6d3;
+}
+
+.search-btn {
+  display: block;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+/* User list reduced */
+
+.user-list-reduced-container {
+  text-align: left;
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+.view-profiles-list-item {
+  min-height: 50px !important;
+}
+
+.view-profiles-list-link {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
 /* Sliders */
 
 .MuiSlider-root {
@@ -1647,6 +1695,10 @@ button.btn-star-picture-main {
   .slides {
     height: 400px !important;
   }
+
+  .view-profiles-list-text-sec {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 440px) {
@@ -1754,6 +1806,19 @@ button.btn-star-picture-main {
   .secondary-content {
     left: calc(50% + 5px) !important;
     right: 0px !important;
+  }
+
+  .view-profiles-list-item {
+    min-height: 60px !important;
+  }
+
+  .view-profiles-list-title,
+  .view-profiles-list-text {
+    display: none;
+  }
+
+  .view-profiles-list-link {
+    font-size: 14px !important;
   }
 }
 

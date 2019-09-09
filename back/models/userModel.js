@@ -28,6 +28,19 @@ module.exports = {
     }
   },
 
+  getListProfileDataFromId: async id => {
+    try {
+      var result = await pool.query({
+        sql:
+          "SELECT username, firstname, lastname, profile_picture_url FROM users WHERE id = ?",
+        values: [id]
+      });
+      if (result) return result;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
   updateOne: async (id, field, data) => {
     try {
       var result = await pool.query({
@@ -190,10 +203,8 @@ module.exports = {
         sql: "SELECT `id`, online FROM users WHERE `id` IN (?)",
         values: [data]
       });
-      //console.log(result);
       if (result) return result;
     } catch (err) {
-      console.log("errreur =>>>>>>> ", err);
       throw new Error(err);
     }
   },
@@ -207,7 +218,6 @@ module.exports = {
       });
       if (result) return result;
     } catch (err) {
-      console.log("errreur =>>>>>>> ", err);
       throw new Error(err);
     }
   },
@@ -219,7 +229,6 @@ module.exports = {
           "SELECT * FROM notification WHERE `user_id` = ? AND type != 2 ORDER BY date DESC",
         values: [userID]
       });
-      //console.log(result);
       if (result) return result;
     } catch (err) {
       throw new Error(err);

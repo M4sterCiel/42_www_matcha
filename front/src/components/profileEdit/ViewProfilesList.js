@@ -1,40 +1,41 @@
 import React, { Component } from "react";
+import { NavLink } from "react-router-dom";
 import { Row, Col, Collection, CollectionItem } from "react-materialize";
 
 class ViewProfilesList extends Component {
+  listItems = users =>
+    users.map(
+      user =>
+        user.user_id && (
+          <CollectionItem
+            key={user.user_id}
+            className="avatar view-profiles-list-item"
+          >
+            <img
+              src={user.profile_picture_url}
+              alt={"profile picture" + user.username}
+              className="circle"
+            />
+            <span className="view-profiles-list-title">{user.username}</span>
+            <p className="view-profiles-list-text">
+              {user.firstname} {user.lastname}
+            </p>
+            <NavLink
+              className="profile-link view-profiles-list-link"
+              to={"/users/profile/" + user.username}
+            >
+              SEE <span className="view-profiles-list-text-sec">PROFILE</span>
+            </NavLink>
+          </CollectionItem>
+        )
+    );
+
   render() {
     return (
       <div>
         <Row>
-          <Col m={6} s={12}>
-            <Collection>
-              <CollectionItem className="avatar">
-                <img
-                  src="https://materializecss.com/images/yuna.jpg"
-                  alt=""
-                  className="circle"
-                />
-                <span className="title">Title1</span>
-                <p>
-                  First Line
-                  <br />
-                  Second Line
-                </p>
-              </CollectionItem>
-              <CollectionItem className="avatar">
-                <img
-                  src="https://materializecss.com/images/yuna.jpg"
-                  alt=""
-                  className="circle"
-                />
-                <span className="title">Title2</span>
-                <p>
-                  First Line
-                  <br />
-                  Second Line
-                </p>
-              </CollectionItem>
-            </Collection>
+          <Col s={12}>
+            <Collection>{this.listItems(this.props.users)}</Collection>
           </Col>
         </Row>
       </div>
