@@ -138,7 +138,6 @@ class EditPasswordBox extends Component {
     await ApiCall.user
       .verifyPasswordWithId(this.state.id, this.state.currentPwd)
       .then(res => {
-        console.log(res);
         this._isMounted &&
           this.setState({
             currentPasswordConfirmed: true
@@ -155,7 +154,6 @@ class EditPasswordBox extends Component {
     await ApiCall.user
       .updatePasswordWithId(this.state.id, this.state.pwd1)
       .then(res => {
-        console.log(res);
         InfoToast.custom.info("Password updated with success", 3000);
         this.hideEditPassword();
       })
