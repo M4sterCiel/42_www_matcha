@@ -129,7 +129,9 @@ class ModalUserEditProfileInfo extends Component {
         lastname: this.state.lastname,
         bio: this.state.bio === "" ? null : this.state.bio,
         birthdate:
-          this.state.birthdate === null || this.state.birthdate === ""
+          this.state.birthdate === null ||
+          this.state.birthdate === "" ||
+          !moment(new Date(this.state.birthdate)).isValid()
             ? null
             : moment(new Date(this.state.birthdate))
                 .format()
