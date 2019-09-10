@@ -65,7 +65,7 @@ module.exports = {
     var ageMax = mainService.ageToBirthdate(req.body.ageMax);
     var popMin = req.body.popMin;
     var popMax = req.body.popMax;
-    var userTags = await tagModel.getAllUserTags(uid);
+    var userTags = req.body.tags;
 
     var range = mainService.getRadiusDistanceCoord(
       user[0].geo_lat,
@@ -83,7 +83,6 @@ module.exports = {
       popMax,
       uid
     );
-    //console.log(list.length);
 
     var listData = list.copyWithin(0);
 
@@ -95,6 +94,12 @@ module.exports = {
         tags.push(element.tag_id);
       });
       list[i].tags = tags;
+      list[i].geo_lat = await mainService.getDistanceScore(
+        user[0].geo_lat,
+        user[0].geo_long,
+        listData[i].geo_lat,
+        listData[i].geo_long
+      );
     }
 
     list = await mainService.sortWithTags(list, userTags);

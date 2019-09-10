@@ -155,23 +155,11 @@ class FilterUsersButton extends Component {
   }
 }
 
-class SearchButton extends Component {
-  render() {
-    return (
-      <Button tooltip="Search for profiles" className="search-btn">
-        <span className="filter-users-btn-txt">Search</span>
-        <Icon right>search</Icon>
-      </Button>
-    );
-  }
-}
-
 export {
   ProfileSettingsButton,
   ProfileActionsButton,
   LikeButton,
   LikeBackButton,
   DislikeButton,
-  FilterUsersButton,
-  SearchButton
+  FilterUsersButton
 };

@@ -5,11 +5,14 @@ import Axios from "axios";
 import NavBar from "../components/NavBar";
 import UserCard from "../components/cards/UserCard";
 import SortUserList from "../components/settings/SortUserList";
-import { FilterUsersButton, SearchButton } from "../components/Buttons";
+import ModalMatchAnim from "../components/modals/ModalMatchAnim";
+import ModalUserListFilter from "../components/modals/ModalUserListFilter";
+import { FilterUsersButton } from "../components/Buttons";
 import SearchCriteria from "../components/search/SearchCriteria";
-import { Card } from "react-materialize";
 import HeartBroken from "../assets/heart-broken.gif";
+import HeartLoading from "../assets/heart-loading.gif";
 import io from "socket.io-client";
+import { Button, Icon } from "react-materialize";
 
 class Search extends Component {
   constructor(props) {
@@ -19,7 +22,7 @@ class Search extends Component {
       defaultTab: [],
       userTab: [],
       defaultSorted: [],
-      isLoading: true,
+      isLoading: false,
       tags: [],
       filterData: [],
       searchData: [],
@@ -29,6 +32,7 @@ class Search extends Component {
     this.Auth = new AuthService();
     this._isMounted = false;
     this.infiniteScroll = this.infiniteScroll.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   render() {
@@ -45,9 +49,38 @@ class Search extends Component {
                 searchDataToParent={this.handleSearchData}
                 allTags={this.props.userConnectedData.allTags}
               />
-              <SearchButton onClick={e => this.handleSearch()} />
+              <Button
+                tooltip="Search for profiles"
+                className="search-btn"
+                onClick={this.handleSearch}
+              >
+                <span className="filter-users-btn-txt">Search</span>
+                <Icon right>search</Icon>
+              </Button>
             </div>
           )}
+          <div>
+            <div className="user-list-settings col s12">
+              <FilterUsersButton />
+              <SortUserList sortValueToParent={this.handleSortValue} />
+            </div>
+            {!this.state.isLoading ? (
+              <this.userList
+                value={this.state.userTab.slice(0, this.state.page)}
+              />
+            ) : (
+              <div className="userlist-loading">
+                <img
+                  className="userlist-loading-img"
+                  src={HeartLoading}
+                  alt="Loading anim"
+                />
+                <div className="userlist-loading-text">Loading...</div>
+              </div>
+            )}
+            <ModalUserListFilter filterDataToParent={this.handleFilterData} />
+            <ModalMatchAnim />
+          </div>
         </div>
       </div>
     );
@@ -80,28 +113,37 @@ class Search extends Component {
       this.setState({
         searchData: data
       });
-    console.log(data);
+    //console.log(data);
   };
 
-  handleSearch = async e => {
-    e.preventDefault();
+  handleSearch = async () => {
+    var userTags = [];
+    this.setState({ isLoading: true });
+
+    if (this.state.searchData.userTags.length) {
+      for (var i = 0; i < this.state.searchData.userTags.length; i++) {
+        userTags.push(this.state.searchData.userTags[i].tag_id);
+      }
+    }
+
     await Axios.post("/main/search", {
       uid: this.state.userID,
-      ageMin: this.state.filterData.ageRange[0],
-      ageMax: this.state.filterData.ageRange[1],
-      popMin: this.state.filterData.popularityRange[0],
-      popMax: this.state.filterData.popularityRange[1],
-      distMax: this.state.filterData.distance,
-      gender: this.state.filterData.gender,
-      sexOrient: this.state.filterData.sexOrientation,
-      tags: Object.keys(this.state.filterData.tags)
+      ageMin: this.state.searchData.ageRange[0],
+      ageMax: this.state.searchData.ageRange[1],
+      popMin: this.state.searchData.popularityRange[0],
+      popMax: this.state.searchData.popularityRange[1],
+      distMax: this.state.searchData.distance,
+      gender: this.state.searchData.gender,
+      sexOrient: this.state.searchData.sexOrientation,
+      tags: userTags
     })
       .then(res => {
         this._isMounted &&
           this.setState({
             userTab: res.data.list,
             defaultTab: res.data.list,
-            defaultSorted: res.data.list
+            defaultSorted: res.data.list,
+            isLoading: false
           });
       })
       .catch(err => {
@@ -117,10 +159,9 @@ class Search extends Component {
     switch (data) {
       case "0":
         this.setState({
-          userTab: this.state.userTab.sort((a, b) => {
-            return b.pop_max - a.pop_max;
-          })
+          userTab: this.state.defaultSorted
         });
+        this.updateTab();
         break;
       case "1":
         this.setState({
@@ -223,7 +264,7 @@ class Search extends Component {
       });
     if (data.length !== 0) {
       //console.log(data);
-      this.updateTab();
+      await this.updateTab();
       this.handleSortValue(this.state.sortValue);
       this.setState({
         page: 12
@@ -292,7 +333,7 @@ class Search extends Component {
       if (count !== tags.length) keep = 0;
       if (keep === 1) copy.push(tab[i]);
     }
-    this.setState({
+    await this.setState({
       userTab: copy,
       defaultSorted: copy
     });
