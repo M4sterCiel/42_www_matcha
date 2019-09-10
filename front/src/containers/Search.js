@@ -281,6 +281,9 @@ class Search extends Component {
           uid={this.state.userID}
           func={this.sendNotif}
           key={index}
+          pictures={
+            this.props.userConnectedData.pictures.length > 0 ? true : false
+          }
         />
       ));
       return <ul>{users}</ul>;

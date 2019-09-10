@@ -10,7 +10,6 @@ import ApiCall from "../../services/ApiCall";
 import ManPicture from "../../assets/default-profile-man.jpg";
 import WomanPicture from "../../assets/default-profile-woman.jpg";
 import NoGender from "../../assets/default-profile-no-gender.png";
-//import Axios from "axios";
 
 class UserCard extends Component {
   constructor(props) {
@@ -75,15 +74,6 @@ class UserCard extends Component {
       .catch(err => {
         console.log(err);
       });
-
-    /* await Axios.get("/users/profile-picture/" + this.props.intel.id)
-      .then(res => {
-        this._isMounted &&
-          this.setState({
-            picture: res.data.picture
-          });
-      })
-      .catch(err => {}); */
   }
 
   handleLike = () => {
@@ -161,21 +151,45 @@ class UserCard extends Component {
               {this.state.likesProfile === true ? (
                 <div
                   className="user-card-dislike-btn"
-                  onClick={e => this.handleDislike()}
+                  onClick={
+                    this.props.pictures
+                      ? e => this.handleDislike()
+                      : () => {
+                          alert(
+                            "You must add a picture to your profile to perform this action."
+                          );
+                        }
+                  }
                 >
                   <DislikeButton />
                 </div>
               ) : this.state.likedByProfile === true ? (
                 <div
                   className="user-card-like-back-btn"
-                  onClick={e => this.handleLikeBack()}
+                  onClick={
+                    this.props.pictures
+                      ? e => this.handleLikeBack()
+                      : () => {
+                          alert(
+                            "You must add a picture to your profile to perform this action."
+                          );
+                        }
+                  }
                 >
                   <LikeBackButton />
                 </div>
               ) : (
                 <div
                   className="user-card-like-btn"
-                  onClick={e => this.handleLike()}
+                  onClick={
+                    this.props.pictures
+                      ? e => this.handleLike()
+                      : () => {
+                          alert(
+                            "You must add a picture to your profile to perform this action."
+                          );
+                        }
+                  }
                 >
                   <LikeButton />
                 </div>
