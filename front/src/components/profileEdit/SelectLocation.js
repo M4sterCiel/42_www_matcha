@@ -82,7 +82,7 @@ class SelectLocation extends Component {
       addressLookup: true
     };
     GeoPosition.locate(options, (err, location) => {
-      console.log(err || location);
+      //console.log(err || location);
       this._isMounted &&
         this.setState({
           userLocation: location,
@@ -105,7 +105,7 @@ class SelectLocation extends Component {
       timezone: false
     };
     GeoPosition.locateByMobile(options, (err, location) => {
-      console.log(err || location);
+      //console.log(err || location);
       this._isMounted &&
         this.setState({
           userLocation: location,
@@ -143,7 +143,7 @@ class SelectLocation extends Component {
 
   getLatLongFromCity = city => {
     GeoPosition.geocode(city, (err, location) => {
-      console.log(err || location);
+      //console.log(err || location);
       if (location !== null && location.coords.longitude !== null) {
         this._isMounted &&
           this.setState({

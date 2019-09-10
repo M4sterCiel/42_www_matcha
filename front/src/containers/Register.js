@@ -303,7 +303,7 @@ class Register extends Component {
       timezone: false
     };
     GeoPosition.locateByMobile(options, (err, location) => {
-      console.log(err || location);
+      //console.log(err || location);
       this._isMounted &&
         this.setState({ userLocation: location, locationValid: true });
     });
