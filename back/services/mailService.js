@@ -3,16 +3,25 @@ let nodemailer = require("nodemailer");
 module.exports = {
   registerMail: (mail, username, link) => {
     var message =
-      "Hi " +
+      `
+    <html>
+      <head>
+        <meta charset="utf-8">
+      </head>
+      <body>
+        <p>Hi ` +
       username +
-      ", \n\
-        We have received your registration on Matcha.\
-        We hope you will find what you are looking for on our platform.\
-        \n\
-        To get started on Matcha, please make sure to validate the following link:\n" +
+      `,</p>
+        <br>
+        <p>We have received your registration on Matcha.</p>
+        <p>We hope you will find what you are looking for on our platform.</p>
+        <p>To get started on Matcha, please make sure to validate the following link: <a href="` +
       link +
-      "\n\
-        See you soon on Matcha.";
+      `">Click here</a></p>
+        <br>
+        <p>See you soon on Matcha.</p>
+      </body>
+    </html>`;
 
     let transporter = nodemailer.createTransport({
       sendmail: true,
@@ -24,7 +33,7 @@ module.exports = {
         from: "registration@matcha.com",
         to: mail,
         subject: "Welcome to Matcha",
-        text: message,
+        html: message,
         contentType: "text/html"
       },
       (err, info) => {
@@ -35,16 +44,25 @@ module.exports = {
 
   forgotPasswordMail: (mail, username, link) => {
     var message =
-      "Hi " +
+      `
+    <html>
+      <head>
+        <meta charset="utf-8">
+      </head>
+      <body>
+        <p>Hi ` +
       username +
-      ", \n\
-        We have received your password reset request on Matcha.\
-        Don't worry we got you covered ;)\
-        \n\
-        To reset your password on Matcha, please visit the following link:\n" +
+      `,</p>
+        <br>
+        <p>We have received your password reset request on Matcha.</p>
+        <p>Don't worry we got you covered ;)</p>
+        <p>To reset your password on Matcha, please visit the following link: <a href="` +
       link +
-      "\n\
-        See you soon on Matcha.";
+      `">Click here</a></p>
+        <br>
+        <p>See you soon on Matcha.</p>
+      </body>
+    </html>`;
 
     let transporter = nodemailer.createTransport({
       sendmail: true,
@@ -56,7 +74,7 @@ module.exports = {
         from: "noreply@matcha.com",
         to: mail,
         subject: "Matcha - Reset password",
-        text: message,
+        html: message,
         contentType: "text/html"
       },
       (err, info) => {
