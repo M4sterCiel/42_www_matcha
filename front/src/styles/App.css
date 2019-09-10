@@ -528,15 +528,17 @@ input[type="email"]:not(.browser-default):focus:not([readonly]) {
 }
 
 .slider {
-  height: 740px !important;
+  height: auto;
+  margin-bottom: 10px;
 }
 
-.slides {
-  height: 700px !important;
+.slide-img {
+  width: 100%;
+  height: 700px;
 }
 
-.slider .indicators .indicator-item.active {
-  background-color: #ffb6d3 !important;
+.slick-dots li.slick-active button:before {
+  color: #ffb6d3 !important;
 }
 
 .profile-text-icon {
@@ -1544,6 +1546,10 @@ button.btn-star-picture-main {
   .user-card-names-text {
     max-width: 140px;
   }
+
+  .slide-img {
+    height: 600px;
+  }
 }
 
 @media screen and (max-width: 800px) {
@@ -1569,6 +1575,10 @@ button.btn-star-picture-main {
   .user-card-names-text {
     max-width: 110px;
   }
+
+  .slide-img {
+    height: 500px;
+  }
 }
 
 @media screen and (max-width: 740px) {
@@ -1578,6 +1588,10 @@ button.btn-star-picture-main {
 
   .user-card-names-text {
     max-width: 90px;
+  }
+
+  .slide-img {
+    height: 450px;
   }
 }
 
@@ -1679,6 +1693,10 @@ button.btn-star-picture-main {
     left: calc(50% + 14px) !important;
     right: 0px !important;
   }
+
+  .slide-img {
+    height: 400px;
+  }
 }
 
 @media screen and (max-width: 600px) {
@@ -1688,16 +1706,16 @@ button.btn-star-picture-main {
     top: calc(50% - 100px) !important;
   }
 
-  .slider {
-    height: 440px !important;
-  }
-
   .slides {
     height: 400px !important;
   }
 
   .view-profiles-list-text-sec {
     display: none;
+  }
+
+  .slide-img {
+    height: 375px;
   }
 }
 
@@ -1755,10 +1773,6 @@ button.btn-star-picture-main {
   .profile-birthdate {
     position: relative;
     left: 33%;
-  }
-
-  .slider {
-    height: 340px !important;
   }
 
   .slides {
@@ -1820,6 +1834,10 @@ button.btn-star-picture-main {
   .view-profiles-list-link {
     font-size: 14px !important;
   }
+
+  .slide-img {
+    height: 325px;
+  }
 }
 
 @media screen and (max-width: 400px) {
@@ -1831,15 +1849,15 @@ button.btn-star-picture-main {
   .filter-users-btn-txt {
     display: none;
   }
+
+  .slide-img {
+    height: 300px;
+  }
 }
 
 @media screen and (max-width: 360px) {
   .img-match-anim {
     width: 160px;
-  }
-
-  .slider {
-    height: 240px !important;
   }
 
   .slides {
@@ -1915,5 +1933,9 @@ button.btn-star-picture-main {
 
   .chat-conv-title-icon {
     font-size: 18px;
+  }
+
+  .slide-img {
+    height: 250px;
   }
 }

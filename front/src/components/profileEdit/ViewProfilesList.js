@@ -6,7 +6,7 @@ class ViewProfilesList extends Component {
   listItems = users =>
     users.map(
       user =>
-        user.user_id && (
+        user.username !== undefined && (
           <CollectionItem
             key={user.user_id}
             className="avatar view-profiles-list-item"
