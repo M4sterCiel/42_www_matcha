@@ -7,8 +7,8 @@ var chatRoute = require("./chatRoute");
 var mainRoute = require("../routes/mainRoute");
 var chatController = require("../controllers/chatController");
 var userController = require("../controllers/userController");
-var userModel = require('../models/userModel');
-var Seed = require('../config/seed');
+var userModel = require("../models/userModel");
+var Seed = require("../config/seed");
 /* Listenning port */
 
 const PORT = 8080;
@@ -24,7 +24,7 @@ app.use("/users/", userRoute.router);
 app.use("/chat/", chatRoute.router);
 app.use("/main/", mainRoute.router);
 
-app.get('/seed', (req, res) => {
+app.get("/seed", (req, res) => {
   Seed.getUserSeed();
   res.send({ message: "Database created succefully" });
 });
@@ -103,8 +103,7 @@ nsp.on("connection", socket => {
     );
     socket.broadcast.emit(room_id, { data, userID, userName });
     var isBlocked = await userModel.checkUserIsBlocked(userID_other, userID);
-    if (!isBlocked)
-      mainSocket.emit("new message", { room_id, userID_other });
+    if (!isBlocked) mainSocket.emit("new message", { room_id, userID_other });
   });
 
   socket.on("readMessage", data => {
