@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import "../styles/App.css";
 import NavBar from "../components/NavBar";
-//import Footer from './components/Footer';
-import FacebookLogin from "react-facebook-login";
 import "materialize-css/dist/css/materialize.min.css";
 import AuthService from "../services/AuthService";
 import { NavLink } from "react-router-dom";
@@ -30,10 +28,6 @@ class Login extends Component {
   }
 
   render() {
-    const responseFacebook = response => {
-      console.log(response);
-    };
-
     return (
       <div className="App">
         <NavBar />
@@ -111,11 +105,6 @@ class Login extends Component {
                   </NavLink>
                 </p>
               </div>
-              <FacebookLogin
-                appId="2410412929189525"
-                fields="name,email,picture"
-                callback={responseFacebook}
-              />
             </div>
           </div>
         </div>

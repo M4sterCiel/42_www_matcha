@@ -5,6 +5,7 @@ import NavBar from "../components/NavBar";
 import "materialize-css/dist/css/materialize.min.css";
 import AuthService from "../services/AuthService";
 import { NavLink } from "react-router-dom";
+import { BackgroundAdd } from "../components/Background";
 import ErrorToast from "../services/ErrorToastService";
 import InfoToast from "../services/InfoToastService";
 
@@ -153,6 +154,7 @@ class ResetPassword extends Component {
   // Redirect user if already logged in
   componentDidMount() {
     this._isMounted = true;
+    BackgroundAdd();
     if (this.Auth.loggedIn()) {
       ErrorToast.auth.userAlreadyLogged();
       this.props.history.replace("/");

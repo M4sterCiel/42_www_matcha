@@ -27,57 +27,54 @@ class Messages extends Component {
   }
 
   async handleRoomData(room_id, username, userID) {
-    await this._isMounted && this.setState({
-      room: room_id,
-      username: username,
-      userID: userID
-    });
+    (await this._isMounted) &&
+      this.setState({
+        room: room_id,
+        username: username,
+        userID: userID
+      });
     this.updateChat();
   }
 
   render() {
     return (
-        <div className="App">
-            <NavBar />
-            <div 
-            className="row left align"
-            style={{minWidth: 100 + '%'}}
-            >
-                <div className="col s3" style={{height: this.state.winSize}} >
-                    <ChatConv 
-                    roomToParent={this.handleRoomData}
-                     />
-                </div>
-                <div className="col s9">
-                    {this.state.room === null &&
-                    <div 
-                    className="valign-wrapper center-align empty-box"
-                    style={{
-                        paddingTop: 30 + '%',
-                        backgroundColor: '#a9a9a9',
-                        marginTop: 1 + '%',
-                        height: window.innerHeight - 100
-                    }}>
-                        {this.state.listMessages.length < 1 && <h5>Select a conversation.</h5>}
-                    </div>
-                    }
-                    {this.state.room !== null &&
-                    <ChatRoom 
-                    room_id={this.state.room} 
-                    listMessages={this.state.listMessages}
-                    username={this.state.username}
-                    userID_other={this.state.userID}
-                    />
-                    }
-                </div>
-            </div>
+      <div className="App">
+        <NavBar />
+        <div className="row left align" style={{ minWidth: 100 + "%" }}>
+          <div className="col s3" style={{ height: this.state.winSize }}>
+            <ChatConv roomToParent={this.handleRoomData} />
+          </div>
+          <div className="col s9">
+            {this.state.room === null && (
+              <div
+                className="valign-wrapper center-align empty-box"
+                style={{
+                  paddingTop: 30 + "%",
+                  backgroundColor: "#a9a9a9",
+                  marginTop: 1 + "%",
+                  height: window.innerHeight - 100
+                }}
+              >
+                {this.state.listMessages.length < 1 && (
+                  <h5>Select a conversation.</h5>
+                )}
+              </div>
+            )}
+            {this.state.room !== null && (
+              <ChatRoom
+                room_id={this.state.room}
+                listMessages={this.state.listMessages}
+                username={this.state.username}
+                userID_other={this.state.userID}
+              />
+            )}
+          </div>
         </div>
-    )
-}
-
+      </div>
+    );
+  }
 
   async componentDidMount() {
-
     this._isMounted = true;
 
     if (this.state.room === null) return;
@@ -95,12 +92,11 @@ class Messages extends Component {
             userID: res.data.result[i]["user_id"],
             date: res.data.result[i]["date"]
           });
-          this._isMounted && this.setState({ listMessages: tab });
+        this._isMounted && this.setState({ listMessages: tab });
       })
       .catch(err => {
         console.log(err);
       });
-    console.log(this.props.socket);
   }
 
   updateChat = async () => {
@@ -118,7 +114,7 @@ class Messages extends Component {
             userID: res.data.result[i]["user_id"],
             date: res.data.result[i]["date"]
           });
-          this._isMounted && this.setState({ listMessages: tab });
+        this._isMounted && this.setState({ listMessages: tab });
       })
       .catch(err => {
         console.log(err);
