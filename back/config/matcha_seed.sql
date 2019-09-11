@@ -2,10 +2,10 @@
 -- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost:3306
--- Généré le :  mar. 10 sep. 2019 à 06:42
--- Version du serveur :  5.7.25
--- Version de PHP :  7.1.27
+-- Host: localhost:3306
+-- Generation Time: Sep 11, 2019 at 02:12 AM
+-- Server version: 5.6.43
+-- PHP Version: 5.6.40
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,15 +19,15 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `matcha_seed`
+-- Database: `matcha`
 --
-CREATE DATABASE IF NOT EXISTS `matcha_seed` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `matcha_seed`;
+CREATE DATABASE IF NOT EXISTS `matcha` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `matcha`;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `block`
+-- Table structure for table `block`
 --
 
 CREATE TABLE `block` (
@@ -39,7 +39,7 @@ CREATE TABLE `block` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `likes`
+-- Table structure for table `likes`
 --
 
 CREATE TABLE `likes` (
@@ -51,7 +51,7 @@ CREATE TABLE `likes` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `matches`
+-- Table structure for table `matches`
 --
 
 CREATE TABLE `matches` (
@@ -68,7 +68,7 @@ CREATE TABLE `matches` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `messages`
+-- Table structure for table `messages`
 --
 
 CREATE TABLE `messages` (
@@ -82,7 +82,7 @@ CREATE TABLE `messages` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `notification`
+-- Table structure for table `notification`
 --
 
 CREATE TABLE `notification` (
@@ -100,7 +100,7 @@ CREATE TABLE `notification` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `pictures`
+-- Table structure for table `pictures`
 --
 
 CREATE TABLE `pictures` (
@@ -112,7 +112,7 @@ CREATE TABLE `pictures` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Déchargement des données de la table `pictures`
+-- Dumping data for table `pictures`
 --
 
 INSERT INTO `pictures` (`id`, `user_id`, `url`, `pic_index`, `profile_picture`) VALUES
@@ -935,7 +935,7 @@ INSERT INTO `pictures` (`id`, `user_id`, `url`, `pic_index`, `profile_picture`) 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `report`
+-- Table structure for table `report`
 --
 
 CREATE TABLE `report` (
@@ -947,7 +947,7 @@ CREATE TABLE `report` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `tags`
+-- Table structure for table `tags`
 --
 
 CREATE TABLE `tags` (
@@ -956,7 +956,7 @@ CREATE TABLE `tags` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Déchargement des données de la table `tags`
+-- Dumping data for table `tags`
 --
 
 INSERT INTO `tags` (`tag_id`, `value`) VALUES
@@ -980,7 +980,7 @@ INSERT INTO `tags` (`tag_id`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -1015,7 +1015,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Déchargement des données de la table `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `lastname`, `firstname`, `username`, `gender`, `sexual_orientation`, `mail`, `bio`, `birthdate`, `password`, `city`, `profile_picture_url`, `pop_score`, `geo_lat`, `geo_long`, `age_min`, `age_max`, `distance_max`, `pop_min`, `pop_max`, `tag_min`, `tag_max`, `tags`, `key`, `password_key`, `status`, `online`, `last_connexion`) VALUES
@@ -1841,7 +1841,7 @@ INSERT INTO `users` (`id`, `lastname`, `firstname`, `username`, `gender`, `sexua
 -- --------------------------------------------------------
 
 --
--- Structure de la table `user_tags`
+-- Table structure for table `user_tags`
 --
 
 CREATE TABLE `user_tags` (
@@ -1851,7 +1851,7 @@ CREATE TABLE `user_tags` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Déchargement des données de la table `user_tags`
+-- Dumping data for table `user_tags`
 --
 
 INSERT INTO `user_tags` (`id`, `user_id`, `tag_id`) VALUES
@@ -7086,129 +7086,129 @@ INSERT INTO `user_tags` (`id`, `user_id`, `tag_id`) VALUES
 (108664, 1, 10);
 
 --
--- Index pour les tables déchargées
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `block`
+-- Indexes for table `block`
 --
 ALTER TABLE `block`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `likes`
+-- Indexes for table `likes`
 --
 ALTER TABLE `likes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `matches`
+-- Indexes for table `matches`
 --
 ALTER TABLE `matches`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `messages`
+-- Indexes for table `messages`
 --
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `notification`
+-- Indexes for table `notification`
 --
 ALTER TABLE `notification`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `pictures`
+-- Indexes for table `pictures`
 --
 ALTER TABLE `pictures`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `report`
+-- Indexes for table `report`
 --
 ALTER TABLE `report`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `tags`
+-- Indexes for table `tags`
 --
 ALTER TABLE `tags`
   ADD PRIMARY KEY (`tag_id`);
 
 --
--- Index pour la table `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `user_tags`
+-- Indexes for table `user_tags`
 --
 ALTER TABLE `user_tags`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT pour les tables déchargées
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pour la table `block`
+-- AUTO_INCREMENT for table `block`
 --
 ALTER TABLE `block`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `likes`
+-- AUTO_INCREMENT for table `likes`
 --
 ALTER TABLE `likes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `matches`
+-- AUTO_INCREMENT for table `matches`
 --
 ALTER TABLE `matches`
   MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `messages`
+-- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
   MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `notification`
+-- AUTO_INCREMENT for table `notification`
 --
 ALTER TABLE `notification`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=778;
 
 --
--- AUTO_INCREMENT pour la table `pictures`
+-- AUTO_INCREMENT for table `pictures`
 --
 ALTER TABLE `pictures`
   MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16819;
 
 --
--- AUTO_INCREMENT pour la table `report`
+-- AUTO_INCREMENT for table `report`
 --
 ALTER TABLE `report`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `tags`
+-- AUTO_INCREMENT for table `tags`
 --
 ALTER TABLE `tags`
   MODIFY `tag_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT pour la table `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17454;
 
 --
--- AUTO_INCREMENT pour la table `user_tags`
+-- AUTO_INCREMENT for table `user_tags`
 --
 ALTER TABLE `user_tags`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108665;
