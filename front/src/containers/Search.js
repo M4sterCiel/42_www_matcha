@@ -120,6 +120,7 @@ class Search extends Component {
     var userTags = [];
     this.setState({ isLoading: true });
 
+    if (!this.state.searchData.userTags) return;
     if (this.state.searchData.userTags.length) {
       for (var i = 0; i < this.state.searchData.userTags.length; i++) {
         userTags.push(this.state.searchData.userTags[i].tag_id);
